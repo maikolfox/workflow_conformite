@@ -1,7 +1,9 @@
-import React, { Component } from 'react'
-import { Col, Row, Container, Jumbotron, Button, Nav, Input, Form, Modal } from 'reactstrap'
+import React, { Component } from 'react';
+import { Col, Row, Container, Jumbotron, Button, Nav, Input, Form, Modal } from 'reactstrap';
 import NavBarMain from '../assets/NavbarMain';
-import ModalRensFNC from '../assets/Modal'
+import ModalRensFNC from '../assets/Modal';
+import PanelWorkFlow from './PanelWorkFlow';
+
 class Home extends Component {
 
     render() {
@@ -19,7 +21,6 @@ class Home extends Component {
                             Etiam eget vulputate est. Donec rutrum, sapien eu vestibulum aliquet, turpis mi laoreet ipsum, ut mollis ante risus volutpat sapien. 
                             Ut tortor neque, efficitur eget sapien eu, vehicula auctor mi. Vestibulum dictum laoreet vestibulum. Suspendisse potenti.<br /> 
                             All you get is this text and a mostly barebones HTML document.
-                            
                             </Col>
                         </Row>
                         <Row>&nbsp;</Row>
