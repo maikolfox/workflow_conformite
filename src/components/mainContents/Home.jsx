@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Col, Row, Container, Jumbotron, Button, Nav, Input, Form, Modal } from 'reactstrap';
+import { Col, Row, Container, Jumbotron, //Button, Nav, Input, Form, Modal 
+} from 'reactstrap';
 import NavBarMain from '../assets/NavbarMain';
 import ModalRensFNC from '../assets/Modal';
-import PanelWorkFlow from './PanelWorkFlow';
+//import PanelWorkFlow from './PanelWorkFlow';
 
 class Home extends Component {
 

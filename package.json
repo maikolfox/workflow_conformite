@@ -14,6 +14,7 @@
     "react-scripts": "^3.0.1",
     "reactstrap": "6.3.1"
   },
+  "proxy":"http://localhost:8280/workflow_fncAPI",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

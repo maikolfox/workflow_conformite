@@ -24,7 +24,6 @@ class ModalRensFNC extends React.Component {
       descritpionProc: '',
       procIsSet: '',
       descIsSet: '',
-      procIsSet: '',
       nestedModal: false,
     };
 
@@ -33,14 +32,36 @@ class ModalRensFNC extends React.Component {
     this.toggleNested = this.toggleNested.bind(this);
   }
 
-  handleSubmit() {
+  handleSubmit = async e=>{
+    e.preventDefault();
     console.log(this.state.descritpionProc);
-    this.setState({ processus: null });
-    this.setState({ descritpionProc: "" });
-    this.setState({ descIsSet: false });
-    this.setState({ procIsSet: false });
-    this.toggleNested();
-
+    
+      const response = await fetch('/declarationFNC',
+        {
+          method: 'POST',
+          headers:
+          {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              "data":
+              {
+                "descriptionFNC": this.state.descritpionProc,
+                "idProcessus":this.state.processus,
+                "idInitiateur": "maikol.ahoue@bridgebankgroup.com"
+              }
+            }),
+        });
+      const body = await response.text();
+      this.setState({ responseToPost: JSON.parse(body) });  
+      console.log(this.state.responseToPost);
+      console.log(this.state.processus);
+      this.setState({ processus: null });
+      this.setState({ descritpionProc: "" });
+      this.setState({ descIsSet: false });
+      this.setState({ procIsSet: false });
+      this.toggleNested();
+      this.toggle();
   }
 
   toggleNested() {
@@ -82,31 +103,30 @@ class ModalRensFNC extends React.Component {
                     value={this.state.processus}
                     onChange={e => {
                       this.setState({ processus: e.target.value })
-                      if (e.target.value !== null) {
+                      if (e.target.value !== null && e.target.value!=="" ) {
                         this.setState({ procIsSet: true })
                       }
                       else { this.setState({ procIsSet: false }) }
-
                     }
-                    }
-                  >
+                    }>
                     <option value="" defaultValue >Choisir un processus :</option>
-                    <option value="Processus 1">Processus 1</option>
+                    <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
                     <option value="Processus 2">Processus 2</option>
                   </Input>
                   <FormText hidden={this.state.procIsSet}>Selectionner processus</FormText>
                 </Col>
                 <Row>&nbsp;</Row>
-                <Label for="exampleEmail" md={12}>Description de la FNC :</Label>
+                <Label for="exampleEmail" md={12}>Description de la non conformité ( {this.state.descritpionProc.length}/500) :  </Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                   <Input valid={this.state.descIsSet} invalid={!this.state.descIsSet}
                     type="textarea"
                     id="selectAgence"
                     name="selectbasic"
+                    
                     value={this.state.descritpionProc}
                     onChange={e => {
                       this.setState({ descritpionProc: e.target.value })
-                      if (e.target.value !== null) {
+                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>5) {
                         this.setState({ descIsSet: true })
                       }
                       else { this.setState({ descIsSet: false }) }
@@ -114,16 +134,13 @@ class ModalRensFNC extends React.Component {
                     }
                   >
                   </Input>
-                  <FormText hidden={this.state.descIsSet}>Decrire la non conformité</FormText>
+                  <FormText hidden={this.state.descIsSet}>Décrire la non conformité (500 caratères minimun) </FormText>
                 </Col>
               </FormGroup>
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={e => {
-              this.toggle();
-              this.handleSubmit();
-            }}
+            <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.descIsSet || this.state.descritpionProc)}
             >
               Soumettre
             </Button>{" "}
