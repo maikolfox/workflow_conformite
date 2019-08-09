@@ -1,4 +1,8 @@
+.activeNav{color:#eb656e;}
+.sansMarg{
 
+  margin-right: -30px;
+}
 .sideHeader  {
 
     background-color: #be000e;
@@ -27,6 +31,9 @@
     margin-bottom: 9px;
   }
 
+  a:hover {
+    color:  #eb656e;
+  }
   small {
     font-size: 65%;
     font-weight: 400;
@@ -42,6 +49,12 @@ a{
 
 }
 
+
+.navItemColor{
+
+  color:#ffffff;
+
+}
 #header{
 
     background-color: #172935;

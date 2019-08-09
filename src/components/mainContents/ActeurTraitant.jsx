@@ -5,7 +5,7 @@ import { Col, Row, Container, Jumbotron, //Button, Nav, Input, Form, Modal
 import ModalRensFNC from '../assets/Modal';
 //import PanelWorkFlow from './PanelWorkFlow';
 
-class Home extends Component {
+class ActeurTraitant extends Component {
 
     render() {
 
@@ -15,12 +15,7 @@ class Home extends Component {
                     <Container>
                         <h1>WORKFLOW FNC ? </h1>
                         <Row>
-                            <Col md="8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur hendrerit molestie arcu non pharetra. 
-                            Integer venenatis mi leo, nec faucibus purus dignissim in. Fusce tincidunt maximus lectus, 
-                            mattis scelerisque lacus consectetur eu. Aenean augue justo, posuere id tellus in, ultricies tincidunt augue. Nam quis finibus nibh. 
-                            Etiam eget vulputate est. Donec rutrum, sapien eu vestibulum aliquet, turpis mi laoreet ipsum, ut mollis ante risus volutpat sapien. 
-                            Ut tortor neque, efficitur eget sapien eu, vehicula auctor mi. Vestibulum dictum laoreet vestibulum. Suspendisse potenti.<br /> 
-                            All you get is this text and a mostly barebones HTML document.
+                            <Col md="8">Acteur traitant
                             </Col>
                         </Row>
                         <Row>&nbsp;</Row>
@@ -39,4 +34,4 @@ class Home extends Component {
 
 
 }
-export default Home;
+export default ActeurTraitant;
