@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
+
 import { FormGroup, Input, Form, Label, Col, FormText, Button } from "reactstrap";
 import '../../css/main.css'
 
@@ -131,10 +133,10 @@ class LineChart extends Component {
   };
   render() {
     return (
-      <div>
-        <Form onSubmit={this.handleSubmit}>
+      <React.Fragment>
+      <Form onSubmit={this.handleSubmit}>
           <FormGroup row>
-            <Label for="exampleEmail" md={4}>Agence :</Label>
+            <Label for="exampleEmail" md={4}>Axe d'analyse :</Label>
             <Col md={{ size: 4, order: 1, offset: -1 }}>
               <Input valid={this.state.agIsSet} invalid={!this.state.agIsSet}
                 type="select"
@@ -147,21 +149,14 @@ class LineChart extends Component {
                     this.setState({ agIsSet: true })
                   }
                   else { this.setState({ agIsSet: false }) }
-
                 }
-                }
-              >
-                <option value="0" defaultValue >Choisir une agence ou un service :</option>
-                <optgroup label="Agence">
-                  <option value="siege plateau">Siège plateau</option>
-                  <option value="Nanan Yamousso">Nanan Yamousso</option>
-                </optgroup>
-                <optgroup label="Service">
-                  <option value="service1">service1</option>
-                  <option value="service2">service2</option>
-                </optgroup>
+                }>
+                  <option value="0" defaultValue ></option>
+                  <option value="siege plateau">Acteur</option>
+                  <option value="Nanan Yamousso">Processus</option>
+                  <option value="service1">Source</option>
               </Input>
-              <FormText hidden={this.state.agIsSet}>Selectionner une agence</FormText>
+              <FormText hidden={this.state.agIsSet}>Selectionner un axe d'analyse</FormText>
             </Col>
             <Label for="exampleEmail3" md={4}>Mois de debut</Label>
             <Col md={{ size: 4, order: 1, offset: - 1 }}>
@@ -200,7 +195,7 @@ class LineChart extends Component {
                 }
                 }
               >
-                <option value="0" defaultValue >Choisir le mois de debut :</option>
+                <option value="0" defaultValue ></option>
                 <option value="01/1900">Janvier</option>
                 <option value="02/1900">Février</option>
                 <option value="03/1900">Mars</option>
@@ -254,7 +249,7 @@ class LineChart extends Component {
                 }
 
               >
-                <option value="0" defaultValue >Choisir le mois de fin</option>
+                <option value="0" defaultValue ></option>
                 <option value="01/1900">Janvier</option>
                 <option value="02/1900">Février</option>
                 <option value="03/1900">Mars</option>
@@ -291,7 +286,7 @@ class LineChart extends Component {
 
                 }
               >
-                <option value="0" defaultValue >choisir une année</option>
+                <option value="0" defaultValue ></option>
                 <option value="2015">2015</option>
                 <option value="2016">2016</option>
                 <option value="2017">2017</option>
@@ -304,12 +299,11 @@ class LineChart extends Component {
           <Button id="ButtonValider" disabled={!(this.state.mfIsSet && this.state.mdIsSet && this.state.agIsSet && this.state.anIsSet) || (this.state.moisDebut > this.state.moisFin)}>Valider</Button>
 
         </Form>
-        <h2 >stats</h2>
-        <Line ref="chart" width={8}
+        <Bar ref="chart" width={8}
           height={3} data={this.state.dataToSend} />
         <Button onClick={this.handleDownload} id="ButtonTelecharger" hidden={!(this.state.mfIsSet && this.state.mdIsSet && this.state.agIsSet && this.state.anIsSet) || (this.state.moisDebut > this.state.moisFin)}
         >Telecharger le diagramme</Button>
-      </div>
+</React.Fragment>
     );
   }
 

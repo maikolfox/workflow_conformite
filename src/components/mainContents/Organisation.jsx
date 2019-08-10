@@ -10,15 +10,15 @@ import {
     NavLink, Link,
     Switch, Redirect
 } from 'react-router-dom';
-import Home from './subMainContent/StatistiqueWorkflow';
-
+import Statistique from './subMainContent/StatistiqueWorkflow';
+import CorrectionRoutage from './subMainContent/ConsultFncRoutagErrone';
 
 
 const Organisation = ({ match }) => (
     <React.Fragment>
 
         <Row noGutters="true" >
-            <Col md="1">
+            <Col md="2">
                 <ListGroup >
                     <ListGroupItem className="menuHeader" >
                         MENU GENERAL
@@ -40,13 +40,12 @@ const Organisation = ({ match }) => (
                     </ListGroupItem>
                 </ListGroup>
             </Col>
-            &nbsp;
+            <div></div>
             <Col md="10">
                 <Switch>
-                    <Route path="/Organisation/statistic_fnc" component={Home} />
-                    <Route path="/Organisation/ParametreTab" component={Home} />
-                    <Route path="/Organisation/ParametreTab" component={Home} />
-                    <Route path="/Organisation/ParametreTab" component={Home} />
+                    <Route path="/Organisation/statistic_fnc" component={Statistique} />
+                    <Route path="/Organisation/routage_incorrect" component={CorrectionRoutage} />
+
                 </Switch>
             </Col>
         </Row>
