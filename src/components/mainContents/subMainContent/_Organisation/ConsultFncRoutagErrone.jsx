@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CardBody, Card, CardHeader, Row, Col } from "reactstrap";
-import Tableau from '../tableau/TableauCorrection'
+import Tableau from '../../tableau/_Organisation/TableauCorrection'
 
 
 var pushLeft={

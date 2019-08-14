@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Home from './components/mainContents/Home';
 import ActeurTraitant from './components/mainContents/ActeurTraitant';
 import ResponsableTraitement from './components/mainContents/ResponsableTraitement';
-import Organisation from './components/mainContents/Organisation';
+import Organisation from './components/mainContents/_Organisation/Organisation';
 
 import {
     Route,

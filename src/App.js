@@ -1,8 +1,8 @@
 import React from 'react';
-import Home from './components/mainContents/Home';
-import ActeurTraitant from './components/mainContents/ActeurTraitant';
-import ResponsableTraitement from './components/mainContents/ResponsableTraitement';
-import Organisation from './components/mainContents/Organisation';
+// import Home from './components/mainContents/Home';
+// import ActeurTraitant from './components/mainContents/ActeurTraitant';
+// import ResponsableTraitement from './components/mainContents/ResponsableTraitement';
+// import Organisation from './components/mainContents/_Organisation/Organisation';
 
 import NavBarMain from './components/assets/NavbarMain';        
 import {
