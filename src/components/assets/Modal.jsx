@@ -20,11 +20,17 @@ class ModalRensFNC extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      processus: '',
-      descritpionProc: '',
-      procIsSet: '',
-      descIsSet: '',
       nestedModal: false,
+      descriptionFnc: '',
+      descriptionFncIsSet: false,
+      idProcessus: '',
+      idProcessusIsSet: false,
+      qualification:'',
+      qualificationIsSet:false,
+      idSource:'',
+      idSourceIsSet:false,
+      famille:'',
+      familleIsSet:false
     };
 
     this.toggle = this.toggle.bind(this);
@@ -94,53 +100,123 @@ class ModalRensFNC extends React.Component {
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup >
-                <Label for="exampleEmail" md={4}>Selectionner le processus :</Label>
+                {/**QUALIFICATION */}
+                <Label for="exampleEmail" md={4}>Qualification de la non conformité:</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.procIsSet} invalid={!this.state.procIsSet}
+                  <Input valid={this.state.qualificationIsSet} invalid={!this.state.qualificationIsSet}
                     type="select"
                     id="selectAgence"
                     name="selectbasic"
-                    value={this.state.processus}
+                    value={this.state.qualification}
                     onChange={e => {
-                      this.setState({ processus: e.target.value })
+                      this.setState({ qualification: e.target.value })
                       if (e.target.value !== null && e.target.value!=="" ) {
-                        this.setState({ procIsSet: true })
+                        this.setState({ qualificationIsSet: true })
                       }
-                      else { this.setState({ procIsSet: false }) }
+                      else { this.setState({ qualificationIsSet: false }) }
+                    }}>
+                    <option value="" defaultValue ></option>
+                    <option value="1">Mineure</option>
+                    <option value="2">Majeure</option>
+                  </Input>
+                  <FormText hidden={this.state.qualificationIsSet}>Selectionner la qualification</FormText>
+                </Col>
+                <Row>&nbsp;</Row>
+                {/**PROCESSUS */}
+                <Label for="exampleEmail" md={4}>Selectionner le processus :</Label>
+                <Col md={{ size: 12, order: 1, offset: -1 }}>
+                  <Input valid={this.state.idProcessusIsSet} invalid={!this.state.idProcessusIsSet}
+                    type="select"
+                    id="selectAgence"
+                    name="selectbasic"
+                    value={this.state.idProcessus}
+                    onChange={e => {
+                      this.setState({ idProcessus: e.target.value })
+                      if (e.target.value !== null && e.target.value!=="" ) {
+                        this.setState({ idProcessusIsSet: true })
+                      }
+                      else { this.setState({ idProcessusIsSet: false }) }
                     }
                     }>
-                    <option value="" defaultValue >Choisir un processus :</option>
+                    <option value="" defaultValue ></option>
                     <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
                     <option value="Processus 2">Processus 2</option>
                   </Input>
-                  <FormText hidden={this.state.procIsSet}>Selectionner processus</FormText>
+                  <FormText hidden={this.state.idProcessusIsSet}>Selectionner processus</FormText>
+                </Col>
+                {/**SOURCE */}
+                <Row>&nbsp;</Row>
+                <Label for="exampleEmail" md={4}>Selectionner la source :</Label>
+                <Col md={{ size: 12, order: 1, offset: -1 }}>
+                  <Input valid={this.state.idSourceIsSet} invalid={!this.state.idSourceIsSet}
+                    type="select"
+                    id="selectAgence"
+                    name="selectbasic"
+                    value={this.state.idSource}
+                    onChange={e => {
+                      this.setState({ idSource: e.target.value })
+                      if (e.target.value !== null && e.target.value!=="" ) {
+                        this.setState({ idSourceIsSet: true })
+                      }
+                      else { this.setState({ idSourceIsSet: false }) }
+                    }
+                    }>
+                    <option value="" defaultValue ></option>
+                    <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
+                    <option value="Processus 2">Processus 2</option>
+                  </Input>
+                  <FormText hidden={this.state.idSourceIsSet}>Selectionner la source</FormText>
+                </Col>
+                {/*FAMILLE */}
+                <Row>&nbsp;</Row>
+                <Label for="selectFamille" md={4}>Selectionner le processus :</Label>
+                <Col md={{ size: 12, order: 1, offset: -1 }}>
+                  <Input valid={this.state.familleIsSet} invalid={!this.state.familleIsSet}
+                    type="select"
+                    id="selectFamille"
+                    name="selectFamille"
+                    value={this.state.famille}
+                    onChange={e => {
+                      this.setState({ famille: e.target.value })
+                      if (e.target.value !== null && e.target.value!=="" ) {
+                        this.setState({ familleIsSet: true })
+                      }
+                      else { this.setState({ familleIsSet: false }) }
+                    }
+                    }>
+                    <option value="" defaultValue ></option>
+                    <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
+                    <option value="Processus 2">Processus 2</option>
+                  </Input>
+                  <FormText hidden={this.state.familleIsSet}>Selectionner processus</FormText>
                 </Col>
                 <Row>&nbsp;</Row>
-                <Label for="exampleEmail" md={12}>Description de la non conformité ( {this.state.descritpionProc.length}/500) :  </Label>
+                {/**DESCRIPTION DE LA NON CONFORMITE */}
+                <Label for="exampleEmail" md={12}>Description de la non conformité entre 100 et 600 caractères ( {this.state.descriptionFnc.length}/600) :  </Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.descIsSet} invalid={!this.state.descIsSet}
+                  <Input valid={this.state.descriptionFncIsSet} invalid={!this.state.descritpionFncIsSet}
                     type="textarea"
                     id="selectAgence"
                     name="selectbasic"
-                    
-                    value={this.state.descritpionProc}
+                    maxLength="600"
+                    minLength="100"
+                    value={this.state.descriptionFnc}
                     onChange={e => {
-                      this.setState({ descritpionProc: e.target.value })
+                      this.setState({ descriptionFnc: e.target.value })
                       if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>5) {
-                        this.setState({ descIsSet: true })
+                        this.setState({ descriptionFncIsSet: true })
                       }
-                      else { this.setState({ descIsSet: false }) }
-                    }
-                    }
-                  >
+                      else { this.setState({ descriptionFncIsSet: false }) }}}>
                   </Input>
-                  <FormText hidden={this.state.descIsSet}>Décrire la non conformité (500 caratères minimun) </FormText>
+                  <FormText hidden={this.state.descriptionFncIsSet}>Décrire la non conformité (500 caratères minimun) </FormText>
                 </Col>
               </FormGroup>
             </Form>
           </ModalBody>
           <ModalFooter>
-            <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.descIsSet || this.state.descritpionProc)}
+            <Button color="danger" onClick={this.handleSubmit} disabled={
+              !(this.state.descriptionFncIsSet && this.state.familleIsSet && this.state.idProcessusIsSet && this.state.idSourceIsSet && this.state.qualificationIsSet)
+            }
             >
               Soumettre
             </Button>{" "}

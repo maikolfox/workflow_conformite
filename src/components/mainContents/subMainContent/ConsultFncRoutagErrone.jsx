@@ -17,6 +17,7 @@ class ConsultFncRoutageErrone extends Component {
         <CardHeader>FNC routage erroné</CardHeader>
         <CardBody>
                     <Tableau></Tableau>
+                    
         </CardBody>
       </Card>
 

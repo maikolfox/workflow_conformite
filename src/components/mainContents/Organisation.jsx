@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import {
     Col, Row, Container, Jumbotron, ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
 } from 'reactstrap';
 import '../css/main.css';
+import '../css/simple-sidebar.css'
 //import PanelWorkFlow from './PanelWorkFlow';
 import {
     Route,
@@ -12,8 +13,6 @@ import {
 } from 'react-router-dom';
 import Statistique from './subMainContent/StatistiqueWorkflow';
 import CorrectionRoutage from './subMainContent/ConsultFncRoutagErrone';
-
-
 const Organisation = ({ match }) => (
     <React.Fragment>
 
@@ -22,12 +21,12 @@ const Organisation = ({ match }) => (
                 <ListGroup >
                     <ListGroupItem className="menuHeader" >
                         MENU GENERAL
-          </ListGroupItem>
+                    </ListGroupItem>
                     <ListGroupItem >
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/rendering`}>Accueil</NavLink>
+                        <NavLink exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to="/Organisation/routage_incorrect" >Correction de routage</NavLink>
+                        <NavLink exact activeClassName="activeNav" to={`${match.url}/routage_incorrect`} >Correction de routage</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to="/Organisation/creation_critere">Création de critère</NavLink>
@@ -45,7 +44,6 @@ const Organisation = ({ match }) => (
                 <Switch>
                     <Route path="/Organisation/statistic_fnc" component={Statistique} />
                     <Route path="/Organisation/routage_incorrect" component={CorrectionRoutage} />
-
                 </Switch>
             </Col>
         </Row>
