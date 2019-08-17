@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from './components/mainContents/Home';
 import ActeurTraitant from './components/mainContents/ActeurTraitant';
-import ResponsableTraitement from './components/mainContents/ResponsableTraitement';
+import ResponsableTraitement from './components/mainContents/_ResponsableTraitement/ResponsableTraitement';
 import Organisation from './components/mainContents/_Organisation/Organisation';
 
 import {

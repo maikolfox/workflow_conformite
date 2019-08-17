@@ -101,8 +101,10 @@ export default class TableauCorrection extends React.Component {
   }
 
   toggle() {
+    
     this.setState(prevState => ({
       modal: !prevState.modal,
+      selected:!prevState.selected
     }));
   }
 
@@ -133,8 +135,6 @@ componentDidMount() {
       
   }
   
-
-
   render()  {
     
     const columns = [
@@ -156,8 +156,7 @@ componentDidMount() {
       Header:'Processus',
       accessor: 'idProcessus',
     }
-  ]
-  
+  ] 
     return(
     <React.Fragment>
 
@@ -307,7 +306,7 @@ componentDidMount() {
               console.log(rowInfo.original);
             }},
             style: {
-              background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
+              background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
               color: rowInfo.index === this.state.selected ? 'white' : 'black'
             }}
         }else{

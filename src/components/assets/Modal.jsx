@@ -101,7 +101,7 @@ class ModalRensFNC extends React.Component {
             <Form onSubmit={this.handleSubmit}>
               <FormGroup >
                 {/**QUALIFICATION */}
-                <Label for="exampleEmail" md={4}>Qualification de la non conformité:</Label>
+                <Label for="exampleEmail" md={12}>Qualification de la non conformité:</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                   <Input valid={this.state.qualificationIsSet} invalid={!this.state.qualificationIsSet}
                     type="select"
@@ -194,7 +194,7 @@ class ModalRensFNC extends React.Component {
                 {/**DESCRIPTION DE LA NON CONFORMITE */}
                 <Label for="exampleEmail" md={12}>Description de la non conformité entre 100 et 600 caractères ( {this.state.descriptionFnc.length}/600) :  </Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.descriptionFncIsSet} invalid={!this.state.descritpionFncIsSet}
+                  <Input valid={this.state.descriptionFncIsSet} invalid={!this.state.descriptionFncIsSet}
                     type="textarea"
                     id="selectAgence"
                     name="selectbasic"
@@ -203,7 +203,7 @@ class ModalRensFNC extends React.Component {
                     value={this.state.descriptionFnc}
                     onChange={e => {
                       this.setState({ descriptionFnc: e.target.value })
-                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>5) {
+                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>100) {
                         this.setState({ descriptionFncIsSet: true })
                       }
                       else { this.setState({ descriptionFncIsSet: false }) }}}>
