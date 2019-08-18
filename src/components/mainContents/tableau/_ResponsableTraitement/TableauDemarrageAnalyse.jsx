@@ -244,17 +244,32 @@ export default class DemarrageAnalyse extends React.Component {
                     </FormGroup>
                   </Form>
                 </TabPanel>
+                {/* Cette section permet de
+                 positionner 
+                 les bouttons "suivant" et 
+                "precedent" et de le masquer au besoin 
+                */}
                 <Row noGutters="true" >
-                  <Col md="2" ></Col>
-                  <Tab id="1"  step="prev" className="disable">
+                  <TabPanel whenActive={1}>
+                  <Col md="10" ></Col>
+                    <Tab id="3" maxStep={3}  step="next">
+                      <Button>{'Suivant >>'}</Button>
+                    </Tab>
+                  </TabPanel>     
+                  <TabPanel whenActive={2}>
+                  <Tab id="1" maxStep={3} step="prev" >
                     <Button>{'<< Précedent'}</Button>
                   </Tab>
-                  <Col md="2" ></Col>
-                  <Col md="2" ></Col>
-                  <Tab id="2" step="next">
-                    <Button>{'Suivant >>'}</Button>
+                  <Col md="8" ></Col>
+                  <Tab id="3" maxStep={3}  step="next">
+                      <Button>{'Suivant >>'}</Button>
+                    </Tab>
+                  </TabPanel>
+                  <TabPanel whenActive={3}>
+                  <Tab id="1" maxStep={3} step="prev" >
+                    <Button>{'<< Précedent'}</Button>
                   </Tab>
-                  <Col md="2" ></Col>
+                  </TabPanel>
                 </Row>
               </TabSwitcher>
             </ModalBody>
