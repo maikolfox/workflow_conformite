@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CardBody, Card, CardHeader, Row, Col } from "reactstrap";
-import Tableau from '../../tableau/_ResponsableTraitement/TableauValidationRoutage';
+import Tableau from '../../tableau/_ResponsableTraitement/TableauDemarrageAnalyse';
 
 
 var pushLeft={

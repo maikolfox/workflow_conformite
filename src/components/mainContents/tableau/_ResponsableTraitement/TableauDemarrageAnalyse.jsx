@@ -7,6 +7,8 @@ import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
+import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+
 import {
   Button,
   Modal,
@@ -17,8 +19,8 @@ import {
   FormGroup,
   Form,
   Label,
-  Row,
-  
+  Row, Col
+
 } from "reactstrap";
 
 var data_;
@@ -29,24 +31,24 @@ export default class DemarrageAnalyse extends React.Component {
   constructor(props) {
     super(props);
     this.state =
-    {
-      idFnc: '',
-      numeroId: '',
-      modal: '',
-      selected: null,
-      responseToPost:[],
-      isLoaded: '',
-      getRow: '',
-      idSource: '',
-      idFamile: '',
-      idProcessus: '',
-      descriptionFnc: '',
-      qualification:'',
-      hasError: '',
-      errorMessage: '',
-      valRoutage:null,
-      responseSubmit:''
-    }
+      {
+        idFnc: '',
+        numeroId: '',
+        modal: '',
+        selected: null,
+        responseToPost: [],
+        isLoaded: '',
+        getRow: '',
+        idSource: '',
+        idFamile: '',
+        idProcessus: '',
+        descriptionFnc: '',
+        qualification: '',
+        hasError: '',
+        errorMessage: '',
+        valRoutage: null,
+        responseSubmit: ''
+      }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -72,40 +74,32 @@ export default class DemarrageAnalyse extends React.Component {
           "data":
           {
             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-            "idFnc":this.state.idFnc,
-            "statutRoutage":this.state.valRoutage
+            "idFnc": this.state.idFnc,
+            "statutRoutage": this.state.valRoutage
           }
         })
       }).then(res => res.json())
       .then(
-      (result) => {
-        console.log(this.state.selected);
-        data_=data_.splice(this.state.selected,1);
-        this.setState({
-          isLoaded: true,
-          responseSubmit: result.data.message,
-          nestedModal:true,
+        (result) => {
+          console.log(this.state.selected);
+          data_ = data_.splice(this.state.selected, 1);
+          this.setState({
+            isLoaded: true,
+            responseSubmit: result.data.message,
+            nestedModal: true,
+          });
+
+          this.forceUpdate();
+        },
+        (error) => {
+          console.log("124", error.message);
+          alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+          this.setState({
+            isLoaded: true,
+            errorMessage: error.message,
+            hasError: true
+          });
         });
-        var array =[{"a":"1","b":"3"},{"a":"1","b":"5"},{"a":"1","b":"4"}];
-        console.log(array);
-        var toRemove =1;
-            var index = array.indexOf(toRemove);
-        if (index > -1) { //Make sure item is present in the array, without if condition, -n indexes will be considered from the end of the array.
-          array.splice(index, 1);
-        }
-        console.log(array);
-        console.log(this.state.selected) ;
-        this.forceUpdate();
-      },
-      (error) => {
-        console.log("124",error.message);
-        alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-        this.setState({
-          isLoaded: true,
-          errorMessage:error.message,
-          hasError:true
-        });
-      });
     //this.toggleNested();
     this.toggle();
   }
@@ -115,14 +109,14 @@ export default class DemarrageAnalyse extends React.Component {
     });
   }
   toggle() {
-    this.setState({valRoutage:null})
+    this.setState({ valRoutage: null })
     this.setState(prevState => ({
       modal: !prevState.modal,
-      selected:!prevState.selected
+      selected: !prevState.selected
     }));
   }
   async componentDidMount() {
-       const fetchstat = await fetch("http://localhost:3553/api/consult/fnc",
+    const fetchstat = await fetch("http://localhost:3553/api/consult/fnc",
       {
         method: 'POST',
         headers:
@@ -139,22 +133,22 @@ export default class DemarrageAnalyse extends React.Component {
           }
         })
       }).then(res => res.json())
-        .then(
+      .then(
         (result) => {
           this.setState({
             isLoaded: true,
             responseToPost: result.data.responses
           });
-          data_=result.data.responses;
-          console.log(this.state.responseToPost)  
+          data_ = result.data.responses;
+          console.log(this.state.responseToPost)
         },
         (error) => {
-          console.log("124",error.message);
+          console.log("124", error.message);
           alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
           this.setState({
             isLoaded: true,
-            errorMessage:error.message,
-            hasError:true
+            errorMessage: error.message,
+            hasError: true
           });
         })
   }
@@ -191,48 +185,81 @@ export default class DemarrageAnalyse extends React.Component {
             centered
             aria-labelledby="example-modal-sizes-title-lg"
           >
-            <ModalHeader toggle={this.toggle}>Validation de la fiche N° {this.state.numeroId} </ModalHeader>
+            <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
             <ModalBody>
-              {/**QUALIFICATION FNC*/}
-              <MediaAsset libelle="Qualification" content={this.state.qualification} />
-              {/**DESCRIPTION FNC*/}
-              <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
-              {/**SOURCE*/}
-              <MediaAsset libelle="Source" content={this.state.source} />
-              {/**PROCESSUS*/}
-              <MediaAsset libelle="Processus" content={this.state.idProcessus} />
-              {/*FAMILLE*/}
-              <MediaAsset libelle="Famille" content={this.state.idFamile} />
-              <hr></hr>
-              <Form onSubmit={this.handleSubmit}>
-                <FormGroup check>
-                  <FormGroup tag="fieldset">
-                    <legend>Validation routage</legend>
+              <TabSwitcher>
+                <TabPanel whenActive={1}>
+                  <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
+                  {/**QUALIFICATION FNC*/}
+                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
+                  {/**DESCRIPTION FNC*/}
+                  <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
+                  {/**SOURCE*/}
+                  <MediaAsset libelle="Source" content={this.state.source} />
+                  {/**PROCESSUS*/}
+                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+                  {/*FAMILLE*/}
+                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                  <hr></hr>
+                </TabPanel>
+                <TabPanel whenActive={3}>
+                  <h1 style={{ textAlign: "center" }}>3</h1>
+                  {/**QUALIFICATION FNC*/}
+                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
+                  {/**DESCRIPTION FNC*/}
+                  <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
+                  {/**SOURCE*/}
+                  <MediaAsset libelle="Source" content={this.state.source} />
+                  {/**PROCESSUS*/}
+                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+                  {/*FAMILLE*/}
+                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                  <hr></hr>
+                </TabPanel>
+                <TabPanel whenActive={2}>
+                  <Form onSubmit={this.handleSubmit}>
                     <FormGroup check>
-                      <Label check style={{color:'green'}}>
-                        <Input type="radio" name="radio1" onChange={e =>{ 
-                        this.setState({valRoutage:true});
-                        console.log(this.state.valRoutage)
-                        }} />{' '}
-                        Routage correct - vous vous chargerez du traitement de la non-conformité
+                      <FormGroup tag="fieldset">
+                        <legend>Validation routage</legend>
+                        <FormGroup check>
+                          <Label check style={{ color: 'green' }}>
+                            <Input type="radio" name="radio1" onChange={e => {
+                              this.setState({ valRoutage: true });
+                              console.log(this.state.valRoutage)
+                            }} />{' '}
+                            Routage correct - vous vous chargerez du traitement de la non-conformité
                       </Label>
-                    </FormGroup>
-                    <FormGroup check style={{color:'red'}}>
-                      <Label check>
-                        <Input type="radio" name="radio1" onChange={e =>{ 
-                        this.setState({valRoutage:false});
-                        console.log(this.state.valRoutage)
-                        }}  />{' '}
-                        Routage incorrect - vous renverrez la fnc a l'organisation pour correction
+                        </FormGroup>
+                        <FormGroup check style={{ color: 'red' }}>
+                          <Label check>
+                            <Input type="radio" name="radio1" onChange={e => {
+                              this.setState({ valRoutage: false });
+                              console.log(this.state.valRoutage)
+                            }} />{' '}
+                            Routage incorrect - vous renverrez la fnc a l'organisation pour correction
                       </Label>
-                    <Row>&nbsp;</Row>
+                          <Row>&nbsp;</Row>
+                        </FormGroup>
+                      </FormGroup>
                     </FormGroup>
-                  </FormGroup>
-                </FormGroup>
-              </Form>
+                  </Form>
+                </TabPanel>
+                <Row noGutters="true" >
+                  <Col md="2" ></Col>
+                  <Tab id="1"  step="prev" className="disable">
+                    <Button>{'<< Précedent'}</Button>
+                  </Tab>
+                  <Col md="2" ></Col>
+                  <Col md="2" ></Col>
+                  <Tab id="2" step="next">
+                    <Button>{'Suivant >>'}</Button>
+                  </Tab>
+                  <Col md="2" ></Col>
+                </Row>
+              </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.valRoutage!==null)}>
+              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.valRoutage !== null)}>
                 Soumettre
             </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
@@ -275,7 +302,7 @@ export default class DemarrageAnalyse extends React.Component {
                         idProcessus: rowInfo.original.idProcessus,
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
-                        idFnc:rowInfo.original.idFnc,
+                        idFnc: rowInfo.original.idFnc,
                       });
                       console.log(rowInfo.index);
                     }

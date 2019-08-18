@@ -7,6 +7,8 @@ import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
+import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+
 import {
   Button,
   Modal,
@@ -17,7 +19,7 @@ import {
   FormGroup,
   Form,
   Label,
-  Row,
+  Row,Col
   
 } from "reactstrap";
 
