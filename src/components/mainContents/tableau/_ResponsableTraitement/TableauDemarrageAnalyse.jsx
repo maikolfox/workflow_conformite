@@ -188,7 +188,9 @@ export default class DemarrageAnalyse extends React.Component {
             <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
             <ModalBody>
               <TabSwitcher>
+                {/* ETAPE 1 ANALYSE */}
                 <TabPanel whenActive={1}>
+                  {/* RECAPITULATIF DES INFOS DE LA FICHE */}
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                   {/**QUALIFICATION FNC*/}
                   <MediaAsset libelle="Qualification" content={this.state.qualification} />
@@ -200,26 +202,14 @@ export default class DemarrageAnalyse extends React.Component {
                   <MediaAsset libelle="Processus" content={this.state.idProcessus} />
                   {/*FAMILLE*/}
                   <MediaAsset libelle="Famille" content={this.state.idFamile} />
-                  <hr></hr>
                 </TabPanel>
-                <TabPanel whenActive={3}>
-                  <h1 style={{ textAlign: "center" }}>3</h1>
-                  {/**QUALIFICATION FNC*/}
-                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
-                  {/**DESCRIPTION FNC*/}
-                  <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
-                  {/**SOURCE*/}
-                  <MediaAsset libelle="Source" content={this.state.source} />
-                  {/**PROCESSUS*/}
-                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
-                  {/*FAMILLE*/}
-                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
-                  <hr></hr>
-                </TabPanel>
+
+                {/* ETAPE 2 ANALYSE */}
                 <TabPanel whenActive={2}>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup check>
                       <FormGroup tag="fieldset">
+                      <h1 style={{ textAlign: "center" }}>2</h1>
                         <legend>Validation routage</legend>
                         <FormGroup check>
                           <Label check style={{ color: 'green' }}>
@@ -244,6 +234,23 @@ export default class DemarrageAnalyse extends React.Component {
                     </FormGroup>
                   </Form>
                 </TabPanel>
+                
+                {/* ETAPE 3 ANALYSE */}
+                <TabPanel whenActive={3}>
+                  {/* RENSEIGNEMENT DU FORMULAIRE 1 */}
+                  <h1 style={{ textAlign: "center" }}>3</h1>
+                  {/**QUALIFICATION FNC*/}
+                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
+                  {/**DESCRIPTION FNC*/}
+                  <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
+                  {/**SOURCE*/}
+                  <MediaAsset libelle="Source" content={this.state.source} />
+                  {/**PROCESSUS*/}
+                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+                  {/*FAMILLE*/}
+                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                </TabPanel>
+                
                 {/* Cette section permet de
                  positionner 
                  les bouttons "suivant" et 

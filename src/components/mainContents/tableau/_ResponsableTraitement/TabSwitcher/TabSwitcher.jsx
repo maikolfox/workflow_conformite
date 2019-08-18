@@ -1,6 +1,6 @@
 import React, { Component, createContext } from "react";
 import {
-  Col, Row, Container, Jumbotron, ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
+  Col //Row, Container, Jumbotron, ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
 } from 'reactstrap';
 
 const context = createContext({});
