@@ -274,6 +274,35 @@ export default class DemarrageAnalyse extends React.Component {
 
     ]
 
+    const analyseColum=[
+ 
+
+      {
+        Header: 'Action corrective',
+        accessor: 'actionCorrective',
+      },
+   
+      {
+        Header: 'Cause',
+        accessor: 'cause',
+      },
+
+      {
+        Header: 'Correction',
+        accessor: 'correction',
+      },
+      
+      {
+        Header: 'Echeance',
+        accessor: 'echeance',
+      },
+
+      {
+        Header: 'Acteur',
+        accessor: 'idActeur',
+      },
+    ]
+
     const dataActeur=[
       {
         nomPrenom: 'Ahoue romeo',
@@ -453,8 +482,8 @@ export default class DemarrageAnalyse extends React.Component {
                               this.setState({
                                 selectedActeur: rowInfo.index,
                                 getRow: rowInfo,
-                                numeroId: rowInfo.original.numeroId,
-                                idFnc: rowInfo.original.idFnc,
+                                // numeroId: rowInfo.original.numeroId,
+                                //idFnc: rowInfo.original.idFnc,
                                 acteurTraitant: rowInfo.original.nomPrenom
                               });
                               console.log(rowInfo.original);
@@ -480,13 +509,47 @@ export default class DemarrageAnalyse extends React.Component {
                   {/* RENSEIGNEMENT DU FORMULAIRE 1 */}
                   <h1 style={{ textAlign: "center" }}>3</h1>
 
-<acteurList/>                  {/* actionCorrective: this.state.actionCorrective,
-        correction: this.state.correction,
-        echeance:   this.state.echeance,
-        cause:this.state.cause,
-        idActeurDelegataire:'ahoueromeo@gmail.com',
-        idActeur:this.state.acteurTraitant */}
+
+                  <ReactTableActeur
+                    filterable={true}
+                    loading={!this.state.isLoaded}
+                    minRows={5}
+                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
+                    data={this.state.dataStruc}
+                    columns={analyseColum}
+                    previousText={"Précedent"}
+                    nextText={"Suivant"}
+                    rowsText={"Ligne(s)"}
+                    ofText={"sur "}
+                    loadingText="Chargement en cours..."
+                    getTrProps={(state, rowInfo) => {
+                      if (rowInfo && rowInfo.row) {
+                        return {
+                          onClick: (e) => {
+                            {
+                              e.preventDefault();
+                              this.setState({
+                                //PAY ATTENTION 
+                                selectedActeur: rowInfo.index,
+                                getRow: rowInfo,
+                                acteurTraitant: rowInfo.original.nomPrenom
+                              });
+                              console.log(rowInfo.original);
+                            }
+                          },
+                          style: {
+                            background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
+                            color: rowInfo.index === this.state.selectedActeur ? 'white' : 'black'
+                          }
+                        }
+                      } else {
+                        return {}
+                      }
+                    }} />
+
         
+
+
 
                 </TabPanel>
                 
