@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
+import ReactTableActeur from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
@@ -18,13 +19,13 @@ import {
   Input,
   FormGroup,
   Form,
+  FormText,
   Label,
   Row, Col
 
 } from "reactstrap";
 
 var data_;
-
 
 export default class DemarrageAnalyse extends React.Component {
 
@@ -36,6 +37,7 @@ export default class DemarrageAnalyse extends React.Component {
         numeroId: '',
         modal: '',
         selected: null,
+        selectedActeur:null,
         responseToPost: [],
         isLoaded: '',
         getRow: '',
@@ -44,17 +46,74 @@ export default class DemarrageAnalyse extends React.Component {
         idProcessus: '',
         descriptionFnc: '',
         qualification: '',
+        
+        acteurTraitant:'',
+        correction:'',
+        correctionIsSet:'',
+
+        actionCorrective:'',
+        actionCorrectiveIsSet:'',
+        
+        cause:'',
+        causeIsSet:'',
+
+        libelle:0,
+
+        echeance:'',
+        echeanceIsSet:'',
+
         hasError: '',
         errorMessage: '',
         valRoutage: null,
-        responseSubmit: ''
+        responseSubmit: '',
+
+        dataStruc:[]
+
       }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.currentDate = this.currentDate.bind(this);
+
   };
 
+  
+  
+  
+    createAnalyse = event => 
+    {
+      event.preventDefault();
+  
+      const newItem = {
+        actionCorrective: this.state.actionCorrective,
+        correction: this.state.correction,
+        echeance:   this.state.echeance,
+        cause:this.state.cause,
+        idActeurDelegataire:'ahoueromeo@gmail.com',
+        idActeur:this.state.acteurTraitant
+        
+      };
+      this.setState(prevState => ({
+        dataStruc: prevState.dataStruc.concat(newItem)
+      }));
+    console.log(this.state.dataStruc);
+    };
+    
+
+  
+
+
+  currentDate()
+  { //January is 0!
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+    var yyyy = today.getFullYear();
+    today= yyyy +'-'+ mm + '-' +dd ;
+    console.log("today na today : ",today);
+    return today;
+  }
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -152,8 +211,9 @@ export default class DemarrageAnalyse extends React.Component {
           });
         })
   }
-  render() {
 
+  
+  render() {
     const columns = [
       {
         Header: 'Date de déclaration',
@@ -172,7 +232,73 @@ export default class DemarrageAnalyse extends React.Component {
         Header: 'Processus',
         accessor: 'idProcessus',
       }
+    ];
+
+    const acteurList= () =>(
+ 
+
+      <ul>
+         {this.state.dataStruc.map(item => (
+           <li key={item.actionCorrective}>
+             <div>{item.correction}</div>
+             <div>{item.echeance}</div>
+             <div>{item.cause}</div>
+             <div>{item.idActeurDelegataire}</div>
+           </li>
+         ))}
+       </ul>
+     
+     )
+
+
+    const ActeurColumns = [
+      {
+        Header: 'Prenom nom',
+        accessor: 'nomPrenom',
+      },
+   
+      {
+        Header: 'Fonction',
+        accessor: 'fonction',
+      },
+
+      {
+        Header: 'Service',
+        accessor: 'service',
+      },
+      
+      {
+        Header: 'email',
+        accessor: 'id',
+      },
+
     ]
+
+    const dataActeur=[
+      {
+        nomPrenom: 'Ahoue romeo',
+        fonction: 'Developper web',
+        service: 'IT',
+        id:'ahoueromeo@gmail.com'
+      },
+      {
+        nomPrenom: 'Ahoue Maikol',
+        fonction:'Analyste programmeur',
+        service: 'RH',
+        id:'maikol.ahoue@gmail.com'
+      }
+
+    ];
+    /* actionCorrective: this.state.actionCorrective,
+        correction: this.state.correction,
+        echeance:   this.state.echeance,
+        cause:this.state.cause,
+        idActeurDelegataire:'ahoueromeo@gmail.com',
+        idActeur:this.state.acteurTraitant */
+
+   
+  
+
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
@@ -184,13 +310,13 @@ export default class DemarrageAnalyse extends React.Component {
             size="lg"
             centered
             aria-labelledby="example-modal-sizes-title-lg"
+            backdrop="static"
           >
             <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
             <ModalBody>
               <TabSwitcher>
-                {/* ETAPE 1 ANALYSE */}
+                {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
                 <TabPanel whenActive={1}>
-                  {/* RECAPITULATIF DES INFOS DE LA FICHE */}
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                   {/**QUALIFICATION FNC*/}
                   <MediaAsset libelle="Qualification" content={this.state.qualification} />
@@ -204,78 +330,204 @@ export default class DemarrageAnalyse extends React.Component {
                   <MediaAsset libelle="Famille" content={this.state.idFamile} />
                 </TabPanel>
 
-                {/* ETAPE 2 ANALYSE */}
+                {/* ETAPE 2 FORMULAIRE ANALYSE */}
                 <TabPanel whenActive={2}>
                   <Form onSubmit={this.handleSubmit}>
-                    <FormGroup check>
-                      <FormGroup tag="fieldset">
-                      <h1 style={{ textAlign: "center" }}>2</h1>
-                        <legend>Validation routage</legend>
-                        <FormGroup check>
-                          <Label check style={{ color: 'green' }}>
-                            <Input type="radio" name="radio1" onChange={e => {
-                              this.setState({ valRoutage: true });
-                              console.log(this.state.valRoutage)
-                            }} />{' '}
-                            Routage correct - vous vous chargerez du traitement de la non-conformité
-                      </Label>
-                        </FormGroup>
-                        <FormGroup check style={{ color: 'red' }}>
-                          <Label check>
-                            <Input type="radio" name="radio1" onChange={e => {
-                              this.setState({ valRoutage: false });
-                              console.log(this.state.valRoutage)
-                            }} />{' '}
-                            Routage incorrect - vous renverrez la fnc a l'organisation pour correction
-                      </Label>
-                          <Row>&nbsp;</Row>
-                        </FormGroup>
-                      </FormGroup>
-                    </FormGroup>
+                   <FormGroup>
+                    {/*Correction*/}
+                    <Label for="exampleEmail" md={12}>Correction</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
+                        type="textarea"
+                        id="selectAgence"
+                        name="selectbasic"
+                        value={this.state.correction}
+                        onChange={e => {
+                          this.setState({ correction: e.target.value })
+                          if (e.target.value !== null && e.target.value !== "") {
+                            this.setState({ correctionIsSet: true })
+                          }
+                          else { this.setState({ correctionIsSet: false }) }
+                        }}>
+                      </Input>
+                      <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/*Cause*/}
+                    <Label for="exampleEmail" md={12}>Cause</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
+                        type="textarea"
+                        id="selectAgence"
+                        name="selectbasic"
+                        value={this.state.cause}
+                        onChange={e => {
+                          this.setState({ cause: e.target.value })
+                          if (e.target.value !== null && e.target.value !== "") {
+                            this.setState({ causeIsSet: true })
+                          }
+                          else { this.setState({ causeIsSet: false }) }
+                        }}>
+                      </Input>
+                      <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/*Actions correctives*/}
+                    <Label for="exampleEmail" md={12}>Actions correctives</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
+                        type="textarea"
+                        id="selectAgence"
+                        name="selectbasic"
+                        value={this.state.actionCorrective}
+                        onChange={e => {
+                          this.setState({ actionCorrective: e.target.value })
+                          if (e.target.value !== null && e.target.value !== "") {
+                            this.setState({ actionCorrectiveIsSet: true })
+                          }
+                          else { this.setState({ actionCorrectiveIsSet: false }) }
+                        }}>
+                      </Input>
+                      <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/*Echéances*/}
+                    <Label for="exampleEmail" md={12}>Echéances</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
+                        type="date"
+                        id="selectAgence"
+                        min={this.currentDate()}
+                        name="selectbasic"
+                        value={this.state.echeance}
+                        onChange={e => {
+                            {
+                              e.preventDefault();
+                              {this.setState({ echeance: e.target.value })
+                              if (e.target.value !== null && e.target.value !== "") {
+                                this.setState({ echeanceIsSet: true })
+                              }
+                              else { this.setState({ echeanceIsSet: false }) }
+                            }}
+                        }}>
+                      </Input>
+                      <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheances</FormText>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                  </FormGroup>
                   </Form>
                 </TabPanel>
-                
-                {/* ETAPE 3 ANALYSE */}
+                {/*TODO ETAPE 3 AJOUTER UN ACTEUR TRAITANT */}
                 <TabPanel whenActive={3}>
-                  {/* RENSEIGNEMENT DU FORMULAIRE 1 */}
-                  <h1 style={{ textAlign: "center" }}>3</h1>
-                  {/**QUALIFICATION FNC*/}
-                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
-                  {/**DESCRIPTION FNC*/}
-                  <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
-                  {/**SOURCE*/}
-                  <MediaAsset libelle="Source" content={this.state.source} />
-                  {/**PROCESSUS*/}
-                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
-                  {/*FAMILLE*/}
-                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                  {/* CHOIX DE L'ACTEUR TRAITANT*/}
+                  <h2 style={{ textAlign: "center" }}>Choix de l'acteur traitant</h2>
+                  <Form >
+                   <FormGroup>
+                   <Label for="acteurName" md={12}>Acteur traitant :</Label>
+                   <Col md={{ size: 12, order: 1, offset: -1 }}>
+                    <Input  name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input> 
+                    </Col>
+                   </FormGroup>
+                   </Form >
+                    <br/>
+                    <br/>
+                    <strong>Selectionner un acteur traitant dans la liste ci-dessous :</strong>
+                    <ReactTableActeur
+                    filterable={true}
+                    loading={!this.state.isLoaded}
+                    minRows={5}
+                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
+                    data={dataActeur}
+                    columns={ActeurColumns}
+                    previousText={"Précedent"}
+                    nextText={"Suivant"}
+                    rowsText={"Ligne(s)"}
+                    ofText={"sur "}
+                    loadingText="Chargement en cours..."
+                    getTrProps={(state, rowInfo) => {
+                      if (rowInfo && rowInfo.row) {
+                        return {
+                          onClick: (e) => {
+                            {
+                              e.preventDefault();
+                              this.setState({
+                                selectedActeur: rowInfo.index,
+                                getRow: rowInfo,
+                                numeroId: rowInfo.original.numeroId,
+                                idFnc: rowInfo.original.idFnc,
+                                acteurTraitant: rowInfo.original.nomPrenom
+                              });
+                              console.log(rowInfo.original);
+                            }
+                          },
+                          style: {
+                            background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
+                            color: rowInfo.index === this.state.selectedActeur ? 'white' : 'black'
+                          }
+                        }
+                      } else {
+                        return {}
+                      }
+                    }} />
                 </TabPanel>
                 
-                {/* Cette section permet de
-                 positionner 
-                 les bouttons "suivant" et 
-                "precedent" et de le masquer au besoin 
+                
+                {/*TODO ETAPE 3 RECAPITULATIF ANALYSE
+                DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
+                */}
+
+                <TabPanel whenActive={4}>
+                  {/* RENSEIGNEMENT DU FORMULAIRE 1 */}
+                  <h1 style={{ textAlign: "center" }}>3</h1>
+
+<acteurList/>                  {/* actionCorrective: this.state.actionCorrective,
+        correction: this.state.correction,
+        echeance:   this.state.echeance,
+        cause:this.state.cause,
+        idActeurDelegataire:'ahoueromeo@gmail.com',
+        idActeur:this.state.acteurTraitant */}
+        
+
+                </TabPanel>
+                
+                
+                {/* Cette section permet de positionner 
+                    les bouttons "suivant" et "precedent" 
+                    et de le  masquer au besoin 
                 */}
                 <Row noGutters="true" >
                   <TabPanel whenActive={1}>
-                  <Col md="10" ></Col>
-                    <Tab id="3" maxStep={3}  step="next">
-                      <Button>{'Suivant >>'}</Button>
-                    </Tab>
-                  </TabPanel>     
-                  <TabPanel whenActive={2}>
-                  <Tab id="1" maxStep={3} step="prev" >
-                    <Button>{'<< Précedent'}</Button>
-                  </Tab>
-                  <Col md="8" ></Col>
-                  <Tab id="3" maxStep={3}  step="next">
+                    <Col md="10" ></Col>
+                    <Tab id="1" maxStep={3} step="next">
                       <Button>{'Suivant >>'}</Button>
                     </Tab>
                   </TabPanel>
+                  <TabPanel whenActive={2}>
+                    <Tab id="2" maxStep={3} step="prev" >
+                      <Button>{'<< Précedent'}</Button>
+                    </Tab>
+                    <Col md="8" ></Col>
+                    <Tab id="2" maxStep={3} step="next">
+                      <Button>{'Suivant >> '}&nbsp;</Button>
+                    </Tab>
+                  </TabPanel>
                   <TabPanel whenActive={3}>
-                  <Tab id="1" maxStep={3} step="prev" >
-                    <Button>{'<< Précedent'}</Button>
-                  </Tab>
+                    <Tab id="1" maxStep={3} step="prev" >
+                      <Button>{'<< Précedent'}</Button>
+                    </Tab>
+                    <Col md="8" ></Col>
+                    <Tab id="3" maxStep={4} step="next">
+                      <Button type="button" onClick={this.createAnalyse} color="danger">{'Creer l\'analyse'}</Button>
+                    </Tab>
+                  </TabPanel>
+                  <TabPanel whenActive={4}>
+                    <Tab id="1" maxStep={3} step="prev" >
+                      <Button>{'<< Précedent'}</Button>
+                    </Tab>
+                    <Col md="8" ></Col>
+                    <Tab id="4" maxStep={4} step="next">
+                      <Button>{'Suivant >> '}&nbsp;</Button>
+                    </Tab>
                   </TabPanel>
                 </Row>
               </TabSwitcher>

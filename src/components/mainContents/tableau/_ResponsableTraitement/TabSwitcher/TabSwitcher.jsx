@@ -10,11 +10,7 @@ const { Provider, Consumer } = context;
 /**TAB  TELL TO PARENT WHEN IT WAS CLICKED */
 const Tab = ({step,minStep =1, maxStep, id, children }) => (
   <Consumer>
-    {({ changeTab,activeTabId }) => (
-      <Col onClick={() => changeTab(step,minStep,maxStep ,id)}>{children}</Col> 
-      
-      
-      )}
+    {({ changeTab}) => (<Col onClick={() => changeTab(step,minStep,maxStep ,id)}>{children}</Col>)}
   </Consumer>
 );
 
@@ -35,20 +31,16 @@ class TabSwitcher extends Component {
    console.log("newTabId : ",newTabId);
    var index= step==="next" ?  1 : -1;
    
-  if ( (index===-1 && (minStep < this.state.activeTabId)) 
-  || (index===1 && (this.state.activeTabId <maxStep ) )){
-
+  if ( (index===-1 && (minStep < this.state.activeTabId)) || (index===1 && (this.state.activeTabId <maxStep ) ))
+  {
     this.setState(prevState => {
       return {
         activeTabId: prevState.activeTabId+index
       };
      })
-       console.log("active tab : "+this.state.activeTabId);
-       console.log("maxstep :" +maxStep);
+ 
   }    
-    
-       console.log("_active tab : "+this.state.activeTabId);
-       console.log("_maxstep :" +maxStep);
+  
      
    
 
