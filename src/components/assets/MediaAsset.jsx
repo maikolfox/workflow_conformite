@@ -15,8 +15,6 @@ export default class MediaAsset extends React.Component {
     };
 
     render() {
-
-
         return (
             <React.Fragment>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>

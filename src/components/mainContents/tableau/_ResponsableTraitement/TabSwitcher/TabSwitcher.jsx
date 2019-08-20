@@ -29,8 +29,28 @@ class TabSwitcher extends Component {
   changeTab = (step,minStep,maxStep,newTabId) => 
   {
    console.log("newTabId : ",newTabId);
-   var index= step==="next" ?  1 : -1;
+
+   var index = step==="extends" ? 6 : step==="next" ?  1 : -1;
    
+   console.log(index);
+   //console.log(this.state.activeTabId);
+  
+
+   if (step==="retourRecap")
+   {
+     console.log("in extends")
+     this.setState({
+         activeTabId: 5
+      })
+     
+   }
+  
+  if(this.state.activeTabId===10)
+  {
+      console.log("extend for 10") ;
+
+  }
+
   if ( (index===-1 && (minStep < this.state.activeTabId)) || (index===1 && (this.state.activeTabId <maxStep ) ))
   {
     this.setState(prevState => {
@@ -39,9 +59,18 @@ class TabSwitcher extends Component {
       };
      })
  
-  }    
+  } 
   
-     
+  if (step==="extends")
+  {
+    console.log("in extends")
+    this.setState({
+        activeTabId: 10
+     })
+    
+  }
+  
+  
    
 
   

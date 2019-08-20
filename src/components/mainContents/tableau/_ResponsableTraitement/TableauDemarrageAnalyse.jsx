@@ -9,6 +9,11 @@ import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
 
 import {
   Button,
@@ -37,7 +42,7 @@ export default class DemarrageAnalyse extends React.Component {
         numeroId: '',
         modal: '',
         selected: null,
-        selectedActeur:null,
+        selectedActeur: null,
         responseToPost: [],
         isLoaded: '',
         getRow: '',
@@ -46,28 +51,31 @@ export default class DemarrageAnalyse extends React.Component {
         idProcessus: '',
         descriptionFnc: '',
         qualification: '',
-        
-        acteurTraitant:'',
-        correction:'',
-        correctionIsSet:'',
 
-        actionCorrective:'',
-        actionCorrectiveIsSet:'',
-        
-        cause:'',
-        causeIsSet:'',
+        acteurTraitant: '',
+        correction: '',
+        correctionIsSet: '',
 
-        libelle:0,
+        actionCorrective: '',
+        actionCorrectiveIsSet: '',
 
-        echeance:'',
-        echeanceIsSet:'',
+        cause: '',
+        causeIsSet: '',
+
+        libelle: 1,
+
+        echeance: '',
+        echeanceIsSet: '',
 
         hasError: '',
         errorMessage: '',
         valRoutage: null,
         responseSubmit: '',
 
-        dataStruc:[]
+        dataStruc: [],
+
+        selectedAnalyseIndex:'',
+        selectedAnalyse: ''
 
       }
     this.toggle = this.toggle.bind(this);
@@ -75,43 +83,43 @@ export default class DemarrageAnalyse extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.currentDate = this.currentDate.bind(this);
-
+    this.handleModifyAnalyse=this.handleModifyAnalyse.bind(this);
+    this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
   };
 
-  
-  
-  
-    createAnalyse = event => 
-    {
-      event.preventDefault();
-  
-      const newItem = {
-        actionCorrective: this.state.actionCorrective,
-        correction: this.state.correction,
-        echeance:   this.state.echeance,
-        cause:this.state.cause,
-        idActeurDelegataire:'ahoueromeo@gmail.com',
-        idActeur:this.state.acteurTraitant
-        
-      };
-      this.setState(prevState => ({
-        dataStruc: prevState.dataStruc.concat(newItem)
-      }));
-    console.log(this.state.dataStruc);
+
+
+
+  createAnalyse = event => {
+    event.preventDefault();
+     
+    const newItem = {
+      actionCorrective: this.state.actionCorrective,
+      correction: this.state.correction,
+      echeance: this.state.echeance,
+      cause: this.state.cause,
+      idActeurDelegataire: 'ahoueromeo@gmail.com',
+      idActeur: this.state.acteurTraitant,
+      libelleAnalyse:this.state.libelle
     };
-    
+      
+    this.setState(prevState => ({
+      dataStruc: prevState.dataStruc.concat(newItem),
+      libelle:prevState.libelle +1
+    }));
+    console.log(this.state.dataStruc);
+  };
 
-  
 
 
-  currentDate()
-  { //January is 0!
+
+
+  currentDate() { //January is 0!
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); 
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
     var yyyy = today.getFullYear();
-    today= yyyy +'-'+ mm + '-' +dd ;
-    console.log("today na today : ",today);
+    today = yyyy + '-' + mm + '-' + dd;
     return today;
   }
 
@@ -162,6 +170,53 @@ export default class DemarrageAnalyse extends React.Component {
     //this.toggleNested();
     this.toggle();
   }
+
+
+  handleModifyAnalyse = itemId => {
+    const updatedItems = this.state.dataStruc.map(item => {
+      if (itemId === item.libelleAnalyse) {
+        this.setState({cause: item.cause,correction :item.correction})       
+      console.log(item.cause);
+      }
+      return item;
+    
+    });
+
+    this.setState({
+      dataStruc: [].concat(updatedItems)
+    });
+  };
+
+
+  handleValidModifyAnalyse =itemId=>{
+    const updatedItems = this.state.dataStruc.map(item => {
+      if (itemId === item.libelleAnalyse) {
+
+        this.setState({
+          cause: item.cause, 
+          correction :item.correction ,
+          echeance:item.echeance, 
+          idActeur:this.state.acteurTraitant,
+          libelleAnalyse:item.libelleAnalyse,
+          actionCorrective:item.actionCorrective
+        })       
+      console.log(item.cause);
+        item.actionCorrective= this.state.actionCorrective;
+        item.correction= this.state.correction;
+        item.echeance= this.state.echeance;
+        item.cause= this.state.cause;
+        item.idActeurDelegataire= 'ahoueromeo@gmail.com';
+        item.idActeur= this.state.acteurTraitant;
+        item.libelleAnalyse=itemId;
+      };
+    
+      return item;
+    });
+    this.setState(prevState=>({
+      dataStruc:prevState.dataStruc.map(el=>( el.libelleAnalyse !== updatedItems.libelleAnalyse  ? {...el} : updatedItems))   
+    }));
+  }
+
   toggleNested() {
     this.setState({
       nestedModal: !this.state.nestedModal
@@ -212,7 +267,7 @@ export default class DemarrageAnalyse extends React.Component {
         })
   }
 
-  
+
   render() {
     const columns = [
       {
@@ -234,21 +289,9 @@ export default class DemarrageAnalyse extends React.Component {
       }
     ];
 
-    const acteurList= () =>(
- 
+   
 
-      <ul>
-         {this.state.dataStruc.map(item => (
-           <li key={item.actionCorrective}>
-             <div>{item.correction}</div>
-             <div>{item.echeance}</div>
-             <div>{item.cause}</div>
-             <div>{item.idActeurDelegataire}</div>
-           </li>
-         ))}
-       </ul>
-     
-     )
+    library.add(faPen, faTrash);
 
 
     const ActeurColumns = [
@@ -256,7 +299,7 @@ export default class DemarrageAnalyse extends React.Component {
         Header: 'Prenom nom',
         accessor: 'nomPrenom',
       },
-   
+
       {
         Header: 'Fonction',
         accessor: 'fonction',
@@ -266,7 +309,7 @@ export default class DemarrageAnalyse extends React.Component {
         Header: 'Service',
         accessor: 'service',
       },
-      
+
       {
         Header: 'email',
         accessor: 'id',
@@ -274,14 +317,19 @@ export default class DemarrageAnalyse extends React.Component {
 
     ]
 
-    const analyseColum=[
- 
+    const analyseColum = [
+
+
+      {
+        Header: 'Numero',
+        accessor: 'libelleAnalyse',
+      },
 
       {
         Header: 'Action corrective',
         accessor: 'actionCorrective',
       },
-   
+
       {
         Header: 'Cause',
         accessor: 'cause',
@@ -291,7 +339,7 @@ export default class DemarrageAnalyse extends React.Component {
         Header: 'Correction',
         accessor: 'correction',
       },
-      
+
       {
         Header: 'Echeance',
         accessor: 'echeance',
@@ -303,18 +351,18 @@ export default class DemarrageAnalyse extends React.Component {
       },
     ]
 
-    const dataActeur=[
+    const dataActeur = [
       {
         nomPrenom: 'Ahoue romeo',
         fonction: 'Developper web',
         service: 'IT',
-        id:'ahoueromeo@gmail.com'
+        id: 'ahoueromeo@gmail.com'
       },
       {
         nomPrenom: 'Ahoue Maikol',
-        fonction:'Analyste programmeur',
+        fonction: 'Analyste programmeur',
         service: 'RH',
-        id:'maikol.ahoue@gmail.com'
+        id: 'maikol.ahoue@gmail.com'
       }
 
     ];
@@ -325,8 +373,8 @@ export default class DemarrageAnalyse extends React.Component {
         idActeurDelegataire:'ahoueromeo@gmail.com',
         idActeur:this.state.acteurTraitant */
 
-   
-  
+
+
 
     return (
       <React.Fragment>
@@ -362,88 +410,90 @@ export default class DemarrageAnalyse extends React.Component {
                 {/* ETAPE 2 FORMULAIRE ANALYSE */}
                 <TabPanel whenActive={2}>
                   <Form onSubmit={this.handleSubmit}>
-                   <FormGroup>
-                    {/*Correction*/}
-                    <Label for="exampleEmail" md={12}>Correction</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
-                        type="textarea"
-                        id="selectAgence"
-                        name="selectbasic"
-                        value={this.state.correction}
-                        onChange={e => {
-                          this.setState({ correction: e.target.value })
-                          if (e.target.value !== null && e.target.value !== "") {
-                            this.setState({ correctionIsSet: true })
-                          }
-                          else { this.setState({ correctionIsSet: false }) }
-                        }}>
-                      </Input>
-                      <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/*Cause*/}
-                    <Label for="exampleEmail" md={12}>Cause</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
-                        type="textarea"
-                        id="selectAgence"
-                        name="selectbasic"
-                        value={this.state.cause}
-                        onChange={e => {
-                          this.setState({ cause: e.target.value })
-                          if (e.target.value !== null && e.target.value !== "") {
-                            this.setState({ causeIsSet: true })
-                          }
-                          else { this.setState({ causeIsSet: false }) }
-                        }}>
-                      </Input>
-                      <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/*Actions correctives*/}
-                    <Label for="exampleEmail" md={12}>Actions correctives</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
-                        type="textarea"
-                        id="selectAgence"
-                        name="selectbasic"
-                        value={this.state.actionCorrective}
-                        onChange={e => {
-                          this.setState({ actionCorrective: e.target.value })
-                          if (e.target.value !== null && e.target.value !== "") {
-                            this.setState({ actionCorrectiveIsSet: true })
-                          }
-                          else { this.setState({ actionCorrectiveIsSet: false }) }
-                        }}>
-                      </Input>
-                      <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/*Echéances*/}
-                    <Label for="exampleEmail" md={12}>Echéances</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
-                        type="date"
-                        id="selectAgence"
-                        min={this.currentDate()}
-                        name="selectbasic"
-                        value={this.state.echeance}
-                        onChange={e => {
+                    <FormGroup>
+                      {/*Correction*/}
+                      <Label for="exampleEmail" md={12}>Correction</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.correction}
+                          onChange={e => {
+                            this.setState({ correction: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ correctionIsSet: true })
+                            }
+                            else { this.setState({ correctionIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/*Cause*/}
+                      <Label for="exampleEmail" md={12}>Cause</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.cause}
+                          onChange={e => {
+                            this.setState({ cause: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ causeIsSet: true })
+                            }
+                            else { this.setState({ causeIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/*Actions correctives*/}
+                      <Label for="exampleEmail" md={12}>Actions correctives</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.actionCorrective}
+                          onChange={e => {
+                            this.setState({ actionCorrective: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ actionCorrectiveIsSet: true })
+                            }
+                            else { this.setState({ actionCorrectiveIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/*Echéances*/}
+                      <Label for="exampleEmail" md={12}>Echéances</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
+                          type="date"
+                          id="selectAgence"
+                          min={this.currentDate()}
+                          name="selectbasic"
+                          value={this.state.echeance}
+                          onChange={e => {
                             {
                               e.preventDefault();
-                              {this.setState({ echeance: e.target.value })
-                              if (e.target.value !== null && e.target.value !== "") {
-                                this.setState({ echeanceIsSet: true })
+                              {
+                                this.setState({ echeance: e.target.value })
+                                if (e.target.value !== null && e.target.value !== "") {
+                                  this.setState({ echeanceIsSet: true })
+                                }
+                                else { this.setState({ echeanceIsSet: false }) }
                               }
-                              else { this.setState({ echeanceIsSet: false }) }
-                            }}
-                        }}>
-                      </Input>
-                      <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheances</FormText>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                  </FormGroup>
+                            }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheances</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                    </FormGroup>
                   </Form>
                 </TabPanel>
                 {/*TODO ETAPE 3 AJOUTER UN ACTEUR TRAITANT */}
@@ -451,17 +501,17 @@ export default class DemarrageAnalyse extends React.Component {
                   {/* CHOIX DE L'ACTEUR TRAITANT*/}
                   <h2 style={{ textAlign: "center" }}>Choix de l'acteur traitant</h2>
                   <Form >
-                   <FormGroup>
-                   <Label for="acteurName" md={12}>Acteur traitant :</Label>
-                   <Col md={{ size: 12, order: 1, offset: -1 }}>
-                    <Input  name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input> 
-                    </Col>
-                   </FormGroup>
-                   </Form >
-                    <br/>
-                    <br/>
-                    <strong>Selectionner un acteur traitant dans la liste ci-dessous :</strong>
-                    <ReactTableActeur
+                    <FormGroup>
+                      <Label for="acteurName" md={12}>Acteur traitant :</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input>
+                      </Col>
+                    </FormGroup>
+                  </Form >
+                  <br />
+                  <br />
+                  <strong>Selectionner un acteur traitant dans la liste ci-dessous :</strong>
+                  <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
@@ -499,17 +549,13 @@ export default class DemarrageAnalyse extends React.Component {
                       }
                     }} />
                 </TabPanel>
-                
-                
-                {/*TODO ETAPE 3 RECAPITULATIF ANALYSE
+
+
+                {/*TODO ETAPE 4 RECAPITULATIF ANALYSE
                 DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
                 */}
-
                 <TabPanel whenActive={4}>
-                  {/* RENSEIGNEMENT DU FORMULAIRE 1 */}
                   <h1 style={{ textAlign: "center" }}>3</h1>
-
-
                   <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
@@ -530,8 +576,172 @@ export default class DemarrageAnalyse extends React.Component {
                               e.preventDefault();
                               this.setState({
                                 //PAY ATTENTION 
+                                selectedAnalyseIndex: rowInfo.index,
+                                selectedAnalyse: rowInfo.original,
+
+                                getRow: rowInfo,
+                                acteurTraitant: rowInfo.original.nomPrenom
+                              });
+                              console.log(rowInfo.original);
+                            }
+                          },
+                          style: {
+                            background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
+                            color: rowInfo.index === this.state.selectedAnalyseIndex ? 'white' : 'black'
+                          }
+                        }
+                      } else {
+                        return {}
+                      }
+                    }} />
+                  <br></br>
+                  <TabPanel whenActive={4}>
+                    <Tab id="10" maxStep={3} step="extends" >
+                      <Button color="white" onClick={e=>{
+                          e.preventDefault();
+                          this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAnalyse);
+                          console.log(this.state.selectedAnalyse.libelleAnalyse)
+                      }}>
+                        <FontAwesomeIcon
+                          icon="pen"
+                          color="blue"
+                          size="md"
+                        />{' '}
+                      </Button>
+                    </Tab>
+                    <Tab id="1" maxStep={3} step="prev" >
+                      <Button color="white">
+                        <FontAwesomeIcon
+                          icon="trash"
+                          color="red"
+                          size="md"
+                        />{' '}
+                      </Button>
+                    </Tab>
+                  </TabPanel>
+
+                </TabPanel>
+                {/*TODO ETAPE MODIFICATION ANALYSE
+                */}
+                <TabPanel whenActive={10}>
+                  {/* MODIFICATION ANALYSE */}
+                  <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
+                  <Form onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                      {/*Correction*/}
+                      <Label for="exampleEmail" md={12}>Correction</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.correction}
+                          onChange={e => {
+                            this.setState({ correction: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ correctionIsSet: true })
+                            }
+                            else { this.setState({ correctionIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/*Cause*/}
+                      <Label for="exampleEmail" md={12}>Cause</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.cause}
+                          onChange={e => {
+                            this.setState({ cause: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ causeIsSet: true })
+                            }
+                            else { this.setState({ causeIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/*Actions correctives*/}
+                      <Label for="exampleEmail" md={12}>Actions correctives</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.actionCorrective}
+                          onChange={e => {
+                            this.setState({ actionCorrective: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ actionCorrectiveIsSet: true })
+                            }
+                            else { this.setState({ actionCorrectiveIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/*Echéances*/}
+                      <Label for="exampleEmail" md={12}>Echéances</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
+                          type="date"
+                          id="selectAgence"
+                          min={this.currentDate()}
+                          name="selectbasic"
+                          value={this.state.echeance}
+                          onChange={e => {
+                            {
+                              e.preventDefault();
+                              {
+                                this.setState({ echeance: e.target.value })
+                                if (e.target.value !== null && e.target.value !== "") {
+                                  this.setState({ echeanceIsSet: true })
+                                }
+                                else { this.setState({ echeanceIsSet: false }) }
+                              }
+                            }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      {/* CHOIX DE L'ACTEUR TRAITANT*/}
+                      <Label for="acteurName" md={12}>Acteur traitant :</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input>
+                      </Col>
+                    </FormGroup>
+                  </Form >
+                  <br />
+                  <br />
+                  <ReactTableActeur
+                    filterable={true}
+                    loading={!this.state.isLoaded}
+                    minRows={5}
+                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
+                    data={dataActeur}
+                    columns={ActeurColumns}
+                    previousText={"Précedent"}
+                    nextText={"Suivant"}
+                    rowsText={"Ligne(s)"}
+                    ofText={"sur "}
+                    loadingText="Chargement en cours..."
+                    getTrProps={(state, rowInfo) => {
+                      if (rowInfo && rowInfo.row) {
+                        return {
+                          onClick: (e) => {
+                            {
+                              e.preventDefault();
+                              this.setState({
                                 selectedActeur: rowInfo.index,
                                 getRow: rowInfo,
+                                // numeroId: rowInfo.original.numeroId,
+                                //idFnc: rowInfo.original.idFnc,
                                 acteurTraitant: rowInfo.original.nomPrenom
                               });
                               console.log(rowInfo.original);
@@ -546,14 +756,24 @@ export default class DemarrageAnalyse extends React.Component {
                         return {}
                       }
                     }} />
+                  <br></br>
+                  <Row>
+                    <Tab id="1" maxStep={3} step="retourRecap">
+                       <Button>Annuler</Button>
+                    </Tab>
+                    <Col md="8" ></Col>
+                    <Tab id="1" maxStep={3} step="retourRecap">
+                        <Button  color="danger" onClick={e=>{
+                          e.preventDefault();
+                          this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAnalyse);
 
-        
 
-
-
+                        }}>Valider la modification</Button>
+                    </Tab>
+                  </Row>
                 </TabPanel>
-                
-                
+
+
                 {/* Cette section permet de positionner 
                     les bouttons "suivant" et "precedent" 
                     et de le  masquer au besoin 
@@ -576,22 +796,40 @@ export default class DemarrageAnalyse extends React.Component {
                   </TabPanel>
                   <TabPanel whenActive={3}>
                     <Tab id="1" maxStep={3} step="prev" >
+                      <br />
                       <Button>{'<< Précedent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="3" maxStep={4} step="next">
+                      <br />
                       <Button type="button" onClick={this.createAnalyse} color="danger">{'Creer l\'analyse'}</Button>
                     </Tab>
                   </TabPanel>
                   <TabPanel whenActive={4}>
+
                     <Tab id="1" maxStep={3} step="prev" >
+                      <br />
                       <Button>{'<< Précedent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="4" maxStep={4} step="next">
+                      <br />
                       <Button>{'Suivant >> '}&nbsp;</Button>
                     </Tab>
                   </TabPanel>
+                  {/** */}
+                  {/* <TabPanel whenActive={10}>
+
+                    <Tab id="1" maxStep={3} step="prev" >
+                      <br />
+                      <Button>{'<< Précedent'}</Button>
+                    </Tab>
+                    <Col md="8" ></Col>
+                    <Tab id="4" maxStep={4} step="next">
+                      <br />
+                      <Button>{'Suivant >> '}&nbsp;</Button>
+                    </Tab>
+                  </TabPanel> */}
                 </Row>
               </TabSwitcher>
             </ModalBody>
