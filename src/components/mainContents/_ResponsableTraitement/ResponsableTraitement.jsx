@@ -1,6 +1,7 @@
 import React  from 'react';
 import {
-    Col, Row, Container, Jumbotron, ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
+    Col, Row, //Container, Jumbotron, 
+    ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
 } from 'reactstrap';
 import '../../css/main.css';
 import '../../css/simple-sidebar.css'
@@ -13,7 +14,7 @@ import {
 } from 'react-router-dom';
 import ValidationRoutage from '../subMainContent/_ResponsableTraitement/ValidationRoutage';
 import DemarrerAnalyse from '../subMainContent/_ResponsableTraitement/DemarrerAnalyse';
-
+import ReceptionAction from '../subMainContent/_ResponsableTraitement/ReceptionAction';
 
 
 const ResponsableTraitement = ({ match }) => (
@@ -22,10 +23,10 @@ const ResponsableTraitement = ({ match }) => (
         <Row noGutters="true" >
             <Col md="2">
                 <ListGroup >
-                    <ListGroupItem className="menuHeader" >
-                        MENU GENERAL
+                    <ListGroupItem style={{backgroundColor:"#172935",color:'white'}}  >
+                    <span >MENU GENERAL</span>
                     </ListGroupItem>
-                    <ListGroupItem >
+                    <ListGroupItem  >
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
@@ -35,16 +36,16 @@ const ResponsableTraitement = ({ match }) => (
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/demarrer_analyse`}>Demarrer une analyse</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to="/Organisation/evaluation_de_critere">Consultation des critères d'efficacité</NavLink>
+                        <NavLink exact activeClassName="activeNav" to={`${match.url}/reception_action_affectees`}>Reception des actions affectées</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to="/Organisation/statistic_fnc">Cloture des taches        </NavLink>
+                        <NavLink exact activeClassName="activeNav" to={`${match.url}/cloture_taches`}>Cloture des taches</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to="/Organisation/historique">Cloture définitive</NavLink>
+                        <NavLink exact activeClassName="activeNav" to={`${match.url}/cloture_definitives`}>Cloture définitive</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to="/Organisation/etats_fnc">Etats des fiches de non conformité</NavLink>
+                        <NavLink exact activeClassName="activeNav" to={`${match.url}/historique_fiche`}>Historique</NavLink>
                     </ListGroupItem>
                 </ListGroup>
             </Col>
@@ -53,6 +54,7 @@ const ResponsableTraitement = ({ match }) => (
                 <Switch>
                     <Route path="/ResponsableTraitement/validation_routage" component={ValidationRoutage} />
                     <Route path="/ResponsableTraitement/demarrer_analyse" component={DemarrerAnalyse} />
+                    <Route path="/ResponsableTraitement/reception_action_affectees" component={ReceptionAction} />
                 </Switch>
             </Col>
         </Row>

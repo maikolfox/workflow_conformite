@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import LineChart from '../../../mainContents/chartAsset/LineChart.jsx';
 import { CardBody, Card, CardHeader, Row, Col } from "reactstrap";
-import BarChart from '../../../mainContents/chartAsset/BarChart';
+//import BarChart from '../../../mainContents/chartAsset/BarChart';
 
 var boxingChart = {
   border: '1px solid gray', borderRightColor: 'black',

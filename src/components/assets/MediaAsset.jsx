@@ -10,10 +10,7 @@ import {
 
 export default class MediaAsset extends React.Component {
 
-    constructor(props) {
-        super(props);
-    };
-
+   
     render() {
         return (
             <React.Fragment>

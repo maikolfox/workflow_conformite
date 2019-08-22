@@ -1,15 +1,17 @@
 import React  from 'react';
 import {
-    Col, Row, Container, Jumbotron, ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
+    Col, Row, 
+    //Container, Jumbotron, 
+    ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
 } from 'reactstrap';
 import '../../css/main.css';
 import '../../css/simple-sidebar.css'
 //import PanelWorkFlow from './PanelWorkFlow';
 import {
     Route,
-    BrowserRouter as Router,
-    NavLink, Link,
-    Switch, Redirect
+   // BrowserRouter as Router,
+    NavLink, //Link,
+    Switch, //Redirect
 } from 'react-router-dom';
 import Statistique from '../../mainContents/subMainContent/_Organisation/StatistiqueWorkflow';
 import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';

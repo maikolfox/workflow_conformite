@@ -8,7 +8,6 @@ import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
-import Authorization from '../../Authorization_401';
 
 import {
   Button,
@@ -24,7 +23,6 @@ import {
   
 } from "reactstrap";
 
-var data_;
 
 
 export default class ValidationRoutage extends React.Component {
@@ -48,8 +46,7 @@ export default class ValidationRoutage extends React.Component {
       hasError: '',
       errorMessage: '',
       valRoutage:null,
-      responseSubmit:'',
-      unAutorize:false
+      responseSubmit:''
     }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -72,7 +69,9 @@ export default class ValidationRoutage extends React.Component {
     console.log(this.state.descriptionFnc);
     console.log(this.state.idFnc);
     console.log(this.state.valRoutage);
-     await fetch('/validationRoutage/fnc',
+
+
+    const response = await fetch('/validationRoutage/fnc',
       {
         method: 'POST',
         headers:
@@ -81,7 +80,7 @@ export default class ValidationRoutage extends React.Component {
         },
         body: JSON.stringify({
           "data":
-          { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
+          {
             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
             "idFnc":this.state.idFnc,
             "statutRoutage":this.state.valRoutage
@@ -130,7 +129,7 @@ export default class ValidationRoutage extends React.Component {
     }));
   }
   async componentDidMount() {
-       const fetchstat = await fetch("/consult/fnc",
+       const fetchstat = await fetch("http://localhost:3553/api/consult/fnc",
       {
         method: 'POST',
         headers:
@@ -140,35 +139,21 @@ export default class ValidationRoutage extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            //TODO A remplacer plus tard par  les variable de sessions 
             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
             "idProfil": [
-              { "idProfil": 2 }//
+              { "idProfil": 2 }
             ]
           }
         })
       }).then(res => res.json())
         .then(
-          (result) => {
-            if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
-            { 
-              alert(result.data.message);
-              window.close();
-  
-              this.setState({
-                isLoaded: true,
-                errorMessage: "Accès refuser !",
-                hasError: false,
-                unAutorize:true
-              });
-            }
-            else{
-            this.setState({
-              isLoaded: true,
-              responseToPost: result.data.responses
-            });
-            console.log(this.state.responseToPost)}
-          },
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            responseToPost: result.data.responses
+          });
+          console.log(this.state.responseToPost)  
+        },
         (error) => {
           console.log("124",error.message);
           alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
@@ -200,12 +185,6 @@ export default class ValidationRoutage extends React.Component {
         accessor: 'idProcessus',
       }
     ]
-    if(this.state.unAutorize)
-    {
-        return(<Authorization/>) 
-    }
-
-else
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}

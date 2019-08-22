@@ -2,7 +2,7 @@ import React from 'react';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from 'react-loader-spinner'
+//import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";

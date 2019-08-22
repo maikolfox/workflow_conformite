@@ -12,21 +12,23 @@ import Organisation from './components/mainContents/_Organisation/Organisation';
 import {
     Route,
     BrowserRouter as Router,
-    NavLink,
-    Switch, Redirect
+    //NavLink,
+    Switch, //Redirect
   } from 'react-router-dom';
-  import {
-    NavItem,
-    Navbar, NavbarBrand, Nav,
-    Row,
-    Col,
-    ListGroup,
-    ListGroupItem,
+ //mport {
+ // NavItem,
+ // Navbar, NavbarBrand, Nav,
+ // Row,
+ // Col,
+ // ListGroup,
+ // ListGroupItem,
     // CardHeader,
     // CardBody,
     // Card
-  }
-    from "reactstrap";
+ // }
+ //   from "reactstrap";
+
+ ///PRENDRE EN COMPTE LA REDIRECTION SELON LES AUTORISATIONS
 const routing = (
     <Router>
        <App />

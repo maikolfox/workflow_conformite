@@ -30,6 +30,7 @@ class TabSwitcher extends Component {
   {
    console.log("newTabId : ",newTabId);
 
+   if(step!=="nope"){
    var index = step==="extends" ? 6 : step==="next" ?  1 : -1;
    
    console.log(index);
@@ -70,9 +71,15 @@ class TabSwitcher extends Component {
     
   }
   
-  
-   
 
+  if (step==="new")
+  {
+    console.log("in new")
+    this.setState({
+        activeTabId: 2
+     })
+  }
+ }
   
   
   };

@@ -5,12 +5,12 @@ import React from 'react';
 // import Organisation from './components/mainContents/_Organisation/Organisation';
 
 import NavBarMain from './components/assets/NavbarMain';        
-import {
-  Route,
-  BrowserRouter as Router,
-  NavLink,
-  Switch, Redirect
-} from 'react-router-dom';        
+//import {
+//  Route,
+//  BrowserRouter as Router,
+//  NavLink,
+//  Switch, Redirect
+//} from 'react-router-dom';        
 //import { Col, Row, Container } from 'reactstrap';
 //import PanelWorkFlow from './components/mainContents/PanelWorkFlow'
 

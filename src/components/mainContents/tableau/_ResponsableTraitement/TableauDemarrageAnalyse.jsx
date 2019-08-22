@@ -1,7 +1,10 @@
 import React from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faTrash, faPen,faPlusCircle,faBan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+//import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import ReactTableActeur from 'react-table';
@@ -9,10 +12,7 @@ import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import Authorization from '../../Authorization_401';
 
 
 import {
@@ -26,11 +26,11 @@ import {
   Form,
   FormText,
   Label,
-  Row, Col
-
+  Row, 
+  Col,
+  Progress,Container 
 } from "reactstrap";
 
-var data_;
 
 export default class DemarrageAnalyse extends React.Component {
 
@@ -41,8 +41,12 @@ export default class DemarrageAnalyse extends React.Component {
         idFnc: '',
         numeroId: '',
         modal: '',
+        
         selected: null,
         selectedActeur: null,
+        selectedAnalyse:null,
+        selectedAnalyseIndex:null,
+        
         responseToPost: [],
         isLoaded: '',
         getRow: '',
@@ -52,7 +56,6 @@ export default class DemarrageAnalyse extends React.Component {
         descriptionFnc: '',
         qualification: '',
 
-        acteurTraitant: '',
         correction: '',
         correctionIsSet: '',
 
@@ -64,8 +67,12 @@ export default class DemarrageAnalyse extends React.Component {
 
         libelle: 1,
 
+        idActeur: null,
+        acteurTraitant: null,
+        idActeurIsSet :false,
+        
         echeance: '',
-        echeanceIsSet: '',
+        echeanceIsSet: false,
 
         hasError: '',
         errorMessage: '',
@@ -74,9 +81,10 @@ export default class DemarrageAnalyse extends React.Component {
 
         dataStruc: [],
 
-        selectedAnalyseIndex:'',
-        selectedAnalyse: ''
+        selectedAnalyseIndex:null,
+        selectedAnalyse: null,
 
+        unAutorize:false
       }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -85,6 +93,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.currentDate = this.currentDate.bind(this);
     this.handleModifyAnalyse=this.handleModifyAnalyse.bind(this);
     this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
+    this.newAnalyse=this.newAnalyse.bind(this);
   };
 
 
@@ -92,26 +101,26 @@ export default class DemarrageAnalyse extends React.Component {
 
   createAnalyse = event => {
     event.preventDefault();
-     
     const newItem = {
+      idFnc:this.state.idFnc,
+      processus:this.state.idProcessus,
       actionCorrective: this.state.actionCorrective,
       correction: this.state.correction,
       echeance: this.state.echeance,
       cause: this.state.cause,
+      /// TODO A RECUPERER DANS LA SESSION
       idActeurDelegataire: 'ahoueromeo@gmail.com',
-      idActeur: this.state.acteurTraitant,
-      libelleAnalyse:this.state.libelle
+      idActeur: this.state.idActeur,
+      libelleAt:this.state.libelle
+     
     };
-      
+
     this.setState(prevState => ({
       dataStruc: prevState.dataStruc.concat(newItem),
       libelle:prevState.libelle +1
     }));
     console.log(this.state.dataStruc);
   };
-
-
-
 
 
   currentDate() { //January is 0!
@@ -125,12 +134,8 @@ export default class DemarrageAnalyse extends React.Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log(this.state.descriptionFnc);
-    console.log(this.state.idFnc);
-    console.log(this.state.valRoutage);
-
-
-    const response = await fetch('/validationRoutage/fnc',
+    console.log(this.state.dataStruc);
+      await fetch('/createTraitement/fnc',
       {
         method: 'POST',
         headers:
@@ -138,24 +143,17 @@ export default class DemarrageAnalyse extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "data":
-          {
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-            "idFnc": this.state.idFnc,
-            "statutRoutage": this.state.valRoutage
-          }
+          "data": this.state.dataStruc
         })
       }).then(res => res.json())
       .then(
         (result) => {
           console.log(this.state.selected);
-          data_ = data_.splice(this.state.selected, 1);
           this.setState({
             isLoaded: true,
             responseSubmit: result.data.message,
             nestedModal: true,
           });
-
           this.forceUpdate();
         },
         (error) => {
@@ -167,70 +165,105 @@ export default class DemarrageAnalyse extends React.Component {
             hasError: true
           });
         });
-    //this.toggleNested();
     this.toggle();
   }
-
 
   handleModifyAnalyse = itemId => {
     const updatedItems = this.state.dataStruc.map(item => {
       if (itemId === item.libelleAnalyse) {
-        this.setState({cause: item.cause,correction :item.correction})       
+        this.setState({cause: item.cause,
+                      correction :item.correction,
+                      cause: item.cause, 
+                      correction :item.correction ,
+                      echeance:item.echeance, 
+                      acteurTraitant:null,
+                      idActeur:null,
+                      libelleAnalyse:item.libelleAt,
+                      actionCorrective:item.actionCorrective   
+                    })       
       console.log(item.cause);
       }
       return item;
-    
     });
 
     this.setState({
-      dataStruc: [].concat(updatedItems)
+      dataStruc: [].concat(updatedItems),
+      selectedAnalyseIndex:null,
+      selectedActeur:null
     });
   };
 
-
   handleValidModifyAnalyse =itemId=>{
     const updatedItems = this.state.dataStruc.map(item => {
-      if (itemId === item.libelleAnalyse) {
+      if (itemId === item.libelleAt) {
 
         this.setState({
           cause: item.cause, 
           correction :item.correction ,
           echeance:item.echeance, 
-          idActeur:this.state.acteurTraitant,
-          libelleAnalyse:item.libelleAnalyse,
+          acteurTraitant:null,
+          idActeur:null,
+          libelleAnalyse:item.libelleAt,
           actionCorrective:item.actionCorrective
         })       
       console.log(item.cause);
+        item.idFnc=this.state.idFnc;
+        item.processus=this.state.idProcessus;
         item.actionCorrective= this.state.actionCorrective;
         item.correction= this.state.correction;
         item.echeance= this.state.echeance;
         item.cause= this.state.cause;
+        //TODO RECUPERER LA VALEUR DANS LA SESSION
         item.idActeurDelegataire= 'ahoueromeo@gmail.com';
-        item.idActeur= this.state.acteurTraitant;
+        item.idActeur= this.state.idActeur;
         item.libelleAnalyse=itemId;
       };
     
       return item;
     });
     this.setState(prevState=>({
-      dataStruc:prevState.dataStruc.map(el=>( el.libelleAnalyse !== updatedItems.libelleAnalyse  ? {...el} : updatedItems))   
+      dataStruc:prevState.dataStruc.map(el=>( el.libelleAt !== updatedItems.libelleAt  ? {...el} : updatedItems))   
     }));
   }
+
 
   toggleNested() {
     this.setState({
       nestedModal: !this.state.nestedModal
     });
   }
+
+ newAnalyse(){
+    this.setState({
+      correction: null,
+      correctionIsSet: false,
+      actionCorrective: null,
+      actionCorrectiveIsSet: false,
+      cause: null,
+      causeIsSet: false,
+      idActeur: null,
+      acteurTraitant: null,
+      idActeurIsSet :false,    
+      echeance: null,
+      echeanceIsSet: false
+      })
+
+  }
+
   toggle() {
     this.setState({ valRoutage: null })
     this.setState(prevState => ({
       modal: !prevState.modal,
-      selected: !prevState.selected
+      selected: !prevState.selected,
+      //add this and  init at null others selected*
+      selectedAnalyse:!prevState.selectedAnalyse
     }));
+    this.newAnalyse();
+    this.setState({libelle:1});
+    this.setState({dataStruc:[]})
   }
   async componentDidMount() {
-    const fetchstat = await fetch("http://localhost:3553/api/consult/fnc",
+    const fetchstat = await fetch("/consultBonRoutage/fnc",
       {
         method: 'POST',
         headers:
@@ -240,21 +273,35 @@ export default class DemarrageAnalyse extends React.Component {
         body: JSON.stringify({
           "data":
           {
+            
+            /*TODO A RECUPERER DANS LA SESSION*/
             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
             "idProfil": [
-              { "idProfil": 2 }
+              { "idProfil": 4 }
             ]
           }
         })
       }).then(res => res.json())
       .then(
         (result) => {
+          if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
+          { 
+            alert(result.data.message);
+            window.close();
+
+            this.setState({
+              isLoaded: true,
+              errorMessage: "Accès refuser !",
+              hasError: false,
+              unAutorize:true
+            });
+          }
+          else{
           this.setState({
             isLoaded: true,
             responseToPost: result.data.responses
           });
-          data_ = result.data.responses;
-          console.log(this.state.responseToPost)
+          console.log(this.state.responseToPost)}
         },
         (error) => {
           console.log("124", error.message);
@@ -290,9 +337,9 @@ export default class DemarrageAnalyse extends React.Component {
     ];
 
    
-
-    library.add(faPen, faTrash);
-
+///LIBRARY//////////////////////////////////////////////
+    library.add(faPen,faBan, faTrash,faPlusCircle);
+////////////////////////////////////////////////////////
 
     const ActeurColumns = [
       {
@@ -312,7 +359,7 @@ export default class DemarrageAnalyse extends React.Component {
 
       {
         Header: 'email',
-        accessor: 'id',
+        accessor: 'idActeur',
       },
 
     ]
@@ -321,8 +368,8 @@ export default class DemarrageAnalyse extends React.Component {
 
 
       {
-        Header: 'Numero',
-        accessor: 'libelleAnalyse',
+        Header: 'N° de l\'analyse',
+        accessor: 'libelleAt',
       },
 
       {
@@ -346,36 +393,33 @@ export default class DemarrageAnalyse extends React.Component {
       },
 
       {
-        Header: 'Acteur',
+        Header: 'Email',
         accessor: 'idActeur',
       },
     ]
-
+    //MISE EN FORM DU JSON POUR LES ACTEURS
     const dataActeur = [
       {
         nomPrenom: 'Ahoue romeo',
         fonction: 'Developper web',
         service: 'IT',
-        id: 'ahoueromeo@gmail.com'
+        idActeur: 'ahoueromeo@gmail.com'
       },
       {
         nomPrenom: 'Ahoue Maikol',
         fonction: 'Analyste programmeur',
         service: 'RH',
-        id: 'maikol.ahoue@gmail.com'
+        idActeur: 'maikol.ahoue@gmail.com'
       }
 
     ];
-    /* actionCorrective: this.state.actionCorrective,
-        correction: this.state.correction,
-        echeance:   this.state.echeance,
-        cause:this.state.cause,
-        idActeurDelegataire:'ahoueromeo@gmail.com',
-        idActeur:this.state.acteurTraitant */
 
+    if(this.state.unAutorize)
+    {
+        return(<Authorization/>) 
+    }
 
-
-
+else
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
@@ -411,6 +455,12 @@ export default class DemarrageAnalyse extends React.Component {
                 <TabPanel whenActive={2}>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
+                      <h4>Progression :</h4>
+                      <Progress animated color="danger" value="45" />
+                      <br></br>
+                      <h1 style={{ textAlign: "center" }}>Formulaire d'analyse</h1>
+                      <Col><small>Veuillez remplir le formulaire pour poursuivre</small></Col>
+
                       {/*Correction*/}
                       <Label for="exampleEmail" md={12}>Correction</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
@@ -496,10 +546,16 @@ export default class DemarrageAnalyse extends React.Component {
                     </FormGroup>
                   </Form>
                 </TabPanel>
-                {/*TODO ETAPE 3 AJOUTER UN ACTEUR TRAITANT */}
+                {/*TODO : charger le json acteur ETAPE 3 AJOUTER UN ACTEUR TRAITANT */}
                 <TabPanel whenActive={3}>
                   {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                  <h2 style={{ textAlign: "center" }}>Choix de l'acteur traitant</h2>
+                  <h4>Progression :</h4>
+                      <Progress animated color="danger" value="55" />
+                      <br></br>
+                      <h1 style={{ textAlign: "center" }}>Choix de l'acteur traitant</h1>
+                      <Col><small>Veuillez remplir choisir un acteur traitant en le selectionnant dans le tableau ci-dessous, 
+                        si vous êtes l'acteur vous pouvez selectionner votre nom</small></Col>
+
                   <Form >
                     <FormGroup>
                       <Label for="acteurName" md={12}>Acteur traitant :</Label>
@@ -510,7 +566,8 @@ export default class DemarrageAnalyse extends React.Component {
                   </Form >
                   <br />
                   <br />
-                  <strong>Selectionner un acteur traitant dans la liste ci-dessous :</strong>
+                  <strong>Selectionner un acteur traitant parmis les acteurs ci-dessous :</strong>
+                  <br/>
                   <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
@@ -534,7 +591,10 @@ export default class DemarrageAnalyse extends React.Component {
                                 getRow: rowInfo,
                                 // numeroId: rowInfo.original.numeroId,
                                 //idFnc: rowInfo.original.idFnc,
-                                acteurTraitant: rowInfo.original.nomPrenom
+                                acteurTraitant: rowInfo.original.nomPrenom,
+                                idActeur:rowInfo.original.idActeur,
+                                idActeurIsSet:true
+
                               });
                               console.log(rowInfo.original);
                             }
@@ -555,8 +615,18 @@ export default class DemarrageAnalyse extends React.Component {
                 DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
                 */}
                 <TabPanel whenActive={4}>
-                  <h1 style={{ textAlign: "center" }}>3</h1>
-                  <ReactTableActeur
+                <h4>Progression :</h4>
+                      <Progress animated color="danger" value="90" />
+                      <br></br>
+                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s)</h1>
+                      <Col>
+                        <small>
+                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
+                        La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
+                        de l'Organisation ou DRCJ
+                        </small>
+                      </Col>
+                      <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
@@ -578,9 +648,9 @@ export default class DemarrageAnalyse extends React.Component {
                                 //PAY ATTENTION 
                                 selectedAnalyseIndex: rowInfo.index,
                                 selectedAnalyse: rowInfo.original,
-
                                 getRow: rowInfo,
-                                acteurTraitant: rowInfo.original.nomPrenom
+                                acteurTraitant: rowInfo.original.nomPrenom,
+                                idActeur:rowInfo.original.idActeur,
                               });
                               console.log(rowInfo.original);
                             }
@@ -596,11 +666,15 @@ export default class DemarrageAnalyse extends React.Component {
                     }} />
                   <br></br>
                   <TabPanel whenActive={4}>
-                    <Tab id="10" maxStep={3} step="extends" >
-                      <Button color="white" onClick={e=>{
+                    <Container>
+                    <Row>
+                    <Col md="3">
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
+                      <Button outline color="primary" disabled={(this.state.selectedAnalyseIndex===null  )}  onClick={e=>{
                           e.preventDefault();
-                          this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAnalyse);
-                          console.log(this.state.selectedAnalyse.libelleAnalyse)
+                          this.setState({idActeur:null,idActeurIsSet:null})
+                          this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAt);
+                          console.log(this.state.selectedAnalyse.libelleAt)
                       }}>
                         <FontAwesomeIcon
                           icon="pen"
@@ -609,22 +683,46 @@ export default class DemarrageAnalyse extends React.Component {
                         />{' '}
                       </Button>
                     </Tab>
-                    <Tab id="1" maxStep={3} step="prev" >
-                      <Button color="white">
+                    </Col>
+                    <Col md="3">
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
+                      <Button   disabled={(this.state.selectedAnalyseIndex===null  )} outline color="danger">
                         <FontAwesomeIcon
                           icon="trash"
                           color="red"
                           size="md"
                         />{' '}
                       </Button>
+                    </Tab>                    
+                    </Col>
+                    <Col md="3">
+                    <Tab id="1" maxStep={3} step="new" >
+                      <Button outline color="success" onClick={e=>{
+                          e.preventDefault();
+                          this.newAnalyse();
+                          //console.log(this.state.selectedAnalyse.libelleAt)
+                      }}>
+                        <FontAwesomeIcon
+                          icon="plus-circle"
+                          color="green"
+                          size="md"
+                        />{' '}
+                      </Button>
                     </Tab>
+                    </Col>
+
+                    </Row>
+
+                    </Container>
                   </TabPanel>
 
                 </TabPanel>
-                {/*TODO ETAPE MODIFICATION ANALYSE
+                {/* ETAPE MODIFICATION ANALYSE
                 */}
                 <TabPanel whenActive={10}>
                   {/* MODIFICATION ANALYSE */}
+                  <h4>Progression :</h4>
+                      <Progress animated color="danger" value="45" />
                   <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
@@ -742,7 +840,9 @@ export default class DemarrageAnalyse extends React.Component {
                                 getRow: rowInfo,
                                 // numeroId: rowInfo.original.numeroId,
                                 //idFnc: rowInfo.original.idFnc,
-                                acteurTraitant: rowInfo.original.nomPrenom
+                                acteurTraitant: rowInfo.original.nomPrenom,
+                                idActeurIsSet:true,
+                                idActeur:rowInfo.original.idActeur
                               });
                               console.log(rowInfo.original);
                             }
@@ -763,11 +863,9 @@ export default class DemarrageAnalyse extends React.Component {
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="1" maxStep={3} step="retourRecap">
-                        <Button  color="danger" onClick={e=>{
+                        <Button disabled={!(this.state.idActeurIsSet && this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)}color="danger" onClick={e=>{
                           e.preventDefault();
-                          this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAnalyse);
-
-
+                          this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
                         }}>Valider la modification</Button>
                     </Tab>
                   </Row>
@@ -778,22 +876,26 @@ export default class DemarrageAnalyse extends React.Component {
                     les bouttons "suivant" et "precedent" 
                     et de le  masquer au besoin 
                 */}
+                {/*MODIFICATION RECAPITULATIF FNC BUTTON*/}
                 <Row noGutters="true" >
                   <TabPanel whenActive={1}>
                     <Col md="10" ></Col>
                     <Tab id="1" maxStep={3} step="next">
-                      <Button>{'Suivant >>'}</Button>
+                      <Button >{'Suivant >>'}</Button>
                     </Tab>
                   </TabPanel>
+                  {/*FORMULAIRE BUTTON*/}
+
                   <TabPanel whenActive={2}>
                     <Tab id="2" maxStep={3} step="prev" >
                       <Button>{'<< Précedent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="2" maxStep={3} step="next">
-                      <Button>{'Suivant >> '}&nbsp;</Button>
+                      <Button disabled={!(this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)}>{'Suivant >>'}&nbsp;</Button>
                     </Tab>
                   </TabPanel>
+                  {/*CREER ANALYSE BUTTON*/}
                   <TabPanel whenActive={3}>
                     <Tab id="1" maxStep={3} step="prev" >
                       <br />
@@ -801,40 +903,15 @@ export default class DemarrageAnalyse extends React.Component {
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="3" maxStep={4} step="next">
-                      <br />
-                      <Button type="button" onClick={this.createAnalyse} color="danger">{'Creer l\'analyse'}</Button>
+                      <br/>
+                      <Button type="button" disabled={!(this.state.idActeurIsSet&&this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)} onClick={this.createAnalyse}  color="danger">{'Creer l\'analyse'}</Button>
                     </Tab>
                   </TabPanel>
-                  <TabPanel whenActive={4}>
-
-                    <Tab id="1" maxStep={3} step="prev" >
-                      <br />
-                      <Button>{'<< Précedent'}</Button>
-                    </Tab>
-                    <Col md="8" ></Col>
-                    <Tab id="4" maxStep={4} step="next">
-                      <br />
-                      <Button>{'Suivant >> '}&nbsp;</Button>
-                    </Tab>
-                  </TabPanel>
-                  {/** */}
-                  {/* <TabPanel whenActive={10}>
-
-                    <Tab id="1" maxStep={3} step="prev" >
-                      <br />
-                      <Button>{'<< Précedent'}</Button>
-                    </Tab>
-                    <Col md="8" ></Col>
-                    <Tab id="4" maxStep={4} step="next">
-                      <br />
-                      <Button>{'Suivant >> '}&nbsp;</Button>
-                    </Tab>
-                  </TabPanel> */}
                 </Row>
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.valRoutage !== null)}>
+              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.dataStruc.length !== 0)}>
                 Soumettre
             </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
@@ -892,7 +969,7 @@ export default class DemarrageAnalyse extends React.Component {
               }
             }} />
         </div>
-      </React.Fragment>)
+          </React.Fragment>)
   }
 
 

@@ -1,11 +1,13 @@
 
 import React from 'react';
-import { Navbar, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownItem, DropdownToggle, DropdownMenu ,Col,Row } from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownItem, DropdownToggle, DropdownMenu ,
+  //Col,Row 
+} from 'reactstrap';
 import {
-  Route,
-  BrowserRouter as Router,
+  //Route,
+ // BrowserRouter as Router,
   NavLink,
-  Switch, Redirect
+ // Switch, Redirect
 } from 'react-router-dom';
 import '../css/main.css';
 class NavbarMain extends React.Component {

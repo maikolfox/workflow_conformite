@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Line } from 'react-chartjs-2';
+//import { Line } from 'react-chartjs-2';
 import { Bar } from 'react-chartjs-2';
 
 import { FormGroup, Input, Form, Label, Col, FormText, Button } from "reactstrap";
