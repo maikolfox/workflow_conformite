@@ -51,10 +51,13 @@ class ModalRensFNC extends React.Component {
           },
           body: JSON.stringify({
               "data":
-              {
+              {   //TODO RECUPERER LA VARIABLE DE SESSION DU STAFF
                 "descriptionFNC": this.state.descritpionProc,
                 "idProcessus":this.state.processus,
-                "idInitiateur": "maikol.ahoue@bridgebankgroup.com"
+                "idsource": this.state.idSource,
+                "idInitiateur": "maikol.ahoue@bridgebankgroup.com",
+                "qualification":this.state.qualification,
+                "idFamille":this.state.idFamille
               }
             }),
         });
@@ -169,7 +172,7 @@ class ModalRensFNC extends React.Component {
                 </Col>
                 {/*FAMILLE */}
                 <Row>&nbsp;</Row>
-                <Label for="selectFamille" md={4}>Selectionner le processus :</Label>
+                <Label for="selectFamille" md={4}>Selectionner la famille :</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                   <Input valid={this.state.familleIsSet} invalid={!this.state.familleIsSet}
                     type="select"
@@ -188,11 +191,11 @@ class ModalRensFNC extends React.Component {
                     <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
                     <option value="Processus 2">Processus 2</option>
                   </Input>
-                  <FormText hidden={this.state.familleIsSet}>Selectionner processus</FormText>
+                  <FormText hidden={this.state.familleIsSet}>Selectionner la famille</FormText>
                 </Col>
                 <Row>&nbsp;</Row>
                 {/**DESCRIPTION DE LA NON CONFORMITE */}
-                <Label for="exampleEmail" md={12}>Description de la non conformité entre 100 et 600 caractères ( {this.state.descriptionFnc.length}/600) :  </Label>
+                <Label for="exampleEmail" md={12}>Description de la non conformité entre 99 et 600 caractères ( {this.state.descriptionFnc.length}/600) :  </Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                   <Input valid={this.state.descriptionFncIsSet} invalid={!this.state.descriptionFncIsSet}
                     type="textarea"
@@ -203,12 +206,12 @@ class ModalRensFNC extends React.Component {
                     value={this.state.descriptionFnc}
                     onChange={e => {
                       this.setState({ descriptionFnc: e.target.value })
-                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>100) {
+                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>=100) {
                         this.setState({ descriptionFncIsSet: true })
                       }
                       else { this.setState({ descriptionFncIsSet: false }) }}}>
                   </Input>
-                  <FormText hidden={this.state.descriptionFncIsSet}>Décrire la non conformité (500 caratères minimun) </FormText>
+                  <FormText hidden={this.state.descriptionFncIsSet}>Décrire la non conformité (100 caratères minimun) </FormText>
                 </Col>
               </FormGroup>
             </Form>

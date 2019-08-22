@@ -5,6 +5,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
+import Authorization from '../../Authorization_401';
+
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import {
   Button,
@@ -23,7 +25,7 @@ import {
 
 
 
-export default class TableauCorrection extends React.Component {
+export default class TableauCritere extends React.Component {
 
   constructor(props) {
     super(props);
@@ -101,15 +103,13 @@ export default class TableauCorrection extends React.Component {
   }
 
   toggle() {
-    
     this.setState(prevState => ({
       modal: !prevState.modal,
-      selected:!prevState.selected
     }));
   }
 
 componentDidMount() {
-  const fetchstat=  fetch("/consultationMauvaisRoutage/fnc")
+   fetch("/consultationFncInitier/fnc")
       .then(res => res.json())
       .then(
         (result) => {
@@ -118,7 +118,6 @@ componentDidMount() {
             responseToPost: result.data
           });
         },
-       
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
         // exceptions from actual bugs in components.
@@ -131,10 +130,10 @@ componentDidMount() {
             hasError:true
           });
         })
-
-      
   }
   
+
+
   render()  {
     
     const columns = [
@@ -156,8 +155,12 @@ componentDidMount() {
       Header:'Processus',
       accessor: 'idProcessus',
     }
-  ] 
+  ]
+
+  
+  
     return(
+     
     <React.Fragment>
 
     <div>
@@ -306,7 +309,7 @@ componentDidMount() {
               console.log(rowInfo.original);
             }},
             style: {
-              background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
+              background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
               color: rowInfo.index === this.state.selected ? 'white' : 'black'
             }}
         }else{

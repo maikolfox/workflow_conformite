@@ -148,6 +148,11 @@ export default class DemarrageAnalyse extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
+          this.setState(prevState => ({
+            responseToPost: prevState.responseToPost.filter(item => {
+              return item.idFnc !== this.state.idFnc;
+            })
+          }))
           console.log(this.state.selected);
           this.setState({
             isLoaded: true,
@@ -277,7 +282,7 @@ export default class DemarrageAnalyse extends React.Component {
             /*TODO A RECUPERER DANS LA SESSION*/
             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
             "idProfil": [
-              { "idProfil": 4 }
+              { "idProfil": 2 }
             ]
           }
         })
@@ -409,7 +414,7 @@ export default class DemarrageAnalyse extends React.Component {
         nomPrenom: 'Ahoue Maikol',
         fonction: 'Analyste programmeur',
         service: 'RH',
-        idActeur: 'maikol.ahoue@gmail.com'
+        idActeur: 'maikol.ahoue@bridgebankgroup.com'
       }
 
     ];
@@ -442,7 +447,7 @@ else
                   {/**QUALIFICATION FNC*/}
                   <MediaAsset libelle="Qualification" content={this.state.qualification} />
                   {/**DESCRIPTION FNC*/}
-                  <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
+                  <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
                   {/**SOURCE*/}
                   <MediaAsset libelle="Source" content={this.state.source} />
                   {/**PROCESSUS*/}

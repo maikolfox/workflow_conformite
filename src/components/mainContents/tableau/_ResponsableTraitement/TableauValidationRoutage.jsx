@@ -225,7 +225,7 @@ else
               {/**QUALIFICATION FNC*/}
               <MediaAsset libelle="Qualification" content={this.state.qualification} />
               {/**DESCRIPTION FNC*/}
-              <MediaAsset libelle="Description de la non conformite" content={this.state.descritpionFnc} />
+              <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
               {/**SOURCE*/}
               <MediaAsset libelle="Source" content={this.state.source} />
               {/**PROCESSUS*/}
