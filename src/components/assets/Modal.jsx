@@ -186,10 +186,19 @@ class ModalRensFNC extends React.Component {
                       }
                       else { this.setState({ familleIsSet: false }) }
                     }
-                    }>
+                    }>{/**TODO FAMILLE */}
                     <option value="" defaultValue ></option>
-                    <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
-                    <option value="Processus 2">Processus 2</option>
+                    <option value="S1">Politique Qualité</option>
+                    <option value="S2">Revue de Direction</option>
+                    <option value="S3">Objectifs Stratégiques</option>
+                    <option value="S4">Risques processus</option>
+                    <option value="S5">Réclamation client</option>
+                    <option value="S6">Actions correctives/ correctrices</option>
+                    <option value="S7">Efficacité des actions</option>
+                    <option value="S8">Tableaux de bord</option>
+                    <option value="S9">Planification commerciale</option>
+                    <option value="S14">Objectifs</option>
+
                   </Input>
                   <FormText hidden={this.state.familleIsSet}>Selectionner la famille</FormText>
                 </Col>

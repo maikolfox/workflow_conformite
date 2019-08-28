@@ -87,6 +87,13 @@ export default class TableauCritere extends React.Component {
         selectedAnalyseIndex:null,
         selectedAnalyse: null,
 
+        critere:null,
+        critereIsSet:false,
+
+        selectedAnaCreIndex:null,
+        selectedAnaCre:null,
+
+        id:null,
         unAutorize:false
       }
     this.toggle = this.toggle.bind(this);
@@ -98,6 +105,7 @@ export default class TableauCritere extends React.Component {
     this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
     this.newAnalyse=this.newAnalyse.bind(this);
     this.getAnalyse=this.getAnalyse.bind(this);
+    this.switchDateFormat=this.switchDateFormat.bind(this);
 
   };
 
@@ -140,7 +148,7 @@ export default class TableauCritere extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state.dataStruc);
-      await fetch('/createTraitement/fnc',
+      await fetch('/createCriter/fnc',
       {
         method: 'POST',
         headers:
@@ -148,7 +156,11 @@ export default class TableauCritere extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "data": this.state.dataStruc
+          "data": {
+            
+              "idAt":this.state.selectedAnaCre.id ,
+              "critere": this.state.critere
+          }
         })
       }).then(res => res.json())
       .then(
@@ -158,7 +170,6 @@ export default class TableauCritere extends React.Component {
               return item.idFnc !== this.state.idFnc;
             })
           }))
-          console.log(this.state.selected);
           this.setState({
             isLoaded: true,
             responseSubmit: result.data.message,
@@ -175,7 +186,6 @@ export default class TableauCritere extends React.Component {
             hasError: true
           });
         });
-    this.toggle();
 
   }
 
@@ -218,8 +228,6 @@ export default class TableauCritere extends React.Component {
           actionCorrective:item.actionCorrective
         })       
       console.log(item.cause);
-        item.idFnc=this.state.idFnc;
-        item.processus=this.state.idProcessus;
         item.actionCorrective= this.state.actionCorrective;
         item.correction= this.state.correction;
         item.echeance= this.state.echeance;
@@ -235,6 +243,56 @@ export default class TableauCritere extends React.Component {
     this.setState(prevState=>({
       dataStruc:prevState.dataStruc.map(el=>( el.libelleAt !== updatedItems.libelleAt  ? {...el} : updatedItems))   
     }));
+    fetch('/updateTraitement/fnc',
+    {
+      method: 'POST',
+      headers:
+      {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "data": 
+        {	"id":this.state.selectedAnaCre.id,   
+          "idActeur": this.state.idActeur,
+          "actionCorrective":this.state.actionCorrective,
+          "correction":this.state.correction,
+          "cause":this.state.cause,
+          "echeances":this.state.echeance,
+          //TODO REPLACE LATER
+          "idActeurDelegataire":"maikol.ahoue@bridgebankgroup.com"
+        }
+      })
+    }).then(res => res.json())
+    .then(
+      (result) => {
+        this.setState(prevState => ({
+          responseToPost: prevState.responseToPost.filter(item => {
+            return item.idFnc !== this.state.idFnc;
+          })
+        }))
+        console.log(this.state.selected);
+        this.setState({
+          isLoaded: true,
+          responseSubmit: result.data.message,
+          nestedModal: true,
+        });
+        this.forceUpdate();
+      },
+      (error) => {
+        console.log("124", error.message);
+        alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+        this.setState({
+          isLoaded: true,
+          errorMessage: error.message,
+          hasError: true
+        });
+      });
+  //this.toggle();
+
+
+  
+  
+  
   }
 
 
@@ -303,10 +361,27 @@ export default class TableauCritere extends React.Component {
       acteurTraitant: null,
       idActeurIsSet :false,    
       echeance: null,
-      echeanceIsSet: false
-      })
+      echeanceIsSet: false,
+      critere:null  ,
+      critereIsSet:false
+    })
 
   }
+
+  switchDateFormat(dat){
+      var d = new Date(dat);
+      var month = d.getMonth() + 1;
+      console.log(month);
+      var year = d.getFullYear();
+      var date = d.getDate();
+      month = (month < 10) ? "0" + month : month;
+      date = (date < 10) ? "0" + date : date;
+      console.log("date ech  "+date  +"/"+ month + "/" + year);
+      return  date  +"/"+ month + "/" + year;
+  
+  }
+
+  
 
   toggle() {
     this.setState({ valRoutage: null })
@@ -318,7 +393,9 @@ export default class TableauCritere extends React.Component {
     }));
     this.newAnalyse();
     this.setState({libelle:1});
-    this.setState({dataStruc:[]})
+    this.setState({dataStruc:[]});
+    this.setState({selectedAnaCreIndex:null})
+    
   }
   async componentDidMount() {
     const fetchstat = await fetch("/consultationFncInitier/fnc")
@@ -412,12 +489,12 @@ export default class TableauCritere extends React.Component {
       accessor: 'libelleAt',
     },
     {
-      Header: 'Email Acteur traitant',
+      Header: 'Email de l\'Acteur traitant',
       accessor: 'idActeur',
     },
 
     {
-      Header: 'Email responsable traitement',
+      Header: 'Email du Responsable de traitement',
       accessor: 'idActeurDelegataire',
     },
     {
@@ -502,12 +579,20 @@ export default class TableauCritere extends React.Component {
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
           >
-            <ModalHeader toggle={this.toggle}>Consultation analyse</ModalHeader>
+            <ModalHeader toggle={this.toggle}>Consultation des analyses / Creation de critères </ModalHeader>
             <ModalBody>
               <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
                 <TabPanel whenActive={1}>
-                <ReactTableAnalyse
+                      <br></br>
+                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s) pour la fiche {this.state.numeroId}</h1>
+                      <Col>
+                        <small>
+                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
+                        La soumission vous conduit à l'étape de création de critère 
+                        </small>
+                      </Col>
+                    <ReactTableActeur
                     filterable={true}
                     style={{ cursor: 'pointer' }}
                     loading={!this.state.isLoadedAna}
@@ -515,7 +600,7 @@ export default class TableauCritere extends React.Component {
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
                     data={this.state.responseToAnalyseByID}
                     columns={analyseRetrieveColum}
-                    previousText={"Précedent"}
+                    previousText={"Précédent"}
                     nextText={"Suivant"}
                     rowsText={"Ligne(s)"}
                     ofText={"sur "}
@@ -528,235 +613,22 @@ export default class TableauCritere extends React.Component {
                               e.preventDefault();
                               this.setState({
                                 //PAY ATTENTION 
-                                selectedAnalyseIndex: rowInfo.index,
-                                selectedAnalyse: rowInfo.original,
+                                selectedAnaCreIndex: rowInfo.index,
+                                selectedAnaCre: rowInfo.original,
                                 getRow: rowInfo,
                                 acteurTraitant: rowInfo.original.nomPrenom,
                                 idActeur:rowInfo.original.idActeur,
+                                correction:rowInfo.original.correction,
+                                actionCorrective:rowInfo.original.actionCorrective,
+                                echeance:rowInfo.original.echeances,
+                                cause:rowInfo.original.cause
                               });
-                              console.log(rowInfo.original);
+                              console.log(rowInfo.original.id);
                             }
                           },
                           style: {
-                            background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedAnalyseIndex ? 'white' : 'black'
-                          }
-                        }
-                      } else {
-                        return {}
-                      }
-                    }} />
-                    <br/>
-                </TabPanel>
-
-                {/* ETAPE 2 FORMULAIRE ANALYSE */}
-                <TabPanel whenActive={2}>
-                  <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                      <h4>Progression :</h4>
-                      <Progress animated color="danger" value="45" />
-                      <br></br>
-                      <h1 style={{ textAlign: "center" }}>Formulaire d'analyse</h1>
-                      <Col><small>Veuillez remplir le formulaire pour poursuivre</small></Col>
-
-                      {/*Correction*/}
-                      <Label for="exampleEmail" md={12}>Correction</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.correction}
-                          onChange={e => {
-                            this.setState({ correction: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ correctionIsSet: true })
-                            }
-                            else { this.setState({ correctionIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Cause*/}
-                      <Label for="exampleEmail" md={12}>Cause</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.cause}
-                          onChange={e => {
-                            this.setState({ cause: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ causeIsSet: true })
-                            }
-                            else { this.setState({ causeIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Actions correctives*/}
-                      <Label for="exampleEmail" md={12}>Actions correctives</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.actionCorrective}
-                          onChange={e => {
-                            this.setState({ actionCorrective: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ actionCorrectiveIsSet: true })
-                            }
-                            else { this.setState({ actionCorrectiveIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Echéances*/}
-                      <Label for="exampleEmail" md={12}>Echéances</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
-                          type="date"
-                          id="selectAgence"
-                          min={this.currentDate()}
-                          name="selectbasic"
-                          value={this.state.echeance}
-                          onChange={e => {
-                            {
-                              e.preventDefault();
-                              {
-                                this.setState({ echeance: e.target.value })
-                                if (e.target.value !== null && e.target.value !== "") {
-                                  this.setState({ echeanceIsSet: true })
-                                }
-                                else { this.setState({ echeanceIsSet: false }) }
-                              }
-                            }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheances</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                    </FormGroup>
-                  </Form>
-                </TabPanel>
-                {/*TODO : charger le json acteur ETAPE 3 AJOUTER UN ACTEUR TRAITANT */}
-                <TabPanel whenActive={3}>
-                  {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                  <h4>Progression :</h4>
-                      <Progress animated color="danger" value="55" />
-                      <br></br>
-                      <h1 style={{ textAlign: "center" }}>Choix de l'acteur traitant</h1>
-                      <Col><small>Veuillez remplir choisir un acteur traitant en le selectionnant dans le tableau ci-dessous, 
-                        si vous êtes l'acteur vous pouvez selectionner votre nom</small></Col>
-
-                  <Form >
-                    <FormGroup>
-                      <Label for="acteurName" md={12}>Acteur traitant :</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input>
-                      </Col>
-                    </FormGroup>
-                  </Form >
-                  <br />
-                  <br />
-                  <strong>Selectionner un acteur traitant parmis les acteurs ci-dessous :</strong>
-                  <br/>
-                  <ReactTableActeur
-                    filterable={true}
-                    loading={!this.state.isLoaded}
-                    minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={dataActeur}
-                    columns={ActeurColumns}
-                    previousText={"Précedent"}
-                    nextText={"Suivant"}
-                    rowsText={"Ligne(s)"}
-                    ofText={"sur "}
-                    loadingText="Chargement en cours..."
-                    getTrProps={(state, rowInfo) => {
-                      if (rowInfo && rowInfo.row) {
-                        return {
-                          onClick: (e) => {
-                            {
-                              e.preventDefault();
-                              this.setState({
-                                selectedActeur: rowInfo.index,
-                                getRow: rowInfo,
-                                // numeroId: rowInfo.original.numeroId,
-                                //idFnc: rowInfo.original.idFnc,
-                                acteurTraitant: rowInfo.original.nomPrenom,
-                                idActeur:rowInfo.original.idActeur,
-                                idActeurIsSet:true
-
-                              });
-                              console.log(rowInfo.original);
-                              
-                            }
-                          },
-                          style: {
-                            background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedActeur ? 'white' : 'black'
-                          }
-                        }
-                      } else {
-                        return {}
-                      }
-                    }} />
-                </TabPanel>
-
-
-                {/*TODO ETAPE 4 RECAPITULATIF ANALYSE
-                DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
-                */}
-                <TabPanel whenActive={4}>
-                <h4>Progression :</h4>
-                      <Progress animated color="danger" value="90" />
-                      <br></br>
-                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s)</h1>
-                      <Col>
-                        <small>
-                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
-                        La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
-                        de l'Organisation ou DRCJ
-                        </small>
-                      </Col>
-                    <ReactTableActeur
-                    filterable={true}
-                    loading={!this.state.isLoaded}
-                    minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={this.state.dataStruc}
-                    columns={analyseColum}
-                    previousText={"Précedent"}
-                    nextText={"Suivant"}
-                    rowsText={"Ligne(s)"}
-                    ofText={"sur "}
-                    loadingText="Chargement en cours..."
-                    getTrProps={(state, rowInfo) => {
-                      if (rowInfo && rowInfo.row) {
-                        return {
-                          onClick: (e) => {
-                            {
-                              e.preventDefault();
-                              this.setState({
-                                //PAY ATTENTION 
-                                selectedAnalyseIndex: rowInfo.index,
-                                selectedAnalyse: rowInfo.original,
-                                getRow: rowInfo,
-                                acteurTraitant: rowInfo.original.nomPrenom,
-                                idActeur:rowInfo.original.idActeur,
-                              });
-                              console.log(rowInfo.original);
-                            }
-                          },
-                          style: {
-                            background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedAnalyseIndex ? 'white' : 'black'
+                            background: rowInfo.index === this.state.selectedAnaCreIndex ? '#cd511f' : 'white',
+                            color: rowInfo.index === this.state.selectedAnaCreIndex ? 'white' : 'black'
                           }
                         }
                       } else {
@@ -764,16 +636,19 @@ export default class TableauCritere extends React.Component {
                       }
                     }} />
                   <br></br>
-                  <TabPanel whenActive={4}>
+                  {/**BUTTON MODIFIER ET SUPPRIMER */}
+                  <TabPanel whenActive={1}>
                     <Container>
                     <Row>
                     <Col md="3">
-                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
-                      <Button outline color="primary" disabled={(this.state.selectedAnalyseIndex===null  )}  onClick={e=>{
+                    {/**BUTTON MODIFIER */}
+
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : "extends" }>
+                      <Button outline color="primary" disabled={(this.state.selectedAnaCreIndex===null  )}  onClick={e=>{
                           e.preventDefault();
                           this.setState({idActeur:null,idActeurIsSet:null})
-                          this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAt);
-                          console.log(this.state.selectedAnalyse.libelleAt)
+                          this.handleModifyAnalyse(this.state.selectedAnaCreIndex.libelleAt);
+                          console.log(this.state.selectedAnaCreIndex.libelleAt)
                       }}>
                         <FontAwesomeIcon
                           icon="pen"
@@ -784,44 +659,26 @@ export default class TableauCritere extends React.Component {
                     </Tab>
                     </Col>
                     <Col md="3">
-                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
-                      <Button   disabled={(this.state.selectedAnalyseIndex===null  )} outline color="danger">
+                    {/**BUTTON SUPPRIMER  */}
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : "extends" }>
+                      <Button   disabled={(this.state.selectedAnaCreIndex===null  )} outline color="danger">
                         <FontAwesomeIcon
                           icon="trash"
                           color="red"
                           size="md"
                         />{' '}
                       </Button>
-                    </Tab>                    
-                    </Col>
-                    <Col md="3">
-                    <Tab id="1" maxStep={3} step="new" >
-                      <Button outline color="success" onClick={e=>{
-                          e.preventDefault();
-                          this.newAnalyse();
-                          //console.log(this.state.selectedAnalyse.libelleAt)
-                      }}>
-                        <FontAwesomeIcon
-                          icon="plus-circle"
-                          color="green"
-                          size="md"
-                        />{' '}
-                      </Button>
                     </Tab>
+
                     </Col>
-
                     </Row>
-
                     </Container>
                   </TabPanel>
-
                 </TabPanel>
-                {/* ETAPE MODIFICATION ANALYSE
-                */}
+
+                {/* ETAPE MODIFICATION ANALYSE*/}
                 <TabPanel whenActive={10}>
                   {/* MODIFICATION ANALYSE */}
-                  <h4>Progression :</h4>
-                      <Progress animated color="danger" value="45" />
                   <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
@@ -923,7 +780,7 @@ export default class TableauCritere extends React.Component {
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
                     data={dataActeur}
                     columns={ActeurColumns}
-                    previousText={"Précedent"}
+                    previousText={"Précédent"}
                     nextText={"Suivant"}
                     rowsText={"Ligne(s)"}
                     ofText={"sur "}
@@ -957,7 +814,7 @@ export default class TableauCritere extends React.Component {
                     }} />
                   <br></br>
                   <Row>
-                    <Tab id="1" maxStep={3} step="retourRecap">
+                    <Tab id="1" maxStep={3} step={1}>
                        <Button>Annuler</Button>
                     </Tab>
                     <Col md="8" ></Col>
@@ -969,36 +826,66 @@ export default class TableauCritere extends React.Component {
                     </Tab>
                   </Row>
                 </TabPanel>
-
+                
+                <TabPanel whenActive={2}>
+                  {/* CREATION CRITERE D'ANALYSE ANALYSE */}
+                  <h1 style={{ textAlign: "center" }}>Création du critère</h1>
+                  <Form onSubmit={this.handleSubmit}>
+                    <FormGroup>
+                      {/*Critère*/}
+                      <Label for="exampleEmail" md={12}>Critère</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.critereIsSet} invalid={!this.state.critereIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.critere}
+                          onChange={e => {
+                            this.setState({ critere: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ critereIsSet: true })
+                            }
+                            else { this.setState({ critereIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.critereIsSet}>Renseigner le critère</FormText>
+                      </Col>                      
+                      <Row>&nbsp;</Row>
+                    </FormGroup>
+                  </Form >
+                  <br></br>
+                </TabPanel>
 
                 {/* Cette section permet de positionner 
                     les bouttons "suivant" et "precedent" 
                     et de le  masquer au besoin 
                 */}
                 {/*MODIFICATION RECAPITULATIF FNC BUTTON*/}
+                
                 <Row noGutters="true" >
                   <TabPanel whenActive={1}>
                     <Col md="10" ></Col>
                     <Tab id="1" maxStep={3} step="next">
-                      <Button >{'Suivant >>'}</Button>
+                      <Button disabled={!(this.state.selectedAnaCre!==null)}>{'Suivant >>'}&nbsp;</Button>
                     </Tab>
                   </TabPanel>
                   {/*FORMULAIRE BUTTON*/}
 
                   <TabPanel whenActive={2}>
                     <Tab id="2" maxStep={3} step="prev" >
-                      <Button>{'<< Précedent'}</Button>
+                      <Button>{'<< Précédent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
-                    <Tab id="2" maxStep={3} step="next">
+                    {/* <Tab id="2" maxStep={3} step="next">
                       <Button disabled={!(this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)}>{'Suivant >>'}&nbsp;</Button>
-                    </Tab>
+                    </Tab> */}
                   </TabPanel>
+                  
                   {/*CREER ANALYSE BUTTON*/}
                   <TabPanel whenActive={3}>
                     <Tab id="1" maxStep={3} step="prev" >
                       <br />
-                      <Button>{'<< Précedent'}</Button>
+                      <Button>{'<< Précédent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="3" maxStep={4} step="next">
@@ -1010,7 +897,7 @@ export default class TableauCritere extends React.Component {
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.dataStruc.length !== 0)}>
+              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.critereIsSet)}>
                 Soumettre
             </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
@@ -1035,7 +922,7 @@ export default class TableauCritere extends React.Component {
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseToPost}
             columns={columns}
-            previousText={"Précedent"}
+            previousText={"Précédent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}
             ofText={"sur "}

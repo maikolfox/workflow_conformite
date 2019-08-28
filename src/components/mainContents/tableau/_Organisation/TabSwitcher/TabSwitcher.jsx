@@ -45,6 +45,8 @@ class TabSwitcher extends Component {
       })
      
    }
+
+
   
   if(this.state.activeTabId===10)
   {
@@ -80,6 +82,14 @@ class TabSwitcher extends Component {
      })
   }
  }
+
+  if(typeof step ==="number" )
+  {
+  console.log("going to step : "+step)
+  this.setState({
+      activeTabId: step
+   })
+  }
   
   
   };

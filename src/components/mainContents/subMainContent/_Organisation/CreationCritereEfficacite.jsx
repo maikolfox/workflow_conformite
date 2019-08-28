@@ -12,7 +12,7 @@ var pushLeft={
 }
 
 
-class ConsultFncRoutageErrone extends Component {
+class CreationCritereEfficacite extends Component {
 
   render() {
     return (
@@ -20,11 +20,10 @@ class ConsultFncRoutageErrone extends Component {
         <CardHeader>Creation de critère d'efficacité</CardHeader>
         <CardBody>
                     <Tableau></Tableau>
-                    
         </CardBody>
       </Card>
 
     )
   }
 }
-export default ConsultFncRoutageErrone
+export default CreationCritereEfficacite
