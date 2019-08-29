@@ -35,9 +35,9 @@ const ResponsableTraitement = ({ match }) => (
                     <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/demarrer_analyse`}>Demarrer une analyse</NavLink>
                     </ListGroupItem>
-                    <ListGroupItem action>
+                    {/* <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/reception_action_affectees`}>Reception des actions affectées</NavLink>
-                    </ListGroupItem>
+                    </ListGroupItem> */}
                     <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/cloture_taches`}>Cloture des taches</NavLink>
                     </ListGroupItem>
@@ -54,7 +54,7 @@ const ResponsableTraitement = ({ match }) => (
                 <Switch>
                     <Route path="/ResponsableTraitement/validation_routage" component={ValidationRoutage} />
                     <Route path="/ResponsableTraitement/demarrer_analyse" component={DemarrerAnalyse} />
-                    <Route path="/ResponsableTraitement/reception_action_affectees" component={ReceptionAction} />
+                    {/* <Route path="/ResponsableTraitement/reception_action_affectees" component={ReceptionAction} /> */}
                 </Switch>
             </Col>
         </Row>

@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from './components/mainContents/Home';
-import ActeurTraitant from './components/mainContents/ActeurTraitant';
+import ActeurTraitant from './components/mainContents/_ActeurTraitant/ActeurTraitant';
 import ResponsableTraitement from './components/mainContents/_ResponsableTraitement/ResponsableTraitement';
 import Organisation from './components/mainContents/_Organisation/Organisation';
 
@@ -30,7 +30,7 @@ import {
 
  ///PRENDRE EN COMPTE LA REDIRECTION SELON LES AUTORISATIONS
 const routing = (
-    <Router>
+    <Router >
        <App />
           <Switch>
             <Route exact path="/" component={Home} />

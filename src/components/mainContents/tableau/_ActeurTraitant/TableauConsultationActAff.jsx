@@ -7,9 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
-import ReactTableActeur from 'react-table';
-import ReactTableAnalyse from 'react-table';
-
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
@@ -34,7 +31,7 @@ import {
 } from "reactstrap";
 
 
-export default class TableauCritere extends React.Component {
+export default class ConsultationActAff extends React.Component {
 
   constructor(props) {
     super(props);
@@ -50,7 +47,6 @@ export default class TableauCritere extends React.Component {
         selectedAnalyseIndex:null,
         
         responseToPost: [],
-        responseToAnalyseByID:[],
         isLoaded: '',
         getRow: '',
         idSource: '',
@@ -76,25 +72,22 @@ export default class TableauCritere extends React.Component {
         
         echeance: '',
         echeanceIsSet: false,
-        isLoadedAna:false,
+
         hasError: '',
         errorMessage: '',
         valRoutage: null,
         responseSubmit: '',
 
         dataStruc: [],
-        dsFncNbrAna :[],
+
         selectedAnalyseIndex:null,
         selectedAnalyse: null,
 
-        critere:null,
-        critereIsSet:false,
+        unAutorize:false,
 
-        selectedAnaCreIndex:null,
-        selectedAnaCre:null,
 
-        id:null,
-        unAutorize:false
+
+        analyseFnc:[],
       }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -104,13 +97,30 @@ export default class TableauCritere extends React.Component {
     this.handleModifyAnalyse=this.handleModifyAnalyse.bind(this);
     this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
     this.newAnalyse=this.newAnalyse.bind(this);
-    this.getAnalyse=this.getAnalyse.bind(this);
-    this.switchDateFormat=this.switchDateFormat.bind(this);
-
+    ///
+    this.retrieveAnaByFnc=this.retrieveAnaByFnc.bind(this);
   };
 
 
-
+  retrieveAnaByFnc=idfnc=>
+  {
+    var objectToArray=[];
+    this.state.responseToPost.map(el=>{
+        if(el.idFnc===idfnc){
+            
+            var object={
+                libelleAt:el.libelleAt,
+                cause:el.cause,
+                actionCorrective:el.actionCorrective,
+                correction:el.correction,
+                echeance:el.echeances
+            }
+            objectToArray.push(object);
+        }   
+    })
+    this.setState({analyseFnc:objectToArray});
+  
+}
 
   createAnalyse = event => {
     event.preventDefault();
@@ -148,7 +158,7 @@ export default class TableauCritere extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state.dataStruc);
-      await fetch('/createCriter/fnc',
+      await fetch('/createTraitement/fnc',
       {
         method: 'POST',
         headers:
@@ -156,28 +166,17 @@ export default class TableauCritere extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "data": {
-            
-              "idAt":this.state.selectedAnaCre.id ,
-              "critere": this.state.critere
-          }
+          "data": this.state.dataStruc
         })
       }).then(res => res.json())
       .then(
         (result) => {
-          
-          
-          
-
-          
           this.setState(prevState => ({
             responseToPost: prevState.responseToPost.filter(item => {
               return item.idFnc !== this.state.idFnc;
-            
-            
             })
-          
           }))
+          console.log(this.state.selected);
           this.setState({
             isLoaded: true,
             responseSubmit: result.data.message,
@@ -194,7 +193,7 @@ export default class TableauCritere extends React.Component {
             hasError: true
           });
         });
-
+    this.toggle();
   }
 
   handleModifyAnalyse = itemId => {
@@ -236,6 +235,8 @@ export default class TableauCritere extends React.Component {
           actionCorrective:item.actionCorrective
         })       
       console.log(item.cause);
+        item.idFnc=this.state.idFnc;
+        item.processus=this.state.idProcessus;
         item.actionCorrective= this.state.actionCorrective;
         item.correction= this.state.correction;
         item.echeance= this.state.echeance;
@@ -251,56 +252,6 @@ export default class TableauCritere extends React.Component {
     this.setState(prevState=>({
       dataStruc:prevState.dataStruc.map(el=>( el.libelleAt !== updatedItems.libelleAt  ? {...el} : updatedItems))   
     }));
-    fetch('/updateTraitement/fnc',
-    {
-      method: 'POST',
-      headers:
-      {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "data": 
-        {	"id":this.state.selectedAnaCre.id,   
-          "idActeur": this.state.idActeur,
-          "actionCorrective":this.state.actionCorrective,
-          "correction":this.state.correction,
-          "cause":this.state.cause,
-          "echeances":this.state.echeance,
-          //TODO REPLACE LATER
-          "idActeurDelegataire":"maikol.ahoue@bridgebankgroup.com"
-        }
-      })
-    }).then(res => res.json())
-    .then(
-      (result) => {
-        this.setState(prevState => ({
-          responseToPost: prevState.responseToPost.filter(item => {
-            return item.idFnc !== this.state.idFnc;
-          })
-        }))
-        console.log(this.state.selected);
-        this.setState({
-          isLoaded: true,
-          responseSubmit: result.data.message,
-          nestedModal: true,
-        });
-        this.forceUpdate();
-      },
-      (error) => {
-        console.log("124", error.message);
-        alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-        this.setState({
-          isLoaded: true,
-          errorMessage: error.message,
-          hasError: true
-        });
-      });
-  //this.toggle();
-
-
-  
-  
-  
   }
 
 
@@ -309,68 +260,6 @@ export default class TableauCritere extends React.Component {
       nestedModal: !this.state.nestedModal
     });
   }
-
- getAnalyse=idFnc=>{
-    fetch('/consultationAnalyseById/fnc',
-      {
-        method: 'POST',
-        headers:
-        {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "data":{
-            "idFnc": idFnc
-           }
-        })
-      })
-  .then(res => res.json())
-    .then(
-      (result) => {
-        if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
-        { 
-          alert(result.data.message);
-          window.close();
-
-          this.setState({
-            isLoadedAna: true,
-            errorMessage: "Accès refuser !",
-            hasError: false,
-            unAutorize:true
-          });
-        }
-        else{
-        this.setState({
-          isLoadedAna: true,
-          responseToAnalyseByID: result.data.responses
-        });
-        var obje={
-          id:idFnc,
-          value:this.state.responseToAnalyseByID.length,
-         }
-         console.log(obje);
-         if(this.state.dsFncNbrAna.length===0)
-         {this.setState(prevState=>({ dsFncNbrAna : prevState.dsFncNbrAna.concat(obje)}));}
-         else
-         this.setState(prevState=>({ dsFncNbrAna  : prevState.dsFncNbrAna.map(el=>( el.id===obje.id ? obje : {...el} )) }))  ;
-        // console.log(this.state.responseToAnalyseByID)
-         console.log(this.state.dsFncNbrAna)
-        
-      }
-
-      
-        
-      },
-      (error) => {
-        console.log("124", error.message);
-        alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
-        this.setState({
-          isLoaded: true,
-          errorMessage: error.message,
-          hasError: true
-        });
-      })
-}
 
  newAnalyse(){
     this.setState({
@@ -384,27 +273,10 @@ export default class TableauCritere extends React.Component {
       acteurTraitant: null,
       idActeurIsSet :false,    
       echeance: null,
-      echeanceIsSet: false,
-      critere:null  ,
-      critereIsSet:false
-    })
+      echeanceIsSet: false
+      })
 
   }
-
-  switchDateFormat(dat){
-      var d = new Date(dat);
-      var month = d.getMonth() + 1;
-      console.log(month);
-      var year = d.getFullYear();
-      var date = d.getDate();
-      month = (month < 10) ? "0" + month : month;
-      date = (date < 10) ? "0" + date : date;
-      console.log("date ech  "+date  +"/"+ month + "/" + year);
-      return  date  +"/"+ month + "/" + year;
-  
-  }
-
-  
 
   toggle() {
     this.setState({ valRoutage: null })
@@ -416,13 +288,28 @@ export default class TableauCritere extends React.Component {
     }));
     this.newAnalyse();
     this.setState({libelle:1});
-    this.setState({dataStruc:[]});
-    this.setState({selectedAnaCreIndex:null})
-    
+    this.setState({dataStruc:[]})
   }
   async componentDidMount() {
-    const fetchstat = await fetch("/consultationFncInitier/fnc")
-    .then(res => res.json())
+    const fetchstat = await fetch("/consultActionAff/fnc",
+      {
+        method: 'POST',
+        headers:
+        {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "data":
+          {
+            
+            /*TODO A RECUPERER DANS LA SESSION*/
+            "idResponsable": "ahoueromeo@gmail.com",
+            "idProfil": [
+              { "idProfil": 1 }
+            ]
+          }
+        })
+      }).then(res => res.json())
       .then(
         (result) => {
           if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
@@ -438,9 +325,16 @@ export default class TableauCritere extends React.Component {
             });
           }
           else{
+              //filter array and remove doublon
+            var responseArray=result.data.responses;
+            var cache = {};
+            responseArray = responseArray.filter(function(elem,index,array){
+                return cache[elem.idFnc]?0:cache[elem.idFnc]=1;
+            });
           this.setState({
             isLoaded: true,
-            responseToPost: result.data.responses
+            responseArray:responseArray,//filtering array wil be display in react-tab
+            responseToPost: result.data.responses // is use to aggragate
           });
           console.log(this.state.responseToPost)}
         },
@@ -452,8 +346,8 @@ export default class TableauCritere extends React.Component {
             errorMessage: error.message,
             hasError: true
           });
-        })
-  }
+        }) 
+    }
 
 
   render() {
@@ -478,9 +372,6 @@ export default class TableauCritere extends React.Component {
     ];
 
    
-///LIBRARY//////////////////////////////////////////////
-    library.add(faPen,faBan, faTrash,faPlusCircle);
-////////////////////////////////////////////////////////
 
     const ActeurColumns = [
       {
@@ -505,67 +396,19 @@ export default class TableauCritere extends React.Component {
 
     ]
 
-   const analyseRetrieveColum=[
-    
-    {
-      Header: 'N° Analyse',
-      accessor: 'libelleAt',
-    },
-    {
-      Header: 'Email de l\'Acteur traitant',
-      accessor: 'idActeur',
-    },
-
-    {
-      Header: 'Email du Responsable de traitement',
-      accessor: 'idActeurDelegataire',
-    },
-    {
-      Header: 'Date de création',
-      accessor: 'dateCreationAnalyse',
-    },
-    {
-      Header: 'Echeances',
-      accessor: 'echeances',
-    }
-
-
-   ]
-
     const analyseColum = [
+
       {
         Header: 'N° de l\'analyse',
         accessor: 'libelleAt',
       },
 
       {
-        Header: 'Action corrective',
-        accessor: 'actionCorrective',
-      },
-
-      {
-        Header: 'Cause',
-        accessor: 'cause',
-      },
-
-      {
-        Header: 'Correction',
-        accessor: 'correction',
-      },
-
-      {
-        Header: 'Echeance',
+        Header: 'echeance',
         accessor: 'echeance',
       },
 
-      {
-        Header: 'Email',
-        accessor: 'idActeur',
-      },
     ]
-
-
-
     //MISE EN FORM DU JSON POUR LES ACTEURS
     const dataActeur = [
       {
@@ -583,11 +426,12 @@ export default class TableauCritere extends React.Component {
 
     ];
 
-    // if(this.state.unAutorize)
-    // {
-    //     return(<Authorization/>) 
-    // }
-//else
+    if(this.state.unAutorize)
+    {
+        return(<Authorization/>) 
+    }
+
+else
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
@@ -597,33 +441,39 @@ export default class TableauCritere extends React.Component {
             toggle={this.toggle}
             className={this.props.className}
             size="lg"
-            style={{maxWidth: '1600px', width: '80%'}}
             centered
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
           >
-            <ModalHeader toggle={this.toggle}>Consultation des analyses / Creation de critères </ModalHeader>
+            <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
             <ModalBody>
               <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
                 <TabPanel whenActive={1}>
-                      <br></br>
-                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s) pour la fiche {this.state.numeroId}</h1>
-                      <Col>
-                        <small>
-                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de *soumettre*.<br/>
-                        La soumission vous conduit à l'étape de création de critère 
-                        </small>
-                      </Col>
-                    <ReactTableActeur
+                  <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
+                  {/**QUALIFICATION FNC*/}
+                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
+                  {/**DESCRIPTION FNC*/}
+                  <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
+                  {/**SOURCE*/}
+                  <MediaAsset libelle="Source" content={this.state.source} />
+                  {/**PROCESSUS*/}
+                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+                  {/*FAMILLE*/}
+                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                </TabPanel>
+
+                {/* ETAPE 2 FORMULAIRE ANALYSE */}
+
+                <TabPanel whenActive={2}>
+                <ReactTable
                     filterable={true}
-                    style={{ cursor: 'pointer' }}
-                    loading={!this.state.isLoadedAna}
+                    loading={!this.state.isLoaded}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={this.state.responseToAnalyseByID}
-                    columns={analyseRetrieveColum}
-                    previousText={"Précédent"}
+                    data={this.state.analyseFnc}
+                    columns={analyseColum}
+                    previousText={"Précedent"}
                     nextText={"Suivant"}
                     rowsText={"Ligne(s)"}
                     ofText={"sur "}
@@ -634,26 +484,76 @@ export default class TableauCritere extends React.Component {
                           onClick: (e) => {
                             {
                               e.preventDefault();
-                              var idFnc;
-                              var  nbrAna;
                               this.setState({
                                 //PAY ATTENTION 
-                                selectedAnaCreIndex: rowInfo.index,
-                                selectedAnaCre: rowInfo.original,
+                                selectedAnalyseIndex: rowInfo.index,
+                                selectedAnalyse: rowInfo.original,
                                 getRow: rowInfo,
                                 acteurTraitant: rowInfo.original.nomPrenom,
                                 idActeur:rowInfo.original.idActeur,
-                                correction:rowInfo.original.correction,
-                                actionCorrective:rowInfo.original.actionCorrective,
-                                echeance:rowInfo.original.echeances,
-                                cause:rowInfo.original.cause
                               });
-                              console.log(rowInfo.original.id);
+                              console.log(rowInfo.original);
                             }
                           },
                           style: {
-                            background: rowInfo.index === this.state.selectedAnaCreIndex ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedAnaCreIndex ? 'white' : 'black'
+                            background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
+                            color: rowInfo.index === this.state.selectedAnalyseIndex ? 'white' : 'black'
+                          }
+                        }
+                      } else {
+                        return {}
+                      }
+                    }} />
+                </TabPanel>
+
+
+                {/*TODO ETAPE 4 RECAPITULATIF ANALYSE
+                DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
+                */}
+                <TabPanel whenActive={4}>
+                <h4>Progression :</h4>
+                      <Progress animated color="danger" value="90" />
+                      <br></br>
+                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s)</h1>
+                      <Col>
+                        <small>
+                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
+                        La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
+                        de l'Organisation ou DRCJ
+                        </small>
+                      </Col>
+                      <ReactTable
+                    filterable={true}
+                    loading={!this.state.isLoaded}
+                    minRows={5}
+                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
+                    data={this.state.dataStruc}
+                    columns={analyseColum}
+                    previousText={"Précedent"}
+                    nextText={"Suivant"}
+                    rowsText={"Ligne(s)"}
+                    ofText={"sur "}
+                    loadingText="Chargement en cours..."
+                    getTrProps={(state, rowInfo) => {
+                      if (rowInfo && rowInfo.row) {
+                        return {
+                          onClick: (e) => {
+                            {
+                              e.preventDefault();
+                              this.setState({
+                                //PAY ATTENTION 
+                                selectedAnalyseIndex: rowInfo.index,
+                                selectedAnalyse: rowInfo.original,
+                                getRow: rowInfo,
+                                acteurTraitant: rowInfo.original.nomPrenom,
+                                idActeur:rowInfo.original.idActeur,
+                              });
+                              console.log(rowInfo.original);
+                            }
+                          },
+                          style: {
+                            background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
+                            color: rowInfo.index === this.state.selectedAnalyseIndex ? 'white' : 'black'
                           }
                         }
                       } else {
@@ -661,19 +561,16 @@ export default class TableauCritere extends React.Component {
                       }
                     }} />
                   <br></br>
-                  {/**BUTTON MODIFIER ET SUPPRIMER */}
-                  <TabPanel whenActive={1}>
+                  <TabPanel whenActive={4}>
                     <Container>
                     <Row>
                     <Col md="3">
-                    {/**BUTTON MODIFIER */}
-
-                    <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : "extends" }>
-                      <Button outline color="primary" disabled={(this.state.selectedAnaCreIndex===null  )}  onClick={e=>{
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
+                      <Button outline color="primary" disabled={(this.state.selectedAnalyseIndex===null  )}  onClick={e=>{
                           e.preventDefault();
                           this.setState({idActeur:null,idActeurIsSet:null})
-                          this.handleModifyAnalyse(this.state.selectedAnaCreIndex.libelleAt);
-                          console.log(this.state.selectedAnaCreIndex.libelleAt)
+                          this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAt);
+                          console.log(this.state.selectedAnalyse.libelleAt)
                       }}>
                         <FontAwesomeIcon
                           icon="pen"
@@ -684,24 +581,44 @@ export default class TableauCritere extends React.Component {
                     </Tab>
                     </Col>
                     <Col md="3">
-                    {/**BUTTON SUPPRIMER  */}
-                    <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : "extends" }>
-                      <Button   disabled={(this.state.selectedAnaCreIndex===null  )} outline color="danger">
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
+                      <Button   disabled={(this.state.selectedAnalyseIndex===null  )} outline color="danger">
                         <FontAwesomeIcon
                           icon="trash"
                           color="red"
                           size="md"
                         />{' '}
                       </Button>
+                    </Tab>                    
+                    </Col>
+                    <Col md="3">
+                    <Tab id="1" maxStep={3} step="new" >
+                      <Button outline color="success" onClick={e=>{
+                          e.preventDefault();
+                          this.newAnalyse();
+                          //console.log(this.state.selectedAnalyse.libelleAt)
+                      }}>
+                        <FontAwesomeIcon
+                          icon="plus-circle"
+                          color="green"
+                          size="md"
+                        />{' '}
+                      </Button>
                     </Tab>
                     </Col>
+
                     </Row>
+
                     </Container>
                   </TabPanel>
+
                 </TabPanel>
-                {/* ETAPE MODIFICATION ANALYSE*/}
+                {/* ETAPE MODIFICATION ANALYSE
+                */}
                 <TabPanel whenActive={10}>
                   {/* MODIFICATION ANALYSE */}
+                  <h4>Progression :</h4>
+                      <Progress animated color="danger" value="45" />
                   <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
@@ -796,14 +713,14 @@ export default class TableauCritere extends React.Component {
                   </Form >
                   <br />
                   <br />
-                  <ReactTableActeur
+                  <ReactTable
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
                     data={dataActeur}
                     columns={ActeurColumns}
-                    previousText={"Précédent"}
+                    previousText={"Précedent"}
                     nextText={"Suivant"}
                     rowsText={"Ligne(s)"}
                     ofText={"sur "}
@@ -837,7 +754,7 @@ export default class TableauCritere extends React.Component {
                     }} />
                   <br></br>
                   <Row>
-                    <Tab id="1" maxStep={3} step={1}>
+                    <Tab id="1" maxStep={3} step="retourRecap">
                        <Button>Annuler</Button>
                     </Tab>
                     <Col md="8" ></Col>
@@ -848,66 +765,37 @@ export default class TableauCritere extends React.Component {
                         }}>Valider la modification</Button>
                     </Tab>
                   </Row>
-                </TabPanel>               
-                <TabPanel whenActive={2}>
-                  {/* CREATION CRITERE D'ANALYSE ANALYSE */}
-                  <h1 style={{ textAlign: "center" }}>Création du critère</h1>
-                  <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                      {/*Critère*/}
-                      <Label for="exampleEmail" md={12}>Critère</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.critereIsSet} invalid={!this.state.critereIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.critere}
-                          onChange={e => {
-                            this.setState({ critere: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ critereIsSet: true })
-                            }
-                            else { this.setState({ critereIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.critereIsSet}>Renseigner le critère</FormText>
-                      </Col>                      
-                      <Row>&nbsp;</Row>
-                    </FormGroup>
-                  </Form >
-                  <br></br>
                 </TabPanel>
+
 
                 {/* Cette section permet de positionner 
                     les bouttons "suivant" et "precedent" 
                     et de le  masquer au besoin 
                 */}
                 {/*MODIFICATION RECAPITULATIF FNC BUTTON*/}
-                
                 <Row noGutters="true" >
                   <TabPanel whenActive={1}>
                     <Col md="10" ></Col>
                     <Tab id="1" maxStep={3} step="next">
-                      <Button disabled={!(this.state.selectedAnaCre!==null)}>{'Suivant >>'}&nbsp;</Button>
+                      <Button >{'Suivant >>'}</Button>
                     </Tab>
                   </TabPanel>
                   {/*FORMULAIRE BUTTON*/}
 
                   <TabPanel whenActive={2}>
                     <Tab id="2" maxStep={3} step="prev" >
-                      <Button>{'<< Précédent'}</Button>
+                      <Button>{'<< Précedent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
-                    {/* <Tab id="2" maxStep={3} step="next">
+                    <Tab id="2" maxStep={3} step="next">
                       <Button disabled={!(this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)}>{'Suivant >>'}&nbsp;</Button>
-                    </Tab> */}
+                    </Tab>
                   </TabPanel>
-                  
                   {/*CREER ANALYSE BUTTON*/}
                   <TabPanel whenActive={3}>
                     <Tab id="1" maxStep={3} step="prev" >
                       <br />
-                      <Button>{'<< Précédent'}</Button>
+                      <Button>{'<< Précedent'}</Button>
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="3" maxStep={4} step="next">
@@ -919,7 +807,7 @@ export default class TableauCritere extends React.Component {
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.critereIsSet)}>
+              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.dataStruc.length !== 0)}>
                 Soumettre
             </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
@@ -942,9 +830,9 @@ export default class TableauCritere extends React.Component {
             loading={!this.state.isLoaded}
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-            data={this.state.responseToPost}
+            data={this.state.responseArray}
             columns={columns}
-            previousText={"Précédent"}
+            previousText={"Précedent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}
             ofText={"sur "}
@@ -957,15 +845,16 @@ export default class TableauCritere extends React.Component {
                       e.preventDefault();
                       this.toggle();
                       this.setState({
-                        idFnc: rowInfo.original.idFnc,
                         selected: rowInfo.index,
                         getRow: rowInfo,
                         idProcessus: rowInfo.original.idProcessus,
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
+                        idFnc: rowInfo.original.idFnc,
                       });
                       console.log(rowInfo.index);
-                      this.getAnalyse(rowInfo.original.idFnc)
+                      this.retrieveAnaByFnc(rowInfo.original.idFnc);
+
                     }
                   },
                   style: {
