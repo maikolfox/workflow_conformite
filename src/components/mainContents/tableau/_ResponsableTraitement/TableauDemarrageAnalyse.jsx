@@ -44,8 +44,6 @@ export default class DemarrageAnalyse extends React.Component {
         
         selected: null,
         selectedActeur: null,
-        selectedAnalyse:null,
-        selectedAnalyseIndex:null,
         
         responseToPost: [],
         isLoaded: '',
@@ -176,10 +174,9 @@ export default class DemarrageAnalyse extends React.Component {
   handleModifyAnalyse = itemId => {
     const updatedItems = this.state.dataStruc.map(item => {
       if (itemId === item.libelleAnalyse) {
-        this.setState({cause: item.cause,
+        this.setState({
+                      cause: item.cause,
                       correction :item.correction,
-                      cause: item.cause, 
-                      correction :item.correction ,
                       echeance:item.echeance, 
                       acteurTraitant:null,
                       idActeur:null,
@@ -268,7 +265,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.setState({dataStruc:[]})
   }
   async componentDidMount() {
-    const fetchstat = await fetch("/consultBonRoutage/fnc",
+      await fetch("/consultBonRoutage/fnc",
       {
         method: 'POST',
         headers:
@@ -533,16 +530,14 @@ else
                           name="selectbasic"
                           value={this.state.echeance}
                           onChange={e => {
-                            {
                               e.preventDefault();
-                              {
+                              
                                 this.setState({ echeance: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ echeanceIsSet: true })
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
-                              }
-                            }
+                              
                           }}>
                         </Input>
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheances</FormText>
@@ -589,7 +584,7 @@ else
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
+                            
                               e.preventDefault();
                               this.setState({
                                 selectedActeur: rowInfo.index,
@@ -602,7 +597,7 @@ else
 
                               });
                               console.log(rowInfo.original);
-                            }
+                            
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
@@ -647,7 +642,7 @@ else
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
+                            
                               e.preventDefault();
                               this.setState({
                                 //PAY ATTENTION 
@@ -658,7 +653,7 @@ else
                                 idActeur:rowInfo.original.idActeur,
                               });
                               console.log(rowInfo.original);
-                            }
+                            
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
@@ -798,16 +793,16 @@ else
                           name="selectbasic"
                           value={this.state.echeance}
                           onChange={e => {
-                            {
+                            
                               e.preventDefault();
-                              {
+                              
                                 this.setState({ echeance: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ echeanceIsSet: true })
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
-                              }
-                            }
+                              
+                            
                           }}>
                         </Input>
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
@@ -838,7 +833,7 @@ else
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
+                            
                               e.preventDefault();
                               this.setState({
                                 selectedActeur: rowInfo.index,
@@ -850,7 +845,7 @@ else
                                 idActeur:rowInfo.original.idActeur
                               });
                               console.log(rowInfo.original);
-                            }
+                            
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
@@ -950,7 +945,7 @@ else
               if (rowInfo && rowInfo.row) {
                 return {
                   onClick: (e) => {
-                    {
+                    
                       e.preventDefault();
                       this.toggle();
                       this.setState({
@@ -962,7 +957,7 @@ else
                         idFnc: rowInfo.original.idFnc,
                       });
                       console.log(rowInfo.index);
-                    }
+                    
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',

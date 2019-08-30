@@ -17,8 +17,7 @@ class ConsultationActAff extends Component {
       <Card style={pushLeft}>
         <CardHeader>Consultation des actions affectées</CardHeader>
         <CardBody>
-                    <Tableau></Tableau>
-                    
+                    <Tableau></Tableau>         
         </CardBody>
       </Card>
 

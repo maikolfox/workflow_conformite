@@ -109,7 +109,7 @@ export default class TableauCorrection extends React.Component {
   }
 
 componentDidMount() {
-  const fetchstat=  fetch("/consultationMauvaisRoutage/fnc")
+   fetch("/consultationMauvaisRoutage/fnc")
       .then(res => res.json())
       .then(
         (result) => {
@@ -291,7 +291,8 @@ componentDidMount() {
       getTrProps={(state, rowInfo) => {
         if (rowInfo && rowInfo.row) {
           return {
-            onClick: (e) => {{
+            onClick: (e) => {
+              
               e.preventDefault();
               this.toggle();
               this.setState({
@@ -304,7 +305,7 @@ componentDidMount() {
                 descIsSet:true
               });
               console.log(rowInfo.original);
-            }},
+            },
             style: {
               background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
               color: rowInfo.index === this.state.selected ? 'white' : 'black'

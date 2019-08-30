@@ -7,7 +7,7 @@ import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
-import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+//import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
 
 import {
@@ -20,11 +20,11 @@ import {
   FormGroup,
   Form,
   Label,
-  Row,Col
+  Row,
+  //Col
   
 } from "reactstrap";
 
-var data_;
 
 
 export default class ValidationRoutage extends React.Component {
@@ -130,7 +130,7 @@ export default class ValidationRoutage extends React.Component {
     }));
   }
   async componentDidMount() {
-       const fetchstat = await fetch("/consult/fnc",
+       await fetch("/consult/fnc",
       {
         method: 'POST',
         headers:
@@ -295,7 +295,6 @@ else
               if (rowInfo && rowInfo.row) {
                 return {
                   onClick: (e) => {
-                    {
                       e.preventDefault();
                       this.toggle();
                       this.setState({
@@ -307,7 +306,6 @@ else
                         idFnc:rowInfo.original.idFnc,
                       });
                       console.log(rowInfo.index);
-                    }
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',

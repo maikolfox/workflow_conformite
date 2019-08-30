@@ -8,13 +8,15 @@ import '../../css/simple-sidebar.css'
 //import PanelWorkFlow from './PanelWorkFlow';
 import {
     Route,
-    BrowserRouter as Router,
-    NavLink, Link,
-    Switch, Redirect
+    //BrowserRouter as Router,
+    NavLink, 
+   // Link,
+    Switch, 
+    //Redirect
 } from 'react-router-dom';
 import ValidationRoutage from '../subMainContent/_ResponsableTraitement/ValidationRoutage';
 import DemarrerAnalyse from '../subMainContent/_ResponsableTraitement/DemarrerAnalyse';
-import ReceptionAction from '../subMainContent/_ResponsableTraitement/ReceptionAction';
+//import ReceptionAction from '../subMainContent/_ResponsableTraitement/ReceptionAction';
 
 
 const ResponsableTraitement = ({ match }) => (

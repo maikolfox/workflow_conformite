@@ -8,13 +8,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import ReactTableActeur from 'react-table';
-import ReactTableAnalyse from 'react-table';
 
 import "react-table/react-table.css";
-import MediaAsset from '../../../assets/MediaAsset'
+//import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
-import Authorization from '../../Authorization_401';
+//import Authorization from '../../Authorization_401';
 
 
 import {
@@ -30,7 +29,8 @@ import {
   Label,
   Row, 
   Col,
-  Progress,Container 
+ // Progress,
+  Container 
 } from "reactstrap";
 
 
@@ -84,8 +84,8 @@ export default class TableauCritere extends React.Component {
 
         dataStruc: [],
         dsFncNbrAna :[],
-        selectedAnalyseIndex:null,
-        selectedAnalyse: null,
+        //selectedAnalyseIndex:null,
+        //selectedAnalyse: null,
 
         critere:null,
         critereIsSet:false,
@@ -200,9 +200,8 @@ export default class TableauCritere extends React.Component {
   handleModifyAnalyse = itemId => {
     const updatedItems = this.state.dataStruc.map(item => {
       if (itemId === item.libelleAnalyse) {
-        this.setState({cause: item.cause,
-                      correction :item.correction,
-                      cause: item.cause, 
+        this.setState({
+                      cause: item.cause,
                       correction :item.correction ,
                       echeance:item.echeance, 
                       acteurTraitant:null,
@@ -421,7 +420,7 @@ export default class TableauCritere extends React.Component {
     
   }
   async componentDidMount() {
-    const fetchstat = await fetch("/consultationFncInitier/fnc")
+     await fetch("/consultationFncInitier/fnc")
     .then(res => res.json())
       .then(
         (result) => {
@@ -532,37 +531,37 @@ export default class TableauCritere extends React.Component {
 
    ]
 
-    const analyseColum = [
-      {
-        Header: 'N° de l\'analyse',
-        accessor: 'libelleAt',
-      },
+    // const analyseColum = [
+    //   {
+    //     Header: 'N° de l\'analyse',
+    //     accessor: 'libelleAt',
+    //   },
 
-      {
-        Header: 'Action corrective',
-        accessor: 'actionCorrective',
-      },
+    //   {
+    //     Header: 'Action corrective',
+    //     accessor: 'actionCorrective',
+    //   },
 
-      {
-        Header: 'Cause',
-        accessor: 'cause',
-      },
+    //   {
+    //     Header: 'Cause',
+    //     accessor: 'cause',
+    //   },
 
-      {
-        Header: 'Correction',
-        accessor: 'correction',
-      },
+    //   {
+    //     Header: 'Correction',
+    //     accessor: 'correction',
+    //   },
 
-      {
-        Header: 'Echeance',
-        accessor: 'echeance',
-      },
+    //   {
+    //     Header: 'Echeance',
+    //     accessor: 'echeance',
+    //   },
 
-      {
-        Header: 'Email',
-        accessor: 'idActeur',
-      },
-    ]
+    //   {
+    //     Header: 'Email',
+    //     accessor: 'idActeur',
+    //   },
+    // ]
 
 
 
@@ -632,10 +631,9 @@ export default class TableauCritere extends React.Component {
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
                               e.preventDefault();
-                              var idFnc;
-                              var  nbrAna;
+                              // var idFnc;
+                              // var  nbrAna;
                               this.setState({
                                 //PAY ATTENTION 
                                 selectedAnaCreIndex: rowInfo.index,
@@ -649,7 +647,6 @@ export default class TableauCritere extends React.Component {
                                 cause:rowInfo.original.cause
                               });
                               console.log(rowInfo.original.id);
-                            }
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedAnaCreIndex ? '#cd511f' : 'white',
@@ -772,16 +769,16 @@ export default class TableauCritere extends React.Component {
                           name="selectbasic"
                           value={this.state.echeance}
                           onChange={e => {
-                            {
+                            
                               e.preventDefault();
-                              {
+                              
                                 this.setState({ echeance: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ echeanceIsSet: true })
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
-                              }
-                            }
+                              
+                            
                           }}>
                         </Input>
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
@@ -812,7 +809,7 @@ export default class TableauCritere extends React.Component {
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
+                            
                               e.preventDefault();
                               this.setState({
                                 selectedActeur: rowInfo.index,
@@ -824,7 +821,7 @@ export default class TableauCritere extends React.Component {
                                 idActeur:rowInfo.original.idActeur
                               });
                               console.log(rowInfo.original);
-                            }
+                            
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
@@ -953,7 +950,7 @@ export default class TableauCritere extends React.Component {
               if (rowInfo && rowInfo.row) {
                 return {
                   onClick: (e) => {
-                    {
+                    
                       e.preventDefault();
                       this.toggle();
                       this.setState({
@@ -966,7 +963,7 @@ export default class TableauCritere extends React.Component {
                       });
                       console.log(rowInfo.index);
                       this.getAnalyse(rowInfo.original.idFnc)
-                    }
+                    
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',

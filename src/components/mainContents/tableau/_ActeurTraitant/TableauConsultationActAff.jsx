@@ -1,6 +1,4 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen,faPlusCircle,faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -80,13 +78,8 @@ export default class ConsultationActAff extends React.Component {
 
         dataStruc: [],
 
-        selectedAnalyseIndex:null,
-        selectedAnalyse: null,
 
         unAutorize:false,
-
-
-
         analyseFnc:[],
       }
     this.toggle = this.toggle.bind(this);
@@ -104,8 +97,9 @@ export default class ConsultationActAff extends React.Component {
 
   retrieveAnaByFnc=idfnc=>
   {
-    var objectToArray=[];
-    this.state.responseToPost.map(el=>{
+   var objectToArray=[];
+   // eslint-disable-next-line
+   this.state.responseToPost.map(el=>{
         if(el.idFnc===idfnc){
             
             var object={
@@ -116,8 +110,8 @@ export default class ConsultationActAff extends React.Component {
                 echeance:el.echeances
             }
             objectToArray.push(object);
-        }   
-    })
+          }   
+          })
     this.setState({analyseFnc:objectToArray});
   
 }
@@ -201,8 +195,6 @@ export default class ConsultationActAff extends React.Component {
       if (itemId === item.libelleAnalyse) {
         this.setState({cause: item.cause,
                       correction :item.correction,
-                      cause: item.cause, 
-                      correction :item.correction ,
                       echeance:item.echeance, 
                       acteurTraitant:null,
                       idActeur:null,
@@ -291,7 +283,7 @@ export default class ConsultationActAff extends React.Component {
     this.setState({dataStruc:[]})
   }
   async componentDidMount() {
-    const fetchstat = await fetch("/consultActionAff/fnc",
+     await fetch("/consultActionAff/fnc",
       {
         method: 'POST',
         headers:
@@ -462,7 +454,6 @@ else
                   {/*FAMILLE*/}
                   <MediaAsset libelle="Famille" content={this.state.idFamile} />
                 </TabPanel>
-
                 {/* ETAPE 2 FORMULAIRE ANALYSE */}
 
                 <TabPanel whenActive={2}>
@@ -482,7 +473,6 @@ else
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
                               e.preventDefault();
                               this.setState({
                                 //PAY ATTENTION 
@@ -493,7 +483,6 @@ else
                                 idActeur:rowInfo.original.idActeur,
                               });
                               console.log(rowInfo.original);
-                            }
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
@@ -504,8 +493,9 @@ else
                         return {}
                       }
                     }} />
+                    <br/>
+                    d kkfd k
                 </TabPanel>
-
 
                 {/*TODO ETAPE 4 RECAPITULATIF ANALYSE
                 DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
@@ -538,7 +528,6 @@ else
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
                               e.preventDefault();
                               this.setState({
                                 //PAY ATTENTION 
@@ -549,7 +538,6 @@ else
                                 idActeur:rowInfo.original.idActeur,
                               });
                               console.log(rowInfo.original);
-                            }
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
@@ -689,16 +677,13 @@ else
                           name="selectbasic"
                           value={this.state.echeance}
                           onChange={e => {
-                            {
                               e.preventDefault();
-                              {
                                 this.setState({ echeance: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ echeanceIsSet: true })
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
-                              }
-                            }
+                              
                           }}>
                         </Input>
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
@@ -729,7 +714,6 @@ else
                       if (rowInfo && rowInfo.row) {
                         return {
                           onClick: (e) => {
-                            {
                               e.preventDefault();
                               this.setState({
                                 selectedActeur: rowInfo.index,
@@ -741,7 +725,6 @@ else
                                 idActeur:rowInfo.original.idActeur
                               });
                               console.log(rowInfo.original);
-                            }
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
@@ -841,7 +824,6 @@ else
               if (rowInfo && rowInfo.row) {
                 return {
                   onClick: (e) => {
-                    {
                       e.preventDefault();
                       this.toggle();
                       this.setState({
@@ -855,7 +837,6 @@ else
                       console.log(rowInfo.index);
                       this.retrieveAnaByFnc(rowInfo.original.idFnc);
 
-                    }
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
