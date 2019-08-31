@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{PropTypes} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -11,6 +11,8 @@ import MediaAsset from '../../../assets/MediaAsset'
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
 
+import 'react-quill/dist/quill.snow.css'; // ES6
+import ReactQuill from 'react-quill';
 
 import {
   Button,
@@ -31,6 +33,7 @@ import {
 
 export default class ConsultationActAff extends React.Component {
 
+ 
   constructor(props) {
     super(props);
     this.state =
@@ -78,10 +81,15 @@ export default class ConsultationActAff extends React.Component {
 
         dataStruc: [],
 
-
         unAutorize:false,
         analyseFnc:[],
       }
+
+     
+    
+    
+    
+     
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -93,7 +101,7 @@ export default class ConsultationActAff extends React.Component {
     ///
     this.retrieveAnaByFnc=this.retrieveAnaByFnc.bind(this);
   };
-
+  
 
   retrieveAnaByFnc=idfnc=>
   {
@@ -477,10 +485,14 @@ else
                               this.setState({
                                 //PAY ATTENTION 
                                 selectedAnalyseIndex: rowInfo.index,
-                                selectedAnalyse: rowInfo.original,
+                                selectedAnalyse: rowInfo.original.libelleAt,
                                 getRow: rowInfo,
                                 acteurTraitant: rowInfo.original.nomPrenom,
                                 idActeur:rowInfo.original.idActeur,
+                                cause:rowInfo.original.cause,
+                                correction:rowInfo.original.correction,
+                                echeance:rowInfo.original.echeance,
+                                
                               });
                               console.log(rowInfo.original);
                           },
@@ -494,25 +506,40 @@ else
                       }
                     }} />
                     <br/>
-                    d kkfd k
                 </TabPanel>
 
-                {/*TODO ETAPE 4 RECAPITULATIF ANALYSE
-                DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
+                {/*RENSEIGNEMENT TRAITEMENT ET AJOUT PIECES JOINTES 
                 */}
-                <TabPanel whenActive={4}>
-                <h4>Progression :</h4>
-                      <Progress animated color="danger" value="90" />
-                      <br></br>
-                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s)</h1>
-                      <Col>
-                        <small>
-                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
-                        La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
-                        de l'Organisation ou DRCJ
-                        </small>
-                      </Col>
-                      <ReactTable
+                <TabPanel whenActive={3}>
+                <h1 style={{ textAlign: "center" }}>Recapitulatif analyse {this.state.selectedAnalyse}</h1>
+                <Col>
+                    <small>
+                    Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
+                    La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
+                    de l'Organisation ou DRCJ
+                    </small>
+                </Col>
+                {/**DETAILS ANALYSE */}
+                                
+
+
+
+                {/**ACTION CORRECTIVE */}
+
+
+                {/**CAUSE  */}
+                <MediaAsset libelle="Cause" content={this.state.cause} />
+                {/**CORRECTION  */}
+                <MediaAsset libelle="Correction" content={this.state.correction} />
+                {/**ACTION CORRECTIVE */}
+                <MediaAsset libelle="Action corrective" content={this.state.source} />
+                {/**ECHEANCES */}
+                <MediaAsset libelle="Echeances" content={this.state.echeance} />
+                      <br></br>   
+                      <hr/> 
+                      <ReactQuill value={this.state.text}
+                  onChange={this.handleChange} />                                  
+                        {/* <ReactTable
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
@@ -547,9 +574,9 @@ else
                       } else {
                         return {}
                       }
-                    }} />
+                    }} /> */}
                   <br></br>
-                  <TabPanel whenActive={4}>
+                  {/* <TabPanel whenActive={4}>
                     <Container>
                     <Row>
                     <Col md="3">
@@ -598,7 +625,7 @@ else
                     </Row>
 
                     </Container>
-                  </TabPanel>
+                  </TabPanel> */}
 
                 </TabPanel>
                 {/* ETAPE MODIFICATION ANALYSE
@@ -753,9 +780,10 @@ else
 
                 {/* Cette section permet de positionner 
                     les bouttons "suivant" et "precedent" 
-                    et de le  masquer au besoin 
+                    et de les  masquer au besoin 
                 */}
-                {/*MODIFICATION RECAPITULATIF FNC BUTTON*/}
+
+                {/*RECAPITULATIF FNC BUTTON*/}
                 <Row noGutters="true" >
                   <TabPanel whenActive={1}>
                     <Col md="10" ></Col>
@@ -763,7 +791,8 @@ else
                       <Button >{'Suivant >>'}</Button>
                     </Tab>
                   </TabPanel>
-                  {/*FORMULAIRE BUTTON*/}
+                  
+                  {/*TABLEAU ANALYSE*/}
 
                   <TabPanel whenActive={2}>
                     <Tab id="2" maxStep={3} step="prev" >
@@ -771,9 +800,11 @@ else
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="2" maxStep={3} step="next">
-                      <Button disabled={!(this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)}>{'Suivant >>'}&nbsp;</Button>
+                      <Button disabled={!(this.state.selectedAnalyseIndex!==null)}>{'Suivant >>'}&nbsp;</Button>
                     </Tab>
                   </TabPanel>
+
+
                   {/*CREER ANALYSE BUTTON*/}
                   <TabPanel whenActive={3}>
                     <Tab id="1" maxStep={3} step="prev" >
@@ -783,7 +814,7 @@ else
                     <Col md="8" ></Col>
                     <Tab id="3" maxStep={4} step="next">
                       <br/>
-                      <Button type="button" disabled={!(this.state.idActeurIsSet&&this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)} onClick={this.createAnalyse}  color="danger">{'Creer l\'analyse'}</Button>
+                      <Button type="button" disabled={!(this.state.idActeurIsSet&&this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)} onClick={this.createAnalyse}  color="danger">{'Ajouter une pièce jointe'}</Button>
                     </Tab>
                   </TabPanel>
                 </Row>
