@@ -1,5 +1,4 @@
-import React,{PropTypes} from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -13,6 +12,8 @@ import Authorization from '../../Authorization_401';
 
 import 'react-quill/dist/quill.snow.css'; // ES6
 import ReactQuill from 'react-quill';
+import ReactHtmlParser from 'react-html-parser';
+
 
 import {
   Button,
@@ -66,7 +67,7 @@ export default class ConsultationActAff extends React.Component {
         causeIsSet: '',
 
         libelle: 1,
-
+        resultat:'',
         idActeur: null,
         acteurTraitant: null,
         idActeurIsSet :false,
@@ -80,7 +81,7 @@ export default class ConsultationActAff extends React.Component {
         responseSubmit: '',
 
         dataStruc: [],
-
+        text:'',
         unAutorize:false,
         analyseFnc:[],
       }
@@ -100,9 +101,17 @@ export default class ConsultationActAff extends React.Component {
     this.newAnalyse=this.newAnalyse.bind(this);
     ///
     this.retrieveAnaByFnc=this.retrieveAnaByFnc.bind(this);
-  };
-  
+    this.handleChange=this.handleChange.bind(this);
 
+  };
+  //I WAS HERE 
+  handleChange (value){
+   this.setState({ text: value })
+    this.setState({resultat: ReactHtmlParser(this.state.text)});
+    (value.trim!=='' && value.length>0 && this.state.resultat!==null) ? this.setState({resultatIsSet:true}) : this.setState({resultatIsSet:false})
+ console.log(this.state.resultat.length);
+
+  }
   retrieveAnaByFnc=idfnc=>
   {
    var objectToArray=[];
@@ -521,10 +530,11 @@ else
                 </Col>
                 {/**DETAILS ANALYSE */}
                                 
+                {this.state.text.toString()}
+              
 
 
-
-                {/**ACTION CORRECTIVE */}
+                  {/**ACTION CORRECTIVE */}
 
 
                 {/**CAUSE  */}
@@ -537,8 +547,10 @@ else
                 <MediaAsset libelle="Echeances" content={this.state.echeance} />
                       <br></br>   
                       <hr/> 
+                      <Label>Resultat traitement</Label>
                       <ReactQuill value={this.state.text}
-                  onChange={this.handleChange} />                                  
+                        onChange={this.handleChange} 
+                        />                                  
                         {/* <ReactTable
                     filterable={true}
                     loading={!this.state.isLoaded}
