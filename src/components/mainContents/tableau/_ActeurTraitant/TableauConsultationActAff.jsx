@@ -11,9 +11,10 @@ import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
 
 import 'react-quill/dist/quill.snow.css'; // ES6
-import ReactQuill from 'react-quill';
-import ReactHtmlParser from 'react-html-parser';
-import UploadFile from '../../../assets/uploadFile/TodoApp'
+//import ReactQuill from 'react-quill';
+//import ReactHtmlParser from 'react-html-parser';
+import UploadFile from '../../../assets/uploadFile/TodoItem';
+import FileBase64 from 'react-file-base64';
 
 import {
   Button,
@@ -41,7 +42,8 @@ export default class ConsultationActAff extends React.Component {
         idFnc: '',
         numeroId: '',
         modal: '',
-        
+        id:0,
+
         selected: null,
         selectedActeur: null,
         selectedAnalyse:null,
@@ -84,6 +86,12 @@ export default class ConsultationActAff extends React.Component {
         textIsSet:false,
         unAutorize:false,
         analyseFnc:[],
+
+
+        //File liste State
+        todoData: [],
+        lastId:0,
+        files: []        
       }
 
      
@@ -101,17 +109,83 @@ export default class ConsultationActAff extends React.Component {
     this.newAnalyse=this.newAnalyse.bind(this);
     ///
     this.retrieveAnaByFnc=this.retrieveAnaByFnc.bind(this);
-    this.handleChange=this.handleChange.bind(this);
+   // this.handleChange=this.handleChange.bind(this);
+
+
+//File list Handler
+    this.handleChangeFile = this.handleChangeFile.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
+        this.handleAdd = this.handleAdd.bind(this)
+        this.getFiles=this.getFiles.bind(this)
 
   };
-  //I WAS HERE 
-  handleChange (value){
-   this.setState({ text: value })
-    this.setState({resultat: ReactHtmlParser(this.state.text)});
-    (value.trim!=='' && value.length>0 && this.state.resultat!==null) ? this.setState({resultatIsSet:true}) : this.setState({resultatIsSet:false})
- console.log(this.state.resultat.length);
 
+///FILE LISTE HANDLER
+
+handleAdd(files)
+    {   
+    files.map(el=>{             
+       const obj= 
+        { 
+           id: this.state.lastId, 
+           name: el.name, 
+           base64:el.base64,
+        }
+        console.dir(el.base64)
+        const auxTodo=this.state.todoData;
+       this.setState(prevState=>({todoData:auxTodo.concat(obj),lastId:prevState.lastId+1,todoText:'',files:null
+       }))
+    })
+}
+
+    getFiles(files){
+        this.setState({ files: files })
+    this.handleAdd(files)  
+    }
+
+
+
+    handleChangeFile = id => {
+
+      this.setState(prevState=>{
+          const update=prevState.todoData.map(elem=>{
+              if(elem.id===id){
+                  elem.completed=!elem.completed
+              }
+              return elem
+
+          })
+          return {
+              todoData:update
+          }
+      })
+      console.log(id)
   }
+
+
+  handleDelete=id=>{
+      var update=[];
+      console.log("id",id)
+      this.setState(prevState=>{
+        prevState.todoData.map(elem=>{
+              if(elem.id!==id) { update.push(elem) }
+          })
+
+          return {
+              todoData:update
+          }
+      })
+  }
+
+
+  //I WAS HERE 
+//   handleChange (value){
+//    this.setState({ text: value })
+//     //this.setState({resultat: ReactHtmlParser(this.state.text)});
+//     (value.trim!=='' && value.length>0 && this.state.resultat!==null) ? this.setState({resultatIsSet:true}) : this.setState({resultatIsSet:false})
+//  console.log(this.state.resultat.length);
+
+//   }
   retrieveAnaByFnc=idfnc=>
   {
    var objectToArray=[];
@@ -124,7 +198,8 @@ export default class ConsultationActAff extends React.Component {
                 cause:el.cause,
                 actionCorrective:el.actionCorrective,
                 correction:el.correction,
-                echeance:el.echeances
+                echeance:el.echeances,
+                id:el.id
             }
             objectToArray.push(object);
           }   
@@ -168,8 +243,20 @@ export default class ConsultationActAff extends React.Component {
 
   handleSubmit = async e => {
     e.preventDefault();
-    console.log(this.state.dataStruc);
-      await fetch('/createTraitement/fnc',
+    
+       const dataStruct=[];
+      if(this.state.todoData.length>0)
+      {
+      this.state.todoData.map(el=>{
+        const objectTosend={
+          idAt:this.state.idAt,
+          nomFichier:el.name,
+          pj_base:el.base64
+        }
+        dataStruct.push(objectTosend)
+      })
+    }
+      await fetch('/upload',
       {
         method: 'POST',
         headers:
@@ -177,7 +264,12 @@ export default class ConsultationActAff extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "data": this.state.dataStruc
+          "idAt":this.state.id,
+          "idFnc":this.state.idFnc,
+          "resultat":this.state.text,
+          //TODO RETRIEVE THIS  VALUE FROM SESSION
+          "idActeur":"",
+          "data": dataStruct
         })
       }).then(res => res.json())
       .then(
@@ -205,7 +297,9 @@ export default class ConsultationActAff extends React.Component {
           });
         });
     this.toggle();
+  
   }
+
 
   handleModifyAnalyse = itemId => {
     const updatedItems = this.state.dataStruc.map(item => {
@@ -310,10 +404,9 @@ export default class ConsultationActAff extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            
             /*TODO A RECUPERER DANS LA SESSION*/
-            "idResponsable": "ahoueromeo@gmail.com",
-            "idProfil": [
+             "idResponsable": "ahoueromeo@gmail.com",
+             "idProfil": [
               { "idProfil": 1 }
             ]
           }
@@ -325,7 +418,6 @@ export default class ConsultationActAff extends React.Component {
           { 
             alert(result.data.message);
             window.close();
-
             this.setState({
               isLoaded: true,
               errorMessage: "Accès refuser !",
@@ -360,6 +452,18 @@ export default class ConsultationActAff extends React.Component {
 
 
   render() {
+
+    const items = this.state.todoData.map(item => (
+      <UploadFile
+          key={item.key}
+          item={item}
+          onChange={this.handleChange}
+          deleteTodo={this.handleDelete}
+      />
+  ))
+
+
+
     const columns = [
       {
         Header: 'Date de déclaration',
@@ -508,7 +612,7 @@ else
                                 cause:rowInfo.original.cause,
                                 correction:rowInfo.original.correction,
                                 echeance:rowInfo.original.echeance,
-                                
+                                actionCorrective:rowInfo.original.actionCorrective
                               });
                               console.log(rowInfo.original);
                           },
@@ -536,25 +640,23 @@ else
                 <br></br>
                 {/**DETAILS ANALYSE */}
                                 
-                {this.state.text.toString()}
               
 
 
                   {/**ACTION CORRECTIVE */}
-
 
                 {/**CAUSE  */}
                 <MediaAsset libelle="Cause" content={this.state.cause} />
                 {/**CORRECTION  */}
                 <MediaAsset libelle="Correction" content={this.state.correction} />
                 {/**ACTION CORRECTIVE */}
-                <MediaAsset libelle="Action corrective" content={this.state.source} />
+                <MediaAsset libelle="Action corrective" content={this.state.actionCorrective} />
+                {/**SOURCE */}
+                <MediaAsset libelle="Source" content={this.state.source} />
                 {/**ECHEANCES */}
                 <MediaAsset libelle="Echeances" content={this.state.echeance} />
-                
                 {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
                 <Form>
-
                 <FormGroup>                    
                     <Label for="exampleEmail" md={12}>Resultat du traitement  100 caractères ({this.state.text.length}/100)</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
@@ -576,8 +678,18 @@ else
                       </Col>
                       <Row>&nbsp;</Row>
                       <Label>Ajouter une pièce jointe</Label>  
-                      <UploadFile></UploadFile>
-                    </FormGroup>
+                      <br/>
+                {/* <input type="file" value={this.state.todoText} onChange={e=>{
+                    this.setState({todoText:e.target.value})
+                }} /> */}
+                <FileBase64 
+                multiple={ true }
+                onDone={ this.getFiles.bind(this) } 
+                />
+                {/* <button onClick={this.handleAdd}>Add </button> */}
+                <br></br>
+                {items}                    
+                </FormGroup>
                   </Form >
                   
                   
@@ -673,6 +785,8 @@ else
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
                         idFnc: rowInfo.original.idFnc,
+                        id:rowInfo.original.id
+
                       });
                       console.log(rowInfo.index);
                       this.retrieveAnaByFnc(rowInfo.original.idFnc);
