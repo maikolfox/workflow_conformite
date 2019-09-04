@@ -53,15 +53,13 @@ class ModalRensFNC extends React.Component {
     var filtFam = FamilleProcessus.filter(item => {
       return item.idProcessus === e.target.value;
     });
-    this.setState({ familleProcessus: filtFam, processus: e.target.value });
-    console.log(filtFam, this.state.processus);
+    this.setState({ familleProcessus: filtFam, idProcessus: e.target.value });
+    console.log(filtFam, this.state.idProcessus);
       this.setState({famille:filtFam[0].idFamille,familleIsSet :(filtFam[0].idFamille==="")?false:true})
   };
   handleSubmit = async e=>{
     e.preventDefault();
-    console.log(this.state.descritpionProc);
-    
-      const response = await fetch('/create/fnc',
+       await fetch('/create/fnc',
         {
           method: 'POST',
           headers:
@@ -100,11 +98,7 @@ class ModalRensFNC extends React.Component {
       //const body = await response.text();
       // this.setState({ responseToPost: JSON.parse(body) });  
       console.log(this.state.responseToPost);
-      console.log(this.state.processus);
-      this.setState({ processus: null });
-     // this.setState({ descritpionProc: "" });
-      this.setState({ descIsSet: false });
-      this.setState({ procIsSet: false });
+      
       this.toggle();
 
   }
@@ -119,8 +113,23 @@ class ModalRensFNC extends React.Component {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
+    this.setState({ descIsSet: false, 
+      procIsSet: false ,
+      descriptionFnc: '',
+      descriptionFncIsSet: false,
+      idProcessus: "",
+      idProcessusIsSet: false,
+      qualification:'',
+      qualificationIsSet:false,
+      idSource:'',
+      idSourceIsSet:false,
+      familleIsSet:false,
+      famille:"",
+      hasError: false,
+      familleProcessus:FamilleProcessus,
+      listeProcessus:Processus
+    });
   }
-
   render() {
     var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
     var source =Source.map((item, i) => {
