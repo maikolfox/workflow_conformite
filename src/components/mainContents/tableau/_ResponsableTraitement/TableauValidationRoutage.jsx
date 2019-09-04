@@ -49,7 +49,12 @@ export default class ValidationRoutage extends React.Component {
       errorMessage: '',
       valRoutage:null,
       responseSubmit:'',
-      unAutorize:false
+      unAutorize:false,
+      libelleProcesus:'',
+      libelleProcesus:'',
+      libelleSource:'',
+      libelleFamille:'',
+      qualification:''
     }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -191,14 +196,22 @@ export default class ValidationRoutage extends React.Component {
         accessor: 'numeroId',
       },
       {
-        Header: 'Description de la fiche',
-        accessor: 'descriptionFnc',
+        Header: 'Famille',
+        accessor: 'libelleFamille',
       },
-
       {
-        Header: 'Processus',
+        Header: 'Source',
+        accessor: 'libelleSource',
+      },
+      {
+        Header: 'Code Processus',
         accessor: 'idProcessus',
+      },
+      {
+        Header: 'Libelle du processus',
+        accessor: 'libelleProcesus',
       }
+      
     ]
     if(this.state.unAutorize)
     {
@@ -223,15 +236,15 @@ else
             <ModalHeader toggle={this.toggle}>Validation de la fiche N° {this.state.numeroId} </ModalHeader>
             <ModalBody>
               {/**QUALIFICATION FNC*/}
-              <MediaAsset libelle="Qualification" content={this.state.qualification} />
+              <MediaAsset libelle="Qualification" content={this.state.qualification===1 ? "Mineur" :"Majeur"} />
               {/**DESCRIPTION FNC*/}
               <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
               {/**SOURCE*/}
-              <MediaAsset libelle="Source" content={this.state.source} />
+              <MediaAsset libelle="Source" content={this.state.libelleSource} />
               {/**PROCESSUS*/}
-              <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+              <MediaAsset libelle="Processus" content={this.state.libelleProcesus} />
               {/*FAMILLE*/}
-              <MediaAsset libelle="Famille" content={this.state.idFamile} />
+              <MediaAsset libelle="Famille" content={this.state.libelleFamille} />
               <hr></hr>
               <Form onSubmit={this.handleSubmit}>
                 <FormGroup check>
@@ -304,6 +317,11 @@ else
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
                         idFnc:rowInfo.original.idFnc,
+                        libelleProcesus:rowInfo.original.libelleProcesus,
+                        libelleSource:rowInfo.original.libelleSource,
+                        libelleFamille:rowInfo.original.libelleFamille,
+                        qualification:rowInfo.original.qualification
+
                       });
                       console.log(rowInfo.index);
                   },
