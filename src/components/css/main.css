@@ -27,8 +27,11 @@
 
     background-color: #172935;
     color: #ffffff;
-    padding-bottom: 10px;
-    margin-bottom: 9px;
+    /* padding-bottom: 10px;
+    margin-bottom: 9px; */
+    padding-top: -2px;
+    padding-bottom: -50px;
+
   }
 
 .menuHeader
@@ -90,3 +93,116 @@ a{
   padding-left: 15px;
   padding-right:15px;
 }
+
+@keyframes lds-flickr-opacity {
+  0% {
+    -webkit-transform: translate(0 0);
+    transform: translate(0 0);
+    opacity: 1;
+  }
+  49.99% {
+    opacity: 1;
+    -webkit-transform: translate(80px, 0);
+    transform: translate(80px, 0);
+  }
+  50% {
+    opacity: 0;
+    -webkit-transform: translate(80px, 0);
+    transform: translate(80px, 0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+/**LOADER STYLE*/
+@-webkit-keyframes lds-flickr-opacity {
+  0% {
+    -webkit-transform: translate(0 0);
+    transform: translate(0 0);
+    opacity: 1;
+  }
+  49.99% {
+    opacity: 1;
+    -webkit-transform: translate(80px, 0);
+    transform: translate(80px, 0);
+  }
+  50% {
+    opacity: 0;
+    -webkit-transform: translate(80px, 0);
+    transform: translate(80px, 0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+@keyframes lds-flickr {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  50% {
+    -webkit-transform: translate(80px, 0);
+    transform: translate(80px, 0);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+@-webkit-keyframes lds-flickr {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+  50% {
+    -webkit-transform: translate(80px, 0);
+    transform: translate(80px, 0);
+  }
+  100% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+.lds-flickr {
+  position: relative;
+}
+.lds-flickr div {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  top: 60px;
+  left: 20px;
+}
+.lds-flickr div:nth-child(1) {
+  background: #d9541e;
+  -webkit-animation: lds-flickr 2.7s linear infinite;
+  animation: lds-flickr 2.7s linear infinite;
+  -webkit-animation-delay: -1.35s;
+  animation-delay: -1.35s;
+}
+.lds-flickr div:nth-child(2) {
+  background: #172935;
+  -webkit-animation: lds-flickr 2.7s linear infinite;
+  animation: lds-flickr 2.7s linear infinite;
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.lds-flickr div:nth-child(3) {
+  background: #d9541e;
+  -webkit-animation: lds-flickr-opacity 2.7s linear infinite;
+  animation: lds-flickr-opacity 2.7s linear infinite;
+  -webkit-animation-delay: -1.35s;
+  animation-delay: -1.35s;
+}
+.lds-flickr {
+  width: 106px !important;
+  height: 106px !important;
+  -webkit-transform: translate(-53px, -53px) scale(0.53) translate(53px, 53px);
+  transform: translate(-53px, -53px) scale(0.53) translate(53px, 53px);
+}
+/**/

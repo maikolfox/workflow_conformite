@@ -1,4 +1,8 @@
 import React from "react";
+import Processus from "./Processus";
+import FamilleProcessus from "./FamilleProcessus";
+import Source from "./Source";
+import Loader from "./Loader"
 import {
   Button,
   Modal,
@@ -30,19 +34,34 @@ class ModalRensFNC extends React.Component {
       idSource:'',
       idSourceIsSet:false,
       famille:'',
-      familleIsSet:false
+      familleIsSet:false,
+      familleProcessus:FamilleProcessus,
+      listeProcessus:Processus,
+      isLoaded:false,
+      responseSubmit: "",
+      hasError: false
     };
-
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
+    this.handleChangeProcessus=this.handleChangeProcessus.bind(this)
   }
 
+  //PERMET DE FILTRER LES FAMILLE EN FONCTION DES PROCESSUS
+  handleChangeProcessus = e => {
+    e.preventDefault();
+    var filtFam = FamilleProcessus.filter(item => {
+      return item.idProcessus === e.target.value;
+    });
+    this.setState({ familleProcessus: filtFam, processus: e.target.value });
+    console.log(filtFam, this.state.processus);
+      this.setState({famille:filtFam[0].idFamille,familleIsSet :(filtFam[0].idFamille==="")?false:true})
+  };
   handleSubmit = async e=>{
     e.preventDefault();
     console.log(this.state.descritpionProc);
     
-      const response = await fetch('/declarationFNC',
+      const response = await fetch('/create/fnc',
         {
           method: 'POST',
           headers:
@@ -52,25 +71,42 @@ class ModalRensFNC extends React.Component {
           body: JSON.stringify({
               "data":
               {   //TODO RECUPERER LA VARIABLE DE SESSION DU STAFF
-                "descriptionFNC": this.state.descritpionProc,
-                "idProcessus":this.state.processus,
+                "descriptionFNC": this.state.descriptionFnc,
+                "idProcessus":this.state.idProcessus,
                 "idsource": this.state.idSource,
                 "idInitiateur": "maikol.ahoue@bridgebankgroup.com",
                 "qualification":this.state.qualification,
-                "idFamille":this.state.idFamille
+                "idFamille":this.state.famille
               }
             }),
-        });
-      const body = await response.text();
-      this.setState({ responseToPost: JSON.parse(body) });  
+        }).then(res => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              responseSubmit: result.data.message,
+              nestedModal: true,
+            });
+          },
+          (error) => {
+            console.log("124", error.message);
+            alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+            this.setState({
+              isLoaded: true,
+              responseSubmit:"Erreur lors de la communication avec le serveur : "+error.message,
+              hasError: true
+            });
+          });         
+      //const body = await response.text();
+      // this.setState({ responseToPost: JSON.parse(body) });  
       console.log(this.state.responseToPost);
       console.log(this.state.processus);
       this.setState({ processus: null });
-      this.setState({ descritpionProc: "" });
+     // this.setState({ descritpionProc: "" });
       this.setState({ descIsSet: false });
       this.setState({ procIsSet: false });
-      this.toggleNested();
       this.toggle();
+
   }
 
   toggleNested() {
@@ -86,6 +122,34 @@ class ModalRensFNC extends React.Component {
   }
 
   render() {
+    var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
+    var source =Source.map((item, i) => {
+      return (
+        <option key={i} value={item.idSource}>
+          {item.libelleSource}
+        </option>
+      );
+    });
+    var famProc =
+    this.state.familleProcessus.length > 0 &&
+    this.state.familleProcessus.map((item, i) => {
+      return (
+        <option key={i} value={item.idFamille}>
+          {item.libelleFamille}
+        </option>
+      );
+    });
+  const { listeProcessus } = this.state;
+  let proceList =
+    listeProcessus.length > 0 &&
+    listeProcessus.map((item, i) => {
+      return (
+        <option key={i} value={item.idProcessus}>
+          {item.libelleProcessus}
+        </option>
+      );
+    }, this);
+
     return (
       <div>
         <Button color="danger" onClick={this.toggle}>
@@ -98,6 +162,7 @@ class ModalRensFNC extends React.Component {
           size="lg"
           centered
           aria-labelledby="example-modal-sizes-title-lg"
+          backdrop="static"
         >
           <ModalHeader toggle={this.toggle}>Formulaire de déclaration de la non conformité</ModalHeader>
           <ModalBody>
@@ -106,7 +171,7 @@ class ModalRensFNC extends React.Component {
                 {/**QUALIFICATION */}
                 <Label for="exampleEmail" md={12}>Qualification de la non conformité:</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.qualificationIsSet} invalid={!this.state.qualificationIsSet}
+                  <Input valid={this.state.qualificationIsSet} //invalid={!this.state.qualificationIsSet}
                     type="select"
                     id="selectAgence"
                     name="selectbasic"
@@ -128,7 +193,7 @@ class ModalRensFNC extends React.Component {
                 {/**PROCESSUS */}
                 <Label for="exampleEmail" md={4}>Selectionner le processus :</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.idProcessusIsSet} invalid={!this.state.idProcessusIsSet}
+                  <Input valid={this.state.idProcessusIsSet} //invalid={!this.state.idProcessusIsSet}
                     type="select"
                     id="selectAgence"
                     name="selectbasic"
@@ -139,11 +204,11 @@ class ModalRensFNC extends React.Component {
                         this.setState({ idProcessusIsSet: true })
                       }
                       else { this.setState({ idProcessusIsSet: false }) }
+                      this.handleChangeProcessus(e)
                     }
                     }>
                     <option value="" defaultValue ></option>
-                    <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
-                    <option value="Processus 2">Processus 2</option>
+                    {proceList}
                   </Input>
                   <FormText hidden={this.state.idProcessusIsSet}>Selectionner processus</FormText>
                 </Col>
@@ -151,7 +216,7 @@ class ModalRensFNC extends React.Component {
                 <Row>&nbsp;</Row>
                 <Label for="exampleEmail" md={4}>Selectionner la source :</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.idSourceIsSet} invalid={!this.state.idSourceIsSet}
+                  <Input valid={this.state.idSourceIsSet} ////invalid={this.state.idSourceIsSet}
                     type="select"
                     id="selectAgence"
                     name="selectbasic"
@@ -165,8 +230,7 @@ class ModalRensFNC extends React.Component {
                     }
                     }>
                     <option value="" defaultValue ></option>
-                    <option value="R1-kader.diallo@bridgebankgroup.com">Gerer la relation client</option>
-                    <option value="Processus 2">Processus 2</option>
+                    {source}
                   </Input>
                   <FormText hidden={this.state.idSourceIsSet}>Selectionner la source</FormText>
                 </Col>
@@ -174,7 +238,7 @@ class ModalRensFNC extends React.Component {
                 <Row>&nbsp;</Row>
                 <Label for="selectFamille" md={4}>Selectionner la famille :</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.familleIsSet} invalid={!this.state.familleIsSet}
+                  <Input valid={this.state.familleIsSet} //invalid={!this.state.familleIsSet}
                     type="select"
                     id="selectFamille"
                     name="selectFamille"
@@ -187,18 +251,8 @@ class ModalRensFNC extends React.Component {
                       else { this.setState({ familleIsSet: false }) }
                     }
                     }>{/**TODO FAMILLE */}
-                    <option value="" defaultValue ></option>
-                    <option value="S1">Politique Qualité</option>
-                    <option value="S2">Revue de Direction</option>
-                    <option value="S3">Objectifs Stratégiques</option>
-                    <option value="S4">Risques processus</option>
-                    <option value="S5">Réclamation client</option>
-                    <option value="S6">Actions correctives/ correctrices</option>
-                    <option value="S7">Efficacité des actions</option>
-                    <option value="S8">Tableaux de bord</option>
-                    <option value="S9">Planification commerciale</option>
-                    <option value="S14">Objectifs</option>
-
+                    {/* <option value="" defaultValue ></option> */}
+                   {famProc}
                   </Input>
                   <FormText hidden={this.state.familleIsSet}>Selectionner la famille</FormText>
                 </Col>
@@ -206,7 +260,7 @@ class ModalRensFNC extends React.Component {
                 {/**DESCRIPTION DE LA NON CONFORMITE */}
                 <Label for="exampleEmail" md={12}>Description de la non conformité entre 99 et 600 caractères ( {this.state.descriptionFnc.length}/600) :  </Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
-                  <Input valid={this.state.descriptionFncIsSet} invalid={!this.state.descriptionFncIsSet}
+                  <Input valid={this.state.descriptionFncIsSet} //invalid={!this.state.descriptionFncIsSet}
                     type="textarea"
                     id="selectAgence"
                     name="selectbasic"
@@ -215,7 +269,8 @@ class ModalRensFNC extends React.Component {
                     value={this.state.descriptionFnc}
                     onChange={e => {
                       this.setState({ descriptionFnc: e.target.value })
-                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim !== null &&  e.target.value.length>=100) {
+
+                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim() !== "" &&  e.target.value.length>=100) {
                         this.setState({ descriptionFncIsSet: true })
                       }
                       else { this.setState({ descriptionFncIsSet: false }) }}}>
@@ -242,8 +297,9 @@ class ModalRensFNC extends React.Component {
           onClosed={this.state.closeAll ? this.toggle : undefined}
           centered
           size="sm"
+          backdrop="static"
         >
-          <ModalHeader toggle={this.toggleNested} >Formulaire envoyé</ModalHeader>
+          <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
         </Modal>
       </div>
     );

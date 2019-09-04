@@ -15,7 +15,7 @@ class NavbarMain extends React.Component {
     return (
       <Navbar className='headerStyle' light expand="md">
         <NavbarBrand href="/">
-          <img src="./image/logoBridgeBank.png" alt="BBG" height="75%" width="75%" />
+          <img src="./image/logoBridgeBank.png" alt="Accueil" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>
         <h1 id="navBarText">Workflow FNC</h1>
         <Nav className="ml-auto" navbar>
