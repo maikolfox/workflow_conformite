@@ -113,8 +113,7 @@ class ModalRensFNC extends React.Component {
     this.setState(prevState => ({
       modal: !prevState.modal
     }));
-    this.setState({ descIsSet: false, 
-      procIsSet: false ,
+    this.setState({
       descriptionFnc: '',
       descriptionFncIsSet: false,
       idProcessus: "",

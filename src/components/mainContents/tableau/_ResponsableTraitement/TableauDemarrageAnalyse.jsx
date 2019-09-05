@@ -13,7 +13,10 @@ import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
-
+import Columns from '../../../assets/ColumDetailsFnc';
+import ActeurList from '../../../assets/ActeurData'
+import ActeurColumns from '../../../assets/ActeurColumns'
+import Loader from "../../../assets/Loader"
 
 import {
   Button,
@@ -82,7 +85,10 @@ export default class DemarrageAnalyse extends React.Component {
         selectedAnalyseIndex:null,
         selectedAnalyse: null,
 
-        unAutorize:false
+        unAutorize:false,
+        libelleProcessus:'',
+        libelleFamille:'',
+        libelleSource:''
       }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -318,57 +324,17 @@ export default class DemarrageAnalyse extends React.Component {
 
 
   render() {
-    const columns = [
-      {
-        Header: 'Date de déclaration',
-        accessor: 'dateDeclaration',
-      },
-      {
-        Header: 'Numéro de fiche',
-        accessor: 'numeroId',
-      },
-      {
-        Header: 'Description de la fiche',
-        accessor: 'descriptionFnc',
-      },
-
-      {
-        Header: 'Processus',
-        accessor: 'idProcessus',
-      }
-    ];
-
    
+
+    var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
+
 ///LIBRARY//////////////////////////////////////////////
     library.add(faPen,faBan, faTrash,faPlusCircle);
 ////////////////////////////////////////////////////////
+    
 
-    const ActeurColumns = [
-      {
-        Header: 'Prenom nom',
-        accessor: 'nomPrenom',
-      },
-
-      {
-        Header: 'Fonction',
-        accessor: 'fonction',
-      },
-
-      {
-        Header: 'Service',
-        accessor: 'service',
-      },
-
-      {
-        Header: 'email',
-        accessor: 'idActeur',
-      },
-
-    ]
-
+    //ANALYSE
     const analyseColum = [
-
-
       {
         Header: 'N° de l\'analyse',
         accessor: 'libelleAt',
@@ -399,22 +365,7 @@ export default class DemarrageAnalyse extends React.Component {
         accessor: 'idActeur',
       },
     ]
-    //MISE EN FORM DU JSON POUR LES ACTEURS
-    const dataActeur = [
-      {
-        nomPrenom: 'Ahoue romeo',
-        fonction: 'Developper web',
-        service: 'IT',
-        idActeur: 'ahoueromeo@gmail.com'
-      },
-      {
-        nomPrenom: 'Ahoue Maikol',
-        fonction: 'Analyste programmeur',
-        service: 'RH',
-        idActeur: 'maikol.ahoue@bridgebankgroup.com'
-      }
-
-    ];
+    
 
     if(this.state.unAutorize)
     {
@@ -423,6 +374,8 @@ export default class DemarrageAnalyse extends React.Component {
 
 else
     return (
+
+      
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
         <div>
@@ -431,6 +384,7 @@ else
             toggle={this.toggle}
             className={this.props.className}
             size="lg"
+            style={{maxWidth: '1600px', width: '80%'}}
             centered
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
@@ -442,15 +396,15 @@ else
                 <TabPanel whenActive={1}>
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                   {/**QUALIFICATION FNC*/}
-                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
+                  <MediaAsset libelle="Qualification" content={this.state.qualification===1? "Mineur" :"Majeur"} />
                   {/**DESCRIPTION FNC*/}
                   <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
                   {/**SOURCE*/}
-                  <MediaAsset libelle="Source" content={this.state.source} />
+                  <MediaAsset libelle="Source" content={this.state.libelleSource} />
                   {/**PROCESSUS*/}
-                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+                  <MediaAsset libelle="Processus" content={this.state.libelleProcessus} />
                   {/*FAMILLE*/}
-                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                  <MediaAsset libelle="Famille" content={this.state.libelleFamille} />
                 </TabPanel>
 
                 {/* ETAPE 2 FORMULAIRE ANALYSE */}
@@ -461,7 +415,7 @@ else
                       <Progress animated color="danger" value="45" />
                       <br></br>
                       <h1 style={{ textAlign: "center" }}>Formulaire d'analyse</h1>
-                      <Col><small>Veuillez remplir le formulaire pour poursuivre</small></Col>
+                      <Col><small style={{textAlign:"center"}}>Veuillez remplir le formulaire pour poursuivre</small></Col>
 
                       {/*Correction*/}
                       <Label for="exampleEmail" md={12}>Correction</Label>
@@ -573,7 +527,7 @@ else
                     loading={!this.state.isLoaded}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={dataActeur}
+                    data={ActeurList}
                     columns={ActeurColumns}
                     previousText={"Précedent"}
                     nextText={"Suivant"}
@@ -822,7 +776,7 @@ else
                     loading={!this.state.isLoaded}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={dataActeur}
+                    data={ActeurList}
                     columns={ActeurColumns}
                     previousText={"Précedent"}
                     nextText={"Suivant"}
@@ -845,7 +799,6 @@ else
                                 idActeur:rowInfo.original.idActeur
                               });
                               console.log(rowInfo.original);
-                            
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
@@ -870,8 +823,6 @@ else
                     </Tab>
                   </Row>
                 </TabPanel>
-
-
                 {/* Cette section permet de positionner 
                     les bouttons "suivant" et "precedent" 
                     et de le  masquer au besoin 
@@ -924,7 +875,7 @@ else
             onClosed={this.state.closeAll ? this.toggle : undefined}
             centered
             size="sm">
-            <ModalHeader toggle={this.toggleNested} >{this.state.responseSubmit}</ModalHeader>
+            <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
           </Modal>
         </div>
         {/*REACT  TABLE*/}
@@ -935,7 +886,7 @@ else
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseToPost}
-            columns={columns}
+            columns={Columns}
             previousText={"Précedent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}
@@ -944,8 +895,7 @@ else
             getTrProps={(state, rowInfo) => {
               if (rowInfo && rowInfo.row) {
                 return {
-                  onClick: (e) => {
-                    
+                  onClick: (e) => {                   
                       e.preventDefault();
                       this.toggle();
                       this.setState({
@@ -955,9 +905,12 @@ else
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
                         idFnc: rowInfo.original.idFnc,
+                        qualification:rowInfo.original.qualification,
+                        libelleFamille:rowInfo.original.libelleFamille,
+                        libelleSource:rowInfo.original.libelleSource,
+                        libelleProcessus:rowInfo.original.libelleProcesus
                       });
-                      console.log(rowInfo.index);
-                    
+                      console.log(rowInfo.index);                   
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
@@ -970,7 +923,5 @@ else
             }} />
         </div>
           </React.Fragment>)
-  }
-
-
+          }
 }

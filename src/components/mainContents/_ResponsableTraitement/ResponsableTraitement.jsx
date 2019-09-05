@@ -22,7 +22,7 @@ import DemarrerAnalyse from '../subMainContent/_ResponsableTraitement/DemarrerAn
 const ResponsableTraitement = ({ match }) => (
     <React.Fragment>
 
-        <Row noGutters="true" >
+        <Row noGutters={true} >
             <Col md="2">
                 <ListGroup >
                     <ListGroupItem style={{backgroundColor:"#172935",color:'white'}}  >

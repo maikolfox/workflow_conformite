@@ -1,6 +1,6 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen,faPlusCircle,faBan } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPen,faPlusCircle,faBan,faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,7 +14,9 @@ import "react-table/react-table.css";
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 //import Authorization from '../../Authorization_401';
-
+import ActeurList from '../../../assets/ActeurData';
+import ActeurColumns from '../../../assets/ActeurColumns';
+import Columns from '../../../assets/ColumDetailsFnc'
 
 import {
   Button,
@@ -74,6 +76,7 @@ export default class TableauCritere extends React.Component {
         acteurTraitant: null,
         idActeurIsSet :false,
         
+        nomPrenom:'',
         echeance: '',
         echeanceIsSet: false,
         isLoadedAna:false,
@@ -165,11 +168,7 @@ export default class TableauCritere extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          
-          
-          
-
-          
+                 
           this.setState(prevState => ({
             responseToPost: prevState.responseToPost.filter(item => {
               return item.idFnc !== this.state.idFnc;
@@ -431,7 +430,7 @@ export default class TableauCritere extends React.Component {
 
             this.setState({
               isLoaded: true,
-              errorMessage: "Accès refuser !",
+              errorMessage: result.data.message,
               hasError: false,
               unAutorize:true
             });
@@ -456,53 +455,12 @@ export default class TableauCritere extends React.Component {
 
 
   render() {
-    const columns = [
-      {
-        Header: 'Date de déclaration',
-        accessor: 'dateDeclaration',
-      },
-      {
-        Header: 'Numéro de fiche',
-        accessor: 'numeroId',
-      },
-      {
-        Header: 'Description de la fiche',
-        accessor: 'descriptionFnc',
-      },
-
-      {
-        Header: 'Processus',
-        accessor: 'idProcessus',
-      }
-    ];
 
    
 ///LIBRARY//////////////////////////////////////////////
-    library.add(faPen,faBan, faTrash,faPlusCircle);
+    library.add(faPen,faBan, faTrash,faPlusCircle,faEye);
 ////////////////////////////////////////////////////////
 
-    const ActeurColumns = [
-      {
-        Header: 'Prenom nom',
-        accessor: 'nomPrenom',
-      },
-
-      {
-        Header: 'Fonction',
-        accessor: 'fonction',
-      },
-
-      {
-        Header: 'Service',
-        accessor: 'service',
-      },
-
-      {
-        Header: 'email',
-        accessor: 'idActeur',
-      },
-
-    ]
 
    const analyseRetrieveColum=[
     
@@ -565,22 +523,6 @@ export default class TableauCritere extends React.Component {
 
 
 
-    //MISE EN FORM DU JSON POUR LES ACTEURS
-    const dataActeur = [
-      {
-        nomPrenom: 'Ahoue romeo',
-        fonction: 'Developper web',
-        service: 'IT',
-        idActeur: 'ahoueromeo@gmail.com'
-      },
-      {
-        nomPrenom: 'Ahoue Maikol',
-        fonction: 'Analyste programmeur',
-        service: 'RH',
-        idActeur: 'maikol.ahoue@bridgebankgroup.com'
-      }
-
-    ];
 
     // if(this.state.unAutorize)
     // {
@@ -644,9 +586,10 @@ export default class TableauCritere extends React.Component {
                                 correction:rowInfo.original.correction,
                                 actionCorrective:rowInfo.original.actionCorrective,
                                 echeance:rowInfo.original.echeances,
-                                cause:rowInfo.original.cause
+                                cause:rowInfo.original.cause,
+                                nomPrenom:rowInfo.original.idActeur
                               });
-                              console.log(rowInfo.original.id);
+                              console.log(rowInfo.original);
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedAnaCreIndex ? '#cd511f' : 'white',
@@ -662,9 +605,20 @@ export default class TableauCritere extends React.Component {
                   <TabPanel whenActive={1}>
                     <Container>
                     <Row>
-                    <Col md="3">
+                     {/**BUTTON VOIR  */}
+                     <Col md="3">
+                    <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : 11 }>
+                      <Button   disabled={(this.state.selectedAnaCreIndex===null  )} outline color="secondary">
+                        <FontAwesomeIcon
+                          icon="eye"
+                          color="black"
+                          size="md"
+                        />{' '}
+                      </Button>
+                    </Tab>
+                    </Col>
                     {/**BUTTON MODIFIER */}
-
+                    <Col md="3">
                     <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : "extends" }>
                       <Button outline color="primary" disabled={(this.state.selectedAnaCreIndex===null  )}  onClick={e=>{
                           e.preventDefault();
@@ -680,8 +634,8 @@ export default class TableauCritere extends React.Component {
                       </Button>
                     </Tab>
                     </Col>
-                    <Col md="3">
                     {/**BUTTON SUPPRIMER  */}
+                    <Col md="3">
                     <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex===null  )? "nope" : "extends" }>
                       <Button   disabled={(this.state.selectedAnaCreIndex===null  )} outline color="danger">
                         <FontAwesomeIcon
@@ -793,12 +747,13 @@ export default class TableauCritere extends React.Component {
                   </Form >
                   <br />
                   <br />
+                  <div  style={{ cursor: 'pointer' }}>
                   <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={dataActeur}
+                    data={ActeurList}
                     columns={ActeurColumns}
                     previousText={"Précédent"}
                     nextText={"Suivant"}
@@ -832,6 +787,7 @@ export default class TableauCritere extends React.Component {
                         return {}
                       }
                     }} />
+                    </div>
                   <br></br>
                   <Row>
                     <Tab id="1" maxStep={3} step={1}>
@@ -845,7 +801,78 @@ export default class TableauCritere extends React.Component {
                         }}>Valider la modification</Button>
                     </Tab>
                   </Row>
-                </TabPanel>               
+                </TabPanel>
+                <TabPanel whenActive={11}>
+                {/* CONSULTATION ANALYSE */}
+                <h1 style={{ textAlign: "center" }}>CONSULTATION ANALYSE</h1>
+                <Form onSubmit={this.handleSubmit}>
+                  <FormGroup>
+                    {/*Correction*/}
+                    <Label for="exampleEmail" md={12}>Correction</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
+                        type="textarea"
+                        disabled={true}
+                        id="selectAgence"
+                        name="selectbasic"
+                        value={this.state.correction}>
+                      </Input>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/*Cause*/}
+                    <Label for="exampleEmail" md={12}>Cause</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
+                        type="textarea"
+                        id="selectAgence"
+                        disabled={true}
+                        name="selectbasic"
+                        value={this.state.cause}>
+                      </Input>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/*Actions correctives*/}
+                    <Label for="exampleEmail" md={12}>Actions correctives</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
+                        type="textarea"
+                        id="selectAgence"
+                        disabled={true}
+                        name="selectbasic"
+                        value={this.state.actionCorrective}>
+                      </Input>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/*Echéances*/}
+                    <Label for="exampleEmail" md={12}>Echéances</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
+                        type="date"
+                        id="selectAgence"
+                        disabled={true}
+                        name="selectbasic"
+                        value={this.state.echeance}
+                      >
+                      </Input>
+                    </Col>
+                    <Row>&nbsp;</Row>
+                    {/* CHOIX DE L'ACTEUR TRAITANT*/}
+                    <Label for="acteurName" md={12}>Acteur traitant :</Label>
+                    <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Input name="acteurName" value={this.state.nomPrenom} disabled={true}></Input>
+                    </Col>
+                  </FormGroup>
+                </Form >
+                <br />
+                <br />
+                <br></br>
+                <Row>
+                  <Tab id="1" maxStep={3} step={1}>
+                    <Button>Retour</Button>
+                  </Tab>
+                  <Col md="8" ></Col>
+                </Row>
+                </TabPanel>                
                 <TabPanel whenActive={2}>
                   {/* CREATION CRITERE D'ANALYSE ANALYSE */}
                   <h1 style={{ textAlign: "center" }}>Création du critère</h1>
@@ -940,7 +967,7 @@ export default class TableauCritere extends React.Component {
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseToPost}
-            columns={columns}
+            columns={Columns}
             previousText={"Précédent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}
@@ -963,7 +990,7 @@ export default class TableauCritere extends React.Component {
                       });
                       console.log(rowInfo.index);
                       this.getAnalyse(rowInfo.original.idFnc)
-                    
+
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',

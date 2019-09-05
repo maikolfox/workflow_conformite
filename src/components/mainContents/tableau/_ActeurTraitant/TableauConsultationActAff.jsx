@@ -15,6 +15,11 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 //import ReactHtmlParser from 'react-html-parser';
 import UploadFile from '../../../assets/uploadFile/TodoItem';
 import FileBase64 from 'react-file-base64';
+import Columns from '../../../assets/ColumDetailsFnc'
+import ActeurList from '../../../assets/ActeurData'
+import ActeurColumns from '../../../assets/ActeurColumns'
+import Loader from "../../../assets/Loader"
+
 
 import {
   Button,
@@ -76,8 +81,7 @@ export default class ConsultationActAff extends React.Component {
         echeance: '',
         echeanceIsSet: false,
 
-        hasError: '',
-        errorMessage: '',
+        hasError: false,
         valRoutage: null,
         responseSubmit: '',
 
@@ -292,15 +296,13 @@ handleAdd(files)
           alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
           this.setState({
             isLoaded: true,
-            errorMessage: error.message,
+            responseSubmit: error.message,
             hasError: true
           });
         });
     this.toggle();
   
   }
-
-
   handleModifyAnalyse = itemId => {
     const updatedItems = this.state.dataStruc.map(item => {
       if (itemId === item.libelleAnalyse) {
@@ -405,7 +407,7 @@ handleAdd(files)
           "data":
           {
             /*TODO A RECUPERER DANS LA SESSION*/
-             "idResponsable": "ahoueromeo@gmail.com",
+             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
              "idProfil": [
               { "idProfil": 1 }
             ]
@@ -420,7 +422,7 @@ handleAdd(files)
             window.close();
             this.setState({
               isLoaded: true,
-              errorMessage: "Accès refuser !",
+              responseSubmit: result.data.message,
               hasError: false,
               unAutorize:true
             });
@@ -444,7 +446,7 @@ handleAdd(files)
           alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
           this.setState({
             isLoaded: true,
-            errorMessage: error.message,
+            responseSubmit:"Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste :"+ error.message,
             hasError: true
           });
         }) 
@@ -464,25 +466,7 @@ handleAdd(files)
 
 
 
-    const columns = [
-      {
-        Header: 'Date de déclaration',
-        accessor: 'dateDeclaration',
-      },
-      {
-        Header: 'Numéro de fiche',
-        accessor: 'numeroId',
-      },
-      {
-        Header: 'Description de la fiche',
-        accessor: 'descriptionFnc',
-      },
-
-      {
-        Header: 'Processus',
-        accessor: 'idProcessus',
-      }
-    ];
+   
 
    
 
@@ -546,6 +530,9 @@ handleAdd(files)
     
     ///<p>\s{0,}<\/p>|<p><br><\/p>{0,1}|<p><strong>\s{0,}<\/strong><\/p>|<p>\w{1,}<\/p>|<(u|o)l><li><br><\/li><\/(u|o)l>|<h(1|2|3)><em><span class=*><\/span><\/em><\/h(1|2|3)>|<h(1|2|3)><br><\/h(1|2|3)>|<p|h(1|2|3)|(o|l)l\/><li><strong><em><span class=*><\/span><\/em><\/strong><\/li>   /;
    
+
+        var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
+
     if(this.state.unAutorize)
     {
         return(<Authorization/>) 
@@ -657,7 +644,7 @@ else
                 <MediaAsset libelle="Echeances" content={this.state.echeance} />
                 {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
                 <Form>
-                <FormGroup>                    
+                <FormGroup>
                     <Label for="exampleEmail" md={12}>Resultat du traitement  100 caractères ({this.state.text.length}/100)</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
                         <Input valid={this.state.textIsSet} invalid={!this.state.textIsSet}
@@ -755,7 +742,7 @@ else
             onClosed={this.state.closeAll ? this.toggle : undefined}
             centered
             size="sm">
-            <ModalHeader toggle={this.toggleNested} >{this.state.responseSubmit}</ModalHeader>
+            <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
           </Modal>
         </div>
         {/*REACT  TABLE*/}
@@ -766,7 +753,7 @@ else
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseArray}
-            columns={columns}
+            columns={Columns}
             previousText={"Précedent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}

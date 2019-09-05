@@ -16,7 +16,7 @@ export default class MediaAsset extends React.Component {
             <React.Fragment>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                     <Media>
-                        <Media body>
+                        <Media body style={{textAlign:"justify"}}>
                             <Media heading>{this.props.libelle}</Media>
                             {this.props.content}
                     </Media>

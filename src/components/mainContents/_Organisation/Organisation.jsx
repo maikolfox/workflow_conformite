@@ -12,7 +12,7 @@ import {
    // BrowserRouter as Router,
    // NavLink, //Link,
     Switch, 
-    Redirect
+  //  Redirect
 } from 'react-router-dom';
 import Statistique from '../../mainContents/subMainContent/_Organisation/StatistiqueWorkflow';
 import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
@@ -21,22 +21,22 @@ import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere
 
 const style_={ color: 'black', textDecoration: 'none' }
 
-const activeSt ={ color: '#cd511f', textDecoration: 'none' }
+const activeSt ={ color: '#061c27', textDecoration: 'none' }
+var  id=1
 
 const Organisation = ({ match }) => (
     <React.Fragment>
-
-        <Row noGutters="true" >
+        <Row noGutters={true}>
             <Col md="2">
                 <ListGroup >
                     <ListGroupItem className="menuHeader" >
                         MENU GENERAL
                     </ListGroupItem>
-                    <ListGroupItem >
-                        <NavLink exact action activeClassName="activeNav" href={`${match.url}/accueil`} style={style_} activeStyle={activeSt} >Accueil</NavLink>
-                    </ListGroupItem>
-                    <ListGroupItem action onClick={e=>{console.log("click")}}>
-                        <NavLink exact activeClassName="activeNav" href={`${match.url}/routage_incorrect`} style={style_} activeStyle={activeSt}>Correction de routage</NavLink>
+                    <ListGroupItem exac action /**style={ id===1 ? style_ : activeSt} onClick={e=>{id=1}} **/>
+                        <NavLink   activeClassName="activeNav" href={`${match.url}/accueil`} style={style_} activeStyle={activeSt} >Accueil</NavLink>
+                    </ListGroupItem >
+                    <ListGroupItem exact action style={ id===2 ? style_ : activeSt} onClick={e=>{id=2}}>
+                        <NavLink  activeClassName="activeNav" href={`${match.url}/routage_incorrect`} style={style_} activeStyle={activeSt}>Correction de routage</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" href={`${match.url}/creation_critere`} style={style_} activeStyle={activeSt} >Création de critère</NavLink>

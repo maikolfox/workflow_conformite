@@ -1,11 +1,12 @@
 import React from 'react';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
+import Columns from '../../../assets/ColumDetailsFnc'
+
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 //import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
@@ -51,10 +52,8 @@ export default class ValidationRoutage extends React.Component {
       responseSubmit:'',
       unAutorize:false,
       libelleProcesus:'',
-      libelleProcesus:'',
       libelleSource:'',
-      libelleFamille:'',
-      qualification:''
+      libelleFamille:''
     }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -185,34 +184,6 @@ export default class ValidationRoutage extends React.Component {
         })
   }
   render() {
-
-    const columns = [
-      {
-        Header: 'Date de déclaration',
-        accessor: 'dateDeclaration',
-      },
-      {
-        Header: 'Numéro de fiche',
-        accessor: 'numeroId',
-      },
-      {
-        Header: 'Famille',
-        accessor: 'libelleFamille',
-      },
-      {
-        Header: 'Source',
-        accessor: 'libelleSource',
-      },
-      {
-        Header: 'Code Processus',
-        accessor: 'idProcessus',
-      },
-      {
-        Header: 'Libelle du processus',
-        accessor: 'libelleProcesus',
-      }
-      
-    ]
     if(this.state.unAutorize)
     {
         return(<Authorization/>) 
@@ -298,7 +269,7 @@ else
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseToPost}
-            columns={columns}
+            columns={Columns}
             previousText={"Précedent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}
