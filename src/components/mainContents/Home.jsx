@@ -7,8 +7,64 @@ import ModalRensFNC from '../assets/Modal';
 
 class Home extends Component {
 
-    render() {
+    // constructor(props){
 
+    //     this.state={
+
+
+    //     }
+    // }
+
+    // componentDidMount(){
+
+
+    //     await fetch('/validationRoutage/fnc',
+    //     {
+    //       method: 'POST',
+    //       headers:
+    //       {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         "data":
+    //         { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
+    //           "idResponsable": "maikol.ahoue@bridgebankgroup.com",
+    //           "idFnc":this.state.idFnc,
+    //           "statutRoutage":this.state.valRoutage
+    //         }
+    //       })
+    //     }).then(res => res.json())
+    //     .then(
+    //     (result) => {
+    //       console.log(this.state.selected);
+    //       this.setState(prevState => ({
+    //         responseToPost: prevState.responseToPost.filter(item => {
+    //           return item.idFnc !== this.state.idFnc;
+    //         })
+    //       }))
+    //       this.setState({
+    //         isLoaded: true,
+    //         responseSubmit: result.data.message,
+    //         nestedModal:true,
+    //       });
+    //       console.log(this.state.selected) ;
+  
+    //     },
+    //     (error) => {
+    //       console.log("124",error.message);
+    //       alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+    //       this.setState({
+    //         isLoaded: true,
+    //         errorMessage:error.message,
+    //         hasError:true
+    //       });
+    //     });
+    //   //this.toggleNested();
+    //   this.toggle();
+    // }
+
+    // }
+    render() {
         return (
             <div>
                 <Jumbotron fluid >

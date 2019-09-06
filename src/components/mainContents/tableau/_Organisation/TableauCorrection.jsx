@@ -379,6 +379,8 @@ let proceList =
       nextText={"Suivant"}
       rowsText={"Ligne(s)"}
       ofText={"sur "}
+      caseInsensitiveFiltering = {true}
+      subStringFiltering = {true}
       loadingText="Chargement en cours..."
       getTrProps={(state, rowInfo) => {
         if (rowInfo && rowInfo.row) {
