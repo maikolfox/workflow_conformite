@@ -17,9 +17,6 @@ import Columns from '../../../assets/ColumDetailsFnc';
 import ActeurList from '../../../assets/ActeurData'
 import ActeurColumns from '../../../assets/ActeurColumns'
 import Loader from "../../../assets/Loader"
-import FilterCaseInsensitive from '../../../assets/filterInsensitive'
-
-
 
 import {
   Button,
@@ -34,14 +31,12 @@ import {
   Label,
   Row, 
   Col,
-  Progress,Container,
-  Tooltip  ,Fade
- 
+  Progress,Container ,Fade
 } from "reactstrap";
 
 
 export default class DemarrageAnalyse extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state =
@@ -82,6 +77,7 @@ export default class DemarrageAnalyse extends React.Component {
 
         hasError: '',
         errorMessage: '',
+        valRoutage: null,
         responseSubmit: '',
 
         dataStruc: [],
@@ -92,29 +88,20 @@ export default class DemarrageAnalyse extends React.Component {
         unAutorize:false,
         libelleProcessus:'',
         libelleFamille:'',
-        libelleSource:'',
-        valRoutage:false,
-
-    }
+        libelleSource:''
+      }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleSubmitValidation = this.handleSubmitValidation.bind(this);
-
     this.currentDate = this.currentDate.bind(this);
     this.handleModifyAnalyse=this.handleModifyAnalyse.bind(this);
     this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
     this.newAnalyse=this.newAnalyse.bind(this);
-    this.toggleToolTips=this.toggleToolTips.bind(this);
   };
 
 
-  toggleToolTips() {
-    this.setState(prevState=>({
-      tooltipOpen: !prevState.tooltipOpen
-  }));
-  }
+
 
   createAnalyse = event => {
     event.preventDefault();
@@ -148,58 +135,6 @@ export default class DemarrageAnalyse extends React.Component {
     today = yyyy + '-' + mm + '-' + dd;
     return today;
   }
-
-  handleSubmitValidation = async e => {
-    e.preventDefault();
-    console.log(this.state.descriptionFnc);
-    console.log(this.state.idFnc);
-    console.log(this.state.valRoutage);
-     await fetch('/validationRoutage/fnc',
-      {
-        method: 'POST',
-        headers:
-        {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "data":
-          { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-            "idFnc":this.state.idFnc,
-            "statutRoutage":this.state.valRoutage
-          }
-        })
-      }).then(res => res.json())
-      .then(
-      (result) => {
-        console.log(this.state.selected);
-        this.setState(prevState => ({
-          responseToPost: prevState.responseToPost.filter(item => {
-            return item.idFnc !== this.state.idFnc;
-          })
-        }))
-        this.setState({
-          isLoaded: true,
-          responseSubmit: result.data.message,
-          nestedModal:true,
-        });
-        console.log(this.state.selected) ;
-
-      },
-      (error) => {
-        console.log("124",error.message);
-        alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-        this.setState({
-          isLoaded: true,
-          errorMessage:error.message,
-          hasError:true
-        });
-      });
-    //this.toggleNested();
-    this.toggle();
-  }
-
-
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -336,7 +271,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.setState({dataStruc:[]})
   }
   async componentDidMount() {
-      await fetch("/consult/fnc",
+      await fetch("/consultBonRoutage/fnc",
       {
         method: 'POST',
         headers:
@@ -387,13 +322,9 @@ export default class DemarrageAnalyse extends React.Component {
         })
   }
 
-  render() {
-  const buttonDemarrerAna= <Button color="success" >{'Demarrer l\'analyse'}</Button>                
-  const buttonSoumettre=<Button color="danger" onClick={this.handleSubmitValidation}>
-  Soumettre la fiche pour correction 
-  </Button>
 
-    const conditionnalBoutton=(this.state.valRoutage) ?  buttonSoumettre : buttonDemarrerAna
+  render() {
+   
 
     var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
 
@@ -461,9 +392,7 @@ else
             <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
             <ModalBody>
               <TabSwitcher>
-                {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE-VALIDATION ROUTAGE*/}
-               
-
+                {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
                 <TabPanel whenActive={1}>
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                   {/**QUALIFICATION FNC*/}
@@ -476,53 +405,6 @@ else
                   <MediaAsset libelle="Processus" content={this.state.libelleProcessus} />
                   {/*FAMILLE*/}
                   <MediaAsset libelle="Famille" content={this.state.libelleFamille} />
-                  <hr></hr>
-                  <Form onSubmit={this.handleSubmit}>
-                <FormGroup check>
-                  <FormGroup tag="fieldset">
-                    <legend>Validation routage</legend>
-                    <FormGroup check style={{color:'red'}}>
-                    <Row>
-                      <Col md={{ size: '2'}}>
-                      <Label check>
-                        <span id="TooltipExample">
-                        <Input type="checkbox" name="radio1" onChange={e =>{ 
-                        this.setState(prevState=>({
-                          valRoutage:!prevState.valRoutage
-                        }));
-                        
-                        console.log(e.target.value)
-                        }}  />{' '}Routage incorrect
-                        </span>
-                        <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggleToolTips}>
-                           <p> Cocher cette case ,appuyer ensuite sur le boutton  "Soummettre la fiche pour correction" pour envoyer la FNC à l'Organisation pour correction</p>
-                      </Tooltip>
-                      </Label>
-                      </Col>
-                      {/* <Col md={{ size: '4'}}>
-                           <Button  color="danger" onClick={this.handleSubmit} hidden={!(this.state.valRoutage!==false)}>
-                               <span style={{fontSize:'80%'}}>Signaler un mauvais routage</span>
-                           </Button>
-                       </Col> */}
-                          <Col md={{ size: '4', offset: 2 }}>
-                              <TabPanel whenActive={1}>
-                                <Tab id="1" maxStep={3} step="next">
-
-                                  {conditionnalBoutton}
-
-                                </Tab>
-                              </TabPanel>
-
-                           </Col>
-                       </Row>
-                    </FormGroup>
-                  </FormGroup>
-                </FormGroup>
-              </Form>
-                
-                
-                
-                
                 </TabPanel>
 
                 {/* ETAPE 2 FORMULAIRE ANALYSE */}
@@ -643,7 +525,6 @@ else
                   <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
-                    defaultFilterMethod={FilterCaseInsensitive}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
                     data={ActeurList}
@@ -702,7 +583,6 @@ else
                       <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
-                    defaultFilterMethod={FilterCaseInsensitive}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
                     data={this.state.dataStruc}
@@ -866,13 +746,17 @@ else
                           min={this.currentDate()}
                           name="selectbasic"
                           value={this.state.echeance}
-                          onChange={e => {                   
+                          onChange={e => {
+                            
                               e.preventDefault();
+                              
                                 this.setState({ echeance: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ echeanceIsSet: true })
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
+                              
+                            
                           }}>
                         </Input>
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
@@ -889,7 +773,6 @@ else
                   <br />
                   <ReactTableActeur
                     filterable={true}
-                    defaultFilterMethod={FilterCaseInsensitive}
                     loading={!this.state.isLoaded}
                     minRows={5}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
@@ -945,9 +828,13 @@ else
                     et de le  masquer au besoin 
                 */}
                 {/*MODIFICATION RECAPITULATIF FNC BUTTON*/}
-               
                 <Row noGutters="true" >
-                  
+                  <TabPanel whenActive={1}>
+                    <Col md="10" ></Col>
+                    <Tab id="1" maxStep={3} step="next">
+                      <Button >{'Suivant >>'}</Button>
+                    </Tab>
+                  </TabPanel>
                   {/*FORMULAIRE BUTTON*/}
 
                   <TabPanel whenActive={2}>
@@ -975,15 +862,9 @@ else
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-             {/***CONDITIONNAL BOUTTON */} 
-              {/* <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.dataStruc.length !== 0)}>
+              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.dataStruc.length !== 0)}>
                 Soumettre
-             </Button>{" "} */}
-                <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.valRoutage=== true) || (this.state.dataStruc.length === 0 )}>
-                {this.state.libelle > 2 ? "Soummettre les analyses":"Soummettre l\'analyse" }  
-            </Button>
-             
-             {/**Conditionnal bouton*/}
+            </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
                 Annuler
             </Button>
@@ -1001,7 +882,6 @@ else
         <div style={{ cursor: 'pointer' }}>
           <ReactTable
             filterable={true}
-            defaultFilterMethod={FilterCaseInsensitive}
             loading={!this.state.isLoaded}
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}

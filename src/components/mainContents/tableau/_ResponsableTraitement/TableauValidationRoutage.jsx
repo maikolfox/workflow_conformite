@@ -6,11 +6,10 @@ import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 import Columns from '../../../assets/ColumDetailsFnc'
-
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 //import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
-
+import FilterCaseInsensitive from '../../../assets/filterInsensitive'
 import {
   Button,
   Modal,
@@ -22,9 +21,11 @@ import {
   Form,
   Label,
   Row,
-  //Col
-  
+  Container,
+  Col,
+  Tooltip  
 } from "reactstrap";
+
 
 
 
@@ -48,18 +49,27 @@ export default class ValidationRoutage extends React.Component {
       qualification:'',
       hasError: '',
       errorMessage: '',
-      valRoutage:null,
       responseSubmit:'',
       unAutorize:false,
       libelleProcesus:'',
       libelleSource:'',
-      libelleFamille:''
+      libelleFamille:'',
+      tooltipOpen:false
     }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleToolTips=this.toggleToolTips.bind(this)
   };
+
+
+  toggleToolTips() {
+    this.setState(prevState=>({
+     
+      tooltipOpen: !prevState.tooltipOpen
+  }));
+  }
 
   handleTodoItemRemoved (id) {
     this.setState(prevState => {
@@ -127,7 +137,7 @@ export default class ValidationRoutage extends React.Component {
     });
   }
   toggle() {
-    this.setState({valRoutage:null})
+    this.setState({valRoutage:false})
     this.setState(prevState => ({
       modal: !prevState.modal,
       selected:!prevState.selected
@@ -183,6 +193,8 @@ export default class ValidationRoutage extends React.Component {
           });
         })
   }
+
+  
   render() {
     if(this.state.unAutorize)
     {
@@ -222,32 +234,52 @@ else
                   <FormGroup tag="fieldset">
                     <legend>Validation routage</legend>
                     <FormGroup check>
-                      <Label check style={{color:'green'}}>
+                      {/* <Label check style={{color:'green'}}>
                         <Input type="radio" name="radio1" onChange={e =>{ 
                         this.setState({valRoutage:true});
                         console.log(this.state.valRoutage)
                         }} />{' '}
                         Routage correct - vous vous chargerez du traitement de la non-conformité
-                      </Label>
+                      </Label> */}
                     </FormGroup>
                     <FormGroup check style={{color:'red'}}>
+                    <Row>
+                      <Col>
                       <Label check>
-                        <Input type="radio" name="radio1" onChange={e =>{ 
-                        this.setState({valRoutage:false});
-                        console.log(this.state.valRoutage)
-                        }}  />{' '}
-                        Routage incorrect - vous renverrez la fnc a l'organisation pour correction
+                        <span id="TooltipExample">
+                        <Input type="checkbox" name="radio1" onChange={e =>{ 
+                        this.setState(prevState=>({
+                          valRoutage:!prevState.valRoutage
+                        }));
+                        
+                        console.log(e.target.value)
+                        }}  />{' '}Routage incorrect
+                        </span>
+                        <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggleToolTips}>
+                           <p> Vous renverrez la FNC à l'Organisation pour correction</p>
+                      </Tooltip>
                       </Label>
-                    <Row>&nbsp;</Row>
+                      </Col>
+                      <Col md={{ size: '4'}}>
+                           <Button  color="danger" onClick={this.handleSubmit} hidden={!(this.state.valRoutage!==false)}>
+                               <span style={{fontSize:'80%'}}>Signaler un mauvais routage</span>
+                           </Button>
+                       </Col>
+                       </Row>
                     </FormGroup>
                   </FormGroup>
                 </FormGroup>
               </Form>
+              <Row>          
+                       <Col  md={{ size: '3', offset: '5' }}>
+                       <Button color="secondary" onClick={this.handleSubmit} disabled={(this.state.valRoutage===true)}>
+                        Commencer l'analyse >>
+                       </Button>
+                       </Col>
+                       </Row>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.valRoutage!==null)}>
-                Soumettre
-            </Button>{" "}
+           {" "}
               <Button color="secondary" onClick={this.toggle}>
                 Annuler
             </Button>
@@ -264,6 +296,7 @@ else
         {/*REACT  TABLE*/}
         <div style={{ cursor: 'pointer' }}>
           <ReactTable
+            defaultFilterMethod={FilterCaseInsensitive}
             filterable={true}
             loading={!this.state.isLoaded}
             minRows={5}
@@ -292,7 +325,6 @@ else
                         libelleSource:rowInfo.original.libelleSource,
                         libelleFamille:rowInfo.original.libelleFamille,
                         qualification:rowInfo.original.qualification
-
                       });
                       console.log(rowInfo.index);
                   },

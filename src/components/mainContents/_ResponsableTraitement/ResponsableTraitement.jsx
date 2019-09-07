@@ -31,9 +31,9 @@ const ResponsableTraitement = ({ match }) => (
                     <ListGroupItem  >
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</NavLink>
                     </ListGroupItem>
-                    <ListGroupItem action>
+                    {/* <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/validation_routage`} >Validation routage</NavLink>
-                    </ListGroupItem>
+                    </ListGroupItem> */}
                     <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/demarrer_analyse`}>Demarrer une analyse</NavLink>
                     </ListGroupItem>
