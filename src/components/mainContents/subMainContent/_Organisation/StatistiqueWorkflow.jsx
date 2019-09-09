@@ -58,7 +58,8 @@ class Content extends Component {
         dateFinStat1:'',
         responseToPost: '',
         dataToSend: [],
-        pathChartFile: ''
+        pathChartFile: '',
+        isLoaded:false
       }
     // this.handleSubmit = this.handleSubmit.bind(this);
     // this.handleDownload = this.handleDownload.bind(this);
@@ -81,21 +82,37 @@ class Content extends Component {
               "dateFin":this.state.dateFinStat1
             }
           }),
-      });
-    const body = await response.text();
-    this.setState({ responseToPost: JSON.parse(body) });
-    var dataPropsUpdate =
-    {
-      ...datasProps,
-      labels: this.state.responseToPost.data.libelle,
-      datasets: [{
-        ...chartDataUiParam,
-        data: this.state.responseToPost.data.datas
-      }]
-    };
-    this.setState({ dataToSend: dataPropsUpdate });
-    console.log(dataPropsUpdate);
-    console.log("to send : " + this.state.dataToSend);
+      }).then(res => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            responseToPost: result,
+            hasError: true
+          });
+                  var dataPropsUpdate =
+            {
+              ...datasProps,
+              labels: this.state.responseToPost.data.libelle,
+              datasets: [{
+                ...chartDataUiParam,
+                data: this.state.responseToPost.data.datas
+              }]
+            };
+            this.setState({ dataToSend: dataPropsUpdate });
+        },
+        (error) => {
+          console.log("124", error.message);
+          alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+          this.setState({
+            isLoaded: true,
+            responseToPost:[],
+            dataToSend:[],
+            hasError: true
+          });
+        }); 
+   
+    
   };
 
   render() {
