@@ -251,7 +251,6 @@ else
                         this.setState(prevState=>({
                           valRoutage:!prevState.valRoutage
                         }));
-                        
                         console.log(e.target.value)
                         }}  />{' '}Routage incorrect
                         </span>
