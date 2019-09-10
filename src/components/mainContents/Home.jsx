@@ -4,7 +4,7 @@ import { Col, Row, Container, Jumbotron, //Button, Nav, Input, Form, Modal
 
 import ModalRensFNC from '../assets/Modal';
 //import PanelWorkFlow from './PanelWorkFlow';
-
+var app =require('../../setupProxy')
 class Home extends Component {
 
     // constructor(props){
@@ -14,56 +14,26 @@ class Home extends Component {
 
     //     }
     // }
+componentDidMount(){
+         fetch('/getAuthenticate',
+        {
+          method: 'GET',
+          headers:
+          {
+            'Content-Type': 'application/json',
+          }
+        },
+        ).then(res => res)
+        .then(
+        (result) => {
+        console.log(result)
+        },
+        (error) => {
+          console.log(error.status);
+          alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+        });
+}
 
-    // componentDidMount(){
-
-
-    //     await fetch('/validationRoutage/fnc',
-    //     {
-    //       method: 'POST',
-    //       headers:
-    //       {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({
-    //         "data":
-    //         { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
-    //           "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-    //           "idFnc":this.state.idFnc,
-    //           "statutRoutage":this.state.valRoutage
-    //         }
-    //       })
-    //     }).then(res => res.json())
-    //     .then(
-    //     (result) => {
-    //       console.log(this.state.selected);
-    //       this.setState(prevState => ({
-    //         responseToPost: prevState.responseToPost.filter(item => {
-    //           return item.idFnc !== this.state.idFnc;
-    //         })
-    //       }))
-    //       this.setState({
-    //         isLoaded: true,
-    //         responseSubmit: result.data.message,
-    //         nestedModal:true,
-    //       });
-    //       console.log(this.state.selected) ;
-  
-    //     },
-    //     (error) => {
-    //       console.log("124",error.message);
-    //       alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-    //       this.setState({
-    //         isLoaded: true,
-    //         errorMessage:error.message,
-    //         hasError:true
-    //       });
-    //     });
-    //   //this.toggleNested();
-    //   this.toggle();
-    // }
-
-    // }
     render() {
         return (
             <div>
