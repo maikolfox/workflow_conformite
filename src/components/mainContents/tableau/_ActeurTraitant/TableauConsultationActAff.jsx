@@ -272,7 +272,7 @@ handleAdd(files)
           "idFnc":this.state.idFnc,
           "resultat":this.state.text,
           //TODO RETRIEVE THIS  VALUE FROM SESSION
-          "idActeur":"",
+          "idActeur":"maikol.ahoue@bridgebankgroup.com",
           "data": dataStruct
         })
       }).then(res => res.json())
