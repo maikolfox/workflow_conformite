@@ -31,6 +31,7 @@ import {
   Label,
   Row, 
   Col,
+  Collapse,
  // Progress,
   Container 
 } from "reactstrap";
@@ -60,6 +61,11 @@ export default class TableauCritere extends React.Component {
         idProcessus: '',
         descriptionFnc: '',
         qualification: '',
+
+        libelleSource: '',
+        libelleFamile: '',
+        libelleProcessus: '',
+
 
         correction: '',
         correctionIsSet: '',
@@ -95,6 +101,8 @@ export default class TableauCritere extends React.Component {
 
         selectedAnaCreIndex:null,
         selectedAnaCre:null,
+        collapse:false,
+        collapseDetail:false,
 
         id:null,
         unAutorize:false
@@ -109,11 +117,17 @@ export default class TableauCritere extends React.Component {
     this.newAnalyse=this.newAnalyse.bind(this);
     this.getAnalyse=this.getAnalyse.bind(this);
     this.switchDateFormat=this.switchDateFormat.bind(this);
+    this.toggleCollapse=this.toggleCollapse.bind(this);
+    this.toggleCollapseDetail=this.toggleCollapseDetail.bind(this);
 
   };
 
-
-
+  toggleCollapse() {
+    this.setState(state => ({ collapse: !state.collapse }));
+  }
+  toggleCollapseDetail() {
+    this.setState(state => ({ collapseDetail: !state.collapseDetail }));
+  }
 
   createAnalyse = event => {
     event.preventDefault();
@@ -464,6 +478,163 @@ export default class TableauCritere extends React.Component {
     library.add(faPen,faBan, faTrash,faPlusCircle,faEye);
 ////////////////////////////////////////////////////////
 
+const classScrol={height :'300px' ,overflowX: 'hidden', overflowY: 'auto'};
+const contentConsult=<React.Fragment>
+<h4 style={{ textAlign: "center" }}>CONSULTATION ANALYSE</h4>
+    {/*Correction*/}
+    <Label for="exampleEmail" md={12}>Correction</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        type="textarea"
+        disabled={true}
+        id="selectAgence"
+        name="selectbasic"
+        value={this.state.correction}>
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/*Cause*/}
+    <Label for="exampleEmail" md={12}>Cause</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input
+        type="textarea"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.cause}>
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/*Actions correctives*/}
+    <Label for="exampleEmail" md={12}>Actions correctives</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        type="textarea"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.actionCorrective}>
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/*Echéances*/}
+    <Label for="exampleEmail" md={12}>Echéances</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        type="date"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.echeance}
+      >
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/* CHOIX DE L'ACTEUR TRAITANT*/}
+    <Label for="acteurName" md={12}>Acteur traitant :</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input name="acteurName" value={this.state.nomPrenom} disabled={true}></Input>
+    </Col>
+</React.Fragment>
+
+const contentConsultDetailfnc=<React.Fragment>
+<h4 style={{ textAlign: "center" }}>CONSULTATION DETAILS FNC</h4>
+    {/*Qualification*/}
+    <Label for="exampleEmail" md={12}>Qualification</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        type="text"
+        disabled={true}
+        id="selectAgence"
+        name="selectbasic"
+        value={this.state.qualification===1 ? "Mineure":"Majeure"}>
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/*Processus*/}
+    <Label for="exampleEmail" md={12}>Processus</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input
+        type="text"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.libelleProcessus}>
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/*Processus*/}
+    <Label for="exampleEmail" md={12}>Famille</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        type="text"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.libelleFamile}>
+      </Input>
+    </Col>
+    <Row>&nbsp;</Row>
+    {/*Source*/}
+    <Label for="exampleEmail" md={12}>Source</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        type="text"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.libelleSource}
+      >
+      </Input>
+      </Col>
+    <Label for="exampleEmail" md={12}>Description</Label>
+    <Col md={{ size: 12, order: 1, offset: -1 }}>
+      <Input 
+        min={3}
+        type="textarea"
+        id="selectAgence"
+        disabled={true}
+        name="selectbasic"
+        value={this.state.descriptionFnc}>
+      </Input>
+    </Col>   
+</React.Fragment>
+
+
+
+const consultationAnalyse_fnc=<React.Fragment>
+<Form>
+  <FormGroup >
+  <Row md={12}>
+  <Col  md={6}>
+  <Button onClick={this.toggleCollapse} outline color="secondary">
+    <FontAwesomeIcon
+      icon="eye"
+      color="black"
+      size="md"
+    />{' Details de l\'analyse'}
+  </Button>
+  <Collapse style={classScrol}  isOpen={this.state.collapse}>
+      {contentConsult}
+    </Collapse>
+  </Col>
+  <Col md={6}>
+  <Button size={25} onClick={this.toggleCollapseDetail} outline color="secondary">
+    <FontAwesomeIcon
+      icon="eye"
+      color="black"
+      size="md"
+    />{' Details de la FNC'}
+  </Button>
+  <Collapse style={classScrol}  isOpen={this.state.collapseDetail}>
+    {contentConsultDetailfnc}
+    </Collapse>
+  </Col>
+  </Row>
+</FormGroup>
+</Form>
+</React.Fragment>
+
 
    const analyseRetrieveColum=[
     
@@ -492,37 +663,7 @@ export default class TableauCritere extends React.Component {
 
    ]
 
-    // const analyseColum = [
-    //   {
-    //     Header: 'N° de l\'analyse',
-    //     accessor: 'libelleAt',
-    //   },
-
-    //   {
-    //     Header: 'Action corrective',
-    //     accessor: 'actionCorrective',
-    //   },
-
-    //   {
-    //     Header: 'Cause',
-    //     accessor: 'cause',
-    //   },
-
-    //   {
-    //     Header: 'Correction',
-    //     accessor: 'correction',
-    //   },
-
-    //   {
-    //     Header: 'Echeance',
-    //     accessor: 'echeance',
-    //   },
-
-    //   {
-    //     Header: 'Email',
-    //     accessor: 'idActeur',
-    //   },
-    // ]
+  
 
 
 
@@ -541,7 +682,7 @@ export default class TableauCritere extends React.Component {
             toggle={this.toggle}
             className={this.props.className}
             size="lg"
-            style={{maxWidth: '1600px', width: '80%'}}
+            style={{maxWidth: '1600px', width: '65%'}}
             centered
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
@@ -616,7 +757,7 @@ export default class TableauCritere extends React.Component {
                           icon="eye"
                           color="black"
                           size="md"
-                        />{' '}
+                        />{' Voir l\'analyse'}
                       </Button>
                     </Tab>
                     </Col>
@@ -631,9 +772,9 @@ export default class TableauCritere extends React.Component {
                       }}>
                         <FontAwesomeIcon
                           icon="pen"
-                          color="blue"
+                          color="#87CEFA"
                           size="md"
-                        />{' '}
+                        />{' Modifier l\'analyse'}
                       </Button>
                     </Tab>
                     </Col>
@@ -643,9 +784,9 @@ export default class TableauCritere extends React.Component {
                       <Button   disabled={(this.state.selectedAnaCreIndex===null  )} outline color="danger">
                         <FontAwesomeIcon
                           icon="trash"
-                          color="red"
+                          color="#FFB6C1"
                           size="md"
-                        />{' '}
+                        />{' Supprimer l\'analyse'}
                       </Button>
                     </Tab>
                     </Col>
@@ -735,7 +876,6 @@ export default class TableauCritere extends React.Component {
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
                               
-                            
                           }}>
                         </Input>
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
@@ -807,66 +947,7 @@ export default class TableauCritere extends React.Component {
                 </TabPanel>
                 <TabPanel whenActive={11}>
                 {/* CONSULTATION ANALYSE */}
-                <h1 style={{ textAlign: "center" }}>CONSULTATION ANALYSE</h1>
-                <Form onSubmit={this.handleSubmit}>
-                  <FormGroup>
-                    {/*Correction*/}
-                    <Label for="exampleEmail" md={12}>Correction</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
-                        type="textarea"
-                        disabled={true}
-                        id="selectAgence"
-                        name="selectbasic"
-                        value={this.state.correction}>
-                      </Input>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/*Cause*/}
-                    <Label for="exampleEmail" md={12}>Cause</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
-                        type="textarea"
-                        id="selectAgence"
-                        disabled={true}
-                        name="selectbasic"
-                        value={this.state.cause}>
-                      </Input>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/*Actions correctives*/}
-                    <Label for="exampleEmail" md={12}>Actions correctives</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
-                        type="textarea"
-                        id="selectAgence"
-                        disabled={true}
-                        name="selectbasic"
-                        value={this.state.actionCorrective}>
-                      </Input>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/*Echéances*/}
-                    <Label for="exampleEmail" md={12}>Echéances</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
-                        type="date"
-                        id="selectAgence"
-                        disabled={true}
-                        name="selectbasic"
-                        value={this.state.echeance}
-                      >
-                      </Input>
-                    </Col>
-                    <Row>&nbsp;</Row>
-                    {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                    <Label for="acteurName" md={12}>Acteur traitant :</Label>
-                    <Col md={{ size: 12, order: 1, offset: -1 }}>
-                      <Input name="acteurName" value={this.state.nomPrenom} disabled={true}></Input>
-                    </Col>
-                  </FormGroup>
-                </Form >
-                <br />
+                {contentConsult}
                 <br />
                 <br></br>
                 <Row>
@@ -879,6 +960,13 @@ export default class TableauCritere extends React.Component {
                 <TabPanel whenActive={2}>
                   {/* CREATION CRITERE D'ANALYSE ANALYSE */}
                   <h1 style={{ textAlign: "center" }}>Création du critère</h1>
+                  <br></br>
+                  <div style={{display: 'block',
+                  marginLeft: '3%',
+                  marginRight: '0%' }}>
+                  {consultationAnalyse_fnc}
+                  </div>
+                  <br></br>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                       {/*Critère*/}
@@ -990,6 +1078,10 @@ export default class TableauCritere extends React.Component {
                         idProcessus: rowInfo.original.idProcessus,
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
+                        libelleSource: rowInfo.original.libelleSource,
+                        libelleFamile: rowInfo.original.libelleFamille,
+                        libelleProcessus: rowInfo.original.libelleProcesus,
+                        qualification:rowInfo.original.qualification
                       });
                       console.log(rowInfo.index);
                       this.getAnalyse(rowInfo.original.idFnc)

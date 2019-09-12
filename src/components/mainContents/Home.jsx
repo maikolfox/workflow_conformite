@@ -33,26 +33,40 @@ componentDidMount(){
           alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
         });
 }
-
     render() {
+        const simpleStyle={textAlign:"justify",fontSize:'120%'}
+
         return (
             <div>
                 <Jumbotron fluid >
                     <Container>
                         <h1>WORKFLOW FNC ? </h1>
                         <Row>
-                            <Col md="8"><p style={{textAlign:"justify"}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur hendrerit molestie arcu non pharetra. 
-                            Integer venenatis mi leo, nec faucibus purus dignissim in. Fusce tincidunt maximus lectus, 
-                            mattis scelerisque lacus consectetur eu. Aenean augue justo, posuere id tellus in, ultricies tincidunt augue. Nam quis finibus nibh. 
-                            Etiam eget vulputate est. Donec rutrum, sapien eu vestibulum aliquet, turpis mi laoreet ipsum, ut mollis ante risus volutpat sapien. 
-                            Ut tortor neque, efficitur eget sapien eu, vehicula auctor mi. Vestibulum dictum laoreet vestibulum. Suspendisse potenti.<br /> 
-                            All you get is this text and a mostly barebones HTML document.
-                            </p></Col>
+                            <Col md="8"><p style={simpleStyle}>
+                            A ce jour, le suivi des fiches de non-conformités enregistrées dans le SMQ se fait 
+                            manuellement. En raison du volume des informations traitées, cela demande un temps 
+                            important de mise à jour des informations, de relances des acteurs traitants et de 
+                            production des statistiques relatives à l’évolution des traitements. A cela s’ajoute 
+                            le risque élevé d’erreur ou de perte des données dus au traitement manuel de l’information. 
+                            La nécessité d’automatiser le suivi du traitement de ces fiches de Non-conformités 
+                            s’est alors présentée.
+                            
+                            </p>
+                            <p style={simpleStyle}>
+                                l'application <strong>"WORKFLOW FNC"</strong> a pour principaux objectifs :
+                                <ul>
+                                    <li>La facilitation de l’enregistrement</li>
+                                    <li>Le traitement</li>
+                                    <li>Le suivi</li>    
+                                </ul>   
+                             des fiches de non-conformités 
+                            </p>
+                            </Col>
                         </Row>
                         <Row>&nbsp;</Row>
                         <Row >
                             <Col md="12">
-                                <ModalRensFNC buttonLabel="Remplir la fiche de non conformité"></ModalRensFNC>
+                                <ModalRensFNC buttonLabel="Déclarer une non-conformité"></ModalRensFNC>
                             </Col>
                         </Row>
                     </Container>
