@@ -212,7 +212,9 @@ export default class DemarrageAnalyse extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          "data": this.state.dataStruc
+          "data": this.state.dataStruc,
+          "numeroId":this.state.numeroId,
+          
         })
       }).then(res => res.json())
       .then(
@@ -994,7 +996,7 @@ else
             onClosed={this.state.closeAll ? this.toggle : undefined}
             centered
             size="sm">
-            <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
+            <ModalBody toggle={this.toggleNested} >{response}</ModalBody>
           </Modal>
         </div>
         {/*REACT  TABLE*/}
@@ -1042,6 +1044,6 @@ else
               }
             }} />
         </div>
-          </React.Fragment>)
-          }
+        </React.Fragment>)
+        }
 }

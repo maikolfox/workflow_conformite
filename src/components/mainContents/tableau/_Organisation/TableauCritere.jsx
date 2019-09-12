@@ -160,9 +160,15 @@ export default class TableauCritere extends React.Component {
         },
         body: JSON.stringify({
           "data": {
-            
+              "mainData":{            
               "idAt":this.state.selectedAnaCre.id ,
               "critere": this.state.critere
+              },
+             "notifData":{
+               "idActeur":this.state.idActeur ,
+              "idResponsableTraitement":this.state.nomPrenom,
+              "numeroId":this.state.numeroId
+            }
           }
         })
       }).then(res => res.json())
@@ -171,11 +177,8 @@ export default class TableauCritere extends React.Component {
                  
           this.setState(prevState => ({
             responseToPost: prevState.responseToPost.filter(item => {
-              return item.idFnc !== this.state.idFnc;
-            
-            
+              return item.idFnc !== this.state.idFnc;  
             })
-          
           }))
           this.setState({
             isLoaded: true,
