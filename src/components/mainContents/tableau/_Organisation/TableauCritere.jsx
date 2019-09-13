@@ -16,7 +16,9 @@ import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 //import Authorization from '../../Authorization_401';
 import ActeurList from '../../../assets/ActeurData';
 import ActeurColumns from '../../../assets/ActeurColumns';
-import Columns from '../../../assets/ColumDetailsFnc'
+import Columns from '../../../assets/ColumDetailsFnc';
+import '../tableau.css';
+
 
 import {
   Button,
@@ -119,7 +121,7 @@ export default class TableauCritere extends React.Component {
     this.switchDateFormat=this.switchDateFormat.bind(this);
     this.toggleCollapse=this.toggleCollapse.bind(this);
     this.toggleCollapseDetail=this.toggleCollapseDetail.bind(this);
-
+    this.consultFncInitier=this.consultFncInitier.bind(this)
   };
 
   toggleCollapse() {
@@ -199,7 +201,8 @@ export default class TableauCritere extends React.Component {
             responseSubmit: result.data.message,
             nestedModal: true,
           });
-          this.forceUpdate();
+          this.toggle();
+          this.consultFncInitier();
         },
         (error) => {
           console.log("124", error.message);
@@ -209,6 +212,7 @@ export default class TableauCritere extends React.Component {
             errorMessage: error.message,
             hasError: true
           });
+        
         });
 
   }
@@ -435,8 +439,9 @@ export default class TableauCritere extends React.Component {
     this.setState({selectedAnaCreIndex:null})
     
   }
-  async componentDidMount() {
-     await fetch("/consultationFncInitier/fnc")
+
+  async consultFncInitier(){
+    await fetch("/consultationFncInitier/fnc")
     .then(res => res.json())
       .then(
         (result) => {
@@ -468,6 +473,10 @@ export default class TableauCritere extends React.Component {
             hasError: true
           });
         })
+
+  }
+  async componentDidMount() {
+    this.consultFncInitier()
   }
 
 
@@ -614,7 +623,7 @@ const consultationAnalyse_fnc=<React.Fragment>
       size="md"
     />{' Details de l\'analyse'}
   </Button>
-  <Collapse style={classScrol}  isOpen={this.state.collapse}>
+  <Collapse className="boderStyle" isOpen={this.state.collapse}>
       {contentConsult}
     </Collapse>
   </Col>
@@ -626,7 +635,7 @@ const consultationAnalyse_fnc=<React.Fragment>
       size="md"
     />{' Details de la FNC'}
   </Button>
-  <Collapse style={classScrol}  isOpen={this.state.collapseDetail}>
+  <Collapse className="bloc"  isOpen={this.state.collapseDetail}>
     {contentConsultDetailfnc}
     </Collapse>
   </Col>
@@ -702,6 +711,7 @@ const consultationAnalyse_fnc=<React.Fragment>
                       </Col>
                     <ReactTableActeur
                     filterable={true}
+                    className="-striped -highlight"
                     style={{ cursor: 'pointer' }}
                     loading={!this.state.isLoadedAna}
                     minRows={5}
@@ -891,7 +901,7 @@ const consultationAnalyse_fnc=<React.Fragment>
                   <br />
                   <br />
                   <div  style={{ cursor: 'pointer' }}>
-                  <ReactTableActeur
+                  <ReactTable
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
@@ -929,7 +939,9 @@ const consultationAnalyse_fnc=<React.Fragment>
                       } else {
                         return {}
                       }
-                    }} />
+                    }} 
+                    defaultPageSize={5}
+                    className="-striped -highlight"/>
                     </div>
                   <br></br>
                   <Row>
@@ -1055,7 +1067,6 @@ const consultationAnalyse_fnc=<React.Fragment>
           <ReactTable
             filterable={true}
             loading={!this.state.isLoaded}
-            minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseToPost}
             columns={Columns}
@@ -1095,7 +1106,11 @@ const consultationAnalyse_fnc=<React.Fragment>
               } else {
                 return {}
               }
-            }} />
+            }} 
+            className="-striped -highlight"
+
+            defaultPageSize={5}
+            />
         </div>
           </React.Fragment>)
   }
