@@ -177,7 +177,7 @@ export default class TableauEtatsNonConformite extends React.Component {
             {
                 Header: 'Cause',
                 accessor: 'cause',
-                width: 180,
+                width: 380,
                 style: { 'white-space': 'unset' },
 
             },
@@ -209,7 +209,7 @@ export default class TableauEtatsNonConformite extends React.Component {
             {
                 Header: 'Responsable traitement',
                 accessor: 'idActeurDelegataire',
-                width: 180,
+                width: 280,
                 style: { 'white-space': 'unset' }
             },
             {
@@ -226,9 +226,9 @@ export default class TableauEtatsNonConformite extends React.Component {
             }
         ]
         return (<React.Fragment>
-            <Row><small>Definissez une période pour la génération des états</small></Row>
+            <Row style={{marginLeft:'2px'}}><small>Definissez une période pour la génération des états</small></Row>
             <br></br>
-            <Row style={{marginLeft:'20px'}}>
+            <Row style={{marginLeft:'2px'}}>
                 <Form>
                     <FormGroup>
                         <Row>

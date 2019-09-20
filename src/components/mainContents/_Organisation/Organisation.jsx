@@ -18,7 +18,7 @@ import Statistique from '../../mainContents/subMainContent/_Organisation/Statist
 import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
 import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
 import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere';
-
+import EtatsNonConformite from '../subMainContent/_Organisation/EtatNonConformite'
 const style_={ color: 'black', textDecoration: 'none' }
 
 const activeSt ={ color: '#061c27', textDecoration: 'none' }
@@ -51,7 +51,7 @@ const Organisation = ({ match }) => (
                         <NavLink exact activeClassName="activeNav" href={`${match.url}/historique`} style={style_} activeStyle={activeSt}>Historique</NavLink>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/etats_fnc`} style={style_} activeStyle={activeSt}>Etats des fiches de non conformité</NavLink>
+                        <NavLink exact activeClassName="activeNav" href={`${match.url}/etats_fnc`} style={style_} activeStyle={activeSt}>Etats des fiches de non conformité</NavLink>
                     </ListGroupItem>
                 </ListGroup>
             </Col>
@@ -62,6 +62,8 @@ const Organisation = ({ match }) => (
                     <Route path="/Organisation/routage_incorrect" component={CorrectionRoutage} />
                     <Route path="/Organisation/creation_critere" component={CreationCritereEvaluation} />
                     <Route path="/Organisation/evaluation_de_critere" component={EvaluationCritere} />
+                    <Route path="/Organisation/etats_fnc" component={EtatsNonConformite} />
+
                 </Switch>
             </Col>
         </Row>
