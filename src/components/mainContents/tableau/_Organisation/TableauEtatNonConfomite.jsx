@@ -1,6 +1,8 @@
+
+import { useState, useRef } from "react"
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen, faPlusCircle, faBan, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faDownload } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -20,14 +22,10 @@ import "react-table/react-table.css";
 //import '../tableau.css';
 //import SelectComp from 'react-select';
 //import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-
+import ExcellExport from "./EtatFncexportComponent"
 
 import {
     Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
     Input,
     FormGroup,
     Form,
@@ -62,6 +60,7 @@ export default class TableauEtatsNonConformite extends React.Component {
         this.consultEtatFnc = this.consultEtatFnc.bind(this);
     }
 
+
     async consultEtatFnc() {
         await fetch("/get_etatFnc/fnc",{
         method: 'POST',
@@ -72,8 +71,8 @@ export default class TableauEtatsNonConformite extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            "dateDeb":"2019-04-20",
-		    "dateArr":"2019-10-20"
+            "dateDeb":this.state.dateDeb,
+		    "dateArr":this.state.dateArr
           }
         })
         })
@@ -88,7 +87,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                             errorMessage: result.data.message,
                             hasError: false,
                             unAutorize: false,
-                            responseToPost:[]
+                            responseToPost: []
                         });
                     }
                     else {
@@ -96,15 +95,16 @@ export default class TableauEtatsNonConformite extends React.Component {
                         const duplicates = findDuplicates(save_, subject => {
                             return subject.numeroId;
                         });
-                        console.log("duplicates",duplicates)
+                        console.log("duplicates", duplicates)
                         const aggData = [];
                         for (var i = 0; i < duplicates.length; i++) {
                             for (var j = 0; j < duplicates[i].length; j++) {
-                                if (j !== 0){
-                                     delete duplicates[i][j].descriptionFNC;
-                                     delete duplicates[i][j].idSource;
-                                     delete duplicates[i][j].statutFnc;
-                                     delete duplicates[i][j].idProcessus;
+                                if (j !== 0) {
+                                    delete duplicates[i][j].descriptionFNC;
+                                    delete duplicates[i][j].libelleSource;
+                                    delete duplicates[i][j].statutFnc;
+                                    delete duplicates[i][j].libelleProcesus;
+                                    delete duplicates[i][j].dateDeclaration;
                                     aggData.push(duplicates[i][j]);
                                 }
                             }
@@ -142,6 +142,8 @@ export default class TableauEtatsNonConformite extends React.Component {
     }
   
     render() {
+        // const currentRecords = this.selectTable.getResolvedState().sortedData;
+
         const mkcEtataFNC_COLUMN = [
             {
                 Header: 'Description',
@@ -149,9 +151,23 @@ export default class TableauEtatsNonConformite extends React.Component {
                 width: 696,
                 style: { 'white-space': 'unset' }
             },
+            // {
+            //     Header: 'Code processus',
+            //     accessor: 'idProcessus',
+            //     width: 180,
+            //     style: { 'white-space': 'unset' }
+            // },
             {
-                Header: 'Code processus',
-                accessor: 'idProcessus',
+                Header: 'Date déclaration',
+                accessor: 'dateDeclaration',
+                width: 180,
+                style: { 'white-space': 'unset' }
+            },
+
+
+            {
+                Header: 'Processus',
+                accessor: 'libelleProcesus',
                 width: 180,
                 style: { 'white-space': 'unset' }
             },
@@ -161,10 +177,15 @@ export default class TableauEtatsNonConformite extends React.Component {
                 width: 180,
                 style: { 'white-space': 'unset' }
             },
-
+            // {
+            //     Header: 'Code source',
+            //     accessor: 'idSource',
+            //     width: 180,
+            //     style: { 'white-space': 'unset' }
+            // },
             {
-                Header: 'Code source',
-                accessor: 'idSource',
+                Header: 'Source',
+                accessor: 'libelleSource',
                 width: 180,
                 style: { 'white-space': 'unset' }
             },
@@ -188,7 +209,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                 style: { 'white-space': 'unset' }
             },
             {
-                Header: 'Echeances action',
+                Header: 'Echeances actions',
                 accessor: 'echeances',
                 width: 180,
                 style: { 'white-space': 'unset' }
@@ -205,7 +226,6 @@ export default class TableauEtatsNonConformite extends React.Component {
                 width: 350,
                 style: { 'white-space': 'unset' }
             },
-
             {
                 Header: 'Responsable traitement',
                 accessor: 'idActeurDelegataire',
@@ -213,9 +233,9 @@ export default class TableauEtatsNonConformite extends React.Component {
                 style: { 'white-space': 'unset' }
             },
             {
-                Header: 'Date cloture provisoire',
+                Header: 'Date de cloture provisoire',
                 accessor: 'dateCloturePro',
-                width: 180,
+                width: 200,
                 style: { 'white-space': 'unset' }
             },
             {
@@ -230,10 +250,11 @@ export default class TableauEtatsNonConformite extends React.Component {
             <br></br>
             <Row style={{marginLeft:'2px'}}>
                 <Form>
-                    <FormGroup>
-                        <Row>
+                    <FormGroup inline>
+                        <Row >
+                            {/**DEBUT */}
                             <Label for="exampleEmail" md={4}>Début</Label>
-                            <Col md={{ size: 4, order: 1, }}>
+                            <Col md={{ size: 3, order: 1, }}>
                                 <Input valid={this.state.dateDebIsSet} //invalid={!this.state.qualificationIsSet}
                                     type="date"
                                     id="selectAgence"
@@ -249,9 +270,9 @@ export default class TableauEtatsNonConformite extends React.Component {
                                 </Input>
                                 <FormText hidden={this.state.dateDebIsSet}>Date début</FormText>
                             </Col>
-                            {/**PROCESSUS */}
+                            {/**FIN */}
                             <Label for="exampleEmail" md={6}>Fin</Label>
-                            <Col md={{ size: 4, order: 2 }}>
+                            <Col md={{ size: 3, order: 2 }}>
                                 <Input valid={this.state.dateArr} //invalid={!this.state.idProcessusIsSet}
                                     type="date"
                                     id="selectAgence"
@@ -269,7 +290,8 @@ export default class TableauEtatsNonConformite extends React.Component {
                                 </Input>
                                 <FormText hidden={this.state.dateArrIsSet}>Date fin</FormText>
                             </Col>
-                            <Col md={{ size: 4, order: 3 }}> <Button disabled={!(this.state.dateArrIsSet&&this.state.dateDebIsSet)} onClick={this.consultEtatFnc}>Valider</Button></Col>
+                            <Col md={{ size: 3, order: 3 }}> <Button disabled={!(this.state.dateArrIsSet&&this.state.dateDebIsSet)} onClick={this.consultEtatFnc}>Valider</Button></Col>
+                            <Col md={{ size: 3, order: 4 }}><ExcellExport data={this.state.responseToPost} boutton={<Button type="button" color="danger" disabled={this.state.responseToPost.length===0}>Telecharger les états</Button>} fileName={"Etat fnc du"+this.state.dateDeb+"_"+this.state.dateArr}/></Col>
                         </Row>
                     </FormGroup>
                 </Form>
@@ -281,7 +303,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                     pivotBy={['numeroId']}
                     //  defaultFilterMethod={FilterCaseInsensitive}
                     minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recuperé"}
+                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recupéré"}
                     data={this.state.responseToPost}
                     columns={mkcEtataFNC_COLUMN}
                     previousText={"Précedent"}
@@ -290,6 +312,9 @@ export default class TableauEtatsNonConformite extends React.Component {
                     ofText={"sur "}
                     loadingText="Chargement en cours..."
                     loading={!(this.state.isLoaded)}
+                    // ref={(r) => {
+                    //     this.selectTable = r;
+                    //   }}
                 />
         </React.Fragment>
         )
