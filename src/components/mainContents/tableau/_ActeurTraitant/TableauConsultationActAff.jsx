@@ -468,30 +468,7 @@ handleAdd(files)
 
    
 
-   
-
-    const ActeurColumns = [
-      {
-        Header: 'Prenom nom',
-        accessor: 'nomPrenom',
-      },
-
-      {
-        Header: 'Fonction',
-        accessor: 'fonction',
-      },
-
-      {
-        Header: 'Service',
-        accessor: 'service',
-      },
-
-      {
-        Header: 'email',
-        accessor: 'idActeur',
-      },
-
-    ]
+  
 
     const analyseColum = [
 
@@ -507,28 +484,22 @@ handleAdd(files)
 
     ]
     //MISE EN FORM DU JSON POUR LES ACTEURS
-    const dataActeur = [
-      {
-        nomPrenom: 'Ahoue romeo',
-        fonction: 'Developper web',
-        service: 'IT',
-        idActeur: 'ahoueromeo@gmail.com'
-      },
-      {
-        nomPrenom: 'Ahoue Maikol',
-        fonction: 'Analyste programmeur',
-        service: 'RH',
-        idActeur: 'maikol.ahoue@bridgebankgroup.com'
-      }
+    // const dataActeur = [
+    //   {
+    //     nomPrenom: 'Ahoue romeo',
+    //     fonction: 'Developper web',
+    //     service: 'IT',
+    //     idActeur: 'ahoueromeo@gmail.com'
+    //   },
+    //   {
+    //     nomPrenom: 'Ahoue Maikol',
+    //     fonction: 'Analyste programmeur',
+    //     service: 'RH',
+    //     idActeur: 'maikol.ahoue@bridgebankgroup.com'
+    //   }
 
-    ];
-    // <p>(?=\s<\/p>)|<p>(?=<br><\/p>)|<p>(?=<br\/><\/p>)|<p|<h(1|2|3)>(?=<strong><em><span class="ql-cursor">?<\/span><\/em><\/strong>(<\/p|<\/h(1|2|3)>))|<p>(?=<strong>(\s|\s<em>\s<\/em>)<\/strong><\/p>)
+    // ];
    
-    //const reg = /<p>(?=\s{2,}<\/p>)|<p>(?=<br><\/p>)|<p>(?=<br\/><\/p>)|<p>(?=<strong>\s{2,}<\/strong><\/p>)/
-    
-    
-    
-    ///<p>\s{0,}<\/p>|<p><br><\/p>{0,1}|<p><strong>\s{0,}<\/strong><\/p>|<p>\w{1,}<\/p>|<(u|o)l><li><br><\/li><\/(u|o)l>|<h(1|2|3)><em><span class=*><\/span><\/em><\/h(1|2|3)>|<h(1|2|3)><br><\/h(1|2|3)>|<p|h(1|2|3)|(o|l)l\/><li><strong><em><span class=*><\/span><\/em><\/strong><\/li>   /;
    
 
         var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>

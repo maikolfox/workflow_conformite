@@ -1,5 +1,4 @@
 
-import { useState, useRef } from "react"
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faDownload } from '@fortawesome/free-solid-svg-icons';
@@ -8,9 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
-import ReactTable from 'react-table';
-import ReactTableActeur from 'react-table';
-import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+import ReactTableEtatFnc from 'react-table';
 import findDuplicates from "find-duplicates";
 import "react-table/react-table.css";
 //import MediaAsset from '../../../assets/MediaAsset'
@@ -22,7 +19,14 @@ import "react-table/react-table.css";
 //import '../tableau.css';
 //import SelectComp from 'react-select';
 //import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-import ExcellExport from "./EtatFncexportComponent"
+
+import MainDataExport from "./MainDataExport";
+import FilterCaseInsensitive from '../../../assets/filterInsensitive';
+import DateFormatTransform from '../../../assets/dateFormatTransform';
+import DisplayNomPrenom from '../../../assets/displayNomPrenom';
+import TransformLibelleStatut from "../../../assets/transFormLibelleStatut";
+
+
 
 import {
     Button,
@@ -52,10 +56,10 @@ export default class TableauEtatsNonConformite extends React.Component {
             hasError: false,
             errorMessage: null,
             unAutorize: false,
-            dateArr :"",
-            dateArrIsSet :"",
-            dateDeb :"",
-            dateDebIsSet :""
+            dateArr:null,
+            dateArrIsSet:false,
+            dateDeb:null ,
+            dateDebIsSet : false
         }
         this.consultEtatFnc = this.consultEtatFnc.bind(this);
     }
@@ -91,7 +95,20 @@ export default class TableauEtatsNonConformite extends React.Component {
                         });
                     }
                     else {
+                        //RETROUVER LES FNC AVEC PLUSIEURS CAUSE, 
+                        //CELA EVITE LA REDONDANCE DES INFORMATIONS 
+                        //INUTILES SUR PLUSIEURS LIGNES
                         const save_ = result.data.responses;
+                        //reformater certain champs
+                        save_.map(el => {
+                            el.echeances = DateFormatTransform(el.echeances);
+                            el.idActeur = DisplayNomPrenom(el.idActeur);
+                            el.idActeurDelegataire = DisplayNomPrenom(el.idActeurDelegataire);
+                            el.statutEva = TransformLibelleStatut(el.statutEva);
+                            el.statut = TransformLibelleStatut(el.statut);
+                            el.statutFnc = TransformLibelleStatut(el.statutFnc);
+                        })
+
                         const duplicates = findDuplicates(save_, subject => {
                             return subject.numeroId;
                         });
@@ -100,11 +117,11 @@ export default class TableauEtatsNonConformite extends React.Component {
                         for (var i = 0; i < duplicates.length; i++) {
                             for (var j = 0; j < duplicates[i].length; j++) {
                                 if (j !== 0) {
-                                    delete duplicates[i][j].descriptionFNC;
-                                    delete duplicates[i][j].libelleSource;
-                                    delete duplicates[i][j].statutFnc;
-                                    delete duplicates[i][j].libelleProcesus;
-                                    delete duplicates[i][j].dateDeclaration;
+                                     duplicates[i][j].descriptionFNC="";
+                                     duplicates[i][j].libelleSource="";
+                                     duplicates[i][j].statutFnc="";
+                                     duplicates[i][j].libelleProcesus="";
+                                     duplicates[i][j].dateDeclaration="";
                                     aggData.push(duplicates[i][j]);
                                 }
                             }
@@ -120,7 +137,8 @@ export default class TableauEtatsNonConformite extends React.Component {
 
                         aggData.map(el => {
                             filteredDATA.push(el);
-                        })
+                        });
+                       console.log("filtered data" ,filteredDATA)
                         this.setState({
                             isLoaded: true,
                             responseToPost: filteredDATA
@@ -290,19 +308,21 @@ export default class TableauEtatsNonConformite extends React.Component {
                                 </Input>
                                 <FormText hidden={this.state.dateArrIsSet}>Date fin</FormText>
                             </Col>
-                            <Col md={{ size: 3, order: 3 }}> <Button disabled={!(this.state.dateArrIsSet&&this.state.dateDebIsSet)} onClick={this.consultEtatFnc}>Valider</Button></Col>
-                            <Col md={{ size: 3, order: 4 }}><ExcellExport data={this.state.responseToPost} boutton={<Button type="button" color="danger" disabled={this.state.responseToPost.length===0}>Telecharger les états</Button>} fileName={"Etat fnc du"+this.state.dateDeb+"_"+this.state.dateArr}/></Col>
+                            <Col md={{ size: 3, order: 3 }}><Button disabled={!(this.state.dateArrIsSet&&this.state.dateDebIsSet)} onClick={this.consultEtatFnc}>Valider</Button></Col>
+                            <Col md={{ size: 3, order: 4 }}><MainDataExport etatFnc={this.state.responseToPost} fileName={"Etat fnc du"+this.state.dateDeb+"_"+this.state.dateArr}/></Col>
                         </Row>
+                        
                     </FormGroup>
                 </Form>
             </Row>
             <Row>
             </Row>
-                <ReactTableActeur
+                <ReactTableEtatFnc
                     filterable={true}
                     pivotBy={['numeroId']}
                     //  defaultFilterMethod={FilterCaseInsensitive}
                     minRows={5}
+                    defaultFilterMethod={FilterCaseInsensitive}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recupéré"}
                     data={this.state.responseToPost}
                     columns={mkcEtataFNC_COLUMN}

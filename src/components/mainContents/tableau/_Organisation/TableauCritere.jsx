@@ -90,7 +90,6 @@ export default class TableauCritere extends React.Component {
         isLoadedAna:false,
         hasError: '',
         errorMessage: '',
-        valRoutage: null,
         responseSubmit: '',
 
         dataStruc: [],
@@ -410,7 +409,7 @@ export default class TableauCritere extends React.Component {
 
   }
 
-  switchDateFormat(dat){
+  switchDateFormat=dat=>{
       var d = new Date(dat);
       var month = d.getMonth() + 1;
       console.log(month);
@@ -487,7 +486,6 @@ export default class TableauCritere extends React.Component {
     library.add(faPen,faBan, faTrash,faPlusCircle,faEye);
 ////////////////////////////////////////////////////////
 
-const classScrol={height :'300px' ,overflowX: 'hidden', overflowY: 'auto'};
 const contentConsult=<React.Fragment>
 <h4 style={{ textAlign: "center" }}>CONSULTATION ANALYSE</h4>
     {/*Correction*/}
@@ -983,7 +981,7 @@ const consultationAnalyse_fnc=<React.Fragment>
                     <FormGroup>
                       {/*Critère*/}
                       <Label for="exampleEmail" md={12}>Critère</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Col md={{ size: 6, order: 1, offset: 0 }}>
                         <Input valid={this.state.critereIsSet} invalid={!this.state.critereIsSet}
                           type="textarea"
                           id="selectAgence"
@@ -1000,6 +998,24 @@ const consultationAnalyse_fnc=<React.Fragment>
                         <FormText hidden={this.state.critereIsSet}>Renseigner le critère</FormText>
                       </Col>                      
                       <Row>&nbsp;</Row>
+                      <Label for="exampleEmail" md={12}>Echeance</Label>
+
+                      <Col md={{ size: 6, order: 1, offset: 0 }}>
+                        <Input valid={this.state.critereIsSet} invalid={!this.state.critereIsSet}
+                          type="date"
+                          id="selectAgence"
+                          name="selectbasic"
+                          value={this.state.critere}
+                          onChange={e => {
+                            this.setState({ critere: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ critereIsSet: true })
+                            }
+                            else { this.setState({ critereIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.critereIsSet}>Renseigner le critère</FormText>
+                      </Col>      
                     </FormGroup>
                   </Form >
                   <br></br>
