@@ -10,37 +10,37 @@ export default class TodoList extends React.Component {
         this.state = {
             todoData: [],
             lastId:0,
-            files: []        
+            criteres: []        
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleDelete = this.handleDelete.bind(this)
         this.handleAdd = this.handleAdd.bind(this)
-        this.getFiles=this.getFiles.bind(this)
+        this.getCriteres=this.getCriteres.bind(this)
 
     }
     
 
-    handleAdd(files) 
+    handleAdd(criteres) 
     {
-        files.map(el => {
+        criteres.map(el => {
             const obj =
             {
                 id: this.state.lastId,
-                critere: el.critere,
-                echeances: el.echeances,
+                name: el.name,
+                base64: el.base64,
             }
-            console.dir(el.echeances)
+            console.dir(el.base64)
             const auxTodo = this.state.todoData;
             this.setState(prevState => ({
-                todoData: auxTodo.concat(obj), lastId: prevState.lastId + 1, todoText: '', files: null
+                todoData: auxTodo.concat(obj), lastId: prevState.lastId + 1, todoText: '', criteres: null
             }))
         })
     }
 
-    getFiles(files)
+    getCriteres(criteres)
     {
-        this.setState({ files: files })
-        this.handleAdd(files)  
+        this.setState({ criteres: criteres })
+        this.handleAdd(criteres)  
     }
 
     handleChange = id => 
