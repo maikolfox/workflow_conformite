@@ -10,8 +10,8 @@ import Processus from "../../../assets/Processus";
 import Source from "../../../assets/Source";
 import FamilleProcessus from "../../../assets/FamilleProcessus";
 import Loader from "../../../assets/Loader";
-import Columns from '../../../assets/ColumDetailsFnc'
-
+import Columns from '../../../assets/ColumDetailsFnc';
+import QualificationList from "../../../assets/qualificationList";
 
 
 
@@ -247,8 +247,7 @@ let proceList =
                       else { this.setState({ qualificationIsSet: false }) }
                     }}>
                     <option value="" defaultValue ></option>
-                    <option value="1">Mineure</option>
-                    <option value="2">Majeure</option>
+                    {QualificationList}
                   </Input>
                   <FormText hidden={this.state.qualificationIsSet}>Selectionner la qualification</FormText>
                 </Col>

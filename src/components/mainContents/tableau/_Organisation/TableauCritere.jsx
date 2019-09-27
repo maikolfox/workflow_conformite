@@ -17,8 +17,10 @@ import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import ActeurList from '../../../assets/ActeurData';
 import ActeurColumns from '../../../assets/ActeurColumns';
 import Columns from '../../../assets/ColumDetailsFnc';
+import CritereItem from './critereItem';
 import '../tableau.css';
-
+import SelectComp from 'react-select';
+import ActeurListSelect from '../../../assets/ActeurDataSelectList';
 
 import {
   Button,
@@ -48,7 +50,7 @@ export default class TableauCritere extends React.Component {
         idFnc: '',
         numeroId: '',
         modal: '',
-        
+      
         selected: null,
         selectedActeur: null,
         selectedAnalyse:null,
@@ -105,6 +107,10 @@ export default class TableauCritere extends React.Component {
         collapse:false,
         collapseDetail:false,
 
+        criterObject: [],
+        critere:"",
+        echeanceCritere:"",
+        echeanceCritereIsSet: false,
         id:null,
         unAutorize:false
       }
@@ -120,8 +126,62 @@ export default class TableauCritere extends React.Component {
     this.switchDateFormat=this.switchDateFormat.bind(this);
     this.toggleCollapse=this.toggleCollapse.bind(this);
     this.toggleCollapseDetail=this.toggleCollapseDetail.bind(this);
-    this.consultFncInitier=this.consultFncInitier.bind(this)
+    this.consultFncInitier=this.consultFncInitier.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
   };
+
+  handleAdd() {
+    const obj = {
+      id: Date.now(),
+      echeance: this.state.echeanceCritere,
+      critere: this.state.critere
+    };
+    const auxTodo = this.state.criterObject;
+    this.setState({
+      criterObject: auxTodo.concat(obj),
+      critere: "",
+      echeanceCritere:"",      
+      critereIsSet :false,
+      echeanceCritereIsSet:false
+    });
+    console.log(this.state.criterObject);
+  }
+
+  handleChange = id => {
+    this.setState(prevState => {
+      const update = prevState.criterObject.map(elem => {
+        if (elem.id === id) {
+          elem.completed = !elem.completed;
+        }
+        return elem;
+      });
+      return {
+        criterObject: update
+      };
+    });
+    console.log(id);
+  };
+
+  handleDelete = id => {
+    var update = [];
+    console.log("id", id);
+    this.setState(prevState => {
+      prevState.criterObject.map(elem => {
+        if (elem.id !== id) {
+          update.push(elem);
+        }
+      });
+      return {
+        criterObject: update
+      };
+    });
+
+    console.log(this.state.criterObject);
+  
+  }
+
 
   toggleCollapse() {
     this.setState(state => ({ collapse: !state.collapse }));
@@ -177,8 +237,8 @@ export default class TableauCritere extends React.Component {
           "data": {
               "mainData":{            
               "idAt":this.state.selectedAnaCre.id ,
-              "critere": this.state.critere
-              },
+              "critereObjet": this.state.criterObject             
+            },
              "notifData":{
                "idActeur":this.state.idActeur ,
               "idResponsableTraitement":this.state.nomPrenom,
@@ -199,6 +259,7 @@ export default class TableauCritere extends React.Component {
             isLoaded: true,
             responseSubmit: result.data.message,
             nestedModal: true,
+            criterObject:[]
           });
           this.toggle();
           this.consultFncInitier();
@@ -209,7 +270,9 @@ export default class TableauCritere extends React.Component {
           this.setState({
             isLoaded: true,
             errorMessage: error.message,
-            hasError: true
+            hasError: true,
+            criterObject:[]
+
           });
         
         });
@@ -485,6 +548,17 @@ export default class TableauCritere extends React.Component {
 ///LIBRARY//////////////////////////////////////////////
     library.add(faPen,faBan, faTrash,faPlusCircle,faEye);
 ////////////////////////////////////////////////////////
+
+const criterObjDisplay = this.state.criterObject.map(item => (
+  <CritereItem
+    key={item.id}
+    item={item}
+    onChange={this.handleChange}
+    deleteTodo={this.handleDelete}
+  />
+));
+
+
 
 const contentConsult=<React.Fragment>
 <h4 style={{ textAlign: "center" }}>CONSULTATION ANALYSE</h4>
@@ -890,58 +964,15 @@ const consultationAnalyse_fnc=<React.Fragment>
                       </Col>
                       <Row>&nbsp;</Row>
                       {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                      <Label for="acteurName" md={12}>Acteur traitant :</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input>
+                      <Label for="acteurName" md={12}>Choix de l'acteur traitant</Label>
+                      <Col md={12}>
+                        <SelectComp onChange={this.handleSelectComp} options={ActeurListSelect} />
+                        <FormText hidden={this.state.idActeurIsSet}>Choisissez un acteur</FormText>
                       </Col>
                     </FormGroup>
                   </Form >
                   <br />
-                  <br />
-                  <div  style={{ cursor: 'pointer' }}>
-                  <ReactTable
-                    filterable={true}
-                    loading={!this.state.isLoaded}
-                    minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={ActeurList}
-                    columns={ActeurColumns}
-                    previousText={"Précédent"}
-                    nextText={"Suivant"}
-                    rowsText={"Ligne(s)"}
-                    ofText={"sur "}
-                    loadingText="Chargement en cours..."
-                    getTrProps={(state, rowInfo) => {
-                      if (rowInfo && rowInfo.row) {
-                        return {
-                          onClick: (e) => {
-                            
-                              e.preventDefault();
-                              this.setState({
-                                selectedActeur: rowInfo.index,
-                                getRow: rowInfo,
-                                // numeroId: rowInfo.original.numeroId,
-                                //idFnc: rowInfo.original.idFnc,
-                                acteurTraitant: rowInfo.original.nomPrenom,
-                                idActeurIsSet:true,
-                                idActeur:rowInfo.original.idActeur
-                              });
-                              console.log(rowInfo.original);
-                            
-                          },
-                          style: {
-                            background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedActeur ? 'white' : 'black'
-                          }
-                        }
-                      } else {
-                        return {}
-                      }
-                    }} 
-                    defaultPageSize={5}
-                    className="-striped -highlight"/>
-                    </div>
-                  <br></br>
+                  
                   <Row>
                     <Tab id="1" maxStep={3} step={1}>
                        <Button>Annuler</Button>
@@ -969,7 +1000,7 @@ const consultationAnalyse_fnc=<React.Fragment>
                 </TabPanel>                
                 <TabPanel whenActive={2}>
                   {/* CREATION CRITERE D'ANALYSE ANALYSE */}
-                  <h1 style={{ textAlign: "center" }}>Création du critère</h1>
+                  <h1 style={{ textAlign: "center" }}>Création de critères</h1>
                   <br></br>
                   <div style={{display: 'block',
                   marginLeft: '3%',
@@ -980,8 +1011,10 @@ const consultationAnalyse_fnc=<React.Fragment>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                       {/*Critère*/}
-                      <Label for="exampleEmail" md={12}>Critère</Label>
-                      <Col md={{ size: 6, order: 1, offset: 0 }}>
+                      <Label for="exampleEmail" md={6}>Critère</Label><Label for="exampleEmail" md={6}>Critère(s) créé(s)</Label>
+                      <Row>
+                        <Col md={{ size: 6, order: 1, offset: 0 }}>
+                      <Col md={{ size: 12, order: 1, offset: 0 }}>
                         <Input valid={this.state.critereIsSet} invalid={!this.state.critereIsSet}
                           type="textarea"
                           id="selectAgence"
@@ -999,23 +1032,30 @@ const consultationAnalyse_fnc=<React.Fragment>
                       </Col>                      
                       <Row>&nbsp;</Row>
                       <Label for="exampleEmail" md={12}>Echeance</Label>
-
-                      <Col md={{ size: 6, order: 1, offset: 0 }}>
-                        <Input valid={this.state.critereIsSet} invalid={!this.state.critereIsSet}
+                      <Col md={{ size: 12, order: 1, offset: 0 }}>
+                        <Input valid={this.state.echeanceCritereIsSet} invalid={!this.state.echeanceCritereIsSet}
                           type="date"
                           id="selectAgence"
                           name="selectbasic"
-                          value={this.state.critere}
+                          min={this.currentDate()}
+                          value={this.state.echeanceCritere}
                           onChange={e => {
-                            this.setState({ critere: e.target.value })
+                            this.setState({ echeanceCritere: e.target.value })
                             if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ critereIsSet: true })
+                              this.setState({ echeanceCritereIsSet: true })
                             }
-                            else { this.setState({ critereIsSet: false }) }
+                            else { this.setState({ echeanceCritereIsSet: false }) }
                           }}>
                         </Input>
-                        <FormText hidden={this.state.critereIsSet}>Renseigner le critère</FormText>
-                      </Col>      
+                        <FormText hidden={this.state.critereIsSet}>Renseigner l'écheance</FormText>
+                          <br></br>
+                        <Button onClick={this.handleAdd} disabled={!(this.state.critereIsSet && this.state.echeanceCritereIsSet)}>Ajouter un critère</Button>
+                      </Col> 
+                      </Col>
+                      <Col md={{ size: 6, order: 1, offset: 0 }} >
+                          {criterObjDisplay}
+                          </Col> 
+                      </Row>    
                     </FormGroup>
                   </Form >
                   <br></br>
@@ -1040,7 +1080,7 @@ const consultationAnalyse_fnc=<React.Fragment>
                     <Tab id="2" maxStep={3} step="prev" >
                       <Button>{'<< Précédent'}</Button>
                     </Tab>
-                    <Col md="8" ></Col>
+                    <Col md="10" ></Col>
                     {/* <Tab id="2" maxStep={3} step="next">
                       <Button disabled={!(this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)}>{'Suivant >>'}&nbsp;</Button>
                     </Tab> */}
@@ -1062,7 +1102,7 @@ const consultationAnalyse_fnc=<React.Fragment>
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={!(this.state.critereIsSet)}>
+              <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.criterObject.length===0)}>
                 Soumettre
             </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>

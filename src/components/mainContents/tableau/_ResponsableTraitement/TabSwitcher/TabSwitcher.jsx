@@ -1,6 +1,6 @@
 import React, { Component, createContext } from "react";
 import {
-  Col //Row, Container, Jumbotron, ListGroup, ListGroupItem //Button, Nav, Input, Form, Modal 
+  Col
 } from 'reactstrap';
 
 const context = createContext({});
@@ -8,9 +8,9 @@ const context = createContext({});
 const { Provider, Consumer } = context;
 
 /**TAB  TELL TO PARENT WHEN IT WAS CLICKED */
-const Tab = ({step,minStep =1, maxStep, id, children }) => (
+const Tab = ({step,minStep =1, maxStep, id, children,padding,paddingRigth=0 ,md="auto" }) => (
   <Consumer>
-    {({ changeTab}) => (<Col onClick={() => changeTab(step,minStep,maxStep ,id)}>{children}</Col>)}
+    {({ changeTab}) => (<Col md={md} style={{paddingLeft:padding ,paddingRight:paddingRigth}} onClick={() => changeTab(step,minStep,maxStep ,id)}>{children}</Col>)}
   </Consumer>
 );
 
@@ -39,11 +39,20 @@ class TabSwitcher extends Component {
 
    if (step==="retourRecap")
    {
+     if(this.state.activeTabId ===10){
      console.log("in extends")
      this.setState({
-         activeTabId: 5
+         activeTabId: 3
       })
-     
+    }
+    if(this.state.activeTabId ===11){
+      console.log("in extends")
+      this.setState({
+          activeTabId: 3
+       })
+     }
+ 
+
    }
   
   if(this.state.activeTabId===10)
@@ -70,7 +79,15 @@ class TabSwitcher extends Component {
      })
     
   }
+
   
+  if (step==="newAnalyse")
+  {
+    console.log("in new")
+    this.setState({
+        activeTabId: 11
+     })
+  }
 
   if (step==="new")
   {

@@ -8,9 +8,9 @@ const context = createContext({});
 const { Provider, Consumer } = context;
 
 /**TAB  TELL TO PARENT WHEN IT WAS CLICKED */
-const Tab = ({step,minStep =1, maxStep, id, children }) => (
+const Tab = ({step,minStep =1, maxStep, id, children ,md="auto" }) => (
   <Consumer>
-    {({ changeTab}) => (<Col onClick={() => changeTab(step,minStep,maxStep ,id)}>{children}</Col>)}
+    {({ changeTab}) => (<Col md={md} onClick={() => changeTab(step,minStep,maxStep ,id)}>{children}</Col>)}
   </Consumer>
 );
 

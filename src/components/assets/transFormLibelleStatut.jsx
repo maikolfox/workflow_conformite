@@ -7,7 +7,7 @@ function transFormLibelleStatut(statutFnc) {
       case "declarer":
         statut = "Déclarer";
         break;
-      case "cloturerProv":
+      case "clotureProv":
         statut = "Cloturer provisoirement";
         break;
       case "routageCorrect":

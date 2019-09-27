@@ -14,11 +14,14 @@ import MediaAsset from '../../../assets/MediaAsset'
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
 import Columns from '../../../assets/ColumDetailsFnc';
-import ActeurList from '../../../assets/ActeurData'
-import ActeurColumns from '../../../assets/ActeurColumns'
-import Loader from "../../../assets/Loader"
-import FilterCaseInsensitive from '../../../assets/filterInsensitive'
+import ActeurList from '../../../assets/ActeurData';
+import ActeurListSelect from '../../../assets/ActeurDataSelectList';
 
+import ActeurColumns from '../../../assets/ActeurColumns'
+import Loader from "../../../assets/Loader";
+import FilterCaseInsensitive from '../../../assets/filterInsensitive';
+import SelectComp from 'react-select';
+import AnalyseColum from "../../../assets/AnalyseColumn"
 
 
 import {
@@ -101,7 +104,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitValidation = this.handleSubmitValidation.bind(this);
-
+    this.handleSelectComp=this.handleSelectComp.bind(this);
     this.currentDate = this.currentDate.bind(this);
     this.handleModifyAnalyse=this.handleModifyAnalyse.bind(this);
     this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
@@ -109,6 +112,11 @@ export default class DemarrageAnalyse extends React.Component {
     this.toggleToolTips=this.toggleToolTips.bind(this);
   };
 
+  handleSelectComp=selectOption=>
+  {
+    console.log(selectOption.value)
+    this.setState({idActeur:selectOption.value,idActeurIsSet:true})
+  }
 
   toggleToolTips() {
     this.setState(prevState=>({
@@ -390,7 +398,7 @@ export default class DemarrageAnalyse extends React.Component {
   }
 
   render() {
-  const buttonDemarrerAna= <Button color="success" >{'Demarrer l\'analyse'}</Button>                
+  const buttonDemarrerAna= <Button color="success">{'Demarrer l\'analyse'}</Button>                
   const buttonSoumettre=<Button color="danger" onClick={this.handleSubmitValidation}>
   Soumettre la fiche pour correction 
   </Button>
@@ -404,38 +412,9 @@ export default class DemarrageAnalyse extends React.Component {
 ////////////////////////////////////////////////////////
     
 
+
     //ANALYSE
-    const analyseColum = [
-      {
-        Header: 'N° de l\'analyse',
-        accessor: 'libelleAt',
-      },
-
-      {
-        Header: 'Action corrective',
-        accessor: 'actionCorrective',
-      },
-
-      {
-        Header: 'Cause',
-        accessor: 'cause',
-      },
-
-      {
-        Header: 'Correction',
-        accessor: 'correction',
-      },
-
-      {
-        Header: 'Echeance',
-        accessor: 'echeance',
-      },
-
-      {
-        Header: 'Email',
-        accessor: 'idActeur',
-      },
-    ]
+    
     
 
     if(this.state.unAutorize)
@@ -464,12 +443,10 @@ else
             <ModalBody>
               <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE-VALIDATION ROUTAGE*/}
-               
-
                 <TabPanel whenActive={1}>
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                   {/**QUALIFICATION FNC*/}
-                  <MediaAsset libelle="Qualification" content={this.state.qualification===1? "Mineur" :"Majeur"} />
+                  <MediaAsset libelle="Qualification" content={this.state.qualification} />
                   {/**DESCRIPTION FNC*/}
                   <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
                   {/**SOURCE*/}
@@ -501,42 +478,27 @@ else
                       </Tooltip>
                       </Label>
                       </Col>
-                      {/* <Col md={{ size: '4'}}>
-                           <Button  color="danger" onClick={this.handleSubmit} hidden={!(this.state.valRoutage!==false)}>
-                               <span style={{fontSize:'80%'}}>Signaler un mauvais routage</span>
-                           </Button>
-                       </Col> */}
                           <Col md={{ size: '4', offset: 2 }}>
                               <TabPanel whenActive={1}>
-                                <Tab id="1" maxStep={3} step="next">
-
+                                <Tab id="1" md={4} padding={0} paddingRigth={0} maxStep={3} step="next">
                                   {conditionnalBoutton}
-
                                 </Tab>
                               </TabPanel>
-
                            </Col>
                        </Row>
                     </FormGroup>
                   </FormGroup>
                 </FormGroup>
               </Form>
-                
-                
-                
-                
-                </TabPanel>
-
-                {/* ETAPE 2 FORMULAIRE ANALYSE */}
-                <TabPanel whenActive={2}>
+              </TabPanel>
+                {/* ETAPE 2 ACTIVE A (11) FORMULAIRE ANALYSE */}
+                <TabPanel whenActive={11}>
+                  {/* MODIFICATION ANALYSE */}
+                  {/* <h4>Progression :</h4>
+                      <Progress animated color="danger" value="45" /> */}
+                  <h1 style={{ textAlign: "center" }}>CREER L'ANALYSE</h1>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
-                      <h4>Progression :</h4>
-                      <Progress animated color="danger" value="45" />
-                      <br></br>
-                      <h1 style={{ textAlign: "center" }}>Formulaire d'analyse</h1>
-                      <Col><small style={{textAlign:"center"}}>Veuillez remplir le formulaire pour poursuivre</small></Col>
-
                       {/*Correction*/}
                       <Label for="exampleEmail" md={12}>Correction</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
@@ -603,112 +565,106 @@ else
                           min={this.currentDate()}
                           name="selectbasic"
                           value={this.state.echeance}
-                          onChange={e => {
+                          onChange={e => {                   
                               e.preventDefault();
-                              
                                 this.setState({ echeance: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ echeanceIsSet: true })
                                 }
                                 else { this.setState({ echeanceIsSet: false }) }
-                              
                           }}>
                         </Input>
-                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheances</FormText>
+                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
                       </Col>
-                      <Row>&nbsp;</Row>
-                    </FormGroup>
-                  </Form>
-                </TabPanel>
-                {/*TODO : charger le json acteur ETAPE 3 AJOUTER UN ACTEUR TRAITANT */}
-                <TabPanel whenActive={3}>
-                  {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                  <h4>Progression :</h4>
-                      <Progress animated color="danger" value="55" />
                       <br></br>
-                      <h1 style={{ textAlign: "center" }}>Choix de l'acteur traitant</h1>
-                      <Col><small>Veuillez remplir choisir un acteur traitant en le selectionnant dans le tableau ci-dessous, 
-                        si vous êtes l'acteur vous pouvez selectionner votre nom</small></Col>
-
-                  <Form >
-                    <FormGroup>
-                      <Label for="acteurName" md={12}>Acteur traitant :</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input>
+                      <Label for="acteurName" md={12}>Choix de l'acteur traitant</Label>
+                      <Col md={12}>
+                        <SelectComp onChange={this.handleSelectComp} options={ActeurListSelect} />
+                        <FormText hidden={this.state.idActeurIsSet}>Choisissez un acteur</FormText>
                       </Col>
                     </FormGroup>
+                    <Row>
+                    <Tab id="1" padding="30px" maxStep={3} step="retourRecap">
+                       <Button>Annuler</Button>
+                    </Tab>
+                    <Col md="8" ></Col>
+                    <Tab id="1" padding="105px" maxStep={3} step="retourRecap">
+                    <Button color="danger" onClick={this.createAnalyse} disabled={!(this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)}>{'Affecter l\'analyse'}&nbsp;</Button>
+                    </Tab>
+                  </Row>
                   </Form >
                   <br />
-                  <br />
-                  <strong>Selectionner un acteur traitant parmis les acteurs ci-dessous :</strong>
-                  <br/>
-                  <ReactTableActeur
-                    filterable={true}
-                    loading={!this.state.isLoaded}
-                    defaultFilterMethod={FilterCaseInsensitive}
-                    minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={ActeurList}
-                    columns={ActeurColumns}
-                    previousText={"Précedent"}
-                    nextText={"Suivant"}
-                    rowsText={"Ligne(s)"}
-                    ofText={"sur "}
-                    loadingText="Chargement en cours..."
-                    getTrProps={(state, rowInfo) => {
-                      if (rowInfo && rowInfo.row) {
-                        return {
-                          onClick: (e) => {
-                            
-                              e.preventDefault();
-                              this.setState({
-                                selectedActeur: rowInfo.index,
-                                getRow: rowInfo,
-                                // numeroId: rowInfo.original.numeroId,
-                                //idFnc: rowInfo.original.idFnc,
-                                acteurTraitant: rowInfo.original.nomPrenom,
-                                idActeur:rowInfo.original.idActeur,
-                                idActeurIsSet:true
-
-                              });
-                              console.log(rowInfo.original);
-                            
-                          },
-                          style: {
-                            background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedActeur ? 'white' : 'black'
-                          }
-                        }
-                      } else {
-                        return {}
-                      }
-                    }} />
                 </TabPanel>
-
-
-                {/*TODO ETAPE 4 RECAPITULATIF ANALYSE
-                DISPOSE D'UN BOUTTON POUR REVENIR AU FORMULAIRE DE L'ETAPE 2
-                */}
-                <TabPanel whenActive={4}>
-                <h4>Progression :</h4>
-                      <Progress animated color="danger" value="90" />
+                <TabPanel whenActive={2}>
+                {/* <h4>Progression :</h4>
+                      <Progress animated color="danger" value="90" /> */}
                       <br></br>
-                      <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s)</h1>
+                      <h1 style={{ textAlign: "center" }}>Analyse(s) créée(s)</h1>
                       <Col>
                         <small>
-                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre.<br/>
-                        La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
-                        de l'Organisation ou DRCJ
+                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre...<br/>
+                        {/* La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
+                        de l'Organisation ou DRCJ */}
                         </small>
                       </Col>
+                      <br></br>
+                      <TabPanel whenActive={2}>
+                    <Container>
+                      <Row>
+                        <Col md="3">
+                          <Tab id="1" maxStep={3} step="newAnalyse" >
+                            <Button outline color="success" onClick={e => {
+                              e.preventDefault();
+                              this.newAnalyse();
+                              //console.log(this.state.selectedAnalyse.libelleAt)
+                            }}>
+                              <FontAwesomeIcon
+                                icon="plus-circle"
+                                color="green"
+                                size="md"
+                              />{' '}
+                            </Button>
+                          </Tab>
+                        </Col>
+                        <Col md="3">
+                          <Tab id="10" maxStep={3} step={"extends"}>
+                            <Button outline color="primary" disabled={(this.state.selectedAnalyseIndex === null)} onClick={e => {
+                              e.preventDefault();
+                              this.setState({ idActeur: null, idActeurIsSet: null })
+                              this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAt);
+                              console.log(this.state.selectedAnalyse.libelleAt)
+                            }}>
+                              <FontAwesomeIcon
+                                icon="pen"
+                                color="blue"
+                                size="md"
+                              />{' '}
+                            </Button>
+                          </Tab>
+                        </Col>
+                        <Col md="3">
+                          <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex === null) ? "nope" : "extends"}>
+                            <Button disabled={(this.state.selectedAnalyseIndex === null)} outline color="danger">
+                              <FontAwesomeIcon
+                                icon="trash"
+                                color="red"
+                                size="md"
+                              />{' '}
+                            </Button>
+                          </Tab>
+                        </Col>
+                      </Row>
+                    </Container>
+                    <br></br>
+                  </TabPanel>
                       <ReactTableActeur
                     filterable={true}
                     loading={!this.state.isLoaded}
                     defaultFilterMethod={FilterCaseInsensitive}
                     minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
+                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune analyse créée"}
                     data={this.state.dataStruc}
-                    columns={analyseColum}
+                    columns={AnalyseColum}
                     previousText={"Précedent"}
                     nextText={"Suivant"}
                     rowsText={"Ligne(s)"}
@@ -741,64 +697,16 @@ else
                       }
                     }} />
                   <br></br>
-                  <TabPanel whenActive={4}>
-                    <Container>
-                    <Row>
-                    <Col md="3">
-                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
-                      <Button outline color="primary" disabled={(this.state.selectedAnalyseIndex===null  )}  onClick={e=>{
-                          e.preventDefault();
-                          this.setState({idActeur:null,idActeurIsSet:null})
-                          this.handleModifyAnalyse(this.state.selectedAnalyse.libelleAt);
-                          console.log(this.state.selectedAnalyse.libelleAt)
-                      }}>
-                        <FontAwesomeIcon
-                          icon="pen"
-                          color="blue"
-                          size="md"
-                        />{' '}
-                      </Button>
-                    </Tab>
-                    </Col>
-                    <Col md="3">
-                    <Tab id="10" maxStep={3} step={(this.state.selectedAnalyseIndex===null  )? "nope" : "extends" }>
-                      <Button   disabled={(this.state.selectedAnalyseIndex===null  )} outline color="danger">
-                        <FontAwesomeIcon
-                          icon="trash"
-                          color="red"
-                          size="md"
-                        />{' '}
-                      </Button>
-                    </Tab>                    
-                    </Col>
-                    <Col md="3">
-                    <Tab id="1" maxStep={3} step="new" >
-                      <Button outline color="success" onClick={e=>{
-                          e.preventDefault();
-                          this.newAnalyse();
-                          //console.log(this.state.selectedAnalyse.libelleAt)
-                      }}>
-                        <FontAwesomeIcon
-                          icon="plus-circle"
-                          color="green"
-                          size="md"
-                        />{' '}
-                      </Button>
-                    </Tab>
-                    </Col>
-
-                    </Row>
-
-                    </Container>
-                  </TabPanel>
-
+                  <Tab id="1" md={1} padding="0px" maxStep={3} step="prev">
+                     <Button>Retour</Button>
+                  </Tab>
                 </TabPanel>
                 {/* ETAPE MODIFICATION ANALYSE
                 */}
                 <TabPanel whenActive={10}>
                   {/* MODIFICATION ANALYSE */}
-                  <h4>Progression :</h4>
-                      <Progress animated color="danger" value="45" />
+                  {/* <h4>Progression :</h4>
+                      <Progress animated color="danger" value="45" /> */}
                   <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
@@ -880,100 +788,34 @@ else
                         <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
                       </Col>
                       <Row>&nbsp;</Row>
-                      {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                      <Label for="acteurName" md={12}>Acteur traitant :</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input name="acteurName" value={this.state.acteurTraitant} disabled={true}></Input>
+                      <br></br>
+                      <Label for="acteurName" md={12}>Choix de l'acteur traitant</Label>
+                      <Col md={12}>
+                        <SelectComp onChange={this.handleSelectComp} options={ActeurListSelect} />
                       </Col>
-                    </FormGroup>
-                  </Form >
-                  <br />
-                  <br />
-                  <ReactTableActeur
-                    filterable={true}
-                    defaultFilterMethod={FilterCaseInsensitive}
-                    loading={!this.state.isLoaded}
-                    minRows={5}
-                    noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-                    data={ActeurList}
-                    columns={ActeurColumns}
-                    previousText={"Précedent"}
-                    nextText={"Suivant"}
-                    rowsText={"Ligne(s)"}
-                    ofText={"sur "}
-                    loadingText="Chargement en cours..."
-                    getTrProps={(state, rowInfo) => {
-                      if (rowInfo && rowInfo.row) {
-                        return {
-                          onClick: (e) => {
-                            
-                              e.preventDefault();
-                              this.setState({
-                                selectedActeur: rowInfo.index,
-                                getRow: rowInfo,
-                                // numeroId: rowInfo.original.numeroId,
-                                //idFnc: rowInfo.original.idFnc,
-                                acteurTraitant: rowInfo.original.nomPrenom,
-                                idActeurIsSet:true,
-                                idActeur:rowInfo.original.idActeur
-                              });
-                              console.log(rowInfo.original);
-                          },
-                          style: {
-                            background: rowInfo.index === this.state.selectedActeur ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedActeur ? 'white' : 'black'
-                          }
-                        }
-                      } else {
-                        return {}
-                      }
-                    }} />
-                  <br></br>
-                  <Row>
-                    <Tab id="1" maxStep={3} step="retourRecap">
-                       <Button>Annuler</Button>
+                      <br></br>
+                    <Row>
+                    <Tab id="1" padding="30px"  maxStep={3} step="retourRecap">
+                      <Button>Annuler</Button>
                     </Tab>
-                    <Col md="8" ></Col>
-                    <Tab id="1" maxStep={3} step="retourRecap">
+                    <Col md="8"></Col>
+                    <Tab id="1" padding="120px" maxStep={3} step="retourRecap">
                         <Button disabled={!(this.state.idActeurIsSet && this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)}color="danger" onClick={e=>{
                           e.preventDefault();
                           this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
                         }}>Valider la modification</Button>
                     </Tab>
-                  </Row>
+                    </Row>
+                    </FormGroup>
+                  </Form >
+                  <br />
+                        
                 </TabPanel>
                 {/* Cette section permet de positionner 
                     les bouttons "suivant" et "precedent" 
                     et de le  masquer au besoin 
                 */}
                 {/*MODIFICATION RECAPITULATIF FNC BUTTON*/}
-               
-                <Row noGutters="true" >
-                  
-                  {/*FORMULAIRE BUTTON*/}
-
-                  <TabPanel whenActive={2}>
-                    <Tab id="2" maxStep={3} step="prev" >
-                      <Button>{'<< Précedent'}</Button>
-                    </Tab>
-                    <Col md="8" ></Col>
-                    <Tab id="2" maxStep={3} step="next">
-                      <Button disabled={!(this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)}>{'Suivant >>'}&nbsp;</Button>
-                    </Tab>
-                  </TabPanel>
-                  {/*CREER ANALYSE BUTTON*/}
-                  <TabPanel whenActive={3}>
-                    <Tab id="1" maxStep={3} step="prev" >
-                      <br />
-                      <Button>{'<< Précedent'}</Button>
-                    </Tab>
-                    <Col md="8" ></Col>
-                    <Tab id="3" maxStep={4} step="next">
-                      <br/>
-                      <Button type="button" disabled={!(this.state.idActeurIsSet&&this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)} onClick={this.createAnalyse}  color="danger">{'Creer l\'analyse'}</Button>
-                    </Tab>
-                  </TabPanel>
-                </Row>
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
@@ -984,7 +826,6 @@ else
                 <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.valRoutage=== true) || (this.state.dataStruc.length === 0 )}>
                 {this.state.libelle > 2 ? "Soummettre les analyses":"Soummettre l\'analyse" }  
             </Button>
-             
              {/**Conditionnal bouton*/}
               <Button color="secondary" onClick={this.toggle}>
                 Annuler

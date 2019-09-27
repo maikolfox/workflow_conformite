@@ -3,6 +3,7 @@ import Processus from "./Processus";
 import FamilleProcessus from "./FamilleProcessus";
 import Source from "./Source";
 import Loader from "./Loader"
+import QualificationList from "./qualificationList"
 import {
   Button,
   Modal,
@@ -138,6 +139,19 @@ class ModalRensFNC extends React.Component {
         </option>
       );
     });
+
+    var source =Source.map((item, i) => {
+      return (
+        <option key={i} value={item.idSource}>
+          {item.libelleSource}
+        </option>
+      );
+    });
+
+
+    
+  
+
     var famProc =
     this.state.familleProcessus.length > 0 &&
     this.state.familleProcessus.map((item, i) => {
@@ -192,8 +206,7 @@ class ModalRensFNC extends React.Component {
                       else { this.setState({ qualificationIsSet: false }) }
                     }}>
                     <option value="" defaultValue ></option>
-                    <option value="1">Mineure</option>
-                    <option value="2">Majeure</option>
+                   {QualificationList}
                   </Input>
                   <FormText hidden={this.state.qualificationIsSet}>Selectionner la qualification</FormText>
                 </Col>
