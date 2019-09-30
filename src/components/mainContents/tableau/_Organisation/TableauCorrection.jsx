@@ -59,7 +59,10 @@ export default class TableauCorrection extends React.Component {
         famille:'',
         familleProcessus:FamilleProcessus,
         listeProcessus:Processus,
-        qualification:0
+        qualification:"",
+        libelleProcessus:"",
+        libelleSource:"",
+        libelleFamille:""
       }
     //this.handleSubmit = this.handleSubmit.bind(this);
     //this.handleDownload = this.handleDownload.bind(this);
@@ -70,7 +73,7 @@ export default class TableauCorrection extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChangeProcessus=this.handleChangeProcessus.bind(this);
-  
+    this.loadData=this.loadData.bind(this);
   };
 
   handleChangeProcessus = e => {
@@ -84,6 +87,9 @@ export default class TableauCorrection extends React.Component {
   };
   
   handleSubmit = async e=>{
+    const libelleProcessus =this.state.listeProcessus.find(el=>{return el.idProcessus===this.state.idProcessus}).libelleProcessus;
+    const libelleFamile =FamilleProcessus.find(el=>{return el.idFamille===this.state.famille}).libelleFamille;
+    const libelleSource=Source.find(el=>{return el.idSource===this.state.idSource}).libelleSource;
     e.preventDefault();
       await fetch('/correctionRoutage/fnc',
         {
@@ -102,8 +108,12 @@ export default class TableauCorrection extends React.Component {
                 "idActeur": "maikol.ahoue@bridgebankgroup.com",
                 "descriptionFNC":this.state.descriptionFnc,
                 "qualification":this.state.qualification,
-                "famille":this.state.famille
-            }
+                "famille":this.state.famille,
+                "numeroId":this.state.numeroId,
+                "libelleProcessus":libelleProcessus,
+                "libelleSoure":libelleSource,
+                "libelleFamile":libelleFamile
+              }
             }),
         }).then(res => res.json())
         .then(
@@ -113,6 +123,7 @@ export default class TableauCorrection extends React.Component {
               responseSubmit: result.data.message,
               hasError: true
             });
+            this.loadData()
           },
           (error) => {
             console.log("124", error.message);
@@ -151,41 +162,49 @@ export default class TableauCorrection extends React.Component {
       hasError: false,
       familleProcessus:FamilleProcessus,
       listeProcessus:Processus,
-      selected:null
+      selected:null,
+      libelleProcesus:"",
+      libelleFamile:"",
+      libelleSource:""
     });
   }
 
-componentDidMount() {
-   fetch("/consultationMauvaisRoutage/fnc")
-   .then(res => res.json())
-   .then(
-     (result) => {
-       this.setState({
-         isLoaded: true,
-         responseToPost: result.data
-       });
-     },
-     (error) => {
-       console.log("124", error.message);
-       alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-       this.setState({
-         isLoaded: true,
-         responseSubmit:"Erreur lors de la communication avec le serveur : "+error.message,
-         hasError: true
-       });
-     });         
- //const body = await response.text();
- // this.setState({ responseToPost: JSON.parse(body) });  
- console.log(this.state.responseToPost.responses);
+  async loadData(){
+    await fetch("/consultationMauvaisRoutage/fnc")
+    .then(res => res.json())
+    .then(
+      (result) => {
+        this.setState({
+          isLoaded: true,
+          responseToPost: result.data
+        });
+      },
+      (error) => {
+        console.log("124", error.message);
+        alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+        this.setState({
+          isLoaded: true,
+          responseSubmit:"Erreur lors de la communication avec le serveur : "+error.message,
+          hasError: true
+        });
+      });         
+  //const body = await response.text();
+  // this.setState({ responseToPost: JSON.parse(body) });  
+  console.log(this.state.responseToPost.responses);
+  
+  //this.toggle();
  
- //this.toggle();
 
+  }
+
+async componentDidMount() {
+   
+  this.loadData()
       
   }
   
   render()  {
     
-   
 
   var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
   var source =Source.map((item, i) => {
@@ -243,6 +262,7 @@ let proceList =
                       this.setState({ qualification: e.target.value })
                       if (e.target.value !== null && e.target.value!=="" ) {
                         this.setState({ qualificationIsSet: true })
+                      
                       }
                       else { this.setState({ qualificationIsSet: false }) }
                     }}>
@@ -264,6 +284,7 @@ let proceList =
                       this.setState({ idProcessus: e.target.value })
                       if (e.target.value !== null && e.target.value!=="" ) {
                         this.setState({ idProcessusIsSet: true })
+                       
                       }
                       else { this.setState({ idProcessusIsSet: false }) }
                       this.handleChangeProcessus(e)
@@ -402,6 +423,9 @@ let proceList =
                 familleIsSet:true,
                 idSourceIsSet:true,
                 descriptionFncIsSet:true,
+                libelleFamille:rowInfo.original.libelleFamille,
+                libelleSource:rowInfo.original.libelleSource ,
+                libelleProcessus:rowInfo.original.libelleProcesus
               });
               console.log(rowInfo.original);
             },
