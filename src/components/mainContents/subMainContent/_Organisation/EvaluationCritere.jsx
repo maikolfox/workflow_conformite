@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { CardBody, Card, CardHeader, 
 //  Row, Col 
 } from "reactstrap";
-import Tableau from '../../tableau/_Organisation/TableauCritere'
-
+import Tableau from '../../tableau/_Organisation/TableauEvaluationCritere'
 
 var pushLeft={
 

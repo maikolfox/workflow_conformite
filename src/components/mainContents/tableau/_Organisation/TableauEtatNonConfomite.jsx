@@ -107,6 +107,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                             el.statutEva = TransformLibelleStatut(el.statutEva);
                             el.statut = TransformLibelleStatut(el.statut);
                             el.statutFnc = TransformLibelleStatut(el.statutFnc);
+                            el.dateCloturePro= DateFormatTransform(el.dateCloturePro);
                         })
 
                         const duplicates = findDuplicates(save_, subject => {
