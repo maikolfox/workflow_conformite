@@ -1,7 +1,7 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen, faPlusCircle, faBan, faEye } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { faTrash, faPen, faPlusCircle, faBan, faEye } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -20,7 +20,7 @@ import CritereItem from './critereItem';*/
 import '../tableau.css';
 //import SelectComp from 'react-select';
 //import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-import { evaluationColumn, data } from '../../../assets/evaluationColumn';
+import { evaluationColumn } from '../../../assets/evaluationColumn';
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import TransFormLibstat from '../../../assets/transFormLibelleStatut';
 import dateFormat from '../../../assets/dateFormatTransform';
@@ -32,16 +32,16 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Input,
-    FormGroup,
-    Form,
-    FormText,
-    Label,
-    Row,
-    Col,
-    Collapse,
+    // Input,
+    // FormGroup,
+    // Form,
+    // FormText,
+    // Label,
+    // Row,
+    // Col,
+    // Collapse,
     // Progress,
-    Container
+    //Container
 } from "reactstrap";
 
 
@@ -517,7 +517,7 @@ export default class TableauEvaluationCritere extends React.Component {
             <ModalFooter>
             
                 <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.valRoutage=== true) || (this.state.dataStruc.length === 0 )}>
-                {this.state.libelle > 2 ? "Soummettre les analyses":"Soummettre l\'analyse" }  
+                {this.state.libelle > 2 ? "Soummettre les analyses":"Soummettre l'analyse" }  
             </Button>
              {/**Conditionnal bouton*/}
               <Button color="secondary" onClick={this.toggle}>

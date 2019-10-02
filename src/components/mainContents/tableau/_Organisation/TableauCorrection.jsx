@@ -113,6 +113,8 @@ export default class TableauCorrection extends React.Component {
                 "libelleProcessus":libelleProcessus,
                 "libelleSoure":libelleSource,
                 "libelleFamile":libelleFamile
+
+                
               }
             }),
         }).then(res => res.json())
@@ -246,7 +248,7 @@ let proceList =
           aria-labelledby="example-modal-sizes-title-lg"
           backdrop="static"
         >
-          <ModalHeader toggle={this.toggle}>Formulaire de correction de la non conformité N° {this.state.numeroId}</ModalHeader>
+          <ModalHeader toggle={this.toggle}>Formulaire de correction de la non-conformité N° {this.state.numeroId}</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>
               <FormGroup >

@@ -14,16 +14,17 @@ import MediaAsset from '../../../assets/MediaAsset'
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
 import Columns from '../../../assets/ColumDetailsFnc';
-import ActeurList from '../../../assets/ActeurData';
+//import ActeurList from '../../../assets/ActeurData';
 import ActeurListSelect from '../../../assets/ActeurDataSelectList';
 
-import ActeurColumns from '../../../assets/ActeurColumns'
+//import ActeurColumns from '../../../assets/ActeurColumns'
 import Loader from "../../../assets/Loader";
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import SelectComp from 'react-select';
 import AnalyseColum from "../../../assets/AnalyseColumn"
 
 
+             
 import {
   Button,
   Modal,
@@ -37,8 +38,9 @@ import {
   Label,
   Row, 
   Col,
-  Progress,Container,
-  Tooltip  ,Fade
+  //Progress,
+  Container,
+  Tooltip  //Fade
  
 } from "reactstrap";
 
@@ -97,6 +99,8 @@ export default class DemarrageAnalyse extends React.Component {
         libelleFamille:'',
         libelleSource:'',
         valRoutage:false,
+        
+       
 
     }
     this.toggle = this.toggle.bind(this);
@@ -162,6 +166,9 @@ export default class DemarrageAnalyse extends React.Component {
     console.log(this.state.descriptionFnc);
     console.log(this.state.idFnc);
     console.log(this.state.valRoutage);
+    this.setState({isLoaded:false});
+    
+    
      await fetch('/validationRoutage/fnc',
       {
         method: 'POST',
@@ -174,7 +181,14 @@ export default class DemarrageAnalyse extends React.Component {
           { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
             "idFnc":this.state.idFnc,
-            "statutRoutage":this.state.valRoutage
+            "statutRoutage":this.state.valRoutage,
+                "numeroId":this.state.numeroId,
+                "libelleProcessus":this.state.libelleProcessus,
+                "libelleFamille":this.state.libelleFamille,
+                "libelleSoure":this.state.libelleSource,
+                "numeroId":this.state.numeroId,
+                "descriptionFNC":this.state.descriptionFnc,
+                "qualification":this.state.qualification
           }
         })
       }).then(res => res.json())
@@ -328,7 +342,8 @@ export default class DemarrageAnalyse extends React.Component {
       acteurTraitant: null,
       idActeurIsSet :false,    
       echeance: null,
-      echeanceIsSet: false
+      echeanceIsSet: false,
+      
       })
 
   }
@@ -824,7 +839,7 @@ else
                 Soumettre
              </Button>{" "} */}
                 <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.valRoutage=== true) || (this.state.dataStruc.length === 0 )}>
-                {this.state.libelle > 2 ? "Soummettre les analyses":"Soummettre l\'analyse" }  
+                {this.state.libelle > 2 ? "Soummettre les analyses":"Soummettre l'analyse" }  
             </Button>
              {/**Conditionnal bouton*/}
               <Button color="secondary" onClick={this.toggle}>

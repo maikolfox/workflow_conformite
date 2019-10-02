@@ -21,7 +21,7 @@ import {
   Form,
   Label,
   Row,
-  Container,
+ // Container,
   Col,
   Tooltip  
 } from "reactstrap";
@@ -219,7 +219,7 @@ else
             <ModalHeader toggle={this.toggle}>Validation de la fiche N° {this.state.numeroId} </ModalHeader>
             <ModalBody>
               {/**QUALIFICATION FNC*/}
-              <MediaAsset libelle="Qualification" content={this.state.qualification===1 ? "Mineur" :"Majeur"} />
+              <MediaAsset libelle="Qualification" content={this.state.qualification} />
               {/**DESCRIPTION FNC*/}
               <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
               {/**SOURCE*/}

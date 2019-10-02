@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faDownload } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { faDownload } from '@fortawesome/free-solid-svg-icons';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -37,9 +37,9 @@ import {
     Label,
     Row,
     Col,
-    Collapse,
-    // Progress,
-    Container
+    // Collapse,
+    // // Progress,
+    // Container
 } from "reactstrap";
 
 
@@ -84,8 +84,7 @@ export default class TableauEtatsNonConformite extends React.Component {
             .then(
                 (result) => {
                     if (result.data.responses.length === 0) {
-                        alert("Aucune donnée enregistrée");
-                        window.close();
+                        alert("Aucune FNC déclarée  durant la période selectionnée");
                         this.setState({
                             isLoaded: true,
                             errorMessage: result.data.message,
@@ -98,8 +97,9 @@ export default class TableauEtatsNonConformite extends React.Component {
                         //RETROUVER LES FNC AVEC PLUSIEURS CAUSE, 
                         //CELA EVITE LA REDONDANCE DES INFORMATIONS 
                         //INUTILES SUR PLUSIEURS LIGNES
+                        console.log("responses from backend:",result.data.responses)
                         const save_ = result.data.responses;
-                        //reformater certain champs
+                        //reformater certains champs
                         save_.map(el => {
                             el.echeances = DateFormatTransform(el.echeances);
                             el.idActeur = DisplayNomPrenom(el.idActeur);
@@ -109,42 +109,43 @@ export default class TableauEtatsNonConformite extends React.Component {
                             el.statutFnc = TransformLibelleStatut(el.statutFnc);
                             el.dateCloturePro= DateFormatTransform(el.dateCloturePro);
                         })
+                       // PERMET D'eviter la redondance
+                         const duplicates = findDuplicates(save_, subject => {
+                             return subject.numeroId;
+                         });
+                         console.log("duplicates", duplicates)
+                         const aggData = [];
+                         for (var i = 0; i < duplicates.length; i++) {
+                             for (var j = 0; j < duplicates[i].length; j++) {
+                                 if (j !== 0) {
+                                      duplicates[i][j].descriptionFNC="";
+                                      duplicates[i][j].libelleSource="";
+                                      duplicates[i][j].statutFnc="";
+                                      duplicates[i][j].libelleProcesus="";
+                                      duplicates[i][j].dateDeclaration="";
+                                     aggData.push(duplicates[i][j]);
+                                 }
+                             }
+                         }
+                         const filteredDATA = save_.reduce((acc, current) => {
+                             const x = acc.find(item => item.numeroId === current.numeroId);
+                             if (!x) {
+                                 return acc.concat([current]);
+                             } else {
+                                 return acc;
+                             }
+                         }, []);
 
-                        const duplicates = findDuplicates(save_, subject => {
-                            return subject.numeroId;
-                        });
-                        console.log("duplicates", duplicates)
-                        const aggData = [];
-                        for (var i = 0; i < duplicates.length; i++) {
-                            for (var j = 0; j < duplicates[i].length; j++) {
-                                if (j !== 0) {
-                                     duplicates[i][j].descriptionFNC="";
-                                     duplicates[i][j].libelleSource="";
-                                     duplicates[i][j].statutFnc="";
-                                     duplicates[i][j].libelleProcesus="";
-                                     duplicates[i][j].dateDeclaration="";
-                                    aggData.push(duplicates[i][j]);
-                                }
-                            }
-                        }
-                        const filteredDATA = save_.reduce((acc, current) => {
-                            const x = acc.find(item => item.numeroId === current.numeroId);
-                            if (!x) {
-                                return acc.concat([current]);
-                            } else {
-                                return acc;
-                            }
-                        }, []);
-
-                        aggData.map(el => {
-                            filteredDATA.push(el);
-                        });
-                       console.log("filtered data" ,filteredDATA)
+                         aggData.map(el => {
+                             filteredDATA.push(el);
+                         });
+                        console.log("filtered data" ,filteredDATA)
                         this.setState({
                             isLoaded: true,
                             responseToPost: filteredDATA
+                            //responseToPost: save_
                         });
-                        console.log(this.state.responseToPost)
+                        console.log("response to post :",save_)
                     }
                 },
                 (error) => {
@@ -158,6 +159,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                 })
     }
      componentDidMount() {
+
     }
   
     render() {

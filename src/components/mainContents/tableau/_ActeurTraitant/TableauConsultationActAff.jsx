@@ -16,8 +16,8 @@ import 'react-quill/dist/quill.snow.css'; // ES6
 import UploadFile from '../../../assets/uploadFile/TodoItem';
 import FileBase64 from 'react-file-base64';
 import Columns from '../../../assets/ColumDetailsFnc'
-import ActeurList from '../../../assets/ActeurData'
-import ActeurColumns from '../../../assets/ActeurColumns'
+// import ActeurList from '../../../assets/ActeurData'
+// import ActeurColumns from '../../../assets/ActeurColumns'
 import Loader from "../../../assets/Loader"
 
 

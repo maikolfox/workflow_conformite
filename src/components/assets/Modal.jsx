@@ -3,7 +3,8 @@ import Processus from "./Processus";
 import FamilleProcessus from "./FamilleProcessus";
 import Source from "./Source";
 import Loader from "./Loader"
-import QualificationList from "./qualificationList"
+import QualificationList from "./qualificationList";
+import App from '../../setupProxy';
 import {
   Button,
   Modal,
@@ -48,7 +49,7 @@ class ModalRensFNC extends React.Component {
     this.handleChangeProcessus=this.handleChangeProcessus.bind(this)
   }
 
-  //PERMET DE FILTRER LES FAMILLE EN FONCTION DES PROCESSUS
+  //PERMET DE FILTRER LES FAMILLES EN FONCTION DES PROCESSUS
   handleChangeProcessus = e => {
     e.preventDefault();
     var filtFam = FamilleProcessus.filter(item => {
@@ -59,6 +60,10 @@ class ModalRensFNC extends React.Component {
       this.setState({famille:filtFam[0].idFamille,familleIsSet :(filtFam[0].idFamille==="")?false:true})
   };
   handleSubmit = async e=>{
+    
+    const libelleFam=FamilleProcessus.find(item=>{return item.idFamille===this.state.famille}).libelleFamille;
+    const libelleSource=Source.find(item=>{return item.idSource===this.state.idSource}).libelleSource;
+    const libelleProcessus=Processus.find(item=>{return item.idProcessus===this.state.idProcessus}).libelleProcessus;
     e.preventDefault();
        await fetch('/create/fnc',
         {
@@ -68,15 +73,21 @@ class ModalRensFNC extends React.Component {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              "data":
-              {   //TODO RECUPERER LA VARIABLE DE SESSION DU STAFF
-                "descriptionFNC": this.state.descriptionFnc,
-                "idProcessus":this.state.idProcessus,
-                "idsource": this.state.idSource,
-                "idInitiateur": "maikol.ahoue@bridgebankgroup.com",
-                "qualification":this.state.qualification,
-                "idFamille":this.state.famille
-              }
+            "data":
+            {   //TODO RECUPERER LA VARIABLE DE SESSION DU STAFF
+              "descriptionFNC": this.state.descriptionFnc,
+              "idProcessus": this.state.idProcessus,
+              "idsource": this.state.idSource,
+              "idInitiateur": "maikol.ahoue@bridgebankgroup.com",
+              "qualification": this.state.qualification,
+              "idFamille": this.state.famille,
+
+            },
+            "dataLibelle": {
+              "libelleFamille": libelleFam,
+              "libelleProcessus": libelleProcessus,
+              "libelleSource": libelleSource
+            }
             }),
         }).then(res => res.json())
         .then(
@@ -139,19 +150,6 @@ class ModalRensFNC extends React.Component {
         </option>
       );
     });
-
-    var source =Source.map((item, i) => {
-      return (
-        <option key={i} value={item.idSource}>
-          {item.libelleSource}
-        </option>
-      );
-    });
-
-
-    
-  
-
     var famProc =
     this.state.familleProcessus.length > 0 &&
     this.state.familleProcessus.map((item, i) => {
@@ -161,6 +159,7 @@ class ModalRensFNC extends React.Component {
         </option>
       );
     });
+
   const { listeProcessus } = this.state;
   let proceList =
     listeProcessus.length > 0 &&
