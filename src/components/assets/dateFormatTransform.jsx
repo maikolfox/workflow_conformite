@@ -1,6 +1,6 @@
 function transFormEcheance(echeances) 
 {
-  if (echeances===null) return "" 
+  if (echeances===null||echeances === undefined) return "" 
 
   if(echeances.length>10){
      echeances= echeances.split("T")[0];

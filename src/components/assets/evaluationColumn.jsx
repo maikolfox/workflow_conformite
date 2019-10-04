@@ -16,19 +16,23 @@ const evaluationColumn = [
         style: { 'white-space': 'unset' }
     },
     {
+        Header: 'N° de l\'analyse',
+        accessor: 'libelleAt',
+        width: 150,
+        style: { 'white-space': 'unset' }
+    },
+    {
         Header: 'Action corrective',
         accessor: 'actionCorrective',
         width: 400,
         style: { 'white-space': 'unset' }
     },
-
     {
         Header: 'Cause',
         accessor: 'cause',
         width: 400,
         style: { 'white-space': 'unset' }
     },
-
     {
         Header: 'Correction',
         accessor: 'correction',
@@ -54,12 +58,7 @@ const evaluationColumn = [
         width: 400,
         style: { 'white-space': 'unset' }
     },
-    {
-        Header: 'N° de l\'analyse',
-        accessor: 'libelleAt',
-        width: 150,
-        style: { 'white-space': 'unset' }
-    },
+    
     {
         Header: 'Date de declaration',
         accessor: 'dateDeclaration',
