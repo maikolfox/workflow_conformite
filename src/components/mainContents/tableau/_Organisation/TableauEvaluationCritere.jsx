@@ -6,6 +6,8 @@ import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ReactTableEvaluationFnc from 'react-table';
+import ReactTableRecapAnalyseAndTraite from 'react-table';
+
 import "react-table/react-table.css";
 import Loader from "../../../assets/Loader";
 
@@ -18,7 +20,7 @@ import CritereItem from './critereItem';*/
 import '../tableau.css';
 //import SelectComp from 'react-select';
 //import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-import { evaluationColumn } from '../../../assets/evaluationColumn';
+import { evaluationColumn,data_column,data_details } from '../../../assets/evaluationColumn';
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import TransFormLibstat from '../../../assets/transFormLibelleStatut';
 import dateFormat from '../../../assets/dateFormatTransform';
@@ -52,13 +54,13 @@ export default class TableauEvaluationCritere extends React.Component {
     constructor(props) {
         super(props);
         this.state =
-        {
+            {
                 idFnc: '',
                 numeroId: '',
                 modal: '',
 
                 selected: null,
-            
+
 
                 responseToPost: [],
                 isLoaded: '',
@@ -114,7 +116,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 resultatTraitement: "",
                 libelleAnalyse: "",
                 critereEvalData: [],
-        }
+            }
         this.toggle = this.toggle.bind(this);
         this.toggleNested = this.toggleNested.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -242,8 +244,7 @@ export default class TableauEvaluationCritere extends React.Component {
         }));
     }
 
-    async getResultat_traitement() 
-    {
+    async getResultat_traitement() {
         await fetch("/getResultat_traitement/fnc")
             .then(res => res.json())
             .then(
@@ -284,8 +285,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 })
     }
 
-    async componentDidMount() 
-    {
+    async componentDidMount() {
         this.getResultat_traitement()
     }
     render() {
@@ -315,33 +315,49 @@ export default class TableauEvaluationCritere extends React.Component {
                         <ModalBody>
                             <TabSwitcher>
                                 <TabPanel whenActive={1}>
-                                    <Loader></Loader>
-                                    <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
-                                    <br/>
-                                    <h4 style={{ textAlign: "center" }}>Analyse N° {this.state.libelleAnalyse} </h4>
-                                    <MediaAsset_subContent libelle="Résultat traitement" content={this.state.resultatTraitement} />
-                                    <MediaAsset_subContent libelle="Critère efficacité" content={evalCritereItem} />
-                                    <MediaAsset_subContent libelle="Cause" content={this.state.cause} />
-                                    <MediaAsset_subContent libelle="Action corrective" content={this.state.actionCorrective}></MediaAsset_subContent>
-                                    <MediaAsset_subContent libelle="Correction" content={this.state.correction}></MediaAsset_subContent>
-                                    <hr/>
-                                    <br/>
-                                    <FormGroup>
-                                        <FormGroup>
-                                            <FormGroup>
-                                                <Label>Efficacité efficacité </Label>
-                                                <Input type="select">
-                                                    <option value="" default > </option>
-                                                    <option value="éfficace" >Efficace</option>
-                                                    <option value="Inéfficace" >Inefficace</option>
-                                                </Input>
-                                                <Row>&nbsp;</Row>
-                                                <Label>Preuve efficacité </Label>
-                                                <Input type="textarea"></Input>
-                                            </FormGroup>
-                                        </FormGroup>
-                                    </FormGroup>
-                                </TabPanel>                                
+                                    <ReactTableRecapAnalyseAndTraite
+                                        filterable={true}
+                                        pivotBy={['libelleAt']}
+                                        defaultFilterMethod={FilterCaseInsensitive}
+                                        minRows={5}
+                                        noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recupéré"}
+                                        data={data_details}
+                                        columns={data_column}
+                                         
+                                        previousText={"Précedent"}
+                                        nextText={"Suivant"}
+                                        rowsText={"Ligne(s)"}
+                                        ofText={"sur "}
+                                        loadingText="Chargement en cours..."
+                                        loading={!(this.state.isLoaded)} />
+                                    {/* <Loader></Loader>
+                        <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
+                        <br/>
+                        <h4 style={{ textAlign: "center" }}>Analyse N° {this.state.libelleAnalyse} </h4>
+                        <MediaAsset_subContent libelle="Résultat traitement" content={this.state.resultatTraitement} />
+                        <MediaAsset_subContent libelle="Critère efficacité" content={evalCritereItem} />
+                        <MediaAsset_subContent libelle="Cause" content={this.state.cause} />
+                        <MediaAsset_subContent libelle="Action corrective" content={this.state.actionCorrective}></MediaAsset_subContent>
+                        <MediaAsset_subContent libelle="Correction" content={this.state.correction}></MediaAsset_subContent>
+                        <hr/>
+                        <br/>
+                         */}
+                         <FormGroup>
+                            <FormGroup>
+                                <FormGroup>
+                                    <Label>Efficacité efficacité </Label>
+                                    <Input type="select">
+                                        <option value="" default > </option>
+                                        <option value="éfficace" >Efficace</option>
+                                        <option value="Inéfficace" >Inefficace</option>
+                                    </Input>
+                                    <Row>&nbsp;</Row>
+                                    <Label>Preuve efficacité </Label>
+                                    <Input type="textarea"></Input>
+                                </FormGroup>
+                            </FormGroup>
+                        </FormGroup>
+                                </TabPanel>
                             </TabSwitcher>
                         </ModalBody>
                         <ModalFooter>
@@ -362,6 +378,7 @@ export default class TableauEvaluationCritere extends React.Component {
                     </Modal>
                 </div>
                 <div style={{ cursor: 'pointer' }}>
+
                     <ReactTableEvaluationFnc
                         filterable={true}
                         defaultFilterMethod={FilterCaseInsensitive}
@@ -415,7 +432,7 @@ export default class TableauEvaluationCritere extends React.Component {
                         rowsText={"Ligne(s)"}
                         ofText={"sur "}
                         loadingText="Chargement en cours..."
-                        loading={!(this.state.isLoaded)}/>
+                        loading={!(this.state.isLoaded)} />
                 </div>
             </React.Fragment>)
     }

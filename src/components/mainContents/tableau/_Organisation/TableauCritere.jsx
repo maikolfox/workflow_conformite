@@ -130,7 +130,15 @@ export default class TableauCritere extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleAdd = this.handleAdd.bind(this);
+    this.handleSelectComp=this.handleSelectComp.bind(this);
   };
+
+  handleSelectComp=selectOption=>
+  {
+    console.log(selectOption.value)
+    this.setState({idActeur:selectOption.value,idActeurIsSet:true})
+  }
+
 
   handleAdd() {
     const obj = {
@@ -297,7 +305,7 @@ export default class TableauCritere extends React.Component {
     });
 
     this.setState({
-      dataStruc: [].concat(updatedItems),
+     // dataStruc: [].concat(updatedItems),
       selectedAnalyseIndex: null,
       selectedActeur: null
     });
@@ -326,9 +334,9 @@ export default class TableauCritere extends React.Component {
         item.idActeur = this.state.idActeur;
         item.libelleAnalyse = itemId;
       };
-
       return item;
     });
+    
     this.setState(prevState => ({
       dataStruc: prevState.dataStruc.map(el => (el.libelleAt !== updatedItems.libelleAt ? { ...el } : updatedItems))
     }));
@@ -355,18 +363,12 @@ export default class TableauCritere extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-          this.setState(prevState => ({
-            responseToPost: prevState.responseToPost.filter(item => {
-              return item.idFnc !== this.state.idFnc;
-            })
-          }))
           console.log(this.state.selected);
           this.setState({
             isLoaded: true,
             responseSubmit: result.data.message,
             nestedModal: true,
           });
-          this.forceUpdate();
         },
         (error) => {
           console.log("124", error.message);
@@ -378,11 +380,6 @@ export default class TableauCritere extends React.Component {
           });
         });
     //this.toggle();
-
-
-
-
-
   }
 
 
@@ -437,9 +434,6 @@ export default class TableauCritere extends React.Component {
             console.log(this.state.dsFncNbrAna)
 
           }
-
-
-
         },
         (error) => {
           console.log("124", error.message);
@@ -968,13 +962,12 @@ export default class TableauCritere extends React.Component {
                     </FormGroup>
                   </Form >
                   <br />
-
                   <Row>
                     <Tab id="1" maxStep={3} step={1}>
                       <Button>Annuler</Button>
                     </Tab>
                     <Col md="8" ></Col>
-                    <Tab id="1" maxStep={3} step="retourRecap">
+                    <Tab id="1" maxStep={3} step={1}>
                       <Button disabled={!(this.state.idActeurIsSet && this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)} color="danger" onClick={e => {
                         e.preventDefault();
                         this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
