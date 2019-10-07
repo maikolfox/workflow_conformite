@@ -15,50 +15,68 @@ const evaluationColumn = [
         width: 400,
         style: { 'white-space': 'unset' }
     },
+    // {
+    //     Header: 'N° de l\'analyse',
+    //     accessor: 'libelleAt',
+    //     width: 150,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Action corrective',
+    //     accessor: 'actionCorrective',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Cause',
+    //     accessor: 'cause',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Correction',
+    //     accessor: 'correction',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Resultat traitement',
+    //     accessor: 'resultatTraitement',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Echeance analyse',
+    //     accessor: 'echeances',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
     {
-        Header: 'N° de l\'analyse',
-        accessor: 'libelleAt',
-        width: 150,
+        Header: 'Processus',
+        accessor: 'libelleProcessus',
+        width: 350,
         style: { 'white-space': 'unset' }
     },
     {
-        Header: 'Action corrective',
-        accessor: 'actionCorrective',
-        width: 400,
+        Header: 'Source',
+        accessor: 'libelleSource',
+        width: 350,
         style: { 'white-space': 'unset' }
     },
     {
-        Header: 'Cause',
-        accessor: 'cause',
-        width: 400,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Correction',
-        accessor: 'correction',
-        width: 400,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Resultat traitement',
-        accessor: 'resultatTraitement',
-        width: 400,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Echeance analyse',
-        accessor: 'echeances',
-        width: 400,
-        style: { 'white-space': 'unset' }
+        Header:'Famille',
+        accessor :'libelleFamille',
+        width:350,
+        style:{'white-space':'unset'}
     },
 
-    {
-        Header: 'Email',
-        accessor: 'idActeur',
-        width: 400,
-        style: { 'white-space': 'unset' }
-    },
-    
+    // {
+    //     Header: 'Email',
+    //     accessor: 'idActeur',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+
     {
         Header: 'Date de declaration',
         accessor: 'dateDeclaration',
@@ -77,12 +95,7 @@ const evaluationColumn = [
         width: 150,
         style: { 'white-space': 'unset' }
     },
-    {
-        Header: 'Source',
-        accessor: 'libelleSource',
-        width: 150,
-        style: { 'white-space': 'unset' }
-    }
+   
 
 ]
 
@@ -392,18 +405,19 @@ const data =
 
 const data_column=[
 
-    {
-        Header: 'N° de fiche',
-        accessor: 'numeroId',
-        width: 170,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Description',
-        accessor: 'descriptionFNC',
-        width: 400,
-        style: { 'white-space': 'unset' }
-    },
+    // {
+    //     Header: 'N° de fiche',
+    //     accessor: 'numeroId',
+    //     width: 170,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Description',
+    //     accessor: 'descriptionFNC',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+
     {
         Header: 'N° de l\'analyse',
         accessor: 'libelleAt',
@@ -411,55 +425,63 @@ const data_column=[
         style: { 'white-space': 'unset' }
     },
     {
-        Header: 'Action corrective',
-        accessor: 'actionCorrective',
+        Header: 'Critère',
+        accessor: 'critere',
         width: 400,
         style: { 'white-space': 'unset' }
     },
     {
-        Header: 'Cause',
-        accessor: 'cause',
+        Header: 'Echeance critère',
+        accessor: 'echeanceCritere',
         width: 400,
         style: { 'white-space': 'unset' }
     },
     {
-        Header: 'Correction',
-        accessor: 'correction',
-        width: 400,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Resultat traitement',
+        Header: 'Résultat traitement',
         accessor: 'resultatTraitement',
-        width: 400,
+        width: 500,
         style: { 'white-space': 'unset' }
     },
+    
+    // {
+    //     Header: 'Action corrective',
+    //     accessor: 'actionCorrective',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Cause',
+    //     accessor: 'cause',
+    //     width: 400,
+    //     style: { 'white-space': 'unset' }
+    // },
+    
+    // {
+    //     Header: 'Echeance FNC',
+    //     accessor: 'echeanceFnc',
+    //     width: 150,
+    //     style: { 'white-space': 'unset' }
+    // },
+    // {
+    //     Header: 'Correction',
+    //     accessor: 'correction',
+    //     width: 150,
+    //     style: { 'white-space': 'unset' }
+    // },
     {
         Header: 'Echeance analyse',
         accessor: 'echeances',
         width: 400,
         style: { 'white-space': 'unset' }
     },
-
     {
         Header: 'Email',
         accessor: 'idActeur',
         width: 400,
         style: { 'white-space': 'unset' }
     },
-    
-    {
-        Header: 'Correction',
-        accessor: 'correction',
-        width: 150,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Echeance FNC',
-        accessor: 'echeanceFnc',
-        width: 150,
-        style: { 'white-space': 'unset' }
-    },
+   
+   
     {
         Header: 'Echeances',
         accessor: 'echeances',
@@ -469,7 +491,7 @@ const data_column=[
     {
         Header: 'Action corrective',
         accessor: 'actionCorrective',
-        width: 150,
+        width: 500,
         style: { 'white-space': 'unset' }
     }
 ]

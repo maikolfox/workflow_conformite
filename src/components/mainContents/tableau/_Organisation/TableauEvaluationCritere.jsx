@@ -25,6 +25,9 @@ import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import TransFormLibstat from '../../../assets/transFormLibelleStatut';
 import dateFormat from '../../../assets/dateFormatTransform';
 import Source from '../../../assets/Source';
+import Processus from '../../../assets/Processus';
+import Famille from '../../../assets/FamilleProcessus';
+
 import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import CritereItemEval from "./critereItemEval";
@@ -46,6 +49,7 @@ import {
     Row,
     Col
 } from "reactstrap";
+import processus from '../../../assets/Processus';
 
 
 
@@ -245,7 +249,7 @@ export default class TableauEvaluationCritere extends React.Component {
     }
 
     async getResultat_traitement() {
-        await fetch("/getResultat_traitement/fnc")
+        await fetch("/get_fnc_traiter/fnc")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -265,8 +269,10 @@ export default class TableauEvaluationCritere extends React.Component {
                             el.echeances = dateFormat(el.echeances)
                             el.libelleSource = Source.find(elmt => {
                                 return el.idSource === elmt.idSource
-                            }).libelleSource
-                            el.echeanceFnc = dateFormat(el.echeanceFnc)
+                            }).libelleSource;
+                            el.echeanceFnc = dateFormat(el.echeanceFnc);
+                            el.libelleProcessus=Processus.find(elmt=>{return el.idProcessus===elmt.idProcessus}).libelleProcessus;
+                            el.libelleFamille=Famille.find(elmt=> { return el.idFamille===elmt.idFamille } ).libelleFamille;
                         })
                         this.setState({
                             isLoaded: true,
@@ -329,7 +335,10 @@ export default class TableauEvaluationCritere extends React.Component {
                                         rowsText={"Ligne(s)"}
                                         ofText={"sur "}
                                         loadingText="Chargement en cours..."
-                                        loading={!(this.state.isLoaded)} />
+                                        loading={!(this.state.isLoaded)} 
+                                        style={{
+                                            height: "1000px" // This will force the table body to overflow and scroll, since there is not enough room
+                                          }}/>
                                     {/* <Loader></Loader>
                         <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                         <br/>
@@ -427,12 +436,19 @@ export default class TableauEvaluationCritere extends React.Component {
                                 return {}
                             }
                         }}
+                        className="-striped -highlight"
+
+                        style={{
+                            height: "1000px" // This will force the table body to overflow and scroll, since there is not enough room
+                          }}
+                          className="-striped -highlight"
                         previousText={"Précedent"}
                         nextText={"Suivant"}
                         rowsText={"Ligne(s)"}
                         ofText={"sur "}
                         loadingText="Chargement en cours..."
-                        loading={!(this.state.isLoaded)} />
+                        loading={!(this.state.isLoaded)}
+                        />
                 </div>
             </React.Fragment>)
     }
