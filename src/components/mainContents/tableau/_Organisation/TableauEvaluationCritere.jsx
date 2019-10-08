@@ -328,37 +328,9 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                         <ModalBody>
                             <TabSwitcher>
                                 <TabPanel whenActive={1}>
-                                    {/* <ReactTableRecapAnalyseAndTraite
-                                        filterable={true}
-                                        pivotBy={['libelleAt']}
-                                        defaultFilterMethod={FilterCaseInsensitive}
-                                        minRows={5}
-                                        noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recupéré"}
-                                        data={this.state.criterObject}
-                                        columns={data_column}
-                                         
-                                        previousText={"Précedent"}
-                                        nextText={"Suivant"}
-                                        rowsText={"Ligne(s)"}
-                                        ofText={"sur "}
-                                        loadingText="Chargement en cours..."
-                                        loading={!(this.state.isLoaded)} 
-                                        style={{
-                                            height: "1000px" // This will force the table body to overflow and scroll, since there is not enough room
-                                          }}/> */}
-                                          {evalCritereItem}
-                                    {/* <Loader></Loader>
-                        <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
-                        <br/>
-                        <h4 style={{ textAlign: "center" }}>Analyse N° {this.state.libelleAnalyse} </h4>
-                        <MediaAsset_subContent libelle="Résultat traitement" content={this.state.resultatTraitement} />
-                        <MediaAsset_subContent libelle="Critère efficacité" content={evalCritereItem} />
-                        <MediaAsset_subContent libelle="Cause" content={this.state.cause} />
-                        <MediaAsset_subContent libelle="Action corrective" content={this.state.actionCorrective}></MediaAsset_subContent>
-                        <MediaAsset_subContent libelle="Correction" content={this.state.correction}></MediaAsset_subContent>
-                        <hr/>
-                        <br/>
-                         */}
+                                <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
+                                {evalCritereItem}
+                       
                          <FormGroup>
                             <FormGroup>
                                 <FormGroup>
