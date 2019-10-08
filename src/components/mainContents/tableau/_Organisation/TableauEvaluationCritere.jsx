@@ -47,7 +47,8 @@ import {
     FormText,
     Label,
     Row,
-    Col
+    Col,
+    Collapse
 } from "reactstrap";
 import processus from '../../../assets/Processus';
 
@@ -129,7 +130,7 @@ export default class TableauEvaluationCritere extends React.Component {
         this.toggleCollapseDetail = this.toggleCollapseDetail.bind(this);
         this.getResultat_traitement = this.getResultat_traitement.bind(this);
         this.handleEvaluation = this.handleEvaluation.bind(this);
-        this.get_criterebyid = this.get_criterebyid.bind(this);
+        this.get_critere_traitement_byIdfnc = this.get_critere_traitement_byIdfnc.bind(this);
     };
 
     handleEvaluation(id, value) {
@@ -152,9 +153,9 @@ export default class TableauEvaluationCritere extends React.Component {
         this.setState(state => ({ collapseDetail: !state.collapseDetail }));
     }
 
-    get_criterebyid = async e => {
+    get_critere_traitement_byIdfnc = async e => {
         this.setState({ isLoaded: false })
-        await fetch('/criterByAnalyseTraitement/fnc',
+        await fetch('/criter_EvalTraitementByidFnc/fnc',
             {
                 method: 'POST',
                 headers:
@@ -163,7 +164,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 },
                 body: JSON.stringify({
                     "data": {
-                        "idAt": e
+                        "idFnc": e
                     }
 
                 })
@@ -299,11 +300,17 @@ export default class TableauEvaluationCritere extends React.Component {
             <CritereItemEval
                 key={item.key}
                 item={item}
-                handleEvaluation={this.handleEvaluation}
+                dataAna={item.dataAna}
             />
 
+            
         ))
 
+  const dataAff=this.state.criterObject.map((item,index)=>{
+
+return     <MediaAsset_subContent libelle="Résultat traitement" content={item.dataAna[0].resultatTraitement} />
+
+  })
 
         return (
             <React.Fragment>
@@ -321,13 +328,13 @@ export default class TableauEvaluationCritere extends React.Component {
                         <ModalBody>
                             <TabSwitcher>
                                 <TabPanel whenActive={1}>
-                                    <ReactTableRecapAnalyseAndTraite
+                                    {/* <ReactTableRecapAnalyseAndTraite
                                         filterable={true}
                                         pivotBy={['libelleAt']}
                                         defaultFilterMethod={FilterCaseInsensitive}
                                         minRows={5}
                                         noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recupéré"}
-                                        data={data_details}
+                                        data={this.state.criterObject}
                                         columns={data_column}
                                          
                                         previousText={"Précedent"}
@@ -338,7 +345,8 @@ export default class TableauEvaluationCritere extends React.Component {
                                         loading={!(this.state.isLoaded)} 
                                         style={{
                                             height: "1000px" // This will force the table body to overflow and scroll, since there is not enough room
-                                          }}/>
+                                          }}/> */}
+                                          {evalCritereItem}
                                     {/* <Loader></Loader>
                         <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                         <br/>
@@ -354,7 +362,7 @@ export default class TableauEvaluationCritere extends React.Component {
                          <FormGroup>
                             <FormGroup>
                                 <FormGroup>
-                                    <Label>Efficacité efficacité </Label>
+                                    <Label>Evaluation de l'efficacité </Label>
                                     <Input type="select">
                                         <option value="" default > </option>
                                         <option value="éfficace" >Efficace</option>
@@ -401,7 +409,7 @@ export default class TableauEvaluationCritere extends React.Component {
                                     onClick: (e) => {
                                         e.preventDefault();
                                         this.toggle();
-                                        this.get_criterebyid(rowInfo.original.id);
+                                        this.get_critere_traitement_byIdfnc(rowInfo.original.idFnc);
                                         this.setState({
                                             selected: rowInfo.index,
                                             idProcessus: rowInfo.original.idProcessus,

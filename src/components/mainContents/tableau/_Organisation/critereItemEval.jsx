@@ -18,19 +18,7 @@ const evalCritere = [
 
 
 
-
-
-function critereItemEval(props) {
-  // const evalSelect = evalCritere.map((el, index) => {
-  //   return (
-  //     <option key={index} value={el.value}>{el.libelle} </option>)
-  // })
-  return (
-    <Row>
-      <Col md={12} >
-        <div><p>{props.item.critere}&nbsp;<br />
-        <strong>Echéance</strong> :&nbsp; {DateFormatTransform(props.item.echeanceCritere)}</p></div>
-        {/* </Col>
+{/* </Col>
       <Col md={6}>
         {/* <Input type="select"
           id="selectAgence"
@@ -42,8 +30,37 @@ function critereItemEval(props) {
           <option key="ab0" value="" default></option>
           {evalSelect}
         </Input> */}
+
+function CritereItemContent(props) {
+  return (
+    <div><p>{props.critere}&nbsp;<br />
+      <strong>Echéance :</strong>&nbsp; {DateFormatTransform(props.echeanceCritere)}</p>
+      <p><strong>Date de fin :</strong>&nbsp; {DateFormatTransform(props.dateFinAnalyse)}</p>
+      </div>
+
+  )
+}
+
+
+function AnalyseContent(props){
+  const listCri = props.dataAna.map(el => (
+    <CritereItemContent critere={el.critere} echeanceCritere={el.echeanceCritere} dateFinAnalyse={el.dateFinAnalyse}/>
+  ))
+  return (
+    <Row>
+      <Col md={12} >
+        <div>Numéro analyse : &nbsp;<h1>{props.item.libelletAt}&nbsp;</h1></div><br />
+        <br/><br/>
+        <div>Resultat traitement :</div>
+        <div>{props.dataAna[0].resultatTraitement}</div>
+        <br/><br/>
+        <div>
+          <div>Liste des critère</div>
+          {listCri}
+        </div>
+        <br/>
       </Col>
     </Row>
   );
 }
-export default critereItemEval;
+export default AnalyseContent;
