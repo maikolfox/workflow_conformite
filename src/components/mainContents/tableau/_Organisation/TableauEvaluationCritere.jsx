@@ -3,8 +3,8 @@ import React from 'react';
 // import { faTrash, faPen, faPlusCircle, faBan, faEye } from '@fortawesome/free-solid-svg-icons';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
+
 import "bootstrap/dist/css/bootstrap.min.css";
-//import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import ReactTableEvaluationFnc from 'react-table';
 import ReactTableRecapAnalyseAndTraite from 'react-table';
 
@@ -30,7 +30,7 @@ import Famille from '../../../assets/FamilleProcessus';
 
 import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CritereItemEval from "./critereItemEval";
+import CritereItemEval,{Details} from "./critereItemEval";
 
 
 //import Processus from '../../../asset/Processus';
@@ -301,6 +301,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 key={item.key}
                 item={item}
                 dataAna={item.dataAna}
+                numeroId={this.state.numeroId}
             />
 
             
@@ -329,8 +330,8 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                             <TabSwitcher>
                                 <TabPanel whenActive={1}>
                                 <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
+                                {/* <Details data={this.state.criterObject} ></Details> */}
                                 {evalCritereItem}
-                       
                          <FormGroup>
                             <FormGroup>
                                 <FormGroup>
@@ -341,7 +342,16 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                                         <option value="Inéfficace" >Inefficace</option>
                                     </Input>
                                     <Row>&nbsp;</Row>
+                                    
+
+                                    <Label>Niveau de satisfaction</Label>
+                                    <Input type="select">
+                                        <option value="" default > </option>
+                                        <option value="satisfait" >Satisfait</option>
+                                        <option value="insatisfait" >Insatisfait</option>
+                                    </Input> <Row>&nbsp;</Row>
                                     <Label>Preuve efficacité </Label>
+                                   
                                     <Input type="textarea"></Input>
                                 </FormGroup>
                             </FormGroup>
