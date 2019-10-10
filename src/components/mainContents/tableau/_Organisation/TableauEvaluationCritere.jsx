@@ -63,10 +63,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 idFnc: '',
                 numeroId: '',
                 modal: '',
-
                 selected: null,
-
-
                 responseToPost: [],
                 isLoaded: '',
                 idSource: '',
@@ -74,11 +71,13 @@ export default class TableauEvaluationCritere extends React.Component {
                 idProcessus: '',
                 descriptionFnc: '',
                 qualification: '',
-
                 libelleSource: '',
                 libelleFamile: '',
                 libelleProcessus: '',
 
+                evaluationEff:"",
+                niveauSatisfaction:"",
+                preuve:"",
 
                 correction: '',
                 correctionIsSet: '',
@@ -101,8 +100,7 @@ export default class TableauEvaluationCritere extends React.Component {
 
                 dataStruc: [],
                 dsFncNbrAna: [],
-                //selectedAnalyseIndex:null,
-                //selectedAnalyse: null,
+
 
                 critere: null,
                 critereIsSet: false,
@@ -120,8 +118,10 @@ export default class TableauEvaluationCritere extends React.Component {
                 unAutorize: false,
                 resultatTraitement: "",
                 libelleAnalyse: "",
-                critereEvalData: [],
-            }
+            
+                responseToEval:"",
+                idInitiateur:""
+        }
         this.toggle = this.toggle.bind(this);
         this.toggleNested = this.toggleNested.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -131,6 +131,7 @@ export default class TableauEvaluationCritere extends React.Component {
         this.getResultat_traitement = this.getResultat_traitement.bind(this);
         this.handleEvaluation = this.handleEvaluation.bind(this);
         this.get_critere_traitement_byIdfnc = this.get_critere_traitement_byIdfnc.bind(this);
+        this.handleSubmit_evaluation=this.handleSubmit_evaluation.bind(this);
     };
 
     handleEvaluation(id, value) {
@@ -166,7 +167,6 @@ export default class TableauEvaluationCritere extends React.Component {
                     "data": {
                         "idFnc": e
                     }
-
                 })
             }).then(res => res.json())
             .then(
@@ -186,6 +186,59 @@ export default class TableauEvaluationCritere extends React.Component {
                         errorMessage: error.message,
                         hasError: true,
                         criterObject: []
+                    });
+                });
+    }
+
+    handleSubmit_evaluation = async e => {
+        var tabActeur=[];
+        var tabActeurDel=[];
+
+        this.state.criterObject.map(el=>{
+
+            tabActeur.push(el.acteursTraitant);
+            tabActeurDel.push(el.acteursResponsableTraitement);
+
+        })
+        this.setState({ isLoaded: false })
+        await fetch('/clotureFnc_evaluation/fnc',
+            {
+                method: 'POST',
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "data": {
+                        "idFnc": this.state.idFnc,
+                        "satisfaction":this.state.niveauSatisfaction,
+                        "numeroId":this.state.numeroId,
+                        "idActeurTraitant":tabActeur,
+                        "idActeurDelegataire":tabActeurDel,
+                        "idInitiateur":this.state.idInitiateur,
+                        "preuve":this.state.preuve,
+                        "statutEva":this.state.evaluationEff
+                    }
+                })
+            }).then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        isLoaded: true,
+                        responseToEval: result.data.message
+                    });
+                    this.getResultat_traitement();
+                    this.toggle();
+                    this.toggleNested();
+                },
+                (error) => {
+                    console.log("124", error.message);
+                    alert("Erreur : "+error+" contacter les administrateurs si le problème persiste");
+                    this.setState({
+                        isLoaded: true,
+                        errorMessage: error.message,
+                        hasError: true,
+                        responseToEval:error.message
                     });
                 });
     }
@@ -298,7 +351,7 @@ export default class TableauEvaluationCritere extends React.Component {
     render() {
         const evalCritereItem = this.state.criterObject.map(item => (
             <CritereItemEval
-                key={item.key}
+                key={item.id}
                 item={item}
                 dataAna={item.dataAna}
                 numeroId={this.state.numeroId}
@@ -307,11 +360,12 @@ export default class TableauEvaluationCritere extends React.Component {
             
         ))
 
-  const dataAff=this.state.criterObject.map((item,index)=>{
+//   const dataAff=this.state.criterObject.map((item,index)=>{
 
-return     <MediaAsset_subContent libelle="Résultat traitement" content={item.dataAna[0].resultatTraitement} />
+// return     <MediaAsset_subContent libelle="Résultat traitement" content={item.dataAna[0].resultatTraitement} />
 
-  })
+//   })
+var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
 
         return (
             <React.Fragment>
@@ -336,23 +390,26 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                             <FormGroup>
                                 <FormGroup>
                                     <Label>Evaluation de l'efficacité </Label>
-                                    <Input type="select">
+                                    <Input type="select" onChange={e=>{
+                                        this.setState({evaluationEff:e.target.value})
+                                    }}>
                                         <option value="" default > </option>
-                                        <option value="éfficace" >Efficace</option>
+                                        <option value="Efficace" >Efficace</option>
                                         <option value="Inéfficace" >Inefficace</option>
                                     </Input>
                                     <Row>&nbsp;</Row>
-                                    
-
                                     <Label>Niveau de satisfaction</Label>
-                                    <Input type="select">
+                                    <Input type="select" onChange={e=>{  this.setState({niveauSatisfaction:e.target.value}) }}>
                                         <option value="" default > </option>
-                                        <option value="satisfait" >Satisfait</option>
-                                        <option value="insatisfait" >Insatisfait</option>
+                                        <option value="Satisfait" >Satisfait</option>
+                                        <option value="Peu satisfait" >Peu satisfait</option>
+                                        <option value="Moyennement satisfait" >Moyennement satisfait</option>
+                                        <option value="Insatisfait" >Insatisfait</option>
                                     </Input> <Row>&nbsp;</Row>
                                     <Label>Preuve efficacité </Label>
-                                   
-                                    <Input type="textarea"></Input>
+                                    <Input value={this.state.preuve} onChange={e=>{
+                                        this.setState({preuve:e.target.value})
+                                    }} type="textarea"></Input>
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>
@@ -360,7 +417,10 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                             </TabSwitcher>
                         </ModalBody>
                         <ModalFooter>
-                            <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.valRoutage === true) || (this.state.dataStruc.length === 0)}>
+                            <Button color="danger" onClick={this.handleSubmit_evaluation} disabled={
+                                (this.state.preuve.trim()==="") || (this.state.evaluationEff === "") || (this.state.niveauSatisfaction==="")
+                                
+                                }>
                                 {"Soumettre l'évaluation"}
                             </Button>
                             <Button color="secondary" onClick={this.toggle}>
@@ -373,7 +433,7 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                         onClosed={this.state.closeAll ? this.toggle : undefined}
                         centered
                         size="sm">
-                        <ModalBody toggle={this.toggleNested} >{"response testert"}</ModalBody>
+                        <ModalBody toggle={this.toggleNested} >{response}</ModalBody>
                     </Modal>
                 </div>
                 <div style={{ cursor: 'pointer' }}>
@@ -393,6 +453,7 @@ return     <MediaAsset_subContent libelle="Résultat traitement" content={item.d
                                         this.toggle();
                                         this.get_critere_traitement_byIdfnc(rowInfo.original.idFnc);
                                         this.setState({
+                                            idInitiateur:rowInfo.original.idInitiateur,
                                             selected: rowInfo.index,
                                             idProcessus: rowInfo.original.idProcessus,
                                             numeroId: rowInfo.original.numeroId,

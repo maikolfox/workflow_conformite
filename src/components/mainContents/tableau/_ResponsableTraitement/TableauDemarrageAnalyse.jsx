@@ -616,16 +616,14 @@ else
                       <br></br>
                       <h1 style={{ textAlign: "center" }}>Analyse(s) créée(s)</h1>
                       <Col>
-                        <small>
-                        Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de soumettre...<br/>
-                        {/* La soumission termine la phase d'analyse aucune modification ne seras possible sans l'accord 
-                        de l'Organisation ou DRCJ */}
+                        <small style={{ textAlign: "center" }}>
+                       
+                        
                         </small>
                       </Col>
                       <br></br>
                       <TabPanel whenActive={2}>
-                    <Container>
-                      <Row>
+                      <Row >
                         <Col md="3">
                           <Tab id="1" maxStep={3} step="newAnalyse" >
                             <Button outline color="success" onClick={e => {
@@ -637,7 +635,7 @@ else
                                 icon="plus-circle"
                                 color="green"
                                 size="md"
-                              />{' '}
+                              />{' Ajouter'}
                             </Button>
                           </Tab>
                         </Col>
@@ -653,7 +651,7 @@ else
                                 icon="pen"
                                 color="blue"
                                 size="md"
-                              />{' '}
+                              />{' Modifier'}
                             </Button>
                           </Tab>
                         </Col>
@@ -664,12 +662,11 @@ else
                                 icon="trash"
                                 color="red"
                                 size="md"
-                              />{' '}
+                              />{' Supprimer'}
                             </Button>
                           </Tab>
                         </Col>
                       </Row>
-                    </Container>
                     <br></br>
                   </TabPanel>
                       <ReactTableActeur

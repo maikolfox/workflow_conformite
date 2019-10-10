@@ -1,8 +1,8 @@
 import React  from "react";
-import { faTrash, faPen, faPlusCircle, faBan, faEye ,faAngleDown} from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown} from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
+import MediaAsset  from '../../../assets/MediaAsset'
 import Loader from "../../../assets/Loader";
 
 import DateFormatTransform from "../../../assets/dateFormatTransform";
@@ -145,7 +145,6 @@ const evalCritere = [
   
 
 function CritereItemContent(props){
-
   return (
     <ul><li>{props.critere}&nbsp;<br />
       <strong>Echéance :</strong>&nbsp; {DateFormatTransform(props.echeanceCritere)}
@@ -153,6 +152,7 @@ function CritereItemContent(props){
       </ul>
 
   )
+  
 }
 
 
