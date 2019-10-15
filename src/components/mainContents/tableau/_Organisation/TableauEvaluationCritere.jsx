@@ -240,6 +240,8 @@ export default class TableauEvaluationCritere extends React.Component {
                         hasError: true,
                         responseToEval:error.message
                     });
+                    this.toggleNested();
+
                 });
     }
 
