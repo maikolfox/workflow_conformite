@@ -18,8 +18,10 @@ import FileBase64 from 'react-file-base64';
 import Columns from '../../../assets/ColumDetailsFnc'
 // import ActeurList from '../../../assets/ActeurData'
 // import ActeurColumns from '../../../assets/ActeurColumns'
-import Loader from "../../../assets/Loader"
-
+import Processus from "../../../assets/Processus";
+import Source from "../../../assets/Source";
+import FamilleProcessus from "../../../assets/FamilleProcessus";
+import Loader from "../../../assets/Loader";
 
 import {
   Button,
@@ -95,7 +97,9 @@ export default class ConsultationActAff extends React.Component {
         //File liste State
         todoData: [],
         lastId:0,
-        files: []        
+        files: []   ,
+        libelleSource:"",
+        libelleFamille:""     
       }
 
      
@@ -428,18 +432,37 @@ handleAdd(files)
             });
           }
           else{
+            console.log("resultat ----------------------> ",result.data.responses);
               //filter array and remove doublon
             var responseArray=result.data.responses;
-            var cache = {};
-            responseArray = responseArray.filter(function(elem,index,array){
-                return cache[elem.idFnc]?0:cache[elem.idFnc]=1;
+            //I didn't k
+            // var cache = {};
+            // responseArray = responseArray.filter(function(elem,index,array){
+            //     return cache[elem.idFnc]?0:cache[elem.idFnc]=1;
+            // });
+
+            var auxResponseTopost=result.data.responses;
+            auxResponseTopost.map(el=>{
+              console.log(el)
+              el.libelleSource= Source.find(element => element.idSource === el.idSource).libelleSource;
+              el.libelleProcesus=Processus.find(element => element.idProcessus === el.idProcessus).libelleProcessus;
+              el.libelleFamille=FamilleProcessus.find(element => element.idFamille === el.idFamille).libelleFamille;
+
+        
+            })
+            
+            this.setState({
+              isLoaded: true,
+              responseToPost: auxResponseTopost
             });
-          this.setState({
-            isLoaded: true,
-            responseArray:responseArray,//filtering array wil be display in react-tab
-            responseToPost: result.data.responses // is use to aggragate
-          });
-          console.log(this.state.responseToPost)}
+            console.log(this.state.responseToPost)  
+          // this.setState({
+          //   isLoaded: true,
+          //   responseArray:responseArray,//filtering array wil be display in react-tab
+          //   responseToPost: result.data.responses // is use to aggragate
+          // });
+          // console.log(this.state.responseToPost)
+        }
         },
         (error) => {
           console.log("124", error.message);
@@ -536,7 +559,7 @@ else
                   {/**SOURCE*/}
                   <MediaAsset libelle="Source" content={this.state.source} />
                   {/**PROCESSUS*/}
-                  <MediaAsset libelle="Processus" content={this.state.idProcessus} />
+                  <MediaAsset libelle="Processus" content={this.state.libelleProcessus} />
                   {/*FAMILLE*/}
                   <MediaAsset libelle="Famille" content={this.state.idFamile} />
                 </TabPanel>
@@ -723,7 +746,7 @@ else
             loading={!this.state.isLoaded}
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-            data={this.state.responseArray}
+            data={this.state.responseToPost}
             columns={Columns}
             previousText={"Précedent"}
             nextText={"Suivant"}
@@ -743,7 +766,11 @@ else
                         numeroId: rowInfo.original.numeroId,
                         descriptionFnc: rowInfo.original.descriptionFnc,
                         idFnc: rowInfo.original.idFnc,
-                        id:rowInfo.original.id
+                        id:rowInfo.original.id,
+                        qualification:rowInfo.original.qualification,
+                        source:rowInfo.original.libelleSource,
+                        libelleProcessus:rowInfo.original.libelleProcesus,
+                        libelleFamille:rowInfo.original.libelleFamille
 
                       });
                       console.log(rowInfo.index);
@@ -762,6 +789,4 @@ else
         </div>
           </React.Fragment>)
   }
-
-
 }

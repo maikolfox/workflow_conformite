@@ -9,6 +9,9 @@ import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 
+
+
+
 import {
   Button,
   Modal,
@@ -128,8 +131,9 @@ export default class ValidationRoutage extends React.Component {
       selected:!prevState.selected
     }));
   }
-  async componentDidMount() {
-       const fetchstat = await fetch("http://localhost:3553/api/consult/fnc",
+  async componentDidMount() 
+  {
+       await fetch("http://localhost:3553/api/consult/fnc",
       {
         method: 'POST',
         headers:
@@ -148,12 +152,24 @@ export default class ValidationRoutage extends React.Component {
       }).then(res => res.json())
         .then(
         (result) => {
+          //it's used ed in acteur traitant consult action
+          // var auxResponseTopost=result.data.responses
+          // auxResponseTopost.map(el=>{
+          //   el.libelleSource= Source.find(element => element.idSource === el).libelleSource;
+          //   el.libelleProcessus=Processus.find(element => element.idProcessus === el).libelleProcessus;
+          // })
+          
           this.setState({
             isLoaded: true,
             responseToPost: result.data.responses
           });
           console.log(this.state.responseToPost)  
-        },
+        
+         
+        }
+        
+        
+        ,
         (error) => {
           console.log("124",error.message);
           alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
@@ -264,7 +280,7 @@ export default class ValidationRoutage extends React.Component {
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
             data={this.state.responseToPost}
-            columns={columns}
+            columns={Columns}
             previousText={"Précedent"}
             nextText={"Suivant"}
             rowsText={"Ligne(s)"}

@@ -286,7 +286,6 @@ let proceList =
                       this.setState({ idProcessus: e.target.value })
                       if (e.target.value !== null && e.target.value!=="" ) {
                         this.setState({ idProcessusIsSet: true })
-                       
                       }
                       else { this.setState({ idProcessusIsSet: false }) }
                       this.handleChangeProcessus(e)

@@ -316,6 +316,7 @@ class Content extends Component {
 
             })
           }
+          
           else {
             tab[auxInd].libelles.map((el, index) => {
               dataLibelleFormat[index] = Processus.find(element => element.idProcessus === el).libelleProcessus;
