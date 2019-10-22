@@ -5,6 +5,8 @@ import Source from "./Source";
 import Loader from "./Loader"
 import QualificationList from "./qualificationList";
 import App from '../../setupProxy';
+import Cookies from 'universal-cookie';
+
 import {
   Button,
   Modal,
@@ -60,7 +62,7 @@ class ModalRensFNC extends React.Component {
       this.setState({famille:filtFam[0].idFamille,familleIsSet :(filtFam[0].idFamille==="")?false:true})
   };
   handleSubmit = async e=>{
-    
+    const cookies = new Cookies();
     const libelleFam=FamilleProcessus.find(item=>{return item.idFamille===this.state.famille}).libelleFamille;
     const libelleSource=Source.find(item=>{return item.idSource===this.state.idSource}).libelleSource;
     const libelleProcessus=Processus.find(item=>{return item.idProcessus===this.state.idProcessus}).libelleProcessus;
@@ -78,7 +80,7 @@ class ModalRensFNC extends React.Component {
               "descriptionFNC": this.state.descriptionFnc,
               "idProcessus": this.state.idProcessus,
               "idsource": this.state.idSource,
-              "idInitiateur": "maikol.ahoue@bridgebankgroup.com",
+              "idInitiateur": cookies.get('userId')+"@bridgebankgroup.com",
               "qualification": this.state.qualification,
               "idFamille": this.state.famille,
 

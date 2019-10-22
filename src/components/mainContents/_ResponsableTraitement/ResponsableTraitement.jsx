@@ -10,7 +10,7 @@ import {
     Route,
     //BrowserRouter as Router,
     NavLink, 
-   // Link,
+    Link,
     Switch, 
     //Redirect
 } from 'react-router-dom';
@@ -29,25 +29,25 @@ const ResponsableTraitement = ({ match }) => (
                     <span >MENU GENERAL</span>
                     </ListGroupItem>
                     <ListGroupItem  >
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</Link>
                     </ListGroupItem>
                     {/* <ListGroupItem action>
                         <NavLink exact activeClassName="activeNav" to={`${match.url}/validation_routage`} >Validation routage</NavLink>
                     </ListGroupItem> */}
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/demarrer_analyse`}>Demarrer une analyse</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/demarrer_analyse`}>Demarrer une analyse</Link>
                     </ListGroupItem>
                     {/* <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/reception_action_affectees`}>Reception des actions affectées</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/reception_action_affectees`}>Reception des actions affectées</Link>
                     </ListGroupItem> */}
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/cloture_taches`}>Cloture des taches</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/cloture_taches`}>Cloture des taches</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/cloture_definitives`}>Cloture définitive</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/cloture_definitives`}>Cloture définitive</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/historique_fiche`}>Historique</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/historique_fiche`}>Historique</Link>
                     </ListGroupItem>
                 </ListGroup>
             </Col>

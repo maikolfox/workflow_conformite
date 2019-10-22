@@ -172,12 +172,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                 width: 696,
                 style: { 'white-space': 'unset' }
             },
-            // {
-            //     Header: 'Code processus',
-            //     accessor: 'idProcessus',
-            //     width: 180,
-            //     style: { 'white-space': 'unset' }
-            // },
+        
             {
                 Header: 'Date déclaration',
                 accessor: 'dateDeclaration',

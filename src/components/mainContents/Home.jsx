@@ -1,38 +1,14 @@
 import React, { Component } from 'react';
 import { Col, Row, Container, Jumbotron, //Button, Nav, Input, Form, Modal 
 } from 'reactstrap';
+import Cookies from 'universal-cookie';
 
 import ModalRensFNC from '../assets/Modal';
 //import PanelWorkFlow from './PanelWorkFlow';
 var app =require('../../setupProxy')
 class Home extends Component {
 
-    // constructor(props){
-
-    //     this.state={
-
-
-    //     }
-    // }
-componentDidMount(){
-         fetch('/getAuthenticate',
-        {
-          method: 'GET',
-          headers:
-          {
-            'Content-Type': 'application/json',
-          }
-        },
-        ).then(res => res)
-        .then(
-        (result) => {
-        console.log(result)
-        },
-        (error) => {
-          console.log(error.status);
-          alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-        });
-}
+   
     render() {
         const simpleStyle={textAlign:"justify",fontSize:'120%', color:"#00142C"}
 
@@ -58,11 +34,10 @@ componentDidMount(){
                                     <li>Le traitement</li>
                                     <li>Le suivi</li>    
                                 </ul>   
-                             des fiches de non-conformités 
+                             des fiches de non-conformités  
                             </p>
                             </Col>
-                            <Col md="6"><img src="./image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Accueil" style={{marginTop :'8px'}} height="100%" width="100%" />
- </Col>
+                            <Col md="6"><img src="./image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Accueil" style={{marginTop :'8px'}} height="100%" width="100%" /></Col>
                         </Row>
                         <Row>&nbsp;</Row>
                         <Row >

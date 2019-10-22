@@ -8,37 +8,66 @@ import Home from './components/mainContents/Home';
 import ActeurTraitant from './components/mainContents/_ActeurTraitant/ActeurTraitant';
 import ResponsableTraitement from './components/mainContents/_ResponsableTraitement/ResponsableTraitement';
 import Organisation from './components/mainContents/_Organisation/Organisation';
-
+import LoginPage from './components/mainContents/LoginPage';
+import Auth from './components/assets/Auth';
 import {
     Route,
     BrowserRouter as Router,
     //NavLink,
-    Switch, //Redirect
+    Switch, 
+    Redirect
   } from 'react-router-dom';
- //mport {
- // NavItem,
- // Navbar, NavbarBrand, Nav,
- // Row,
- // Col,
- // ListGroup,
- // ListGroupItem,
-    // CardHeader,
-    // CardBody,
-    // Card
- // }
- //   from "reactstrap";
+ import {
+ 
+  Col,
+  Container
+  // CardHeader, // CardBody, // Card
+  }
+    from "reactstrap";
 
  ///PRENDRE EN COMPTE LA REDIRECTION SELON LES AUTORISATIONS
+const PrivateRoute = ({ component: Component, ...rest }) => (
+   <Route
+      {...rest}
+      render={props =>
+         Auth.getAuth() ? (
+            <Component {...props} />
+         ) : (
+               <Redirect
+                  to={{
+                     pathname: "/login"
+                  }}
+               />
+            )
+      }
+   />
+);
+
+const NoMatchPage = () => { return (<Container>
+      <Col style={{ marginTop: "25%", marginLeft: "25%" }}>
+            <h2>LA PAGE QUE VOUS CHERCHEZ N'EXISTE PAS !</h2></Col>
+      </Container>)}
+
 const routing = (
     <Router >
        <App />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/ActeurTraitant" component={ActeurTraitant} />
-            <Route path="/ResponsableTraitement" component={ResponsableTraitement} />
-            <Route path="/Organisation" component={Organisation} />
+            <Route exact path="/" render={() => (
+            Auth.getAuth() ? (
+               <Redirect to="/home"/>
+            ) : (
+               <Redirect to="/login"/>
+            )
+            )}/>
+            <PrivateRoute exact path="/home" component={Home} />
+            <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
+            <PrivateRoute path="/ResponsableTraitement" component={ResponsableTraitement} />
+            <PrivateRoute path="/Organisation" component={Organisation} />
+            <Route path="/login"  component={LoginPage}/>
+            <Route component={NoMatchPage} />
           </Switch>
-    </Router>)
+    </Router>
+    )
 
 
 

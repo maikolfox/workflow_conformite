@@ -10,7 +10,8 @@ import '../../css/simple-sidebar.css'
 import {
     Route,
    // BrowserRouter as Router,
-   // NavLink, //Link,
+   // NavLink, 
+    Link,
     Switch, 
   //  Redirect
 } from 'react-router-dom';
@@ -33,25 +34,26 @@ const Organisation = ({ match }) => (
                         MENU GENERAL
                     </ListGroupItem>
                     <ListGroupItem exac action /**style={ id===1 ? style_ : activeSt} onClick={e=>{id=1}} **/>
-                        <NavLink   activeClassName="activeNav" href={`${match.url}/accueil`} style={style_} activeStyle={activeSt} >Accueil</NavLink>
+                        <Link   activeClassName="activeNav" href={`${match.url}/accueil`} style={style_} activeStyle={activeSt} >Accueil</Link>
                     </ListGroupItem >
                     <ListGroupItem exact action style={ id===2 ? style_ : activeSt} onClick={e=>{id=2}}>
-                        <NavLink  activeClassName="activeNav" href={`${match.url}/routage_incorrect`} style={style_} activeStyle={activeSt}>Correction de routage</NavLink>
+                        <Link  activeClassName="activeNav" to={`${match.url}/routage_incorrect`} style={style_} activeStyle={activeSt}>Correction de routage</Link>
+                        
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" href={`${match.url}/creation_critere`} style={style_} activeStyle={activeSt} >Création de critère</NavLink>
+                        <Link exact activeClassName="activeNav" href={`${match.url}/creation_critere`} style={style_} activeStyle={activeSt} >Création de critère</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" href={`${match.url}/evaluation_de_critere`} style={style_} activeStyle={activeSt}  >Evaluation de critère</NavLink>
+                        <Link exact activeClassName="activeNav" href={`${match.url}/evaluation_de_critere`} style={style_} activeStyle={activeSt}  >Evaluation de critère</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" href={`${match.url}/statistic_fnc`} style={style_} activeStyle={activeSt}>Statistique</NavLink>
+                        <Link exact activeClassName="activeNav" href={`${match.url}/statistic_fnc`} style={style_} activeStyle={activeSt}>Statistique</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" href={`${match.url}/historique`} style={style_} activeStyle={activeSt}>Historique</NavLink>
+                        <Link exact activeClassName="activeNav" href={`${match.url}/historique`} style={style_} activeStyle={activeSt}>Historique</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" href={`${match.url}/etats_fnc`} style={style_} activeStyle={activeSt}>Etats des fiches de non conformité</NavLink>
+                        <Link exact activeClassName="activeNav" href={`${match.url}/etats_fnc`} style={style_} activeStyle={activeSt}>Etats des fiches de non conformité</Link>
                     </ListGroupItem>
                 </ListGroup>
             </Col>

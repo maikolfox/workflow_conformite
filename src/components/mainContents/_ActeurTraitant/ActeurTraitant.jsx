@@ -10,7 +10,7 @@ import '../../css/simple-sidebar.css'
 import {
     Route,
    // BrowserRouter as Router,
-    NavLink, //Link,
+    NavLink, Link,
     Switch, //Redirect
 } from 'react-router-dom';
 
@@ -22,7 +22,6 @@ import {
 
 const Organisation = ({ match }) => (
     <React.Fragment>
-
         <Row noGutters="true" >
             <Col md="2">
                 <ListGroup >
@@ -30,10 +29,10 @@ const Organisation = ({ match }) => (
                         MENU GENERAL
                     </ListGroupItem>
                     <ListGroupItem >
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/accueil`}>Accueil</Link>
                     </ListGroupItem>
                     <ListGroupItem action>
-                        <NavLink exact activeClassName="activeNav" to={`${match.url}/reception_action_affectee`} >Reception des actions affectées</NavLink>
+                        <Link exact activeClassName="activeNav" to={`${match.url}/reception_action_affectee`} >Reception des actions affectées</Link>
                     </ListGroupItem>
                 </ListGroup>
             </Col>
@@ -41,7 +40,6 @@ const Organisation = ({ match }) => (
             <Col md="10">
                 <Switch>
                    <Route path="/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
-                 
                 </Switch>
             </Col>
         </Row>

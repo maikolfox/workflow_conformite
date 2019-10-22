@@ -26,7 +26,8 @@
     "react-scripts": "^3.0.1",
     "react-select": "^3.0.5",
     "react-table": "^6.10.3",
-    "reactstrap": "6.5.0"
+    "reactstrap": "6.5.0",
+    "universal-cookie": "^4.0.2"
   },
   "proxy": "http://localhost:3553/api",
   "scripts": {
