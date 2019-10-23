@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import { CardBody, Card, CardHeader, //Row, Col 
 } from "reactstrap";
 import Tableau from '../../tableau/_Organisation/TableauCritere'
-
 
 var pushLeft={
 
@@ -19,7 +18,7 @@ class CreationCritereEfficacite extends Component {
       <Card style={pushLeft}>
         <CardHeader>Creation de critère d'efficacité</CardHeader>
         <CardBody>
-                    <Tableau></Tableau>
+                  <Tableau></Tableau>
         </CardBody>
       </Card>
 

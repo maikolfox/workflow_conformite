@@ -48,20 +48,19 @@ const Auth =
    getAuthResp(profile)
    {    
        if (profile.length===0 || profile===null) return false
-    
        return this.authResp
    },    
    getAuthOrga()
    {
        return this.authOrga
    },
-   getAuthOrga()
+   getAuthActeur()
    {
-       return this.authOrga
+       return this.authActeur
    },
    getAuthDGRC()
    {
-       return this.authOrga
+       return this.authDGRC
    }
   
 };
