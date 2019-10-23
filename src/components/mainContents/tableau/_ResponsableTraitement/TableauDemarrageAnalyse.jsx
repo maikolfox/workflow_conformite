@@ -22,7 +22,7 @@ import Loader from "../../../assets/Loader";
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import SelectComp from 'react-select';
 import AnalyseColum from "../../../assets/AnalyseColumn"
-
+import Auth from '../../../assets/Auth';
 
              
 import {
@@ -39,7 +39,7 @@ import {
   Row, 
   Col,
   //Progress,
-  Container,
+  // Container,
   Tooltip  //Fade
  
 } from "reactstrap";
@@ -138,7 +138,7 @@ export default class DemarrageAnalyse extends React.Component {
       echeance: this.state.echeance,
       cause: this.state.cause,
       /// TODO A RECUPERER DANS LA SESSION
-      idActeurDelegataire: 'ahoueromeo@gmail.com',
+      idActeurDelegataire: Auth.getUsername(),
       idActeur: this.state.idActeur,
       libelleAt:this.state.libelle
      
@@ -178,15 +178,14 @@ export default class DemarrageAnalyse extends React.Component {
         },
         body: JSON.stringify({
           "data":
-          { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
+          { 
+            "idResponsable": Auth.getUsername(),
             "idFnc":this.state.idFnc,
             "statutRoutage":this.state.valRoutage,
                 "numeroId":this.state.numeroId,
                 "libelleProcessus":this.state.libelleProcessus,
                 "libelleFamille":this.state.libelleFamille,
                 "libelleSoure":this.state.libelleSource,
-                "numeroId":this.state.numeroId,
                 "descriptionFNC":this.state.descriptionFnc,
                 "qualification":this.state.qualification
           }
@@ -311,7 +310,7 @@ export default class DemarrageAnalyse extends React.Component {
         item.echeance= this.state.echeance;
         item.cause= this.state.cause;
         //TODO RECUPERER LA VALEUR DANS LA SESSION
-        item.idActeurDelegataire= 'ahoueromeo@gmail.com';
+        item.idActeurDelegataire= Auth.getUsername();
         item.idActeur= this.state.idActeur;
         item.libelleAnalyse=itemId;
       };
@@ -371,12 +370,9 @@ export default class DemarrageAnalyse extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            
             /*TODO A RECUPERER DANS LA SESSION*/
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-            "idProfil": [
-              { "idProfil": 2 }
-            ]
+            "idResponsable":  Auth.getUsername(),
+            "idProfil": Auth.getProfileTab()
           }
         })
       }).then(res => res.json())
@@ -385,8 +381,6 @@ export default class DemarrageAnalyse extends React.Component {
           if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
           { 
             alert(result.data.message);
-            window.close();
-
             this.setState({
               isLoaded: true,
               errorMessage: "Accès refuser !",
@@ -436,11 +430,7 @@ export default class DemarrageAnalyse extends React.Component {
     {
         return(<Authorization/>) 
     }
-
-else
-    return (
-
-      
+    return (      
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
         <div>

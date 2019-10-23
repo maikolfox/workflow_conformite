@@ -1,5 +1,4 @@
 import React from "react";
-import Cookies from 'universal-cookie';
 
 import {
     Col,
@@ -49,17 +48,8 @@ export default class LoginPage extends React.Component {
                     this.setState({ responseMessage: result.data.message, showAlert: true })
                 }
                 else{
-                    Auth.authenticate(this.state.login,result.data.username)
-                    localStorage.setItem('username',this.state.login);
-                    localStorage.setItem('displayUsername',result.data.username)
-                    var date = new Date();
-                    date.setTime(date.getTime() + (36000 * 1000));
-                    
-                    const cookies = new Cookies();
-                    cookies.set('userId', this.state.login, { path: '/' ,expires: date});
-                    cookies.set('displayName', result.data.username, { path: '/',expires: date });
-                    console.log(cookies.get("userId")); // Pacman
-                   
+                    Auth.setLocalStorage(this.state.login,result.data.username);
+                    Auth.setProfile(result.data.userprofile);
                     this.setState({ authenticate:true })
                    
                 }
@@ -76,8 +66,7 @@ export default class LoginPage extends React.Component {
     }
     render() {
         var styled = { marginTop: "20%",/*backgroundColor:"gray"*/ }
-        const redir=this.state.authenticate
-        if (redir === true || Auth.getAuth()) {
+        if (this.state.authenticate  || Auth.getAuth()) {
             return <Redirect to='/home' />
         }else
         return (

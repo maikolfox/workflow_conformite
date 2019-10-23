@@ -10,6 +10,9 @@ import ResponsableTraitement from './components/mainContents/_ResponsableTraitem
 import Organisation from './components/mainContents/_Organisation/Organisation';
 import LoginPage from './components/mainContents/LoginPage';
 import Auth from './components/assets/Auth';
+import NavBarMain from './components/assets/NavbarMain';
+import Footer from './components/assets/Footer';
+
 import {
     Route,
     BrowserRouter as Router,
@@ -48,31 +51,32 @@ const NoMatchPage = () => { return (<Container>
             <h2>LA PAGE QUE VOUS CHERCHEZ N'EXISTE PAS !</h2></Col>
       </Container>)}
 
-const routing = (
-    <Router >
-       <App />
-          <Switch>
-            <Route exact path="/" render={() => (
-            Auth.getAuth() ? (
-               <Redirect to="/home"/>
-            ) : (
-               <Redirect to="/login"/>
-            )
-            )}/>
-            <PrivateRoute exact path="/home" component={Home} />
-            <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
-            <PrivateRoute path="/ResponsableTraitement" component={ResponsableTraitement} />
-            <PrivateRoute path="/Organisation" component={Organisation} />
-            <Route path="/login"  component={LoginPage}/>
-            <Route component={NoMatchPage} />
-          </Switch>
-    </Router>
-    )
+function Routing() {
+       
+       return <Router >
+            <Switch>
+              <Route exact path="/" render={() => (
+              Auth.getAuth() ? (
+                 <Redirect to="/home"/>
+              ) : (
+                 <Redirect to="/login"/>
+              )
+              )}/>
+              <PrivateRoute exact path="/home" component={Home} />
+              <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
+              <PrivateRoute path="/ResponsableTraitement" component={ResponsableTraitement} />
+              <PrivateRoute path="/Organisation" component={Organisation} />
+              <Route path="/login"  component={LoginPage}/>
+              <Route component={NoMatchPage} />
+            </Switch>
+            {/* <Footer/> */}
+      </Router>
+    
+   }
 
 
 
-
-ReactDOM.render(routing , document.getElementById('root'));
+ReactDOM.render(<Routing/> , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

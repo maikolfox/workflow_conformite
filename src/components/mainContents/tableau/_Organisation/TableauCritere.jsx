@@ -99,7 +99,6 @@ export default class TableauCritere extends React.Component {
         //selectedAnalyseIndex:null,
         //selectedAnalyse: null,
 
-        critere: null,
         critereIsSet: false,
 
         selectedAnaCreIndex: null,

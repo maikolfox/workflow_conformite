@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Col, Row, Container, Jumbotron, //Button, Nav, Input, Form, Modal 
 } from 'reactstrap';
 import Cookies from 'universal-cookie';
-
+import NavBarMain from '../assets/NavbarMain'
 import ModalRensFNC from '../assets/Modal';
 //import PanelWorkFlow from './PanelWorkFlow';
 var app =require('../../setupProxy')
@@ -14,6 +14,7 @@ class Home extends Component {
 
         return (
             <div>
+                <NavBarMain displayName={localStorage.getItem('displayUsername')} />
                 <Jumbotron fluid >
                     <Container>
                         <h1>WORKFLOW FNC ? </h1>

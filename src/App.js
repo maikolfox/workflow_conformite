@@ -15,6 +15,7 @@ import NavBarMain from './components/assets/NavbarMain';
 //import PanelWorkFlow from './components/mainContents/PanelWorkFlow'
 
 class App extends React.Component {
+  
   render() {
     return (<NavBarMain/>);
   }

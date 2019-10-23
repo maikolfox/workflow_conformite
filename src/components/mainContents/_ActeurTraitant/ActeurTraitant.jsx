@@ -18,10 +18,12 @@ import {
 // import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
 // import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
 // import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere';
+import NavBarMain from '../../assets/NavbarMain';
 
 
 const Organisation = ({ match }) => (
     <React.Fragment>
+        <NavBarMain/>
         <Row noGutters="true" >
             <Col md="2">
                 <ListGroup >

@@ -9,19 +9,21 @@ import '../../css/simple-sidebar.css'
 import {
     Route,
     //BrowserRouter as Router,
-    NavLink, 
+    //NavLink, 
     Link,
     Switch, 
     //Redirect
 } from 'react-router-dom';
 import ValidationRoutage from '../subMainContent/_ResponsableTraitement/ValidationRoutage';
 import DemarrerAnalyse from '../subMainContent/_ResponsableTraitement/DemarrerAnalyse';
+import NavBarMain from '../../assets/NavbarMain';
+
 //import ReceptionAction from '../subMainContent/_ResponsableTraitement/ReceptionAction';
 
 
 const ResponsableTraitement = ({ match }) => (
     <React.Fragment>
-
+        <NavBarMain/>
         <Row noGutters={true} >
             <Col md="2">
                 <ListGroup >

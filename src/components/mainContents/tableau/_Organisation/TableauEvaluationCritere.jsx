@@ -6,12 +6,14 @@ import React from 'react';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactTableEvaluationFnc from 'react-table';
-import ReactTableRecapAnalyseAndTraite from 'react-table';
+//import ReactTableRecapAnalyseAndTraite from 'react-table';
 
 import "react-table/react-table.css";
 import Loader from "../../../assets/Loader";
 
-import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+import TabSwitcher, { 
+    //Tab, 
+    TabPanel } from "./TabSwitcher/TabSwitcher";
 //import Authorization from '../../Authorization_401';
 /*import ActeurList from '../../../assets/ActeurData';
 import ActeurColumns from '../../../assets/ActeurColumns';
@@ -20,7 +22,10 @@ import CritereItem from './critereItem';*/
 import '../tableau.css';
 //import SelectComp from 'react-select';
 //import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-import { evaluationColumn,data_column,data_details } from '../../../assets/evaluationColumn';
+import { evaluationColumn,
+    //data_column,
+    //data_details 
+} from '../../../assets/evaluationColumn';
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import TransFormLibstat from '../../../assets/transFormLibelleStatut';
 import dateFormat from '../../../assets/dateFormatTransform';
@@ -28,9 +33,11 @@ import Source from '../../../assets/Source';
 import Processus from '../../../assets/Processus';
 import Famille from '../../../assets/FamilleProcessus';
 
-import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CritereItemEval,{Details} from "./critereItemEval";
+//import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import CritereItemEval
+//{Details} 
+from "./critereItemEval";
 
 
 //import Processus from '../../../asset/Processus';
@@ -43,14 +50,14 @@ import {
     ModalFooter,
     Input,
     FormGroup,
-    Form,
-    FormText,
+    //Form,
+    //FormText,
     Label,
     Row,
-    Col,
-    Collapse
+    //Col,
+    //Collapse
 } from "reactstrap";
-import processus from '../../../assets/Processus';
+//import processus from '../../../assets/Processus';
 
 
 
@@ -102,7 +109,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 dsFncNbrAna: [],
 
 
-                critere: null,
+               // critere: null,
                 critereIsSet: false,
 
                 selectedAnaCreIndex: null,
@@ -490,11 +497,9 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                             }
                         }}
                         className="-striped -highlight"
-
                         style={{
                             height: "1000px" // This will force the table body to overflow and scroll, since there is not enough room
                           }}
-                          className="-striped -highlight"
                         previousText={"Précedent"}
                         nextText={"Suivant"}
                         rowsText={"Ligne(s)"}

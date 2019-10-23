@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 
-import { FormGroup, Input, Form, Label, Col, FormText, Button, CardBody, Card, CardHeader, Row, Container } from "reactstrap";
-import { Line, Bar, Pie } from 'react-chartjs-2';
+import { FormGroup, Input, Form, Label, Col, FormText, Button, CardBody, Card, CardHeader, Row, 
+  //Container 
+} from "reactstrap";
+import { 
+  //Line, 
+  Bar, 
+  Pie 
+} from 'react-chartjs-2';
 import Processus from '../../../assets/Processus';
 import Source from '../../../assets/Source';
 import { LoaderV2 } from '../../../assets/Loader';
