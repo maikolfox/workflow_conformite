@@ -62,11 +62,11 @@ const Organisation = ({ match }) => (
             <div></div>
             <Col md="10">
                 <Switch>
-                    <Route path="/Organisation/statistic_fnc" component={Statistique} />
-                    <Route path="/Organisation/routage_incorrect" component={CorrectionRoutage} />
-                    <Route path="/Organisation/creation_critere" component={CreationCritereEvaluation} />
-                    <Route path="/Organisation/evaluation_de_critere" component={EvaluationCritere} />
-                    <Route path="/Organisation/etats_fnc" component={EtatsNonConformite} />
+                    <Route path="/workflow-gestion-fnc/Organisation/statistic_fnc" component={Statistique} />
+                    <Route path="/workflow-gestion-fnc/Organisation/routage_incorrect" component={CorrectionRoutage} />
+                    <Route path="/workflow-gestion-fnc/Organisation/creation_critere" component={CreationCritereEvaluation} />
+                    <Route path="/workflow-gestion-fnc/Organisation/evaluation_de_critere" component={EvaluationCritere} />
+                    <Route path="/workflow-gestion-fnc/Organisation/etats_fnc" component={EtatsNonConformite} />
                 </Switch>
             </Col>
         </Row>

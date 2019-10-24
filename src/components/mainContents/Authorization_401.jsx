@@ -5,8 +5,10 @@ import {  faBan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     Row,
-    Col
+    Col,Container
 } from "reactstrap";
+import NavBarMain from '../assets/NavbarMain'
+
 
 export default class Authorization extends React.Component {
 
@@ -14,13 +16,17 @@ export default class Authorization extends React.Component {
         library.add(faBan);
 
         return (
-        <React.Fragment><Row> <Col textAlign='center'><h1><strong>Accès refuser !!! </strong> vous ne disposez pas des droits requis pour consulter cette page </h1> </Col> </Row>
+        <React.Fragment>
+              <NavBarMain />
+              <Container>
+            <Row style={{marginTop:"25%"}}> <Col textAlign='center'><h1><strong>Accès refuser ! <br/> </strong> vous ne disposez pas des droits requis pour consulter cette page </h1> </Col> </Row>
             <br />
             <Row> <Col md={{ size: 12, order: 1, offset: 5 }} >   <FontAwesomeIcon
                 icon="ban"
                 color="red"
                 size="10x"
             /></Col></Row>
+            </Container>
         </React.Fragment>)
 
     }

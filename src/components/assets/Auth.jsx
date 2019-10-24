@@ -1,4 +1,22 @@
-import base64 from 'react-native-base64'
+import base64 from 'react-native-base64';
+import React from 'react'
+import {
+    Route,
+    BrowserRouter as Router,
+    Switch, 
+    Redirect,
+  } from 'react-router-dom';
+  function canAccessToThisPage(profil,tabProfile){
+    var correctProf=false;
+    if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)
+    return correctProf
+    tabProfile.map(el=>{
+       if(el.idProfil===profil){
+        correctProf=true
+       }
+    })
+    return correctProf
+}
 const Auth = 
 {
     username:"dXNlcm5hbWU=",//username in base 64
@@ -8,15 +26,19 @@ const Auth =
     authOrga:5,
     authActeur:1,
     authDGRC:4,
+    
     remove()
     {
-        console.log("remove --->")
+        localStorage.clear();
+        console.log("click")      
     },
+
     getUsername(){
         if(localStorage.getItem(this.username)===null ||localStorage.getItem(this.username)===undefined ) return null;
         return this.decodeLocalStorage(localStorage.getItem(this.username))+"@bridgebankgroup.com";
     },
     getDisplayName(){
+        if(localStorage.getItem(this.username)===null ||localStorage.getItem(this.username)===undefined ) return "";
         return this.decodeLocalStorage(localStorage.getItem(this.displayname));
     },
     encodeLocalStorage(str){
@@ -24,6 +46,7 @@ const Auth =
     },
 
     decodeLocalStorage(str){
+        if(localStorage.getItem(this.username)===null ||localStorage.getItem(this.username)===undefined ) return null;
         return base64.decode(str)
     },
     setLocalStorage(username,displayName)
@@ -37,26 +60,25 @@ const Auth =
     getProfileTab(){
         var obj=[];
         var prof=this.decodeLocalStorage(localStorage.getItem(this.profileOb))
-        if (prof!==null || prof !==undefined) return JSON.parse(this.decodeLocalStorage(localStorage.getItem(this.profileOb)));
+        if (prof!==null || prof !==undefined) return JSON.parse(prof);
         return obj;
-    },
+   },
    getAuth() 
    {   
        if(this.getUsername()!==null && this.getUsername()!==undefined ) return true
        else return false
    },
-   getAuthResp(profile)
+   getAuthResp(profileTab)
    {    
-       if (profile.length===0 || profile===null) return false
-       return this.authResp
+    return canAccessToThisPage(this.authResp,profileTab);
    },    
-   getAuthOrga()
+   getAuthOrga(profileTab)
    {
-       return this.authOrga
+     return canAccessToThisPage(this.authOrga,profileTab);
    },
-   getAuthActeur()
+   getAuthActeur(profileTab)
    {
-       return this.authActeur
+       return  canAccessToThisPage(this.authActeur,profileTab);
    },
    getAuthDGRC()
    {

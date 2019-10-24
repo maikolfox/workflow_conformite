@@ -8,7 +8,7 @@ import {
     Form,
     Input,
     Button,
-    Alert 
+    Alert ,Media
 } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 import Auth from '../assets/Auth';
@@ -51,7 +51,6 @@ export default class LoginPage extends React.Component {
                     Auth.setLocalStorage(this.state.login,result.data.username);
                     Auth.setProfile(result.data.userprofile);
                     this.setState({ authenticate:true })
-                   
                 }
             },
             (error) => {
@@ -65,14 +64,22 @@ export default class LoginPage extends React.Component {
         });
     }
     render() {
-        var styled = { marginTop: "20%",/*backgroundColor:"gray"*/ }
+        // marginTop: "20%",
+        var styled = {  height: "100%",/*backgroundColor:"gray"*/ backgroundImage:"./image/background.jpg" }
         if (this.state.authenticate  || Auth.getAuth()) {
-            return <Redirect to='/home' />
+            return <Redirect to='/workflow-gestion-fnc/home' />
         }else
         return (
-            <Container>
+/*{/* <img src="./image/background.jpg" alt="Accueil" style={{marginTop :'8px'}} height="100%" width="100%" /> style={{backgroundImage: `url("./image/background.jpg")`}}*/
                 <Row style={styled}>
-                    <Col>
+                    <Col classeName="boxImage" style={{backgroundImage: `url("./image/background.jpg")` ,backgroundSize: "100% 100%"}} md={8} sm={12}>
+                      <Row>&nbsp;</Row>
+                      <Row>&nbsp;</Row>
+                      <Row>&nbsp;</Row>
+                      <Row><Col md={12} sm={12} style={{color:"white", fontSize:"2.5em", marginLeft:"40%",marginTop:"290px"}}><strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong></Col></Row> 
+                    {/* <img src="./image/background.jpg" alt="Accueil"  height="100%" width="100%" /> */}
+                    </Col>
+                    <Col md={4} sm={12} style={{marginTop :'17%'}}>
                         <FormGroup>
                             <FormGroup>
                                 <FormGroup>
@@ -101,7 +108,6 @@ export default class LoginPage extends React.Component {
                         </FormGroup>
                     </Col>
                 </Row>
-            </Container>
         )
     }
 }

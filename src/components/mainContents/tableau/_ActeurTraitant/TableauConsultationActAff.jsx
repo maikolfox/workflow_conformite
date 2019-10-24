@@ -22,7 +22,7 @@ import Processus from "../../../assets/Processus";
 import Source from "../../../assets/Source";
 import FamilleProcessus from "../../../assets/FamilleProcessus";
 import Loader from "../../../assets/Loader";
-
+import Auth from "../../../assets/Auth"
 import {
   Button,
   Modal,
@@ -226,7 +226,7 @@ handleAdd(files)
       echeance: this.state.echeance,
       cause: this.state.cause,
       /// TODO A RECUPERER DANS LA SESSION
-      idActeurDelegataire: 'ahoueromeo@gmail.com',
+      idActeurDelegataire: Auth.getUsername(),
       idActeur: this.state.idActeur,
       libelleAt:this.state.libelle
      
@@ -276,7 +276,7 @@ handleAdd(files)
           "idFnc":this.state.idFnc,
           "resultat":this.state.text,
           //TODO RETRIEVE THIS  VALUE FROM SESSION
-          "idActeur":"maikol.ahoue@bridgebankgroup.com",
+          "idActeur":Auth.getUsername(),
           "data": dataStruct
         })
       }).then(res => res.json())
@@ -351,7 +351,7 @@ handleAdd(files)
         item.echeance= this.state.echeance;
         item.cause= this.state.cause;
         //TODO RECUPERER LA VALEUR DANS LA SESSION
-        item.idActeurDelegataire= 'ahoueromeo@gmail.com';
+        item.idActeurDelegataire= Auth.getUsername();
         item.idActeur= this.state.idActeur;
         item.libelleAnalyse=itemId;
       };
@@ -411,10 +411,8 @@ handleAdd(files)
           "data":
           {
             /*TODO A RECUPERER DANS LA SESSION*/
-             "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-             "idProfil": [
-              { "idProfil": 1 }
-            ]
+             "idResponsable": Auth.getUsername(),
+             "idProfil":Auth.getProfileTab()
           }
         })
       }).then(res => res.json())
@@ -527,12 +525,12 @@ handleAdd(files)
 
         var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
 
-    if(this.state.unAutorize)
-    {
-        return(<Authorization/>) 
-    }
+//     if(this.state.unAutorize)
+//     {
+//         return(<Authorization/>) 
+//     }
 
-else
+// else
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}

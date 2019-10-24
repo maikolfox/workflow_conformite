@@ -13,7 +13,8 @@ class Home extends Component {
 
         return (
             <div>
-                <NavBarMain displayName={localStorage.getItem('displayUsername')} />
+                
+                <NavBarMain />
                 <Jumbotron fluid >
                     <Container>
                         <h1>WORKFLOW FNC ? </h1>

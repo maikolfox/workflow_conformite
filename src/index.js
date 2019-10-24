@@ -12,16 +12,16 @@ import LoginPage from './components/mainContents/LoginPage';
 import Auth from './components/assets/Auth';
 import NavBarMain from './components/assets/NavbarMain';
 import Footer from './components/assets/Footer';
-
+import Authorization_401 from './components/mainContents/Authorization_401';
 import {
     Route,
     BrowserRouter as Router,
     //NavLink,
     Switch, 
     Redirect
-  } from 'react-router-dom';
+  } 
+  from 'react-router-dom';
  import {
- 
   Col,
   Container
   // CardHeader, // CardBody, // Card
@@ -33,12 +33,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
    <Route
       {...rest}
       render={props =>
-         Auth.getAuth() ? (
+         Auth.getAuth() ? 
+         (
             <Component {...props} />
          ) : (
                <Redirect
                   to={{
-                     pathname: "/login"
+                     pathname: "/workflow-gestion-fnc/login"
                   }}
                />
             )
@@ -46,27 +47,43 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
    />
 );
 
-const NoMatchPage = () => { return (<Container>
-      <Col style={{ marginTop: "25%", marginLeft: "25%" }}>
-            <h2>LA PAGE QUE VOUS CHERCHEZ N'EXISTE PAS !</h2></Col>
-      </Container>)}
+const NoMatchPage = () => { return (
+   <React.Fragment>
+    <NavBarMain/>
+      <Container>
+         <Col style={{ marginTop: "25%", marginLeft: "25%" }}>
+            <h2>LA PAGE QUE VOUS CHERCHEZ N'EXISTE PAS !</h2>
+         </Col>
+      </Container>
+   </React.Fragment>)}
 
+// const RepsonsableTrai= Auth.getAuthResp(Auth.getProfileTab()) ? ResponsableTraitement  :Authorization_401
+// const componentResp=()=>{return(RepsonsableTrai)}
 function Routing() {
        
        return <Router >
             <Switch>
-              <Route exact path="/" render={() => (
+              <Route exact path="/" render={() => 
+              (
               Auth.getAuth() ? (
-                 <Redirect to="/home"/>
+                 <Redirect to="/workflow-gestion-fnc/home"/>
               ) : (
-                 <Redirect to="/login"/>
+                 <Redirect to="/workflow-gestion-fnc/login"/>
               )
               )}/>
-              <PrivateRoute exact path="/home" component={Home} />
-              <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
-              <PrivateRoute path="/ResponsableTraitement" component={ResponsableTraitement} />
-              <PrivateRoute path="/Organisation" component={Organisation} />
-              <Route path="/login"  component={LoginPage}/>
+               <Route exact path="/workflow-gestion-fnc" render={() => 
+              (
+              Auth.getAuth() ? (
+                 <Redirect to="/workflow-gestion-fnc/home"/>
+              ) : (
+                 <Redirect to="/workflow-gestion-fnc/login"/>
+              )
+              )}/>
+              <PrivateRoute exact path="/workflow-gestion-fnc/home" component={Home} />
+              <PrivateRoute path="/workflow-gestion-fnc/ActeurTraitant" component={ActeurTraitant} />
+              <PrivateRoute path="/workflow-gestion-fnc/ResponsableTraitement" component={ Auth.getAuthResp(Auth.getProfileTab()) ? ResponsableTraitement : Authorization_401 } />
+              <PrivateRoute path="/workflow-gestion-fnc/Organisation" component={ Auth.getAuthOrga(Auth.getProfileTab()) ? Organisation : Authorization_401 }     />
+              <Route path="/workflow-gestion-fnc/login"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
             {/* <Footer/> */}

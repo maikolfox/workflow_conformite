@@ -41,7 +41,7 @@ const Organisation = ({ match }) => (
             <div></div>
             <Col md="10">
                 <Switch>
-                   <Route path="/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
+                   <Route path="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
                 </Switch>
             </Col>
         </Row>
