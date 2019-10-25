@@ -76,7 +76,7 @@ export default class LoginPage extends React.Component {
                       <Row>&nbsp;</Row>
                       <Row>&nbsp;</Row>
                       <Row>&nbsp;</Row>
-                      <Row><Col md={12} sm={12} style={{color:"white", fontSize:"2.5em", marginLeft:"40%",marginTop:"290px"}}><strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong></Col></Row> 
+                      <Row><Col md={12} sm={12} style={{color:"white", fontSize:"2.5em", marginLeft:"37%",marginTop:"290px"}}><strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong></Col></Row> 
                     {/* <img src="./image/background.jpg" alt="Accueil"  height="100%" width="100%" /> */}
                     </Col>
                     <Col md={4} sm={12} style={{marginTop :'17%'}}>

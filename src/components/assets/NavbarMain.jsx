@@ -40,19 +40,25 @@ componentDidMount()
             <DropdownMenu right>
               <DropdownItem>
                 <NavItem>
-                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} to="/workflow-gestion-fnc/Organisation/">Espace Organisation</Link>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} to="/workflow-gestion-fnc/Organisation">Espace Organisation</Link>
                 </NavItem>
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
                 <NavItem>
-                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/workflow-gestion-fnc/ResponsableTraitement/">Espace Responsable de traitement</Link>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} to="/workflow-gestion-fnc/DGRC">Espace DGRC</Link>
                 </NavItem>
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
                 <NavItem>
-                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/workflow-gestion-fnc/ActeurTraitant/">Espace Acteur traitant </Link>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/workflow-gestion-fnc/ResponsableTraitement">Espace Responsable de traitement</Link>
+                </NavItem>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+                <NavItem>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/workflow-gestion-fnc/ActeurTraitant">Espace Acteur traitant </Link>
                 </NavItem>
               </DropdownItem>
               <DropdownItem divider />

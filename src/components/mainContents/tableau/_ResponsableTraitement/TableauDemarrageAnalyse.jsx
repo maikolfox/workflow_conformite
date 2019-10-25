@@ -54,10 +54,8 @@ export default class DemarrageAnalyse extends React.Component {
         idFnc: '',
         numeroId: '',
         modal: '',
-        
         selected: null,
         selectedActeur: null,
-        
         responseToPost: [],
         isLoaded: '',
         getRow: '',
@@ -66,13 +64,10 @@ export default class DemarrageAnalyse extends React.Component {
         idProcessus: '',
         descriptionFnc: '',
         qualification: '',
-
         correction: '',
         correctionIsSet: '',
-
         actionCorrective: '',
         actionCorrectiveIsSet: '',
-
         cause: '',
         causeIsSet: '',
 
@@ -100,8 +95,6 @@ export default class DemarrageAnalyse extends React.Component {
         libelleSource:'',
         valRoutage:false,
         
-       
-
     }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
@@ -182,12 +175,12 @@ export default class DemarrageAnalyse extends React.Component {
             "idResponsable": Auth.getUsername(),
             "idFnc":this.state.idFnc,
             "statutRoutage":this.state.valRoutage,
-                "numeroId":this.state.numeroId,
-                "libelleProcessus":this.state.libelleProcessus,
-                "libelleFamille":this.state.libelleFamille,
-                "libelleSoure":this.state.libelleSource,
-                "descriptionFNC":this.state.descriptionFnc,
-                "qualification":this.state.qualification
+            "numeroId":this.state.numeroId,
+            "libelleProcessus":this.state.libelleProcessus,
+            "libelleFamille":this.state.libelleFamille,
+            "libelleSoure":this.state.libelleSource,
+            "descriptionFNC":this.state.descriptionFnc,
+            "qualification":this.state.qualification
           }
         })
       }).then(res => res.json())

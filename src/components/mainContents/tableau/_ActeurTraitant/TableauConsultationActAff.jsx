@@ -9,7 +9,6 @@ import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
-
 import 'react-quill/dist/quill.snow.css'; // ES6
 //import ReactQuill from 'react-quill';
 //import ReactHtmlParser from 'react-html-parser';
@@ -22,7 +21,7 @@ import Processus from "../../../assets/Processus";
 import Source from "../../../assets/Source";
 import FamilleProcessus from "../../../assets/FamilleProcessus";
 import Loader from "../../../assets/Loader";
-import Auth from "../../../assets/Auth"
+import Auth from "../../../assets/Auth";
 import {
   Button,
   Modal,
@@ -37,7 +36,6 @@ import {
   Row, 
   Col, 
 } from "reactstrap";
-
 
 export default class ConsultationActAff extends React.Component {
 

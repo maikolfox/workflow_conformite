@@ -6,17 +6,17 @@ import {
     Switch, 
     Redirect,
   } from 'react-router-dom';
-  function canAccessToThisPage(profil,tabProfile){
-    var correctProf=false;
-    if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)
-    return correctProf
-    tabProfile.map(el=>{
-       if(el.idProfil===profil){
-        correctProf=true
-       }
-    })
-    return correctProf
-}
+//   function canAccessToThisPage(profil,tabProfile){
+//     var correctProf=false;
+//     if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)
+//     return correctProf
+//     tabProfile.map(el=>{
+//        if(el.idProfil===profil){
+//         correctProf=true
+//        }
+//     })
+//     return correctProf
+// }
 const Auth = 
 {
     username:"dXNlcm5hbWU=",//username in base 64
@@ -27,6 +27,17 @@ const Auth =
     authActeur:1,
     authDGRC:4,
     
+    canAccessToThisPage(profil,tabProfile){
+        var correctProf=false;
+        if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)
+        return correctProf
+        tabProfile.map(el=>{
+           if(el.idProfil===profil){
+            correctProf=true
+           }
+        })
+        return correctProf
+    },
     remove()
     {
         localStorage.clear();
@@ -63,26 +74,30 @@ const Auth =
         if (prof!==null || prof !==undefined) return JSON.parse(prof);
         return obj;
    },
+   
    getAuth() 
    {   
        if(this.getUsername()!==null && this.getUsername()!==undefined ) return true
        else return false
    },
+
+   //autorisation function
    getAuthResp(profileTab)
    {    
-    return canAccessToThisPage(this.authResp,profileTab);
+    return this.canAccessToThisPage(this.authResp,profileTab);
    },    
    getAuthOrga(profileTab)
    {
-     return canAccessToThisPage(this.authOrga,profileTab);
+     return this.canAccessToThisPage(this.authOrga,profileTab);
    },
    getAuthActeur(profileTab)
    {
-       return  canAccessToThisPage(this.authActeur,profileTab);
+       return this.canAccessToThisPage(this.authActeur,profileTab);
    },
-   getAuthDGRC()
-   {
-       return this.authDGRC
+   getAuthDGRC(profileTab)
+   {    
+        return this.canAccessToThisPage(this.authDGRC,profileTab);
+    
    }
   
 };

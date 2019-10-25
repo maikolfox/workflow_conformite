@@ -9,7 +9,9 @@ import Columns from '../../../assets/ColumDetailsFnc'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 //import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Authorization from '../../Authorization_401';
-import FilterCaseInsensitive from '../../../assets/filterInsensitive'
+import FilterCaseInsensitive from '../../../assets/filterInsensitive';
+import Auth from '../../../assets/Auth';
+
 import {
   Button,
   Modal,
@@ -96,7 +98,7 @@ export default class ValidationRoutage extends React.Component {
         body: JSON.stringify({
           "data":
           { //REMPLACER PLUS TARD PAR LA VARIABLE DE SESSION
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
+            "idResponsable": Auth.getUsername(),
             "idFnc":this.state.idFnc,
             "statutRoutage":this.state.valRoutage
           }
@@ -155,10 +157,8 @@ export default class ValidationRoutage extends React.Component {
           "data":
           {
             //TODO A remplacer plus tard par  les variable de sessions 
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-            "idProfil": [
-              { "idProfil": 2 }//
-            ]
+            "idResponsable": Auth.getUsername(),
+            "idProfil":Auth.getProfileTab()
           }
         })
       }).then(res => res.json())

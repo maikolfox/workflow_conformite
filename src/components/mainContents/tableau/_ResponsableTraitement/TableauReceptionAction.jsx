@@ -8,6 +8,7 @@ import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
+import Auth from '../../../assets/Auth';
 
 
 
@@ -84,7 +85,7 @@ export default class ValidationRoutage extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
+            "idResponsable": Auth.getUsername(),
             "idFnc":this.state.idFnc,
             "statutRoutage":this.state.valRoutage
           }
@@ -133,7 +134,7 @@ export default class ValidationRoutage extends React.Component {
   }
   async componentDidMount() 
   {
-       await fetch("http://localhost:3553/api/consult/fnc",
+       await fetch("/consult/fnc",
       {
         method: 'POST',
         headers:
@@ -143,32 +144,25 @@ export default class ValidationRoutage extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            "idResponsable": "maikol.ahoue@bridgebankgroup.com",
-            "idProfil": [
-              { "idProfil": 2 }
-            ]
+            "idResponsable": Auth.getUsername(),
+            "idProfil":Auth.getProfileTab()
           }
         })
       }).then(res => res.json())
         .then(
         (result) => {
-          //it's used ed in acteur traitant consult action
+          //it's used  in acteur traitant consult action
           // var auxResponseTopost=result.data.responses
           // auxResponseTopost.map(el=>{
           //   el.libelleSource= Source.find(element => element.idSource === el).libelleSource;
           //   el.libelleProcessus=Processus.find(element => element.idProcessus === el).libelleProcessus;
           // })
-          
           this.setState({
             isLoaded: true,
             responseToPost: result.data.responses
           });
-          console.log(this.state.responseToPost)  
-        
-         
+          console.log(this.state.responseToPost)           
         }
-        
-        
         ,
         (error) => {
           console.log("124",error.message);
@@ -212,9 +206,8 @@ export default class ValidationRoutage extends React.Component {
             size="lg"
             centered
             aria-labelledby="example-modal-sizes-title-lg"
-            modalClassName="modal-90w"
+            modalClassName="modal-90w">
 
-          >
             <ModalHeader toggle={this.toggle}>Validation de la fiche N° {this.state.numeroId} </ModalHeader>
             <ModalBody>
               {/**QUALIFICATION FNC*/}

@@ -37,8 +37,20 @@ const Organisation = ({ match }) => (
                         <Link exact activeClassName="activeNav" to={`${match.url}/reception_action_affectee`} >Reception des actions affectées</Link>
                     </ListGroupItem>
                 </ListGroup>
+                <div id="sidebarMenu">
+<ul className="sidebarMenuInner">
+<li>Jelena Jovanovic <span>Web Developer</span></li>
+<li><a href="https://vanila.io" target="_blank">Company</a></li>
+<li><a href="https://instagram.com/plavookac" target="_blank">Instagram</a></li>
+<li><a href="https://twitter.com/plavookac" target="_blank">Twitter</a></li>
+<li><a href="https://www.youtube.com/channel/UCDfZM0IK6RBgud8HYGFXAJg" target="_blank">YouTube</a></li>
+<li><a href="https://www.linkedin.com/in/plavookac/" target="_blank">Linkedin</a></li>
+</ul>
+</div>
             </Col>
+
             <div></div>
+            
             <Col md="10">
                 <Switch>
                    <Route path="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
