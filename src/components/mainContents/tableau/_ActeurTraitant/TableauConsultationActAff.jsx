@@ -8,7 +8,7 @@ import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
-import Authorization from '../../Authorization_401';
+//import Authorization from '../../Authorization_401';
 import 'react-quill/dist/quill.snow.css'; // ES6
 //import ReactQuill from 'react-quill';
 //import ReactHtmlParser from 'react-html-parser';
@@ -55,10 +55,11 @@ export default class ConsultationActAff extends React.Component {
         selectedAnalyseIndex:null,
         
         responseToPost: [],
+        responseSansDoublon:[],
         isLoaded: '',
         getRow: '',
         idSource: '',
-        idFamile: '',
+        libelleFamille: '',
         idProcessus: '',
         descriptionFnc: '',
         qualification: '',
@@ -82,7 +83,6 @@ export default class ConsultationActAff extends React.Component {
         echeanceIsSet: false,
 
         hasError: false,
-        valRoutage: null,
         responseSubmit: '',
 
         dataStruc: [],
@@ -97,7 +97,8 @@ export default class ConsultationActAff extends React.Component {
         lastId:0,
         files: []   ,
         libelleSource:"",
-        libelleFamille:""     
+        idFamille:""     
+        
       }
 
      
@@ -116,6 +117,9 @@ export default class ConsultationActAff extends React.Component {
     ///
     this.retrieveAnaByFnc=this.retrieveAnaByFnc.bind(this);
    // this.handleChange=this.handleChange.bind(this);
+   this.getUnique=this.getUnique.bind(this);
+   this.loadActionAffecte=this.loadActionAffecte.bind(this);
+
 
 
 //File list Handler
@@ -127,6 +131,23 @@ export default class ConsultationActAff extends React.Component {
   };
 
 ///FILE LISTE HANDLER
+
+
+
+
+getUnique(arr, comp) {
+
+  const unique = arr
+       .map(e => e[comp])
+
+     // store the keys of the unique objects
+    .map((e, i, final) => final.indexOf(e) === i && i)
+
+    // eliminate the dead keys & store unique objects
+    .filter(e => arr[e]).map(e => arr[e]);
+
+   return unique;
+}
 
 handleAdd(files)
     {   
@@ -280,18 +301,19 @@ handleAdd(files)
       }).then(res => res.json())
       .then(
         (result) => {
-          this.setState(prevState => ({
-            responseToPost: prevState.responseToPost.filter(item => {
-              return item.idFnc !== this.state.idFnc;
-            })
-          }))
+
+          // this.setState(prevState => ({
+          //   responseToPost: prevState.responseToPost.filter(item => {
+          //     return item.idFnc !== this.state.idFnc && item.libelleAt !== this.state.libelle;
+          //   })
+          // }))
+          this.loadActionAffecte()
           console.log(this.state.selected);
           this.setState({
             isLoaded: true,
             responseSubmit: result.data.message,
             nestedModal: true,
           });
-          this.forceUpdate();
         },
         (error) => {
           console.log("124", error.message);
@@ -361,7 +383,20 @@ handleAdd(files)
     }));
   }
 
+  getUnique(arr, comp) {
 
+    const unique = arr
+         .map(e => e[comp])
+  
+       // store the keys of the unique objects
+      .map((e, i, final) => final.indexOf(e) === i && i)
+  
+      // eliminate the dead keys & store unique objects
+      .filter(e => arr[e]).map(e => arr[e]);
+  
+     return unique;
+  }
+  
   toggleNested() {
     this.setState({
       nestedModal: !this.state.nestedModal
@@ -380,13 +415,13 @@ handleAdd(files)
       acteurTraitant: null,
       idActeurIsSet :false,    
       echeance: null,
-      echeanceIsSet: false
+      echeanceIsSet: false,
+      selectedAnalyseIndex:null
       })
 
   }
 
   toggle() {
-    this.setState({ valRoutage: null })
     this.setState(prevState => ({
       modal: !prevState.modal,
       selected: !prevState.selected,
@@ -397,78 +432,88 @@ handleAdd(files)
     this.setState({libelle:1});
     this.setState({dataStruc:[]})
   }
-  async componentDidMount() {
-     await fetch("/consultActionAff/fnc",
+
+  async loadActionAffecte()
+  {
+    await fetch("/consultActionAff/fnc",
+    {
+      method: 'POST',
+      headers:
       {
-        method: 'POST',
-        headers:
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "data":
         {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "data":
-          {
-            /*TODO A RECUPERER DANS LA SESSION*/
-             "idResponsable": Auth.getUsername(),
-             "idProfil":Auth.getProfileTab()
-          }
-        })
-      }).then(res => res.json())
-      .then(
-        (result) => {
-          if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
-          { 
-            alert(result.data.message);
-            window.close();
-            this.setState({
-              isLoaded: true,
-              responseSubmit: result.data.message,
-              hasError: false,
-              unAutorize:true
-            });
-          }
-          else{
-            console.log("resultat ----------------------> ",result.data.responses);
-              //filter array and remove doublon
-            var responseArray=result.data.responses;
-            //I didn't k
-            // var cache = {};
-            // responseArray = responseArray.filter(function(elem,index,array){
-            //     return cache[elem.idFnc]?0:cache[elem.idFnc]=1;
-            // });
-
-            var auxResponseTopost=result.data.responses;
-            auxResponseTopost.map(el=>{
-              console.log(el)
-              el.libelleSource= Source.find(element => element.idSource === el.idSource).libelleSource;
-              el.libelleProcesus=Processus.find(element => element.idProcessus === el.idProcessus).libelleProcessus;
-              el.libelleFamille=FamilleProcessus.find(element => element.idFamille === el.idFamille).libelleFamille;
-
-        
-            })
-            
-            this.setState({
-              isLoaded: true,
-              responseToPost: auxResponseTopost
-            });
-            console.log(this.state.responseToPost)  
-          // this.setState({
-          //   isLoaded: true,
-          //   responseArray:responseArray,//filtering array wil be display in react-tab
-          //   responseToPost: result.data.responses // is use to aggragate
-          // });
-          // console.log(this.state.responseToPost)
+          /*TODO A RECUPERER DANS LA SESSION*/
+           "idResponsable": Auth.getUsername(),
+           "idProfil":Auth.getProfileTab()
         }
-        },
-        (error) => {
-          console.log("124", error.message);
-          alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
+      })
+    }).then(res => res.json())
+    .then(
+      (result) => {
+        if(result.data.error=== true || result.data.message==="Accès refuser !" || result.data.responses===null)
+        { 
+          alert(result.data.message);
+          window.close();
           this.setState({
             isLoaded: true,
-            responseSubmit:"Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste :"+ error.message,
-            hasError: true
+            responseSubmit: result.data.message,
+            hasError: false,
+            unAutorize:true
           });
-        }) 
+        }
+        else{
+          console.log("resultat ----------------------> ",result.data.responses);
+          //filter array and remove doublon
+
+          //I didn't k
+          // var cache = {};
+          // responseArray = responseArray.filter(function(elem,index,array){
+          //     return cache[elem.idFnc]?0:cache[elem.idFnc]=1;
+          // });
+
+        
+          var auxResponseTopost=result.data.responses;
+
+          auxResponseTopost.map(el=>{
+            console.log(el)
+            el.libelleSource= Source.find(element => element.idSource === el.idSource).libelleSource;
+            el.libelleProcesus=Processus.find(element => element.idProcessus === el.idProcessus).libelleProcessus;
+            el.libelleFamille=FamilleProcessus.find(element => element.idFamille === el.idFamille).libelleFamille;
+
+          })
+          var responseArrayDoublon=auxResponseTopost;
+          var auxResponseTopost=this.getUnique(result.data.responses,"numeroId");
+          
+          this.setState({
+            isLoaded: true,
+            responseToPost: responseArrayDoublon,
+            responseSansDoublon:auxResponseTopost,
+          });
+          console.log("response to post state ",this.state.responseToPost)  
+        // this.setState({
+        //   isLoaded: true,
+        //   responseArray:responseArray,//filtering array wil be display in react-tab
+        //   responseToPost: result.data.responses // is use to aggragate
+        // });
+        // console.log(this.state.responseToPost)
+      }
+      },
+      (error) => {
+        console.log("124", error.message);
+        alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
+        this.setState({
+          isLoaded: true,
+          responseSubmit:"Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste :"+ error.message,
+          hasError: true
+        });
+      }) 
+  }
+
+  async componentDidMount() {
+    this.loadActionAffecte()
     }
 
 
@@ -551,13 +596,13 @@ handleAdd(files)
                   {/**QUALIFICATION FNC*/}
                   <MediaAsset libelle="Qualification" content={this.state.qualification} />
                   {/**DESCRIPTION FNC*/}
-                  <MediaAsset libelle="Description de la non conformite" content={this.state.descriptionFnc} />
+                  <MediaAsset libelle="Description de la non-conformité" content={this.state.descriptionFnc} />
                   {/**SOURCE*/}
                   <MediaAsset libelle="Source" content={this.state.source} />
                   {/**PROCESSUS*/}
                   <MediaAsset libelle="Processus" content={this.state.libelleProcessus} />
                   {/*FAMILLE*/}
-                  <MediaAsset libelle="Famille" content={this.state.idFamile} />
+                  <MediaAsset libelle="Famille" content={this.state.libelleFamille} />
                 </TabPanel>
                 {/* ETAPE 2 FORMULAIRE ANALYSE */}
 
@@ -641,6 +686,7 @@ handleAdd(files)
                           type="textarea"
                           id="selectAgence"
                           name="selectbasic"
+                          max={3}
                           value={this.state.text}
                           onChange={e => {
                               e.preventDefault();
@@ -668,9 +714,6 @@ handleAdd(files)
                 {items}                    
                 </FormGroup>
                   </Form >
-                  
-                  
-
                 </TabPanel>
                
 
@@ -742,7 +785,7 @@ handleAdd(files)
             loading={!this.state.isLoaded}
             minRows={5}
             noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucune fiche à valider"}
-            data={this.state.responseToPost}
+            data={this.state.responseSansDoublon}
             columns={Columns}
             previousText={"Précedent"}
             nextText={"Suivant"}

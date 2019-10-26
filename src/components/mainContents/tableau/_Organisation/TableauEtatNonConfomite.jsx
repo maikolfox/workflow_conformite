@@ -92,6 +92,8 @@ export default class TableauEtatsNonConformite extends React.Component {
                         console.log("responses from backend:",result.data.responses)
                         const save_ = result.data.responses;
                         //reformater certains champs
+
+                        // eslint-disable-next-line
                         save_.map(el => {
                             el.echeances = DateFormatTransform(el.echeances);
                             el.idActeur = DisplayNomPrenom(el.idActeur);
@@ -127,7 +129,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                                  return acc;
                              }
                          }, []);
-
+                         // eslint-disable-next-line
                          aggData.map(el => {
                              filteredDATA.push(el);
                          });

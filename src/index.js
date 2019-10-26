@@ -13,7 +13,7 @@ import LoginPage from './components/mainContents/LoginPage';
 import Auth from './components/assets/Auth';
 import NavBarMain from './components/assets/NavbarMain';
 import Footer from './components/assets/Footer';
-import Authorization_401 from './components/mainContents/Authorization_401';
+import Authorization from './components/mainContents/Authorization_401';
 import {
     Route,
     BrowserRouter as Router,
@@ -57,7 +57,7 @@ const RespRoute = ({ component: Component, ...rest }) => (
          (
             <Component {...props} />
          ) : (
-            <Authorization_401/>
+            <Authorization/>
             ): (
                <Redirect
                   to={{
@@ -79,7 +79,7 @@ const OrgaRoute = ({ component: Component, ...rest }) => (
          (
             <Component {...props} />
          ) : (
-            <Authorization_401/>
+            <Authorization/>
             ): (
                <Redirect
                   to={{
@@ -100,7 +100,7 @@ const DGRCRoute = ({ component: Component, ...rest }) => (
          (
             <Component {...props} />
          ) : (
-            <Authorization_401/>
+            <Authorization/>
             ): (
                <Redirect
                   to={{
@@ -123,7 +123,7 @@ const NoMatchPage = () => { return (
       </Container>
    </React.Fragment>)}
 
-// const RepsonsableTrai= Auth.getAuthResp(Auth.getProfileTab()) ? ResponsableTraitement  :Authorization_401
+// const RepsonsableTrai= Auth.getAuthResp(Auth.getProfileTab()) ? ResponsableTraitement  :Authorization
 // const componentResp=()=>{return(RepsonsableTrai)}
 class Routing extends React.Component {
    

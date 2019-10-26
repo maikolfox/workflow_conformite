@@ -3,7 +3,8 @@ import React from "react";
 import {
     Col,
     Row,
-    Media
+    Media,
+    Input,Label
 } from "reactstrap";
 
 
@@ -15,8 +16,8 @@ import {
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                     <Media>
                         <Media body style={{textAlign:"justify"}}>
-                            <Media heading>{this.props.libelle}</Media>
-                            {this.props.content}
+                            <Label>{this.props.libelle}</Label>
+                            <Input type="textarea" value={this.props.content} disabled></Input>
                         </Media>
                     </Media>
                 </Col>
