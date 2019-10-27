@@ -22,6 +22,8 @@ import Source from "../../../assets/Source";
 import FamilleProcessus from "../../../assets/FamilleProcessus";
 import Loader from "../../../assets/Loader";
 import Auth from "../../../assets/Auth";
+import axios from 'axios';
+
 import {
   Button,
   Modal,
@@ -48,6 +50,10 @@ export default class ConsultationActAff extends React.Component {
         numeroId: '',
         modal: '',
         id:0,
+
+        selectedFile:null,
+        fileArray:[],
+        loaded:0,
 
         selected: null,
         selectedActeur: null,
@@ -95,7 +101,8 @@ export default class ConsultationActAff extends React.Component {
         //File liste State
         todoData: [],
         lastId:0,
-        files: []   ,
+        files: []  ,
+        
         libelleSource:"",
         idFamille:""     
         
@@ -115,6 +122,8 @@ export default class ConsultationActAff extends React.Component {
     this.handleValidModifyAnalyse= this.handleValidModifyAnalyse.bind(this);
     this.newAnalyse=this.newAnalyse.bind(this);
     ///
+    this.onChangeHandler=this.onChangeHandler.bind(this);
+    this.onClickHandler=this.onClickHandler.bind(this);
     this.retrieveAnaByFnc=this.retrieveAnaByFnc.bind(this);
    // this.handleChange=this.handleChange.bind(this);
    this.getUnique=this.getUnique.bind(this);
@@ -512,6 +521,47 @@ handleAdd(files)
       }) 
   }
 
+
+onClickHandler = () => 
+{
+   if(this.state.selectedFile!==null){
+    const data = new FormData();
+
+    for(var x = 0; x<this.state.selectedFile.length; x++) 
+    {
+        data.append('file', this.state.selectedFile[x])
+    }
+
+    axios.post("/upload", data, {
+      onUploadProgress: ProgressEvent => {
+        this.setState({
+          loaded: (ProgressEvent.loaded / ProgressEvent.total*100),
+      })
+  },
+}).then(res => { 
+      // then print response status
+      console.log(res.statusText)
+    })
+  }
+
+}
+
+onChangeHandler = event => 
+  {
+    event.preventDefault()
+    this.setState({
+      selectedFile: event.target.files,
+      loaded: 0,
+    
+    })  
+    this.setState(prevState=>({
+      fileArray: prevState.fileArray.concat(this.state.selectedFile)
+    }) )
+  }
+
+
+
+
   async componentDidMount() {
     this.loadActionAffecte()
     }
@@ -705,10 +755,15 @@ handleAdd(files)
                 {/* <input type="file" value={this.state.todoText} onChange={e=>{
                     this.setState({todoText:e.target.value})
                 }} /> */}
-                <FileBase64 
+                
+                <input type="file" name="file" multiple onChange={this.onChangeHandler} />
+
+                <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Charger le fichier</button>
+
+                {/* <FileBase64 
                 multiple={ true }
                 onDone={ this.getFiles.bind(this) } 
-                />
+                /> */}
                 {/* <button onClick={this.handleAdd}>Add </button> */}
                 <br></br>
                 {items}                    
