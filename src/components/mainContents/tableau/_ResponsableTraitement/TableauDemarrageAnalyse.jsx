@@ -353,6 +353,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.setState({dataStruc:[]})
   }
   async componentDidMount() {
+  
       await fetch("/consult/fnc",
       {
         method: 'POST',
@@ -397,6 +398,28 @@ export default class DemarrageAnalyse extends React.Component {
             hasError: true
           });
         })
+        if(this.props.match.params.idFnc!==undefined){
+          console.log("-------->idfnc",this.props.match.params.idFnc)
+         const fiche= this.state.responseToPost.find(el => el.numeroId=== this.props.match.params.idFnc)
+              
+         if(fiche!==undefined){
+          this.toggle();
+                      this.setState({
+                        idProcessus: fiche.idProcessus,
+                        numeroId: fiche.numeroId,
+                        descriptionFnc: fiche.descriptionFnc,
+                        idFnc: fiche.idFnc,
+                        qualification:fiche.qualification,
+                        libelleFamille:fiche.libelleFamille,
+                        libelleSource:fiche.libelleSource,
+                        libelleProcessus:fiche.libelleProcesus
+                      });
+
+
+         }
+        }
+  
+    
   }
 
   render() {

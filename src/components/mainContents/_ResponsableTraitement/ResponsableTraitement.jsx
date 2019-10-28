@@ -57,7 +57,9 @@ const ResponsableTraitement = ({ match }) => (
             <Col md="10">
                 <Switch>
                     <Route path="/workflow-gestion-fnc/ResponsableTraitement/validation_routage" component={ValidationRoutage} />
+                    <Route path="/workflow-gestion-fnc/ResponsableTraitement/demarrer_analyse/:idFnc" component={DemarrerAnalyse} />
                     <Route path="/workflow-gestion-fnc/ResponsableTraitement/demarrer_analyse" component={DemarrerAnalyse} />
+
                     {/* <Route path="/ResponsableTraitement/reception_action_affectees" component={ReceptionAction} /> */}
                 </Switch>
             </Col>

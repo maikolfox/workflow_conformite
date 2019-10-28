@@ -96,7 +96,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                         // eslint-disable-next-line
                         save_.map(el => {
                             el.echeances = DateFormatTransform(el.echeances);
-                            el.idActeur = DisplayNomPrenom(el.idActeur);
+                           // el.idActeur = DisplayNomPrenom(el.idActeur);
                             el.idActeurDelegataire = DisplayNomPrenom(el.idActeurDelegataire);
                             el.statutEva = TransformLibelleStatut(el.statutEva);
                             el.statut = TransformLibelleStatut(el.statut);

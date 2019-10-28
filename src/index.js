@@ -113,6 +113,25 @@ const DGRCRoute = ({ component: Component, ...rest }) => (
 );
 
 
+const Deconnexion = ({ component: Component, ...rest }) => (
+   <Route
+      {...rest}
+      render={props =>
+         Auth.remove() ? 
+         (<Redirect
+            to={{
+               pathname: "/workflow-gestion-fnc/login"
+            }}
+         />
+            
+          ) : (
+            <Component {...props} />
+            )
+       }
+   />
+   
+);
+
 const NoMatchPage = () => { return (
    <React.Fragment>
     <NavBarMain/>
@@ -125,12 +144,9 @@ const NoMatchPage = () => { return (
 
 // const RepsonsableTrai= Auth.getAuthResp(Auth.getProfileTab()) ? ResponsableTraitement  :Authorization
 // const componentResp=()=>{return(RepsonsableTrai)}
+
 class Routing extends React.Component {
-   
-   
    render(){    
-
-
        return( <Router >
             <Switch>
               <Route exact path="/" render={() => 
@@ -148,13 +164,16 @@ class Routing extends React.Component {
               ) : (
                  <Redirect to="/workflow-gestion-fnc/login"/>
               )
-              )}/>
+              
+              )}
+              />
               <PrivateRoute exact path="/workflow-gestion-fnc/home" component={Home} />
               <PrivateRoute path="/workflow-gestion-fnc/ActeurTraitant" component={ActeurTraitant} />
               <RespRoute path="/workflow-gestion-fnc/ResponsableTraitement" component={ ResponsableTraitement} />
               <OrgaRoute path="/workflow-gestion-fnc/Organisation" component={Organisation } />
               <DGRCRoute path="/workflow-gestion-fnc/DGRC" component={DGRC} />
               <Route path="/workflow-gestion-fnc/login"  component={LoginPage}/>
+              <Deconnexion path="/workflow-gestion-fnc/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
             {/* <Footer/> */}

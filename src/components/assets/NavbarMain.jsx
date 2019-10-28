@@ -28,15 +28,15 @@ componentDidMount()
     return (
       <Navbar className='headerStyle' light expand="md">
         <NavbarBrand href="/workflow-gestion-fnc/home">
-          <img src="./image/logoBridgeBank.png" alt="Accueil" style={{marginTop :'8px'}} height="50%" width="50%" />
+          <img src="/image/logoBridgeBank.png" alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>
         <h1 id="navBarText">Workflow FNC</h1>
         <Nav className="ml-auto" navbar>
           <Col md={"auto"}>
-          <UncontrolledDropdown nav inNavbar>
+          <UncontrolledDropdown nav inNavbar> 
             <DropdownToggle nav caret style={{color:"#cd511f", fontWeight:"bold",marginRight:"auto",marginTop:"5%" }}>
-             <UserIcon/> {Auth.getDisplayName()}
-            </DropdownToggle>
+             <UserIcon/> {Auth.getDisplayName()}  
+            </DropdownToggle> 
             <DropdownMenu right>
               <DropdownItem>
                 <NavItem>
@@ -63,9 +63,9 @@ componentDidMount()
               </DropdownItem>
               <DropdownItem divider />
               <DropdownItem>
-                <Row>
-                  {/* <a style={{ color: 'black', textDecoration: 'none' }} className="navItemColor"  onClick={Auth.remove()  } href="/login">Déconnexion</a> */}
-                </Row>
+              <NavItem>
+                  <Link style={{ color: 'red', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/workflow-gestion-fnc/deconnexion">Déconnexion </Link>
+                </NavItem>
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

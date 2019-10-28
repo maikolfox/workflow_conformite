@@ -11,18 +11,12 @@ var pushLeft={
  // boxShadow : "5px 1px 7px #00000059"
 
 }
-class DemarrerAnalyse extends Component {
-
-  render() {
-    return (
-      <Card style={pushLeft}>
-        <CardHeader >Demarrer une analyse</CardHeader>
+const DemarrerAnalyse =({ match})  => (
+   <Card style={pushLeft}>
+        <CardHeader>Demarrer une analyse </CardHeader>
         <CardBody>
-                    <Tableau></Tableau>
+                    <Tableau match={match}></Tableau>
         </CardBody>
       </Card>
-
-    )
-  }
-}
+);
 export default DemarrerAnalyse

@@ -42,6 +42,7 @@ const Auth =
     {
         localStorage.clear();
         console.log("click")      
+        return true
     },
 
     getUsername(){
