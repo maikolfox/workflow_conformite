@@ -710,13 +710,6 @@ onChangeHandler = event =>
                     </small>
                 </Col>
                 <br></br>
-                {/**DETAILS ANALYSE */}
-                                
-              
-
-
-                  {/**ACTION CORRECTIVE */}
-
                 {/**CAUSE  */}
                 <MediaAsset libelle="Cause" content={this.state.cause} />
                 {/**CORRECTION  */}
@@ -730,18 +723,19 @@ onChangeHandler = event =>
                 {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
                 <Form>
                 <FormGroup>
-                    <Label for="exampleEmail" md={12}>Resultat du traitement  100 caractères ({this.state.text.length}/100)</Label>
+                    <Label for="exampleEmail" md={12}>Resultat du traitement</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
                         <Input valid={this.state.textIsSet} invalid={!this.state.textIsSet}
                           type="textarea"
                           id="selectAgence"
                           name="selectbasic"
+                          required
                           max={3}
                           value={this.state.text}
                           onChange={e => {
                               e.preventDefault();
                                 this.setState({ text: e.target.value })
-                                if (e.target.value !== null && e.target.value !== "" &&e.target.value.length>=99) {
+                                if (e.target.value !== null && e.target.value !== "") {
                                   this.setState({ textIsSet: true })
                                 }
                                 else { this.setState({ textIsSet: false }) }           
@@ -758,7 +752,7 @@ onChangeHandler = event =>
                 
                 <input type="file" name="file" multiple onChange={this.onChangeHandler} />
 
-                <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Charger le fichier</button>
+                <button type="submit" className="btn btn-success btn-block" onClick={this.onClickHandler}>Charger le fichier</button>
 
                 {/* <FileBase64 
                 multiple={ true }

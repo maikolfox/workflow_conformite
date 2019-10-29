@@ -991,6 +991,7 @@ export default class TableauCritere extends React.Component {
                               id="selectAgence"
                               name="selectbasic"
                               value={this.state.critere}
+                              required
                               onChange={e => {
                                 this.setState({ critere: e.target.value })
                                 if (e.target.value !== null && e.target.value !== "") {

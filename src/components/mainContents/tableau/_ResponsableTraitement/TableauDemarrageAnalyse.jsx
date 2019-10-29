@@ -1,6 +1,6 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen,faPlusCircle,faBan } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPen,faPlusCircle,faBan,faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -423,8 +423,8 @@ export default class DemarrageAnalyse extends React.Component {
   }
 
   render() {
-  const buttonDemarrerAna= <Button color="success">{'Demarrer l\'analyse'}</Button>                
-  const buttonSoumettre=<Button color="danger" onClick={this.handleSubmitValidation}>
+  const buttonDemarrerAna= <Button size="lg"  color="success" block>{'Demarrer l\'analyse'}</Button>                
+  const buttonSoumettre=<Button color="danger" size="lg" onClick={this.handleSubmitValidation} block>
   Soumettre la fiche pour correction 
   </Button>
 
@@ -433,7 +433,7 @@ export default class DemarrageAnalyse extends React.Component {
     var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
 
 ///LIBRARY//////////////////////////////////////////////
-    library.add(faPen,faBan, faTrash,faPlusCircle);
+    library.add(faPen,faBan, faTrash,faPlusCircle,faExclamationTriangle);
 ////////////////////////////////////////////////////////
     
 
@@ -476,11 +476,22 @@ export default class DemarrageAnalyse extends React.Component {
                   <MediaAsset libelle="Processus" content={this.state.libelleProcessus} />
                   {/*FAMILLE*/}
                   <MediaAsset libelle="Famille" content={this.state.libelleFamille} />
+                  <Col md={{ size: '12', offset: 0 }}>
+                              <TabPanel whenActive={1}>
+                                <Tab id="1" md={12} padding={0} paddingRigth={0} maxStep={3} step="next">
+                                  {conditionnalBoutton}
+                                </Tab>
+                              </TabPanel>
+                           </Col>
                   <hr></hr>
                   <Form onSubmit={this.handleSubmit}>
                 <FormGroup check>
                   <FormGroup tag="fieldset">
-                    <legend>Validation routage</legend>
+                    <legend><FontAwesomeIcon
+                                icon="exclamation-triangle"
+                                color="red"
+                                size="md"
+                              /> En cas de routage incorrecte cocher la case suivante</legend>
                     <FormGroup check style={{color:'red'}}>
                     <Row>
                       <Col md={{ size: '2'}}>
@@ -499,13 +510,7 @@ export default class DemarrageAnalyse extends React.Component {
                       </Tooltip>
                       </Label>
                       </Col>
-                          <Col md={{ size: '4', offset: 2 }}>
-                              <TabPanel whenActive={1}>
-                                <Tab id="1" md={4} padding={0} paddingRigth={0} maxStep={3} step="next">
-                                  {conditionnalBoutton}
-                                </Tab>
-                              </TabPanel>
-                           </Col>
+                          
                        </Row>
                     </FormGroup>
                   </FormGroup>
