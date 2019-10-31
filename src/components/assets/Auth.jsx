@@ -26,7 +26,12 @@ const Auth =
     authOrga:5,
     authActeur:1,
     authDGRC:4,
-    
+    //JE COMPTE L'UTILISER POUR CHANGER REMPLACER LE LOCAL STORAGE
+    createCookieInHour: (cookieName, cookieValue, hourToExpire) => {
+        let date = new Date();
+        date.setTime(date.getTime()+(hourToExpire*60*60*1000));
+        document.cookie = cookieName + " = " + cookieValue + "; expires = " +date.toGMTString();
+     },
     canAccessToThisPage(profil,tabProfile){
         var correctProf=false;
         if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)
@@ -44,8 +49,9 @@ const Auth =
         console.log("click")      
         return true
     },
-
+    
     getUsername(){
+        //this.createCookieInHour("cookieName", "cookieValue", 1)
         if(localStorage.getItem(this.username)===null ||localStorage.getItem(this.username)===undefined ) return null;
         return this.decodeLocalStorage(localStorage.getItem(this.username))+"@bridgebankgroup.com";
     },
@@ -99,7 +105,9 @@ const Auth =
    {    
         return this.canAccessToThisPage(this.authDGRC,profileTab);
     
-   }
+   },
   
+ 
+
 };
 export default Auth;
