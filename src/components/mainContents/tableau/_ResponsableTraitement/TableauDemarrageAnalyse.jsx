@@ -24,7 +24,6 @@ import SelectComp from 'react-select';
 import AnalyseColum from "../../../assets/AnalyseColumn"
 import Auth from '../../../assets/Auth';
 
-
 import {
   Button,
   Modal,
@@ -49,21 +48,21 @@ import {
 function AnalyseItem(props) {
   return (
     // <Row > 
-    <Form style={{border:"1px",borderStyle:"dashed",padding :"25px",marginBottom:"2%" }}>
-      <h2>Analyse N° {props.item.libelleAt} </h2>  
+    <Form style={{ backgroundColor :"#F8F8F8", boxShadow: "1px 3px 1px #9E9E9E", border: "1px", borderColor:"gray", borderStyle: "solid", padding: "25px", marginBottom: "2%" ,marginTop:"2%" }}>
+      <h2>Analyse N° {props.item.libelleAt} </h2>
       <Row>
-       <Col md={{size:2 ,offset:10}}>
-         <Col md={{size:2 ,offset:9}} >
-           <Button color="red"  outline onClick={()=>props.handleChangeDelete(props.item.id)}>
-                        <FontAwesomeIcon
-                          icon="trash"
-                          color="red"
-                          size="sm"
-                        />
-                        </Button>
-           </Col>
-         </Col> 
-        </Row>
+        <Col md={{ size: 2, offset: 10 }}>
+          <Col md={{ size: 2, offset: 5 }} >
+            <Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
+              <FontAwesomeIcon
+                icon="trash"
+                color="red"
+                size="sm"
+              />Supprimer
+            </Button>
+          </Col>
+        </Col>
+      </Row>
       <Row >
         <Col md={6}>
           <FormGroup>
@@ -73,7 +72,7 @@ function AnalyseItem(props) {
               type="textarea"
               id="correction"
               name="correction"
-              value={props.item.corection}
+              value={props.item.correction}
               onChange={(e) => props.handleChangeCorrection(props.item.id, e.target.value)} />
             <FormText hidden={props.item.correctionIsSet}>Renseigner la correction</FormText>
           </FormGroup>
@@ -81,8 +80,8 @@ function AnalyseItem(props) {
         {/**cause */}
         <Col md={6}>
           <FormGroup>
-            <Label for="Cause" >Cause</Label>
-            <Input valid={props.item.cause} invalid={!props.item.cause}
+            <Label for="Cause">Cause</Label>
+            <Input valid={props.item.causeIsSet} invalid={!props.item.causeIsSet}
               type="textarea"
               id="cause"
               name="cause"
@@ -104,37 +103,40 @@ function AnalyseItem(props) {
             value={props.item.echeance}
             onChange={(e) => props.handleChangeEcheanceCorrection(props.item.id, e.target.value)}
           />
-          <FormText hidden={props.item.correctionIsSet}>Renseigner l'écheance correction</FormText>
+          <FormText hidden={props.item.echeanceIsSet}>Renseigner l'écheance de la correction</FormText>
         </Col>
         <Col md={6}>
           <FormGroup>
             <Label for="ActionCorrective">Action corrective</Label>
-            <Input valid={props.item.cause} invalid={!props.item.cause}
+            <Input valid={props.item.actionCorrectiveIsSet} invalid={!props.item.actionCorrectiveIsSet}
               type="textarea"
-              id="cause"
-              name="cause"
-              value={props.item.cause}
-              onChange={(e) => props.handleChangeCause(props.item.id, e.target.value)}
+              id="actionCorrective"
+              name="actionCorrective"
+              value={props.item.actionCorrective}
+              onChange={(e) => props.handleChangeActionCorrective(props.item.id, e.target.value)}
             />
+            <FormText hidden={props.item.actionCorrectiveIsSet}>Renseigner l'action corrective</FormText>
           </FormGroup>
         </Col>
         {/**Echéance action corrective**/}
-        <Col md={{size:'6' ,offset:6 }}>
+        <Col md={{ size: '6', offset: 6 }}>
           <Label for="EcheanceCorrection">Echéance action(s) corrective(s)</Label>
-          <Input md={"auto"} valid={props.item.echeanceIsSet} invalid={!props.item.echeanceIsSet}
+          <Input md={"auto"} valid={props.item.echeanceActionCorrectiveIsSet} invalid={!props.item.echeanceActionCorrectiveIsSet}
             type="date"
+            placeholder="champ non-obligatoire"
             min={props.currentDate()}
             id="EcheanceCorrection"
             name="EcheanceCorrection"
-            value={props.item.echeance}
-            onChange={(e) => props.handleChangeEcheanceCorrection(props.item.id, e.target.value)} />
-          <FormText hidden={props.item.correctionIsSet}>Renseigner l'échéance action corrective</FormText>
+            value={props.item.echeanceActionCorrective}
+            onChange={(e) => props.handleChangeEcheanceActionCorrective(props.item.id, e.target.value)} />
+          <FormText hidden={props.item.echeanceActionCorrectiveIsSet}>Renseigner l'échéance de l'action corrective</FormText>
         </Col>
       </Row>
       <Row inline>
         <Col md={12}>
           <Label for="Cause">Acteur</Label>
-            <SelectComp onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
+          <SelectComp outline onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
+          <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
         </Col>
       </Row>
     </Form>
@@ -172,7 +174,6 @@ export default class DemarrageAnalyse extends React.Component {
         idActeur: null,
         acteurTraitant: null,
         idActeurIsSet: false,
-
         echeance: '',
         echeanceIsSet: false,
 
@@ -181,7 +182,7 @@ export default class DemarrageAnalyse extends React.Component {
         responseSubmit: '',
 
         dataStruc: [],
-
+        nestedModal2:'',
         selectedAnalyseIndex: null,
         selectedAnalyse: null,
 
@@ -190,11 +191,13 @@ export default class DemarrageAnalyse extends React.Component {
         libelleFamille: '',
         libelleSource: '',
         valRoutage: false,
+        libelSupp:null
+    }
 
-      }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
-    this.toggle = this.toggle.bind(this);
+    this.toggleNested2 = this.toggleNested2.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitValidation = this.handleSubmitValidation.bind(this);
     this.handleSelectComp = this.handleSelectComp.bind(this);
@@ -207,38 +210,107 @@ export default class DemarrageAnalyse extends React.Component {
 
     this.handleChangeDelete = this.handleChangeDelete.bind(this);
     this.handleChangeActionCorrective = this.handleChangeActionCorrective.bind(this);
-    this.handleChangeEcheanceAction = this.handleChangeEcheanceAction.bind(this);
+    this.handleChangeEcheanceActionCorrective = this.handleChangeEcheanceActionCorrective.bind(this);
     this.handleChangeEcheanceCorrection = this.handleChangeEcheanceCorrection.bind(this);
-
     this.handleChangeCause = this.handleChangeCause.bind(this);
     this.handleChangeCorrection = this.handleChangeCorrection.bind(this);
     this.handleAddAction = this.handleAddAction.bind(this);
+    this.handleDependanceField = this.handleDependanceField.bind(this);
+    this.handleDependanceFieldCorrectionChange=this.handleDependanceFieldCorrectionChange.bind(this);
   };
 
+handleValideAnalyse()
+{
+  var isCorrect =false
+
+  if(this.state.dataStruc.length!==0){return isCorrect}
+  this.state.dataStruc.map(el=>{
+        if((el.correctionIsSet===false) && (el.causeIset===false) && (el.echeanceIsSet===false) )
+        {
+
+        }
+  })
+  return isCorrect 
+}
+
+handleDependanceField(todo,field)
+{
+
+  if (todo[field].trim() === "" ||  todo[field] === null) {
+    todo[field+"IsSet"] = false
+  } 
+
+  if(!todo.correctionIsSet && todo[field+"IsSet"]===false)
+  {
+    todo[field+"IsSet"] = false
+  }
+  if( (todo[field].trim() === "" ||  todo[field] === null ) && todo.correctionIsSet) {
+    todo[field+"IsSet"] = true
+  } 
+  if (todo[field].trim() !== ""  &&  todo[field] !== null )  {
+    todo[field+"IsSet"] = true
+  }  
+  if (todo[field].trim() !== ""  &&  todo[field] !== null )  {
+    todo[field+"IsSet"] = true
+  } 
+
+}
+
+
+handleDependanceFieldCorrectionChange(todo,field)
+{
+if( todo[field] === null)
+{
+  todo[field+"IsSet"] = false
+}else{    
+    
+    if(( todo[field].trim() === "" ) && todo.correctionIsSet) {
+      todo[field+"IsSet"] = false
+    } 
+    else
+    if( (todo[field].trim() !== "" &&  todo[field] !== null ) && todo.correctionIsSet===false) {
+      todo[field+"IsSet"] = true
+    }
+  }
+
+}
 
   //*to do inspire dynamic  **/
-  //DELETE ACTION 
-  handleChangeDelete(id) 
-  {
+  //DELETE ACTION  and change 
+  //analyse number dynamicaly
+
+  handleChangeDelete(id) {
     var aux = [];
-    var updatedTodos=[];
-    if(this.state.dataStruc.length!==0){
-       updatedTodos = this.state.dataStruc.map(todo => {
+    if (this.state.dataStruc.length !== 0) {
+      var updatedTodos = [];
+
+      updatedTodos = this.state.dataStruc.map((todo, index) => {
+        
         console.log(id)
-        if (todo.id !== id) 
-        {aux.push(todo)}
-      })}
-      this.setState({dataStruc:aux})
-  
-    //   if(this.state.dataStruc.length!==0)
-    //   {
-    //   var aux2=[]
-    //   this.state.dataStruc.map((index,todo)=>{
-    //     todo.libelleAt=index+1
-    //     aux2.push(todo)
-    //   })
-    //   this.setState({dataStruc:aux2})
-    // }
+        if(todo.id===id){
+        this.setState({libelSupp:todo.libelleAt})
+        }
+        if (todo.id !== id) {
+          console.log("differentId====>" + id)
+          console.log("before===>" + todo.libelleAt);
+          // todo.libelleAt = index + 1;
+          console.log("after===>" + todo.libelleAt);
+          aux.push(todo)
+        }
+      })
+    }
+    if (aux.length !== 0) {
+      console.log("in cascade")
+      var aux2 = []
+      aux.map((todo, index) => {
+        console.log(" cascade de todo ======>" + todo.id, index)
+        todo.libelleAt = index + 1
+        aux2.push(todo)
+      })
+      this.setState({ dataStruc: aux2 })
+    }
+    else this.setState({ dataStruc: aux })
+    this.toggleNested2()
   }
 
   //Action Corrective
@@ -247,6 +319,10 @@ export default class DemarrageAnalyse extends React.Component {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.actionCorrective = textValue
+          if (todo.actionCorrective.trim() !== "" &&  todo.actionCorrective !== null) {
+            todo.actionCorrectiveIsSet = true
+
+          } else todo.actionCorrectiveIsSet = false;
         }
         return todo
       })
@@ -262,6 +338,7 @@ export default class DemarrageAnalyse extends React.Component {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.cause = textValue
+          this.handleDependanceField(todo,"cause")
         }
         return todo
       })
@@ -273,26 +350,54 @@ export default class DemarrageAnalyse extends React.Component {
 
 
   //Correction
-  handleChangeCorrection(id, textValue) {
+  handleChangeCorrection(id, textValue) 
+  {
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.correction = textValue
+          if(todo.correction===null)
+          {
+            todo.correctionIsSet=false;
+            this.handleDependanceFieldCorrectionChange(todo,"cause")
+          } else
+          if (todo.correction.trim() === "") 
+          {
+            todo.correctionIsSet=false;
+            this.handleDependanceFieldCorrectionChange(todo,"cause")
+          } 
+         
+          else{ 
+            todo.correctionIsSet = true;
+            todo.causeIsSet=true
+          }
         }
-        return todo
+        return todo;
       })
       return {
         dataStruc: updatedTodos
       }
     })
   }
+
+
 
   //Echeance correction
   handleChangeEcheanceCorrection(id, textValue) {
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
-        if (todo.id === id) {
-          todo.echeance = textValue
+        if (todo.id === id) 
+        {
+          todo.echeance = textValue;
+          if (todo.echeance.trim() !== "" &&  todo.echeance !== null) {
+            todo.echeanceIsSet = true
+            
+          } 
+          if(todo.correctionIsSet){
+             todo.echeanceIsSet = true;
+          }
+          else todo.echeanceIsSet = false;
+          
         }
         return todo
       })
@@ -303,12 +408,16 @@ export default class DemarrageAnalyse extends React.Component {
   }
 
 
-  //Echeance Action
-  handleChangeEcheanceAction(id, textValue) {
+  //Echeance Action corrective
+  handleChangeEcheanceActionCorrective(id, textValue) {
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
-          todo.echeanceAction = textValue
+          todo.echeanceActionCorrective = textValue ;
+          if (todo.echeanceActionCorrective.trim() !== "" &&  todo.echeanceActionCorrective !== null) {
+            todo.echeanceActionCorrectiveIsSet = true
+
+          } else todo.echeanceActionCorrectiveIsSet = false;
         }
         return todo
       })
@@ -324,18 +433,20 @@ export default class DemarrageAnalyse extends React.Component {
       id: Date.now(),
       cause: null,
       //echeance ===> echeance correction
-      echeance: this.currentDate(),
-      //echeance2 ====> echeance action corrective
-      echeanceAction: null,
+      echeance: null,
+      //echeance2 ====> echeance action corrective dans la bd
+      echeanceActionCorrective: false,
       correction: null,
       actionCorrective: null,
       idActeurDelegataire: Auth.getUsername(),
       idActeur: null,
+      libelleAt: this.state.dataStruc.length + 1,
+      echeanceIsSet:false,
       correctionIsSet: false,
       causeIsSet: false,
       actionCorrectiveIsSet: false,
       echeanceActionIsSet: false,
-      libelleAt:this.state.dataStruc.length+1
+      idActeurIsSet:false,
     }
     aux.push(data);
     this.setState({
@@ -382,7 +493,6 @@ export default class DemarrageAnalyse extends React.Component {
       idActeurDelegataire: Auth.getUsername(),
       idActeur: this.state.idActeur,
       libelleAt: this.state.libelle
-
     };
 
     this.setState(prevState => ({
@@ -555,7 +665,6 @@ export default class DemarrageAnalyse extends React.Component {
         item.idActeur = this.state.idActeur;
         item.libelleAnalyse = itemId;
       };
-
       return item;
     });
     this.setState(prevState => ({
@@ -563,6 +672,13 @@ export default class DemarrageAnalyse extends React.Component {
     }));
   }
 
+  toggleNested2() {
+    this.setState({
+      nestedModal2: !this.state.nestedModal2
+    });
+  }
+
+ 
 
   toggleNested() {
     this.setState({
@@ -671,18 +787,28 @@ export default class DemarrageAnalyse extends React.Component {
   }
 
   render() {
+    //ZONE POUR LES AFFICHAGES CONDITIONNELS
     const buttonDemarrerAna = <Button size="lg" color="success" block>{'Demarrer l\'analyse'}</Button>
     const buttonSoumettre = <Button color="danger" size="lg" onClick={this.handleSubmitValidation} block>
       Soumettre la fiche pour correction
   </Button>
-
+    const textSuppression=this.state.dataStruc.length===0 ? " . Vous avez supprimer toutes les analyses ! " : " . Mise à jour de la numérotation des analyses "
     const conditionnalBoutton = (this.state.valRoutage) ? buttonSoumettre : buttonDemarrerAna
-
     var response = (this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
+    const AnalyseItem_ = this.state.dataStruc.length!==0 
+                  ? 
+                    this.state.dataStruc.map(item => <AnalyseItem key={item.id} item={item} 
+                    handleChangeCorrection={this.handleChangeCorrection}
+                    handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection} 
+                    handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
+                    handleSelectComp={this.handleSelectComp} currentDate={this.currentDate} 
+                    handleChangeDelete={this.handleChangeDelete} 
+                    handleChangeCause={this.handleChangeCause}
+                    handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
+                    
 
-    const AnalyseItem_ = this.state.dataStruc.map(item => <AnalyseItem key={item.id} item={item} handleChangeCorrection={this.handleChangeCorrection}
-      handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection} handleSelectComp={this.handleSelectComp} currentDate={this.currentDate} handleChangeDelete={this.handleChangeDelete} handleChangeCause={this.handleChangeCause}
-    />)
+                  : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée</h2></Col></React.Fragment>
+
 
     ////LIBRARY//////////////////////////////////////////////
     library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle);
@@ -752,16 +878,14 @@ export default class DemarrageAnalyse extends React.Component {
                                     this.setState(prevState => ({
                                       valRoutage: !prevState.valRoutage
                                     }));
-
                                     console.log(e.target.value)
                                   }} />{' '}Routage incorrect
-                        </span>
+                                </span>
                                 <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggleToolTips}>
                                   <p> Cocher cette case ,appuyer ensuite sur le boutton  "Soummettre la fiche pour correction" pour envoyer la FNC à l'Organisation pour correction</p>
                                 </Tooltip>
                               </Label>
                             </Col>
-
                           </Row>
                         </FormGroup>
                       </FormGroup>
@@ -771,44 +895,36 @@ export default class DemarrageAnalyse extends React.Component {
                 <TabPanel whenActive={2}>
                   <h1 style={{ textAlign: "center" }}>CREER L'ANALYSE</h1>
                   <Form onSubmit={this.handleSubmit}>
-                  <Row>
-                  <Col>
-                    <small style={{ textAlign: "center" }}>
-                      <Button outline color="success" onClick={this.handleAddAction}>
-                        <FontAwesomeIcon
-                          icon="plus-circle"
-                          color="green"
-                          size="md"
-                        />{' Ajouter'}
-                      </Button>
-                    </small>
-                  </Col>
-                  <Col>
-                    <small style={{ textAlign: "center" }}>
-                      <Button outline color="danger" onClick={this.handleAddAction}>
-                        <FontAwesomeIcon
-                          icon="trash"
-                          color="red"
-                          size="md"
-                        />{' Tout supprimer'}
-                      </Button>
-                    </small>
-                  </Col>
-                  </Row>
-                  <br></br>
-                   <Col style={{ overflowY:"scroll" ,height :"700px"}}> {AnalyseItem_}</Col>
-                    {/* <Row>
-                      <Tab id="1" padding="30px" maxStep={3} step="retourRecap">
-                        <Button>Annuler</Button>
-                      </Tab>
-                      <Col md="8" ></Col>
-                      <Tab id="1" padding="105px" maxStep={3} step="nope">
-                        <Button color="danger" onClick={this.createAnalyse} disabled={!(this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)}>{'Affecter l\'analyse'}&nbsp;</Button>
-                      </Tab>
-                    </Row> */}
+                    <Row>
+                      <Col>
+                        <small style={{ textAlign: "center" }}>
+                          <Button outline color="success" onClick={this.handleAddAction}>
+                            <FontAwesomeIcon
+                              icon="plus-circle"
+                              color="green"
+                              size="md"
+                            />{' Ajouter'}
+                          </Button>
+                        </small>
+                      </Col>
+                      {/* <Col>
+                        <small style={{ textAlign: "center" }}>
+                          <Button outline color="danger" onClick={this.handleAddAction}>
+                            <FontAwesomeIcon
+                              icon="trash"
+                              color="red"
+                              size="md"
+                            />{' Tout supprimer'}
+                          </Button>
+                        </small>
+                      </Col> */}
+                    </Row>
+                    <br></br>
+                    <Col style={{ borderStyle: "inset", overflowY: "scroll", overflowX:"hidden", height: "600px" ,backgroundColor:"#E8E8E8"}}> {AnalyseItem_}</Col>
+                   
                   </Form >
                   <Row>&nbsp;</Row>
-                  
+
                   <br></br>
 
                   <Tab id="1" md={1} padding="0px" maxStep={3} step="prev">
@@ -831,7 +947,14 @@ export default class DemarrageAnalyse extends React.Component {
             onClosed={this.state.closeAll ? this.toggle : undefined}
             centered
             size="sm">
-            <ModalBody toggle={this.toggleNested} >{response}</ModalBody>
+            <ModalBody toggle={this.toggleNested} >{response  } </ModalBody>
+          </Modal>
+          <Modal isOpen={this.state.nestedModal2}
+            toggle={this.toggleNested2}
+            // onClosed={this.setState({nestedModal2:!this.state.nestedModal2})}
+            centered
+            size="sm">
+            <ModalBody toggle={this.toggleNested2}>L'analyse N°  {this.state.libelSupp} supprimée {textSuppression} </ModalBody>
           </Modal>
         </div>
         {/*REACT  TABLE*/}
