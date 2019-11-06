@@ -30,9 +30,9 @@ var  id=1
 const Organisation = ({ match }) => (
     <React.Fragment>
     <NavBarMain/>
-        <Row noGutters={true}>
-            <Col md="2">
-                <ListGroup>
+        <Row style={{marginTop:"100px"}} noGutters={true}>
+            <Col md="2" >
+                <ListGroup >
                     <ListGroupItem className="menuHeader" >
                         MENU GENERAL
                     </ListGroupItem>

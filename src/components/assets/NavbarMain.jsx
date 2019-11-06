@@ -26,7 +26,7 @@ componentDidMount()
 }
   render() {
     return (
-      <Navbar className='headerStyle' light expand="md">
+      <Navbar fixed={"top"} className='headerStyle' light expand="md" >
         <NavbarBrand href="/workflow-gestion-fnc/home">
           <img src="/image/logoBridgeBank.png" alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>

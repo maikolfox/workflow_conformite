@@ -11,7 +11,8 @@ import {
     //BrowserRouter as Router,
     //NavLink, 
     Link,
-    Switch, 
+    Switch,
+    Nav 
     //Redirect
 } from 'react-router-dom';
 import ValidationRoutage from '../subMainContent/_ResponsableTraitement/ValidationRoutage';
@@ -24,8 +25,8 @@ import NavBarMain from '../../assets/NavbarMain';
 const ResponsableTraitement = ({ match }) => (
     <React.Fragment>
         <NavBarMain/>
-        <Row noGutters={true} >
-            <Col md="2">
+        <Row style={{marginTop:"81px" ,position:"flex"}} noGutters={true} >
+            <Col  md="2">
                 <ListGroup >
                     <ListGroupItem style={{backgroundColor:"#172935",color:'white'}}  >
                     <span >MENU GENERAL</span>

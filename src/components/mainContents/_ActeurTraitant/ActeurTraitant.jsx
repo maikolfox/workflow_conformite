@@ -24,7 +24,7 @@ import NavBarMain from '../../assets/NavbarMain';
 const Organisation = ({ match }) => (
     <React.Fragment>
         <NavBarMain/>
-        <Row noGutters="true" >
+        <Row style={{marginTop:"100px"}} noGutters="true" >
             <Col md="2">
                 <ListGroup >
                     <ListGroupItem className="menuHeader" >

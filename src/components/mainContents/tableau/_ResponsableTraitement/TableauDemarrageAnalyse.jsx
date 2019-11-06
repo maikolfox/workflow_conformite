@@ -7,7 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
-import ReactTableActeur from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
 //import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
@@ -190,8 +189,11 @@ export default class DemarrageAnalyse extends React.Component {
         libelleProcessus: '',
         libelleFamille: '',
         libelleSource: '',
-        valRoutage: false,
-        libelSupp:null
+        libelSupp:null,
+         
+        // use to validate form
+        isValide:null,
+        incorrectField:[]
     }
 
     this.toggle = this.toggle.bind(this);
@@ -217,20 +219,99 @@ export default class DemarrageAnalyse extends React.Component {
     this.handleAddAction = this.handleAddAction.bind(this);
     this.handleDependanceField = this.handleDependanceField.bind(this);
     this.handleDependanceFieldCorrectionChange=this.handleDependanceFieldCorrectionChange.bind(this);
+    this.handleValideAnalyse=this.handleValideAnalyse.bind(this);
+
+
   };
 
 handleValideAnalyse()
 {
-  var isCorrect =false
+  var allIsCorrect=[];
+  var isCorrect =true
+  var formFieldMissFill=[]
+  if(this.state.dataStruc.length===0)
+  {
+    this.setState({isValide:false,incorrectField :formFieldMissFill})
 
-  if(this.state.dataStruc.length!==0){return isCorrect}
+  }
+  else{
   this.state.dataStruc.map(el=>{
-        if((el.correctionIsSet===false) && (el.causeIset===false) && (el.echeanceIsSet===false) )
-        {
+    if(!el.echeanceIsSet){
 
-        }
+      isCorrect=false;
+      var obj={
+        labelle:"Echeance",
+        libelleAt:"Analyse N° "+el.libelleAt
+      }
+      formFieldMissFill.push(obj)
+    }
+    if( !el.echeanceActionCorrectiveIsSet)
+    {
+       
+      isCorrect=false;
+      var obj={
+        labelle:"Echeance action corrective",
+        libelleAt:"Analyse N° "+el.libelleAt
+      }
+      formFieldMissFill.push(obj)
+
+    }
+    //pour eviter un doublon lors de l'ajout de la correction 
+    // pour la correction
+    var correctionIsAdd=false
+
+    //Si correction renseignée, 
+    //désactiver le caractère obligatoire des ‘‘Causes’’ et 
+    if( !el.correctionIsSet &&  !el.causeIsSet) 
+    {
+      isCorrect=false;
+      var obj={
+        labelle:"Correction",
+        libelleAt:"Analyse N° "+el.libelleAt
+      }
+      var obj={
+        labelle:"Cause",
+        libelleAt:"Analyse N° "+el.libelleAt
+      }
+      formFieldMissFill.push(obj)
+      correctionIsAdd=true
+    }
+    //Si correction renseignée, 
+    //‘‘Actions correctives’’. Ne pas le faire dans le cas contraire. 
+    if( !el.correctionIsSet &&  !el.actionCorrectiveIsSet) 
+    {
+      isCorrect=false;
+      if(!correctionIsAdd){
+      var obj={
+        labelle:"Correction",
+        libelleAt:"Analyse N° "+el.libelleAt
+      }
+    }
+    var obj={
+        labelle:"Cause",
+        libelleAt:"Analyse N° "+el.libelleAt
+      }
+      formFieldMissFill.push(obj)
+
+    }
+
+    if((el.correctionIsSet===false) && (el.causeIset===false) && (el.echeanceIsSet===false) )
+    {
+
+    }
+    allIsCorrect.push(isCorrect);
+  
   })
-  return isCorrect 
+  var boolfinal=true;
+  if(allIsCorrect.length===0){
+
+  }else
+  allIsCorrect.map(el=>{
+    boolfinal=boolfinal&&el;
+  })
+  this.setState({isValide:boolfinal,incorrectField :formFieldMissFill});
+
+  }
 }
 
 handleDependanceField(todo,field)
@@ -244,7 +325,8 @@ handleDependanceField(todo,field)
   {
     todo[field+"IsSet"] = false
   }
-  if( (todo[field].trim() === "" ||  todo[field] === null ) && todo.correctionIsSet) {
+  if( (todo[field].trim() === "" ||  todo[field] === null ) && todo.correctionIsSet) 
+  {
     todo[field+"IsSet"] = true
   } 
   if (todo[field].trim() !== ""  &&  todo[field] !== null )  {
@@ -264,7 +346,7 @@ if( todo[field] === null)
   todo[field+"IsSet"] = false
 }else{    
     
-    if(( todo[field].trim() === "" ) && todo.correctionIsSet) {
+    if(( todo[field].trim() === "" ) && !todo.correctionIsSet) {
       todo[field+"IsSet"] = false
     } 
     else
@@ -319,10 +401,7 @@ if( todo[field] === null)
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.actionCorrective = textValue
-          if (todo.actionCorrective.trim() !== "" &&  todo.actionCorrective !== null) {
-            todo.actionCorrectiveIsSet = true
-
-          } else todo.actionCorrectiveIsSet = false;
+          this.handleDependanceField(todo,"actionCorrective")
         }
         return todo
       })
@@ -356,20 +435,24 @@ if( todo[field] === null)
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.correction = textValue
-          if(todo.correction===null)
+          if(todo.correction===null  )
           {
             todo.correctionIsSet=false;
             this.handleDependanceFieldCorrectionChange(todo,"cause")
+            this.handleDependanceFieldCorrectionChange(todo,"actionCorrective")
           } else
           if (todo.correction.trim() === "") 
           {
             todo.correctionIsSet=false;
             this.handleDependanceFieldCorrectionChange(todo,"cause")
+            this.handleDependanceFieldCorrectionChange(todo,"actionCorrective")
+
           } 
          
           else{ 
             todo.correctionIsSet = true;
-            todo.causeIsSet=true
+            todo.causeIsSet=true;
+            todo.actionCorrectiveIsSet=true;
           }
         }
         return todo;
@@ -447,6 +530,8 @@ if( todo[field] === null)
       actionCorrectiveIsSet: false,
       echeanceActionIsSet: false,
       idActeurIsSet:false,
+      idFnc:this.state.idFnc,
+      idProcessus:this.state.idProcessus
     }
     aux.push(data);
     this.setState({
@@ -454,7 +539,7 @@ if( todo[field] === null)
     })
   }
 
-  ///********************************///
+  ///*****///****///
   handleSelectComp = (selectOption, id) => {
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
@@ -519,7 +604,7 @@ if( todo[field] === null)
     console.log(this.state.valRoutage);
     this.setState({ isLoaded: false });
 
-
+    
     await fetch('/validationRoutage/fnc',
       {
         method: 'POST',
@@ -574,6 +659,16 @@ if( todo[field] === null)
 
 
   handleSubmit = async e => {
+    
+    
+    this.handleValideAnalyse()
+
+    if(!this.state.isValide){
+
+
+      alert("ooops !")
+
+    }else{
     e.preventDefault();
     console.log(this.state.dataStruc);
     await fetch('/createTraitement/fnc',
@@ -614,6 +709,7 @@ if( todo[field] === null)
           });
         });
     this.toggle();
+      }
   }
 
   handleModifyAnalyse = itemId => {
@@ -807,7 +903,16 @@ if( todo[field] === null)
                     handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
                     
 
-                  : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée</h2></Col></React.Fragment>
+                  : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée  {' '}
+                    <Button outline color="none" onClick={this.handleAddAction}>
+                            <FontAwesomeIcon
+                              icon="plus-circle"
+                              color="green"
+                              size="5x"
+                              title="Ajouter une analyse "
+                            />
+                          </Button></h2>
+                  </Col></React.Fragment>
 
 
     ////LIBRARY//////////////////////////////////////////////
@@ -836,10 +941,10 @@ if( todo[field] === null)
             centered
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
-          >
+          >             
+          <TabSwitcher>
             <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
             <ModalBody>
-              <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE-VALIDATION ROUTAGE*/}
                 <TabPanel whenActive={1}>
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
@@ -931,16 +1036,19 @@ if( todo[field] === null)
                     <Button>Retour</Button>
                   </Tab>
                 </TabPanel>
-              </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" onClick={this.handleSubmit} disabled={(this.state.valRoutage === true) || (this.state.dataStruc.length === 0)}>
+              <TabPanel whenActive={2}>
+              <Button color="danger" onClick={this.handleSubmit} >
                 {this.state.dataStruc.length > 1 ? "Soummettre les analyses" : "Soummettre l'analyse"}
               </Button>
+              </TabPanel>
+            
               <Button color="secondary" onClick={this.toggle}>
                 Annuler
             </Button>
             </ModalFooter>
+            </TabSwitcher>
           </Modal>
           <Modal isOpen={this.state.nestedModal}
             toggle={this.toggleNested}
