@@ -12,14 +12,12 @@ class Home extends Component {
    
     render() {
         const simpleStyle={textAlign:"justify",fontSize:'120%', color:"#00142C", }
-        const styleHeight={"height": "80%"}
+        const styleHeight={height:"100%", marginTop:"2%"}
         const ModalButton=()=>Auth.getAuthOrga(Auth.getProfileTab()) ?  <ModalRensFNC buttonLabel="Déclarer une non-conformité"></ModalRensFNC>  :<span/>
-        
-
         return (
-            <div>
+            <div style={{ overflowY:"hidden"}} >
                 <NavBarMain />
-                <Jumbotron fluid className={styleHeight} >
+                <Jumbotron  fluid style={styleHeight} >
                     <Container >
                         <h1>WORKFLOW FNC ? </h1>
                         <Row>
@@ -40,7 +38,7 @@ class Home extends Component {
                         <Row>&nbsp;</Row>
                         <Row >
                             <Col md="12">
-                                <ModalButton ></ModalButton>
+                                <ModalButton/>
                             </Col>
                         </Row>
                     </Container>

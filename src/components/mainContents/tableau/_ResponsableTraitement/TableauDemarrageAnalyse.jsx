@@ -510,7 +510,8 @@ if( todo[field] === null)
     })
   }
 
-  handleAddAction() {
+  handleAddAction() 
+  {
     var aux = this.state.dataStruc;
     var data = {
       id: Date.now(),
