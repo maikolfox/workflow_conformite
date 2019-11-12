@@ -39,32 +39,29 @@ import {
   //Container,
   //Progress,
   // Container,
-  Tooltip  //Fade
+  Tooltip  
+  //Fade
 
 } from "reactstrap";
 
 
 function AnalyseItem(props) {
   return (
-    // <Row > 
-    <Form style={{ backgroundColor :"#F8F8F8", boxShadow: "1px 3px 1px #9E9E9E", border: "1px", borderColor:"gray", borderStyle: "solid", padding: "25px", marginBottom: "2%" ,marginTop:"2%" }}>
-      <h2>Analyse N° {props.item.libelleAt} </h2>
-      <Row>
-        <Col md={{ size: 2, offset: 10 }}>
-          <Col md={{ size: 2, offset: 5 }} >
-            <Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
+    <Form className="formAnalyse">
+      {/* <h2>Analyse N° {props.item.libelleAt}  </h2>  */}
+      <div className="analyseHeader"><h5 class="analyseTitle">Analyse N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
               <FontAwesomeIcon
                 icon="trash"
                 color="red"
                 size="sm"
-              />Supprimer
-            </Button>
-          </Col>
-        </Col>
-      </Row>
+                title="Supprimer"
+              />
+            </Button></span></button></div>
+      
+      <Col className="analyseBody">
       <Row >
-        <Col md={6}>
-          <FormGroup>
+        <Col md={6} >
+          <FormGroup >
             {/**correction ***/}
             <Label for="correction">Correction</Label>
             <Input valid={props.item.correctionIsSet} invalid={!props.item.correctionIsSet}
@@ -138,6 +135,7 @@ function AnalyseItem(props) {
           <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
         </Col>
       </Row>
+      </Col>
     </Form>
   )
 }
@@ -226,92 +224,106 @@ export default class DemarrageAnalyse extends React.Component {
 
 handleValideAnalyse()
 {
-  var allIsCorrect=[];
-  var isCorrect =true
-  var formFieldMissFill=[]
-  if(this.state.dataStruc.length===0)
-  {
-    this.setState({isValide:false,incorrectField :formFieldMissFill})
+  // Parcours dataStruc et permet de recuperer 
+  // les champs qui ne sont pas 
+  // correctement renseigner
+  // un fois que ces champs sont recuperer
+  // retourne un objet
 
+  var allIsCorrect = [];
+  var isCorrect = true;
+  var formFieldMissFill = [];
+
+  if (this.state.dataStruc.length === 0) {
+    var obje = { isValide: false, incorrectField: formFieldMissFill }
+    return obje
   }
-  else{
-  this.state.dataStruc.map(el=>{
-    if(!el.echeanceIsSet){
+  else {
+    this.state.dataStruc.map(el => {
+      if (!el.echeanceIsSet) {
 
-      isCorrect=false;
-      var obj={
-        labelle:"Echeance",
-        libelleAt:"Analyse N° "+el.libelleAt
+        isCorrect = false;
+        var obj = {
+          labelle: "Echeance",
+          libelleAt: "Analyse N° " + el.libelleAt
+        }
+        formFieldMissFill.push(obj)
       }
-      formFieldMissFill.push(obj)
-    }
-    if( !el.echeanceActionCorrectiveIsSet)
-    {
-       
-      isCorrect=false;
-      var obj={
-        labelle:"Echeance action corrective",
-        libelleAt:"Analyse N° "+el.libelleAt
+      if (!el.echeanceActionCorrectiveIsSet) {
+
+        isCorrect = false;
+        var obj = {
+          labelle: "Echeance action corrective",
+          libelleAt: "Analyse N° " + el.libelleAt
+        }
+        formFieldMissFill.push(obj)
+
       }
-      formFieldMissFill.push(obj)
+      //pour eviter un doublon lors de l'ajout de la correction 
+      // pour la correction
+      var correctionIsAdd = false
 
-    }
-    //pour eviter un doublon lors de l'ajout de la correction 
-    // pour la correction
-    var correctionIsAdd=false
-
-    //Si correction renseignée, 
-    //désactiver le caractère obligatoire des ‘‘Causes’’ et 
-    if( !el.correctionIsSet &&  !el.causeIsSet) 
-    {
-      isCorrect=false;
-      var obj={
-        labelle:"Correction",
-        libelleAt:"Analyse N° "+el.libelleAt
+      //Si correction renseignée, 
+      //désactiver le caractère obligatoire des ‘‘Causes’’ et 
+      if (!el.correctionIsSet && !el.causeIsSet) {
+        isCorrect = false;
+        var obj = {
+          labelle: "Correction",
+          libelleAt: "Analyse N° " + el.libelleAt
+        }
+        var obj = {
+          labelle: "Cause",
+          libelleAt: "Analyse N° " + el.libelleAt
+        }
+        formFieldMissFill.push(obj)
+        correctionIsAdd = true
       }
-      var obj={
-        labelle:"Cause",
-        libelleAt:"Analyse N° "+el.libelleAt
+      //Si correction renseignée, 
+      //‘‘Actions correctives’’. 
+      // Ne pas le faire dans le cas contraire. 
+      if (!el.correctionIsSet && !el.actionCorrectiveIsSet) {
+        isCorrect = false;
+        if (!correctionIsAdd) {
+          var obj = {
+            labelle: "Correction",
+            libelleAt: "Analyse N° " + el.libelleAt
+          }
+        }
+        var obj = {
+          labelle: "Cause",
+          libelleAt: "Analyse N° " + el.libelleAt
+        }
+        formFieldMissFill.push(obj)
       }
-      formFieldMissFill.push(obj)
-      correctionIsAdd=true
-    }
-    //Si correction renseignée, 
-    //‘‘Actions correctives’’. Ne pas le faire dans le cas contraire. 
-    if( !el.correctionIsSet &&  !el.actionCorrectiveIsSet) 
-    {
-      isCorrect=false;
-      if(!correctionIsAdd){
-      var obj={
-        labelle:"Correction",
-        libelleAt:"Analyse N° "+el.libelleAt
+      //I WANT FIND WHY I LEAVE THIS BLANK 
+      if ((el.correctionIsSet === false) && (el.causeIset === false) && (el.echeanceIsSet === false)) {
+
       }
-    }
-    var obj={
-        labelle:"Cause",
-        libelleAt:"Analyse N° "+el.libelleAt
+      //FIN VALIDATION ACTION CORRECTIVE ET CORRECTION
+      if (el.idActeurIsSet === false) {
+        isCorrect = false;
+        var obj = {
+          labelle: "Acteur",
+          libelleAt: "Analyse N° " + el.libelleAt
+        }
+        formFieldMissFill.push(obj)
       }
-      formFieldMissFill.push(obj)
+      allIsCorrect.push(isCorrect);
 
-    }
-
-    if((el.correctionIsSet===false) && (el.causeIset===false) && (el.echeanceIsSet===false) )
-    {
-
-    }
-    allIsCorrect.push(isCorrect);
-  
-  })
-  var boolfinal=true;
-  if(allIsCorrect.length===0){
-
-  }else
-  allIsCorrect.map(el=>{
-    boolfinal=boolfinal&&el;
-  })
-  this.setState({isValide:boolfinal,incorrectField :formFieldMissFill});
-
+    })
+    var boolfinal = true;
+    if (allIsCorrect.length === 0) {
+      var obje = { isValide: true, incorrectField: [] };
+      return obje;
+    } else
+      allIsCorrect.map(el => {
+        boolfinal = boolfinal && el;
+      })
+    var obje = { isValide: boolfinal, incorrectField: formFieldMissFill };
+    return obje
   }
+
+
 }
 
 handleDependanceField(todo,field)
@@ -341,19 +353,19 @@ handleDependanceField(todo,field)
 
 handleDependanceFieldCorrectionChange(todo,field)
 {
-if( todo[field] === null)
-{
-  todo[field+"IsSet"] = false
-}else{    
-    
-    if(( todo[field].trim() === "" ) && !todo.correctionIsSet) {
-      todo[field+"IsSet"] = false
-    } 
-    else
-    if( (todo[field].trim() !== "" &&  todo[field] !== null ) && todo.correctionIsSet===false) {
-      todo[field+"IsSet"] = true
+  if( todo[field] === null)
+  {
+    todo[field+"IsSet"] = false
+  }else{    
+      
+      if(( todo[field].trim() === "" ) && !todo.correctionIsSet) {
+        todo[field+"IsSet"] = false
+      } 
+      else
+      if( (todo[field].trim() !== "" &&  todo[field] !== null ) && todo.correctionIsSet===false) {
+        todo[field+"IsSet"] = true
+      }
     }
-  }
 
 }
 
@@ -453,6 +465,9 @@ if( todo[field] === null)
             todo.correctionIsSet = true;
             todo.causeIsSet=true;
             todo.actionCorrectiveIsSet=true;
+            //met l'echeance action au vert 
+            //si la correction est renseignée
+            todo.echeanceActionIsSet=true;
           }
         }
         return todo;
@@ -546,7 +561,7 @@ if( todo[field] === null)
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.idActeur = selectOption.value
-          if (selectOption.value.trim !== "" && selectOption.value !== null) {
+          if (selectOption.value.trim() !== "" && selectOption.value !== null) {
             todo.idActeurIsSet = true
 
           } else todo.idActeurIsSet = false;
@@ -662,13 +677,13 @@ if( todo[field] === null)
   handleSubmit = async e => {
     
     
-    this.handleValideAnalyse()
+   var obje= this.handleValideAnalyse()
 
-    if(!this.state.isValide){
+    if(!obje.isValide){
 
 
-      alert("ooops !")
-
+      alert(obje.incorrectField)
+      console.log(obje.incorrectField)
     }else{
     e.preventDefault();
     console.log(this.state.dataStruc);
@@ -889,7 +904,7 @@ if( todo[field] === null)
     const buttonSoumettre = <Button color="danger" size="lg" onClick={this.handleSubmitValidation} block>
       Soumettre la fiche pour correction
   </Button>
-    const textSuppression=this.state.dataStruc.length===0 ? " . Vous avez supprimer toutes les analyses ! " : " . Mise à jour de la numérotation des analyses "
+    const textSuppression=this.state.dataStruc.length===0 ? " . Vous avez supprimer toutes les analyses ! " : ". Mise à jour de la numérotation des analyses "
     const conditionnalBoutton = (this.state.valRoutage) ? buttonSoumettre : buttonDemarrerAna
     var response = (this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
     const AnalyseItem_ = this.state.dataStruc.length!==0 
@@ -902,8 +917,6 @@ if( todo[field] === null)
                     handleChangeDelete={this.handleChangeDelete} 
                     handleChangeCause={this.handleChangeCause}
                     handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
-                    
-
                   : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée  {' '}
                     <Button outline color="none" onClick={this.handleAddAction}>
                             <FontAwesomeIcon
@@ -913,7 +926,8 @@ if( todo[field] === null)
                               title="Ajouter une analyse "
                             />
                           </Button></h2>
-                  </Col></React.Fragment>
+                  </Col>
+                  </React.Fragment>
 
 
     ////LIBRARY//////////////////////////////////////////////
@@ -1009,8 +1023,9 @@ if( todo[field] === null)
                               icon="plus-circle"
                               color="green"
                               size="md"
-                            />{' Ajouter'}
+                            />{" Ajouter"}  
                           </Button>
+                          {"   "} Nombre d'analyse : {this.state.dataStruc.length}
                         </small>
                       </Col>
                       {/* <Col>

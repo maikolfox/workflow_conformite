@@ -269,3 +269,43 @@ a{
     cursor: pointer;
     text-decoration: none;
 }
+
+
+/*STYLE POUR la creation d'analyse*/
+/*ANALYSE HEADER STYLE*/
+.analyseHeader{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1rem 1rem;
+  /* border-bottom: 1px solid #dee2e6; */
+  border-top-left-radius: .3rem;
+  border-top-right-radius: .3rem;
+}
+
+.analyseBody {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.analyseTitle {
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+
+.formAnalyse{ 
+  background-color :#F8F8F8;
+  box-shadow:  1px 3px 1px #9E9E9E;
+  border:  1px;
+  border-color:#E8E8E8; 
+  border-style: solid; 
+
+  padding: 25px; 
+  margin-bottom: 2% ;
+  margin-top:2%
+}
+
+/********/
+/********/

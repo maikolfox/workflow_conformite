@@ -14,10 +14,12 @@ import NavBarMain from './components/assets/NavbarMain';
 //import { Col, Row, Container } from 'reactstrap';
 //import PanelWorkFlow from './components/mainContents/PanelWorkFlow'
 
-class App extends React.Component {
-  
+class App extends React.Component 
+{
+ 
   render() {
     return (<NavBarMain/>);
   }
+  
 }
 export default App;
