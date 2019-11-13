@@ -12,7 +12,7 @@ import Processus from '../../../assets/Processus';
 import Source from '../../../assets/Source';
 import { LoaderV2 } from '../../../assets/Loader';
 import displayNomPrenom from '../../../assets/displayNomPrenom';
-import { TabPanel } from '../../tableau/_Organisation/TabSwitcher/TabSwitcher';
+//import { TabPanel } from '../../tableau/_Organisation/TabSwitcher/TabSwitcher';
 //import BarChart from '../../../mainContents/chartAsset/BarChart';
 
 
@@ -358,11 +358,11 @@ class Content extends Component {
         </Row>
         <Row>
           <Col style={boxingChart3} md={6}>
-          <h2>Taux de traitements FNC : </h2>
+          <p>Taux de traitements des FNC : </p>
             <Pie ref="chart" width={8} height={3} data={{ labels: this.state.labels2, datasets: this.state.tauxTraitement }} />
           </Col>
           <Col style={boxingChart2} md={5}>
-          <h2>Taux de traitement dans les delais :</h2>
+          <p><strong>Taux de traitement des FNC dans les delais :</strong></p>
             <Pie ref="chart" width={9} height={4} data={{ labels: this.state.labels, datasets: this.state.tauxTraitementDelais }} />
           </Col>
         </Row>

@@ -24,7 +24,8 @@ import {
   from 'react-router-dom';
  import {
   Col,
-  Container
+  Container,
+  Row
   // CardHeader, // CardBody, // Card
   }
     from "reactstrap";
@@ -136,8 +137,12 @@ const NoMatchPage = () => { return (
    <React.Fragment>
     <NavBarMain/>
       <Container>
-         <Col style={{ marginTop: "25%", marginLeft: "25%" }}>
-            <h2>LA PAGE QUE VOUS CHERCHEZ N'EXISTE PAS !</h2>
+         <Col style={{ marginTop: "25%", textAlign:"center" }}>
+            <h2>LA PAGE QUE VOUS ESSAYEZ DE CONSULTER N'EXISTE PAS ! </h2>
+            <Row>&nbsp;</Row>
+            <Row>&nbsp;</Row>
+            <Row>&nbsp;</Row>
+            <Col style={{  textAlign:"center" }}> <a style={{textDecoration : "none"}} href="/workflow-gestion-fnc/home">Retour à la page d'accueil</a> </Col>
          </Col>
       </Container>
    </React.Fragment>)}

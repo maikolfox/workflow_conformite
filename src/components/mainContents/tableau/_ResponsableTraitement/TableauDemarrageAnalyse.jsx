@@ -59,7 +59,7 @@ function AnalyseItem(props) {
             </Button></span></button></div>
       
       <Col className="analyseBody">
-      <Row >
+      <Row form >
         <Col md={6} >
           <FormGroup >
             {/**correction ***/}
@@ -460,7 +460,6 @@ handleDependanceFieldCorrectionChange(todo,field)
             this.handleDependanceFieldCorrectionChange(todo,"actionCorrective")
 
           } 
-         
           else{ 
             todo.correctionIsSet = true;
             todo.causeIsSet=true;
