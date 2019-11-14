@@ -528,10 +528,13 @@ onClickHandler = () =>
     const data = new FormData();
 
     for(var x = 0; x<this.state.selectedFile.length; x++) 
-    {
+    { 
+      console.log("x------>",x)
+      console.log("["+x+"]",this.state.selectedFile[x])
         data.append('file', this.state.selectedFile[x])
     }
-
+console.log("data to upload--------->",data.values())
+console.log(this.state.selectedFile)
     axios.post("/upload", data, {
       onUploadProgress: ProgressEvent => {
         this.setState({

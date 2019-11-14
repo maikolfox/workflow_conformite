@@ -197,6 +197,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggleNested2 = this.toggleNested2.bind(this);
+    this.toggleNested3 = this.toggleNested3.bind(this);
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSubmitValidation = this.handleSubmitValidation.bind(this);
@@ -680,9 +681,9 @@ handleDependanceFieldCorrectionChange(todo,field)
 
     if(!obje.isValide){
 
+     
+      this.toggleNested3()
 
-      alert(obje.incorrectField)
-      console.log(obje.incorrectField)
     }else{
     e.preventDefault();
     console.log(this.state.dataStruc);
@@ -789,6 +790,12 @@ handleDependanceFieldCorrectionChange(todo,field)
     });
   }
 
+  toggleNested3() 
+  {
+    this.setState({
+      nestedModal3: !this.state.nestedModal3
+    });
+  }
  
 
   toggleNested() {
@@ -928,6 +935,7 @@ handleDependanceFieldCorrectionChange(todo,field)
                   </Col>
                   </React.Fragment>
 
+    const invalidFill= this.state.dataStruc.length===0 ? "Veuillez creer une analyse avant de soummettre" : "Analyse incorrecte. Verifier tous les champs avant de soumettre"
 
     ////LIBRARY//////////////////////////////////////////////
     library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle);
@@ -1079,6 +1087,15 @@ handleDependanceFieldCorrectionChange(todo,field)
             size="sm">
             <ModalBody toggle={this.toggleNested2}>L'analyse N°  {this.state.libelSupp} supprimée {textSuppression} </ModalBody>
           </Modal>
+          {/* //i was here  */}
+          <Modal isOpen={this.state.nestedModal3}
+            toggle={this.toggleNested3}
+            // onClosed={this.setState({nestedModal2:!this.state.nestedModal2})}
+            centered
+            size="md">
+            <ModalBody toggle={this.toggleNested3}>{invalidFill}</ModalBody>
+          </Modal>
+
         </div>
         {/*REACT  TABLE*/}
         <div style={{ cursor: 'pointer' }}>
