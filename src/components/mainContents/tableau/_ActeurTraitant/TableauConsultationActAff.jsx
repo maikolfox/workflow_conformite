@@ -181,7 +181,7 @@ handleAdd(files)
 
 
 
-    handleChangeFile = id => {
+     handleChangeFile = id => {
 
       this.setState(prevState=>{
           const update=prevState.todoData.map(elem=>{
