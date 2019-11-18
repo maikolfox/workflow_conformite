@@ -538,7 +538,6 @@ export default class ConsultationActAff extends React.Component {
              responseSubmit: response.data.data.message,
              hasError: false
            });
-         
         })
         .catch((error)=> {
           console.log("124", error);
