@@ -273,6 +273,7 @@ a{
 
 /*STYLE POUR la creation d'analyse*/
 /*ANALYSE HEADER STYLE*/
+
 .analyseHeader{
   display: flex;
   align-items: flex-start;
