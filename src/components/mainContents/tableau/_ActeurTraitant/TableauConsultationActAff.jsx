@@ -544,16 +544,15 @@ export default class ConsultationActAff extends React.Component {
           alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
           this.setState({
             isLoaded: true,
-            responseSubmit: "error",
+            responseSubmit: error,
             hasError: true
-          });
+          })
         }).finally(()=>{
-          this.toggle();
           this.toggleNested();
+          this.toggle();
           this.loadActionAffecte();
         })
   }
-
   onChangeHandler = event => {
     event.preventDefault()
     console.log(event.target.files)
