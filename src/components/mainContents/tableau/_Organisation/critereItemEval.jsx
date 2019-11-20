@@ -87,8 +87,7 @@ const evalCritere = [
         //const body = await response.text();
         // this.setState({ responseToPost: JSON.parse(body) });  
         console.log(this.state.responseSubmit);
-        
-            this.toggle();
+        this.toggle();
     }
     toggleNested() {
       this.setState({
@@ -103,12 +102,16 @@ const evalCritere = [
     }
     
     componentDidMount(){
-      this.setState({resultat_: this.props.resultat,precedent :this.props.resultat})
+      this.setState(
+      {
+        resultat_: this.props.resultat,
+        precedent :this.props.resultat
+      }
+      )
     }
     
     render() {
       var response=(this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
-
       return (
         <div>
           <Button color="danger" onClick={this.toggle}>Modifier le resultat</Button>

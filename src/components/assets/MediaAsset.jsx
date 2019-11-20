@@ -10,14 +10,27 @@ import {
 
 
  export default class MediaAsset extends React.Component {
+
+     
     render() {
+        const criterBlock =<div style={
+            {height:"250px",
+            overflowY:"scroll",
+            backgroundColor :'#e9ecef', 
+            border:".1rem #ced4da", 
+            borderRadius:".3rem",
+            borderTopRightRadius:".3rem" }
+        }>{this.props.content} </div>
+        const value = typeof this.props.content==="string" ? 
+        <Input type="textarea" value={this.props.content} disabled/> 
+        : criterBlock
         return (
             <React.Fragment>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                     <Media>
                         <Media body style={{textAlign:"justify"}}>
                             <Label>{this.props.libelle}</Label>
-                            <Input type="textarea" value={this.props.content} disabled></Input>
+                            {value}
                         </Media>
                     </Media>
                 </Col>
