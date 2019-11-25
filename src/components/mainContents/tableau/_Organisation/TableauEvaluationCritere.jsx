@@ -349,7 +349,6 @@ export default class TableauEvaluationCritere extends React.Component {
                     });
                 })
     }
-
     async componentDidMount() {
         this.getResultat_traitement()
     }
@@ -361,8 +360,6 @@ export default class TableauEvaluationCritere extends React.Component {
                 dataAna={item.dataAna}
                 numeroId={this.state.numeroId}
             />
-
-            
         ))
 
 //   const dataAff=this.state.criterObject.map((item,index)=>{

@@ -178,6 +178,26 @@ class AnalyseContent extends React.Component {
   render() {
     library.add(faAngleDown);
 
+    var downloadFileList=this.props.dataAna[0].listFile.map(el=>(
+     
+     <Col> <a href="#" onClick={e=>{
+        fetch("/download/"+el.nomFichier)
+        .then(response => {
+          response.blob().then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = el.nomFichier;
+            a.click();
+          })
+      })
+      }
+    }
+    >{el.nomFichier}</a><br/><br/></Col>
+    ))
+
+    
+
     const listCri = this.props.dataAna.map(el => <CritereItemContent critere={el.critere} echeanceCritere={el.echeanceCritere} dateFinAnalyse={el.dateFinAnalyse} />);
     return (
     <React.Fragment>
@@ -192,6 +212,7 @@ class AnalyseContent extends React.Component {
       <MediaAsset libelle="Correction" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].correction :""}></MediaAsset>
       <MediaAsset libelle="Action corrective" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].actionCorrective:""}></MediaAsset>
       <MediaAsset libelle="Resultat traitement" content={this.props.dataAna[0].resultatTraitement}   ></MediaAsset>
+      <MediaAsset libelle="Pièces jointes (Cliquer sur le lien pour telecharger la pièce jointe)" content={downloadFileList}  ></MediaAsset>
         <div>
         <MediaAsset libelle="Critères" content= {listCri} ></MediaAsset>
         </div>
