@@ -368,7 +368,27 @@ export default class TableauEvaluationCritere extends React.Component {
 
 //   })
 var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment><Loader></Loader><p style={{textAlign:'center'}}>Chargement en cours...</p></React.Fragment>
-
+            //affiche les options de l'evaluation de l'efficacite  
+            //en fonction de l'efficacité ( efficace ou inefficace)
+             var optionEvaluation = this.state.evaluationEff === "" || this.state.evaluationEff === undefined || this.state.evaluationEff === null 
+            ? 
+            <React.Fragment> 
+            <option value="Satisfait" >Satisfait</option>
+            <option value="Peu satisfait" >Peu satisfait</option>
+            <option value="Moyennement satisfait" >Moyennement satisfait</option>
+            <option value="Insatisfait" >Insatisfait</option>
+            </React.Fragment> 
+            :
+            this.state.evaluationEff === "Efficace" 
+            ? 
+            <React.Fragment><option value="Satisfait" >Satisfait</option>
+            <option value="Peu satisfait" >Peu satisfait</option>
+            <option value="Moyennement satisfait" >Moyennement satisfait</option></React.Fragment> 
+            : 
+            <React.Fragment>
+            <option value="Insatisfait" >Insatisfait</option>
+            <option value="Peu satisfait" >Peu satisfait</option>
+                </React.Fragment>
         return (
             <React.Fragment>
                 <div>
@@ -397,16 +417,13 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                                     }}>
                                         <option value="" default > </option>
                                         <option value="Efficace" >Efficace</option>
-                                        <option value="Inéfficace" >Inefficace</option>
+                                        <option value="Inefficace" >Inefficace</option>
                                     </Input>
                                     <Row>&nbsp;</Row>
                                     <Label>Niveau de satisfaction</Label>
                                     <Input type="select" onChange={e=>{  this.setState({niveauSatisfaction:e.target.value}) }}>
                                         <option value="" default > </option>
-                                        <option value="Satisfait" >Satisfait</option>
-                                        <option value="Peu satisfait" >Peu satisfait</option>
-                                        <option value="Moyennement satisfait" >Moyennement satisfait</option>
-                                        <option value="Insatisfait" >Insatisfait</option>
+                                       {optionEvaluation}
                                     </Input> <Row>&nbsp;</Row>
                                     <Label>Preuve efficacité </Label>
                                     <Input value={this.state.preuve} onChange={e=>{

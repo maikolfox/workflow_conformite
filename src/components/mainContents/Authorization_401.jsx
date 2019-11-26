@@ -19,7 +19,15 @@ export default class Authorization extends React.Component {
         <React.Fragment>
               <NavBarMain />
               <Container>
-            <Row style={{marginTop:"25%"}}> <Col textAlign='center'><h1><strong>Accès refuser ! <br/> </strong> vous ne disposez pas des droits requis pour consulter cette page </h1> </Col> </Row>
+            <Row style={{marginTop:"25%"}}> <Col textAlign='center'>
+                 <div style={{ textAlign:'center'}}> <h1><strong>Accès refuser !</strong></h1></div>
+                 <div style={{textAlign:'center'}}>
+                     <h1>vous ne disposez pas des droits </h1>
+                 </div> 
+                 <div style={{textAlign:'center'}}>
+                     <h1> requis pour consulter cette page</h1>
+                 </div> 
+                 </Col> </Row>
             <br />
             <Row> <Col md={{ size: 12, order: 1, offset: 5 }} >   <FontAwesomeIcon
                 icon="ban"

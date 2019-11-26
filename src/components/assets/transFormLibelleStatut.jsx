@@ -4,6 +4,12 @@ function transFormLibelleStatut(statutFnc) {
       case "initier":
         statut = "Initier";
         break;
+      case "initierBis":
+          statut = "Efficacité insatisfaisante";
+          break;
+      case "cloturer":
+        statut = "Cloturer";
+        break;
       case "declarer":
         statut = "Déclarer";
         break;

@@ -10,8 +10,6 @@ import {
 
 
  export default class MediaAsset extends React.Component {
-
-     
     render() {
         const criterBlock =<div style={
             {height:"250px",
@@ -21,7 +19,7 @@ import {
             borderRadius:".3rem",
             borderTopRightRadius:".3rem" }
         }>{this.props.content} </div>
-        const value = typeof this.props.content==="string" ? 
+        const value = (typeof this.props.content==="string" || this.props.content===null) ? 
         <Input type="textarea" value={this.props.content} disabled/> 
         : criterBlock
         return (

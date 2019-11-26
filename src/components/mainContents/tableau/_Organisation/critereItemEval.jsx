@@ -13,16 +13,9 @@ import {
   Modal,ModalBody,ModalFooter,ModalHeader,Button,Input,Collapse
 } from "reactstrap";
 
-const evalCritere = [
-  {
-    "libelle": "éfficace",
-    "value": "éfficace"
-  }, {
-    "libelle": "Inefficace",
-    "value": "Inefficace"
-  }]
 
 
+//composant pour gerer la modification des resultats
   class ModalModificationResultat extends React.Component {
     constructor(props) {
       super(props);
@@ -56,15 +49,14 @@ const evalCritere = [
             },
             body: JSON.stringify({
               "data":
-              {  id: this.props.id,
-              numeroId: this.props.numeroId,
-              idActeurTraitant: this.props.idActeurTraitant,
-              responsableTraitement: this.props.responsableTraitement,
-              resultatModifier:this.state.resultat_,
-              resultatPrecedent: this.state.precedent
-  
-              },
-              
+              {  
+                id: this.props.id,
+                numeroId: this.props.numeroId,
+                idActeurTraitant: this.props.idActeurTraitant,
+                responsableTraitement: this.props.responsableTraitement,
+                resultatModifier:this.state.resultat_,
+                resultatPrecedent: this.state.precedent
+              }
               }),
           }).then(res => res.json())
           .then(
@@ -147,15 +139,15 @@ const evalCritere = [
 
   
 
-function CritereItemContent(props){
+function CritereItemContent(props)
+{
   return (
-    <ul><li>{props.critere}&nbsp;<br />
+      <ul>
+      <li>{props.critere}&nbsp;<br />
       <strong>Echéance :</strong>&nbsp; {DateFormatTransform(props.echeanceCritere)}
       <p><strong>Date de fin :</strong>&nbsp; {DateFormatTransform(props.dateFinAnalyse)}</p></li>
       </ul>
-
   )
-  
 }
 
 
@@ -177,9 +169,8 @@ class AnalyseContent extends React.Component {
 
   render() {
     library.add(faAngleDown);
-
-    var downloadFileList=this.props.dataAna[0].listFile.map(el=>(
-     
+    var downloadFileList= (this.props.dataAna[0].listFile.length!==0) 
+    ? this.props.dataAna[0].listFile.map(el=>(
      <Col> <a href="#" onClick={e=>{
         fetch("/download/"+el.nomFichier)
         .then(response => {
@@ -190,18 +181,21 @@ class AnalyseContent extends React.Component {
             a.download = el.nomFichier;
             a.click();
           })
-      })
-      }
-    }
-    >{el.nomFichier}</a><br/><br/></Col>
-    ))
-
-    
-
+      })}
+    }>{el.nomFichier}</a><br/><br/></Col>)) 
+    : "Aucune pièce jointe"
     const listCri = this.props.dataAna.map(el => <CritereItemContent critere={el.critere} echeanceCritere={el.echeanceCritere} dateFinAnalyse={el.dateFinAnalyse} />);
     return (
     <React.Fragment>
-                <Row md={12} style={{backgroundColor:"#061c27",color: "white" ,marginBottom:"15px" ,height:"auto" , size:"1em"}} onClick={this.toggleCollapse} ><Col md={10}>Analyse numéro {this.props.item.libelletAt}</Col><Col  md="2"><span style={{marginLeft :"100%"}}> <FontAwesomeIcon
+                <Row md={12} style={{
+                backgroundColor:"#061c27",
+                color: "white" ,
+                marginBottom:"15px" ,
+                height:"auto" , 
+                size:"1em"}} 
+                onClick={this.toggleCollapse} >
+                  <Col md={10}>Analyse numéro {this.props.item.libelletAt}</Col>
+                  <Col  md="2"><span style={{marginLeft :"100%"}}> <FontAwesomeIcon
                 icon="angle-down"
                 color="#d9541e"
                 size="1x"
@@ -211,14 +205,13 @@ class AnalyseContent extends React.Component {
       <MediaAsset libelle="Cause" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].cause : ""}></MediaAsset>
       <MediaAsset libelle="Correction" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].correction :""}></MediaAsset>
       <MediaAsset libelle="Action corrective" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].actionCorrective:""}></MediaAsset>
-      <MediaAsset libelle="Resultat traitement" content={this.props.dataAna[0].resultatTraitement}   ></MediaAsset>
-      <MediaAsset libelle="Pièces jointes (Cliquer sur le lien pour telecharger la pièce jointe)" content={downloadFileList}  ></MediaAsset>
+      <MediaAsset libelle="Resultat traitement" content={ (this.props.dataAna[0] !== undefined) ? this.props.dataAna[0].resultatTraitement :""}   ></MediaAsset>
+      <MediaAsset libelle="Pièces jointes ( Cliquer sur le lien pour télécharger la pièce jointe )" content={downloadFileList}  ></MediaAsset>
         <div>
         <MediaAsset libelle="Critères" content= {listCri} ></MediaAsset>
         </div>
         <br />
         <ModalModificationResultat 
-        
         numeroAna={this.props.item.libelletAt} 
         numeroId={this.props.numeroId} 
         responsableTraitement={this.props.dataAna[0].idActeur} 
@@ -235,7 +228,8 @@ class AnalyseContent extends React.Component {
 }
 export default AnalyseContent;
 
-    class Details extends React.Component {
+class Details extends React.Component {
+
   constructor(props) {
     super(props);
     this.state={collapseDet:false}
@@ -247,21 +241,23 @@ export default AnalyseContent;
     this.setState(state => ({ collapseDet: !state.collapseDet }));
   }
   render() {
-    return (<React.Fragment><Row md={12} style={{
+    return (
+      <React.Fragment><Row md={12} style={{
         backgroundColor: "#061c27",
         color: "white",
         marginBottom: "15px",
         height: "auto",
         size: "1em"
       }} onClick={this.toggleCollapseDetails}><Col md={10}>Détails (Cause , Correction ,Action corrective) </Col><Col md="2"><span style={{
-            marginLeft: "100%"
-          }}> <FontAwesomeIcon icon="angle-down" color="#d9541e" size="1x" /></span></Col> </Row>
-           <Collapse isOpen={this.state.collapseDet}>
-            <MediaAsset libelle="Cause" content={(this.props.data !== undefined) ? this.props.data[0].cause : ""}></MediaAsset>
-            <MediaAsset libelle="Correction" content={(this.props.data !== undefined) ? this.props.data[0].correction :""}></MediaAsset>
-            <MediaAsset libelle="Action corrective" content={(this.props.data !== undefined) ? this.props.data[0].actionCorrective:""}></MediaAsset>
-            </Collapse></React.Fragment>);
+        marginLeft: "100%"
+      }}> <FontAwesomeIcon icon="angle-down" color="#d9541e" size="1x" /></span></Col> </Row>
+        <Collapse isOpen={this.state.collapseDet}>
+          <MediaAsset libelle="Cause" content={(this.props.data !== undefined) ? this.props.data[0].cause : ""}></MediaAsset>
+          <MediaAsset libelle="Correction" content={(this.props.data !== undefined) ? this.props.data[0].correction : ""}></MediaAsset>
+          <MediaAsset libelle="Action corrective" content={(this.props.data !== undefined) ? this.props.data[0].actionCorrective : ""}></MediaAsset>
+        </Collapse>
+      </React.Fragment>);
   }
 
 }
-  export {Details}
+export {Details}
