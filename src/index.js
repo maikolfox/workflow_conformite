@@ -14,6 +14,7 @@ import Auth from './components/assets/Auth';
 import NavBarMain from './components/assets/NavbarMain';
 import Footer from './components/assets/Footer';
 import Authorization from './components/mainContents/Authorization_401';
+
 import {
     Route,
     BrowserRouter as Router,
@@ -22,6 +23,9 @@ import {
     Redirect
   } 
   from 'react-router-dom';
+
+  
+
  import {
   Col,
   Container,
@@ -152,7 +156,7 @@ const NoMatchPage = () => { return (
 
 class Routing extends React.Component {
    render(){    
-       return( <Router >
+       return( <Router>
             <Switch>
               <Route exact path="/" render={() => 
               (
@@ -169,7 +173,6 @@ class Routing extends React.Component {
               ) : (
                  <Redirect to="/workflow-gestion-fnc/login"/>
               )
-              
               )}
               />
               <PrivateRoute exact path="/workflow-gestion-fnc/home" component={Home} />

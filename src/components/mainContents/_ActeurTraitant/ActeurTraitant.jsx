@@ -19,12 +19,32 @@ import {
 // import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
 // import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere';
 import NavBarMain from '../../assets/NavbarMain';
-
-
-const Organisation = ({ match }) => (
+import MetisMenu from 'react-metismenu';
+import RouterLink from 'react-metismenu-router-link';
+import "./sidebar.css"
+const content=[
+    {
+        icon: 'dashboard',
+        label: 'Label of Item',
+        to: '/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee',
+    },
+    {
+        icon: 'icon-class-name',
+        label: 'Second Item',
+        content: [
+            {
+                icon: 'icon-class-name',
+                label: 'Sub Menu of Second Item',
+                to: '#another-link',
+            },
+        ],
+    },
+];
+const Organisation = ({ match } ) => (
     <React.Fragment>
-        <NavBarMain/>
-        <Row style={{marginTop:"100px"}} noGutters="true" >
+        <NavBarMain/> 
+        {
+        /*<Row style={{marginTop:"100px"}} noGutters="true" >
             <Col md="2">
                 <ListGroup >
                     <ListGroupItem className="menuHeader" >
@@ -38,17 +58,38 @@ const Organisation = ({ match }) => (
                     </ListGroupItem>
                 </ListGroup>
             </Col>
-
             <div></div>
-            
             <Col md="10">
                 <Switch>
                    <Route path="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
                 </Switch>
             </Col>
         </Row>
+        */
+        }
+<div class="sidenav">
+  <a onClick={e=>{alert("click on action")}} href="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee">Réception des actions affectées</a>
+  <a onClick={e=>{alert("click on service")}} href="#services">Services</a>
+  <a href="#clients">Clients</a>
+  <a href="#contact">Contact</a>
+</div>
 
-    </React.Fragment>
+<div class="main" style={{paddingTop:"100px" ,height:"auto"}}>
+    <Switch>
+        <Route path="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
+    </Switch>
+</div>
+{/* <Row style={{marginTop:"80px" }}>
+    <Col md={2}>
+        <MetisMenu content={content} />
+    </Col>
+    <Col md="10">
+                <Switch>
+                   <Route path="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee" component={ConsultationActAff} /> 
+                </Switch>
+            </Col>
+</Row> */}
+</React.Fragment>
 
 );
 

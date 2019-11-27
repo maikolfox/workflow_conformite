@@ -3,7 +3,6 @@ import { CardBody, Card, CardHeader,// Row, Col
 } from "reactstrap";
 import Tableau from '../../tableau/_ActeurTraitant/TableauConsultationActAff'
 
-
 var pushLeft={
 
   marginLeft:'30px'
