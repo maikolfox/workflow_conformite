@@ -40,6 +40,15 @@ const content=[
         ],
     },
 ];
+const RecptionIsActive=false
+function  setActive(param){
+
+    if(param===1)
+    {RecptionIsActive=true}
+    else{
+        RecptionIsActive=false
+    }
+}
 const Organisation = ({ match } ) => (
     <React.Fragment>
         <NavBarMain/> 
@@ -68,7 +77,7 @@ const Organisation = ({ match } ) => (
         */
         }
 <div class="sidenav">
-  <a onClick={e=>{alert("click on action")}} href="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee">Réception des actions affectées</a>
+  <a onClick={e=>{setActive(1)}} href="/workflow-gestion-fnc/ActeurTraitant/reception_action_affectee"><span style={RecptionIsActive ? {color:"red"  }: {color : "blue"} }>Réception des actions affectées</span></a>
   <a onClick={e=>{alert("click on service")}} href="#services">Services</a>
   <a href="#clients">Clients</a>
   <a href="#contact">Contact</a>
