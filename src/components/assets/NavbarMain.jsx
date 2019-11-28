@@ -30,7 +30,7 @@ componentDidMount()
         <NavbarBrand href="/workflow-gestion-fnc/home">
           <img src="/image/logoBridgeBank.png" alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>
-        <h1 id="navBarText">Workflow FNC</h1>
+        {/* <h6 id="navBarText">Workflow FNC</h6> */}
         <Nav className="ml-auto" navbar>
           <Col md={"auto"}>
           <UncontrolledDropdown nav inNavbar> 

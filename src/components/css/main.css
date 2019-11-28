@@ -1,5 +1,5 @@
 .activeNav {
-  color: #eb656e;
+  color: #d9531e
 }
 
 .sansMarg {
@@ -13,9 +13,7 @@
   font-size: 1.5 em;
 }
 
-a:hover {
-  color: #eb656e;
-}
+
 
 a:link {
   text-decoration: none;

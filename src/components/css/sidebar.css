@@ -1,5 +1,5 @@
 .sidenav {
-    margin-top:84px;
+    margin-top:70px;
     height: 100%;
     width: 197px;
     position: fixed;
@@ -8,20 +8,33 @@
     left: 0;
     background: linear-gradient(45deg, rgba(7,15,22,1) 0%, rgba(20,36,48,1) 46%, rgba(23,41,53,1) 83%);    overflow-x: hidden;
     padding-top: 20px;
-    border-color:black 1px
+    border-top:black solid 5px;
+    font-family: 'Open Sans', sans-serif;
   }
   
+  .sidenav .activeNav 
+  {
+    background-color:#d9541e;
+    color: white;
+    border:#d9541e solid 1px ;
+  }
+
   .sidenav a {
-    
     padding: 6px 8px 6px 16px;
     text-decoration: none;
     font-size: 1em;
     color: #818181;
     display: block;
+    border: 1px solid #172e3d ;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
+  -webkit-text-shadow: 0 -1px 0 rgba(0, 0, 0, .25);
   }
   
+  
+
+  
   .sidenav a:hover {
-    color: #f1f1f1;
+    background: rgba(255, 255, 255, .05);
   }
   
   .main {
