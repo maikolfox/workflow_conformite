@@ -11,18 +11,16 @@ var pushLeft={
 }
 
 
-class CreationCritereEfficacite extends Component {
 
-  render() {
-    return (
-      <Card style={pushLeft}>
+  const CreationCritereEfficacite =({ match})  => ( 
+    <Card style={pushLeft}>
+
         <CardHeader>Creation de critère d'efficacité</CardHeader>
         <CardBody>
-                  <Tableau></Tableau>
+                  <Tableau match={match}></Tableau>
         </CardBody>
-      </Card>
+        </Card>
+
 
     )
-  }
-}
 export default CreationCritereEfficacite

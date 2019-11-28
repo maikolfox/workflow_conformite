@@ -33,9 +33,18 @@ export default function SideBar(props)
 //SWITCH ROUTE
 export function SwitchRouteItem(props) 
 {   
+    if(props.url==='Accueil'){
+        return(
+            <Switch>
+                <Route exact path={`/workflow-gestion-fnc/${props.basePath}/`} component={props.children} />
+                <Route exact path={`/workflow-gestion-fnc/${props.basePath}/${props.url}`} component={props.children} />
+            </Switch>
+            )
+    }
+    else
  return(
     <Switch>
-        <Route path={`/workflow-gestion-fnc/${props.basePath}/${props.url}`} component={props.children} />
+        <Route exact path={`/workflow-gestion-fnc/${props.basePath}/${props.url}`} component={props.children} />
     </Switch>
     )
 }

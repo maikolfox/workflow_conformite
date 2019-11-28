@@ -10,18 +10,16 @@ var pushLeft={
 
 
 }
-class EvaluationCritere extends Component {
 
-  render() {
-    return (
-      <Card style={pushLeft}>
+
+    const EvaluationCritere =({ match})  => (      
+    <Card style={pushLeft}>
         <CardHeader>Evaluation des critères d'efficacité</CardHeader>
         <CardBody>
-                <Tableau></Tableau>
+                <Tableau match={match} ></Tableau>
         </CardBody>
       </Card>
-
     )
-  }
-}
+
+
 export default EvaluationCritere

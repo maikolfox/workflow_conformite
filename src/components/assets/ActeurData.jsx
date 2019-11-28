@@ -240,6 +240,7 @@ const acteurArray = [
     , { fonction: "Conseiller en Gestion Patrimoniale", nomPrenom: "Lionel EMOLO", idActeur: "lionel.emolo@bridgebankgroup.com" }
     , { fonction: "Analyste Financier", nomPrenom: "Stephane KONAN", idActeur: "stephane.konan@bridgebankgroup.com" }
     , { fonction: "CHARGEE D'AFFAIRE PME-PMI", nomPrenom: "Carole Muriel OYOU", idActeur: "carole.oyou@bridgebankgroup.com" }
-    , { fonction: "ANALYSTE CREDIT", nomPrenom: "Jacques-Armel AHOUSSOU", idActeur: "jacques.ahoussou@bridgebankgroup.com" }]
+    , { fonction: "ANALYSTE CREDIT", nomPrenom: "Jacques-Armel AHOUSSOU", idActeur: "jacques.ahoussou@bridgebankgroup.com" }
+    ]
 
     export default  acteurArray

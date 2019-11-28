@@ -17,9 +17,10 @@ export default class Authorization extends React.Component {
 
         return (
         <React.Fragment>
-              <NavBarMain />
-              <Container>
-            <Row style={{marginTop:"25%"}}> <Col textAlign='center'>
+            <NavBarMain />
+            <Container style={{paddingTop:"15%", overflowX:"hidden",overflowY:"hidden" ,boxShadow: "1px 1px 1px 1px rgba(0, 0, 2, .2)"}}>
+            <Row style={{overflowY:"hidden"}}> 
+            <Col textAlign='center'>
                  <div style={{ textAlign:'center'}}> <h1><strong>Accès refuser !</strong></h1></div>
                  <div style={{textAlign:'center'}}>
                      <h1>vous ne disposez pas des droits </h1>
@@ -27,13 +28,15 @@ export default class Authorization extends React.Component {
                  <div style={{textAlign:'center'}}>
                      <h1> requis pour consulter cette page</h1>
                  </div> 
-                 </Col> </Row>
+                 </Col> 
+            </Row>
             <br />
-            <Row> <Col md={{ size: 12, order: 1, offset: 5 }} >   <FontAwesomeIcon
+            <Row > 
+                <Col md={{ size: 12, order: 1, offset: 5 }} >   <FontAwesomeIcon
                 icon="ban"
-                color="red"
-                size="10x"
-            /></Col></Row>
+                color="#d9541e"
+                size="10x"/></Col>
+            </Row>
             </Container>
         </React.Fragment>)
 

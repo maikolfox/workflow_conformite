@@ -14,6 +14,7 @@ class Home extends Component {
         const simpleStyle={textAlign:"justify",fontSize:'120%', color:"#00142C", }
         const styleHeight={height:"100%", marginTop:"2%"}
         const ModalButton=()=>Auth.getAuthOrga(Auth.getProfileTab()) ?  <ModalRensFNC buttonLabel="Déclarer une non-conformité"></ModalRensFNC>  :<span/>
+        
         return (
             <div style={{ overflowY:"hidden"}} >
                 <NavBarMain />
@@ -44,11 +45,11 @@ class Home extends Component {
                     </Container>
 
                 </Jumbotron>
+               
             </div>
         )
     }
 
-
-
+ 
 }
 export default Home;

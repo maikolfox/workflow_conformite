@@ -424,8 +424,8 @@ export default class TableauCritere extends React.Component {
             hasError: true
           });
         })
+       
   }
-
   newAnalyse() {
     this.setState({
       correction: null,
@@ -475,7 +475,8 @@ export default class TableauCritere extends React.Component {
 
   }
 
-  async consultFncInitier() {
+  async consultFncInitier()
+  {
     await fetch("/consultationFncInitier/fnc")
       .then(res => res.json())
       .then(
@@ -497,6 +498,14 @@ export default class TableauCritere extends React.Component {
               responseToPost: result.data.responses
             });
             console.log(this.state.responseToPost)
+            if (this.props.match.params.idFnc !== undefined) {
+              console.log("-------->from idfnc query param", this.props.match.params.idFnc)
+              const fiche = this.state.responseToPost.find(el => el.numeroId === this.props.match.params.idFnc)
+              if (fiche !== undefined) {
+                this.getAnalyse(fiche.idFnc)
+                this.toggle()
+                }else{alert("La réference suivante est incorrecte ou celle-ci n'est plus disponible dans cette section : "+ this.props.match.params.idFnc)}
+            }
           }
         },
         (error) => {
@@ -508,7 +517,7 @@ export default class TableauCritere extends React.Component {
             hasError: true
           });
         })
-
+        
   }
   async componentDidMount() {
     this.consultFncInitier()
@@ -601,7 +610,7 @@ export default class TableauCritere extends React.Component {
           disabled={true}
           id="selectAgence"
           name="selectbasic"
-          value={this.state.qualification === 1 ? "Mineure" : "Majeure"}>
+          value={this.state.qualification}>
         </Input>
       </Col>
       <Row>&nbsp;</Row>

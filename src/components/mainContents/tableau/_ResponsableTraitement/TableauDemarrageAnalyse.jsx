@@ -377,9 +377,8 @@ handleDependanceFieldCorrectionChange(todo,field)
   handleChangeDelete(id) {
     var aux = [];
     if (this.state.dataStruc.length !== 0) {
-      var updatedTodos = [];
 
-      updatedTodos = this.state.dataStruc.map((todo, index) => {
+var      updatedTodos = this.state.dataStruc.map((todo, index) => {
         
         console.log(id)
         if(todo.id===id){
@@ -835,7 +834,6 @@ handleDependanceFieldCorrectionChange(todo,field)
     this.setState({ dataStruc: [] })
   }
   async componentDidMount() {
-
     await fetch("/consult/fnc",
       {
         method: 'POST',
@@ -883,7 +881,6 @@ handleDependanceFieldCorrectionChange(todo,field)
     if (this.props.match.params.idFnc !== undefined) {
       console.log("-------->idfnc", this.props.match.params.idFnc)
       const fiche = this.state.responseToPost.find(el => el.numeroId === this.props.match.params.idFnc)
-
       if (fiche !== undefined) {
         this.toggle();
         this.setState({
@@ -896,17 +893,13 @@ handleDependanceFieldCorrectionChange(todo,field)
           libelleSource: fiche.libelleSource,
           libelleProcessus: fiche.libelleProcesus
         });
-
-
       }
     }
-
-
   }
 
   render() {
     //ZONE POUR LES AFFICHAGES CONDITIONNELS
-    const buttonDemarrerAna = <Button size="lg" color="success" block>{'Demarrer l\'analyse'}</Button>
+    const buttonDemarrerAna = <Button size="lg" style={{backgroundColor:'#d9541e' ,color :"white" }} color="#d9541e"  block>{'Demarrer l\'analyse'}</Button>
     const buttonSoumettre = <Button color="danger" size="lg" onClick={this.handleSubmitValidation} block>
       Soumettre la fiche pour correction
   </Button>
