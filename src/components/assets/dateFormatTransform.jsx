@@ -1,5 +1,6 @@
-function transFormEcheance(echeances) 
-{
+function transFormEcheance(echeancesVar) 
+{ 
+  var echeances =echeancesVar;
   if (echeances===null||echeances === undefined) return "" 
 
   if(echeances.length>10){

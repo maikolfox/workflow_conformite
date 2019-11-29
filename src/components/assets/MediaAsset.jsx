@@ -12,15 +12,16 @@ import {
  export default class MediaAsset extends React.Component {
     render() {
         const criterBlock =<div style={
-            {height:"250px",
+            {
+            height:"250px",
             overflowY:"scroll",
-            backgroundColor :'#e9ecef', 
+            backgroundColor : '#e9ecef', 
             border:".1rem #ced4da", 
             borderRadius:".3rem",
             borderTopRightRadius:".3rem" }
-        }>{this.props.content} </div>
+        }>{(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} </div>
         const value = (typeof this.props.content==="string" || this.props.content===null) ? 
-        <Input type="textarea" value={this.props.content} disabled/> 
+        <Input type="textarea" value={(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} disabled/> 
         : criterBlock
         return (
             <React.Fragment>

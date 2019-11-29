@@ -353,12 +353,13 @@ class Content extends Component {
         <Row>
           <Col style={boxingChart} md={{ size: 11, order: 1, offset: 0 }}>
           {/* <h2>Non</h2> */}
+            <strong>Graphique en barres( FNC reçue , traité dans les delais ,traités) </strong>
             <Bar ref="chart" width={8} height={3} data={this.state.dataToSend} />
           </Col>
         </Row>
         <Row>
           <Col style={boxingChart3} md={6}>
-          <p>Taux de traitements des FNC : </p>
+          <strong>Taux de traitements des FNC : </strong>
             <Pie ref="chart" width={8} height={3} data={{ labels: this.state.labels2, datasets: this.state.tauxTraitement }} />
           </Col>
           <Col style={boxingChart2} md={5}>

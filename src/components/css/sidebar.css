@@ -10,6 +10,7 @@
     padding-top: 20px;
     border-top:black solid 5px;
     font-family: 'Open Sans', sans-serif;
+    z-index: 3;
   }
   
   .sidenav .activeNav 

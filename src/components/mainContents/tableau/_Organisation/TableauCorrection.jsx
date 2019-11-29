@@ -342,7 +342,7 @@ let proceList =
                 </Col>
                 <Row>&nbsp;</Row>
                 {/**DESCRIPTION DE LA NON CONFORMITE */}
-                <Label for="exampleEmail" md={12}>Description de la non conformité entre 99 et 600 caractères ( {this.state.descriptionFnc.length}/600) :  </Label>
+                <Label for="exampleEmail" md={12}>Description de la non-conformité</Label>
                 <Col md={{ size: 12, order: 1, offset: -1 }}>
                   <Input valid={this.state.descriptionFncIsSet} //invalid={!this.state.descriptionFncIsSet}
                     type="textarea"
@@ -353,13 +353,12 @@ let proceList =
                     value={this.state.descriptionFnc}
                     onChange={e => {
                       this.setState({ descriptionFnc: e.target.value })
-
-                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim() !== "" &&  e.target.value.length>=100) {
+                      if (e.target.value !== null &&  e.target.value !== '' && e.target.value.trim() !== "") {
                         this.setState({ descriptionFncIsSet: true })
                       }
-                      else { this.setState({ descriptionFncIsSet: false }) }}}>
+                      else { this.setState({ descriptionFncIsSet : false }) }}}>
                   </Input>
-                  <FormText hidden={this.state.descriptionFncIsSet}>Décrire la non conformité (100 caratères minimun) </FormText>
+                  <FormText hidden={this.state.descriptionFncIsSet}>Décrire la non conformité</FormText>
                 </Col>
               </FormGroup>
             </Form>

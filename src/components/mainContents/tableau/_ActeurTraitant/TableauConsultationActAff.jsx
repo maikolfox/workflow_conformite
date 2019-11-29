@@ -1,29 +1,21 @@
 import React from 'react';
-//import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
-//import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-//import Loader from 'react-loader-spinner'
+
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
-//import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
-//import Authorization from '../../Authorization_401';
-import 'react-quill/dist/quill.snow.css'; // ES6
-//import ReactQuill from 'react-quill';
-//import ReactHtmlParser from 'react-html-parser';
+
 import UploadFile from '../../../assets/uploadFile/TodoItem';
-import FileBase64 from 'react-file-base64';
 import Columns from '../../../assets/ColumDetailsFnc'
-// import ActeurList from '../../../assets/ActeurData'
-// import ActeurColumns from '../../../assets/ActeurColumns'
+
 import Processus from "../../../assets/Processus";
 import Source from "../../../assets/Source";
 import FamilleProcessus from "../../../assets/FamilleProcessus";
 import Loader from "../../../assets/Loader";
 import Auth from "../../../assets/Auth";
 import axios from 'axios';
-
+import DisplayDateFormat from "../../../assets/dateFormatTransform"
 import {
   Button,
   Modal,
@@ -51,7 +43,7 @@ export default class ConsultationActAff extends React.Component {
         modal: '',
         id: 0,
 
-        selectedFile: null,
+        selectedFile: [],
         fileArray: [],
         loaded: 0,
 
@@ -104,7 +96,9 @@ export default class ConsultationActAff extends React.Component {
         files: [],
 
         libelleSource: "",
-        idFamille: ""
+        idFamille: "",
+        ResultModal:''
+
 
       }
 
@@ -128,11 +122,10 @@ export default class ConsultationActAff extends React.Component {
     // this.handleChange=this.handleChange.bind(this);
     this.getUnique = this.getUnique.bind(this);
     this.loadActionAffecte = this.loadActionAffecte.bind(this);
-
+    this.toggleResultModal = this.toggleResultModal.bind(this);
 
 
     //File list Handler
-    this.handleChangeFile = this.handleChangeFile.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
     this.getFiles = this.getFiles.bind(this)
@@ -178,50 +171,19 @@ export default class ConsultationActAff extends React.Component {
     this.setState({ files: files })
     this.handleAdd(files)
   }
-
-
-
-  handleChangeFile = id => {
-
-    this.setState(prevState => {
-      const update = prevState.todoData.map(elem => {
-        if (elem.id === id) {
-          elem.completed = !elem.completed
-        }
-        return elem
-
-      })
-      return {
-        todoData: update
-      }
-    })
-    console.log(id)
-  }
-
-
   handleDelete = id => {
     var update = [];
     console.log("id", id)
     this.setState(prevState => {
-      prevState.todoData.map(elem => {
+      prevState.fileArray.map(elem => {
         if (elem.id !== id) { update.push(elem) }
       })
-
       return {
-        todoData: update
+        fileArray: update
       }
     })
   }
 
-
-  //I WAS HERE 
-  //   handleChange (value){
-  //    this.setState({ text: value })
-  //     //this.setState({resultat: ReactHtmlParser(this.state.text)});
-  //     (value.trim!=='' && value.length>0 && this.state.resultat!==null) ? this.setState({resultatIsSet:true}) : this.setState({resultatIsSet:false})
-  //  console.log(this.state.resultat.length);
-
-  //   }
   retrieveAnaByFnc = idfnc => {
     var objectToArray = [];
     // eslint-disable-next-line
@@ -234,6 +196,7 @@ export default class ConsultationActAff extends React.Component {
           actionCorrective: el.actionCorrective,
           correction: el.correction,
           echeance: el.echeances,
+          echeanceFormat:DisplayDateFormat(el.echeances),
           id: el.id
         }
         objectToArray.push(object);
@@ -256,9 +219,7 @@ export default class ConsultationActAff extends React.Component {
       idActeurDelegataire: Auth.getUsername(),
       idActeur: this.state.idActeur,
       libelleAt: this.state.libelle
-
     };
-
     this.setState(prevState => ({
       dataStruc: prevState.dataStruc.concat(newItem),
       libelle: prevState.libelle + 1
@@ -374,7 +335,6 @@ export default class ConsultationActAff extends React.Component {
         item.idActeur = this.state.idActeur;
         item.libelleAnalyse = itemId;
       };
-
       return item;
     });
     this.setState(prevState => ({
@@ -383,7 +343,6 @@ export default class ConsultationActAff extends React.Component {
   }
 
   getUnique(arr, comp) {
-
     const unique = arr
       .map(e => e[comp])
 
@@ -392,8 +351,7 @@ export default class ConsultationActAff extends React.Component {
 
       // eliminate the dead keys & store unique objects
       .filter(e => arr[e]).map(e => arr[e]);
-
-    return unique;
+     return unique;
   }
 
   toggleNested() {
@@ -429,8 +387,22 @@ export default class ConsultationActAff extends React.Component {
     }));
     this.newAnalyse();
     this.setState({ libelle: 1 });
-    this.setState({ dataStruc: [] })
+    this.setState({ dataStruc: [],resultat:"",fileArray:[] })
   }
+
+  toggleResultModal() {
+    this.setState(prevState => ({
+      ResultModal: !prevState.ResultModal,
+      selectedAnalyse: !prevState.selectedAnalyse
+
+    }));
+    
+  }
+
+
+
+
+
 
   async loadActionAffecte() {
     await fetch("/consultActionAff/fnc",
@@ -513,11 +485,17 @@ export default class ConsultationActAff extends React.Component {
   async onClickHandler() 
   {
     var dataFile = new FormData();
-    if (this.state.selectedFile !== null) {
-      for (var x = 0; x < this.state.selectedFile.length; x++) {
-        console.log("x------>", x)
-        dataFile.append('file', this.state.selectedFile[x])
-      }
+    if(this.state.fileArray.length!==0)
+    {  
+        for (var x = 0; x < this.state.fileArray.length; x++) 
+        {
+          console.log("x------>", x)
+          if(this.state.fileArray[x].fileObj.type==="application/pdf" 
+          ||this.state.fileArray[x].fileObj.type=== "application/vnd.ms-excel"
+          ||this.state.fileArray[x].fileObj.type===  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          )
+          {dataFile.append('file', this.state.fileArray.fileObj)}
+        }
     }
     dataFile.append('idAt', this.state.id)
     dataFile.append("idFnc", this.state.idFnc)
@@ -553,18 +531,40 @@ export default class ConsultationActAff extends React.Component {
           this.loadActionAffecte();
         })
   }
-  onChangeHandler = event => {
+  onChangeHandler = event => 
+  {
     event.preventDefault()
     console.log(event.target.files)
     this.setState({
       selectedFile: event.target.files,
       loaded: 0,
     })
-    //I DONT KNOW WHY //
-    this.setState(prevState => ({
-      fileArray: prevState.fileArray.concat(this.state.selectedFile)
-    }))
+    var update=[];
+    var fileObjRet =event.target.files
+    for (var i = 0; i < fileObjRet.length; i++) 
+    {
+      // on récupère le i-ème fichier
+      console.log(fileObjRet,i,fileObjRet[i].name)
+      var ObjetFile={
+        name:fileObjRet[i].name,
+        id:Date.now()+i,
+        fileObj : fileObjRet[i]
+      }
+      update.push(ObjetFile)
+    }
 
+    this.setState(prevState => {
+      prevState.fileArray.map(elem => {
+          update.push(elem)
+      })
+      return {
+        fileArray: update
+      }
+    })
+    //I DONT KNOW WHY //
+    console.log("file array------->",this.state.fileArray)
+  
+  
   }
 
 
@@ -576,32 +576,25 @@ export default class ConsultationActAff extends React.Component {
 
 
   render() {
-
-    const items = this.state.todoData.map(item => (
+    const items = this.state.fileArray.map(item => (
       <UploadFile
         key={item.key}
         item={item}
-        onChange={this.handleChange}
         deleteTodo={this.handleDelete}
       />
     ))
 
-
-
-
-
-
-
     const analyseColum = [
-
       {
         Header: 'N° de l\'analyse',
         accessor: 'libelleAt',
+        width:"auto"
       },
 
       {
         Header: 'echeance',
-        accessor: 'echeance',
+        accessor: 'echeanceFormat',
+        width:"auto"
       },
 
     ]
@@ -628,10 +621,11 @@ export default class ConsultationActAff extends React.Component {
 
     //     if(this.state.unAutorize)
     //     {
-    //         return(<Authorization/>) 
+    //       return(<Authorization/>) 
     //     }
-
     // else
+
+
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
@@ -640,12 +634,12 @@ export default class ConsultationActAff extends React.Component {
             isOpen={this.state.modal}
             toggle={this.toggle}
             className={this.props.className}
-            size="lg"
+            size="xl"
             centered
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
           >
-            <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
+            <ModalHeader toggle={this.toggle}>Reception des actions</ModalHeader>
             <ModalBody>
               <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
@@ -665,6 +659,7 @@ export default class ConsultationActAff extends React.Component {
                 {/* ETAPE 2 FORMULAIRE ANALYSE */}
 
                 <TabPanel whenActive={2}>
+                <div style={{ cursor: 'pointer' }}>
                   <ReactTable
                     filterable={true}
                     loading={!this.state.isLoaded}
@@ -695,17 +690,21 @@ export default class ConsultationActAff extends React.Component {
                               actionCorrective: rowInfo.original.actionCorrective
                             });
                             console.log(rowInfo.original);
+                            this.toggleResultModal();
+
                           },
                           style: {
                             background: rowInfo.index === this.state.selectedAnalyseIndex ? '#cd511f' : 'white',
                             color: rowInfo.index === this.state.selectedAnalyseIndex ? 'white' : 'black'
                           }
+                          
                         }
                       } else {
                         return {}
                       }
                     }} />
                   <br />
+                  </div>
                 </TabPanel>
 
                 {/*RENSEIGNEMENT TRAITEMENT ET AJOUT PIECES JOINTES 
@@ -714,7 +713,7 @@ export default class ConsultationActAff extends React.Component {
                   <h1 style={{ textAlign: "center" }}>Recapitulatif analyse {this.state.selectedAnalyse}</h1>
                   <Col>
                     <small >
-                      <p style={{ textAlign: "center" }}>Renseigner les resultats du traitement une fois ceux-ci terminé , ajouter un pièce jointe si nécessaire</p>
+                      <p style={{ textAlign: "center" }}>Renseigner les resultats du traitement, ajouter une ou plusieurs pièces jointes si nécessaire</p>
                     </small>
                   </Col>
                   <br></br>
@@ -727,7 +726,10 @@ export default class ConsultationActAff extends React.Component {
                   {/**SOURCE */}
                   <MediaAsset libelle="Source" content={this.state.source} />
                   {/**ECHEANCES */}
-                  <MediaAsset libelle="Echeances" content={this.state.echeance} />
+                  <MediaAsset libelle="Echeances" content={DisplayDateFormat(this.state.echeance)} />
+                  {/**ECHEANCES ACTION CORRECTIVE */}
+
+                   <MediaAsset libelle="Echeances Action corrective" content={DisplayDateFormat(this.state.echeanceActionCorrective)} />
                   {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
                   <Form>
                     <FormGroup>
@@ -754,19 +756,7 @@ export default class ConsultationActAff extends React.Component {
                       <Row>&nbsp;</Row>
                       <Label>Ajouter une pièce jointe</Label>
                       <br />
-                      {/* <input type="file" value={this.state.todoText} onChange={e=>{
-                    this.setState({todoText:e.target.value})
-                }} /> */}
-
-                      <input type="file" name="file" multiple onChange={this.onChangeHandler} />
-
-                      <button type="button" className="btn btn-success btn-block" onClick={this.onClickHandler}>Charger le fichier</button>
-
-                      {/* <FileBase64 
-                multiple={ true }
-                onDone={ this.getFiles.bind(this) } 
-                /> */}
-                      {/* <button onClick={this.handleAdd}>Add </button> */}
+                      <input type="file" accept="application/pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="file" multiple onChange={this.onChangeHandler} />
                       <br></br>
                       {items}
                     </FormGroup>
@@ -791,7 +781,7 @@ export default class ConsultationActAff extends React.Component {
 
                   {/*TABLEAU ANALYSE*/}
 
-                  <TabPanel whenActive={2}>
+                  {/* <TabPanel whenActive={2}>
                     <Tab id="2" maxStep={3} step="prev" >
                       <Button>{'<< Précedent'}</Button>
                     </Tab>
@@ -799,7 +789,7 @@ export default class ConsultationActAff extends React.Component {
                     <Tab id="2" maxStep={3} step="next">
                       <Button disabled={!(this.state.selectedAnalyseIndex !== null)}>{'Suivant >>'}&nbsp;</Button>
                     </Tab>
-                  </TabPanel>
+                  </TabPanel> */}
 
 
                   {/*CREER ANALYSE BUTTON*/}
@@ -818,10 +808,6 @@ export default class ConsultationActAff extends React.Component {
               </TabSwitcher>
             </ModalBody>
             <ModalFooter>
-              {/* <Button color="danger" onClick={this.handleSubmit} disabled={(reg.test(this.state.text)||this.state.text==='')}> */}
-              <Button color="danger" onClick={this.handleSubmit} disabled={(!(this.state.textIsSet))}>
-                Soumettre
-            </Button>{" "}
               <Button color="secondary" onClick={this.toggle}>
                 Annuler
             </Button>
@@ -834,6 +820,76 @@ export default class ConsultationActAff extends React.Component {
             size="sm">
             <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
           </Modal>
+          <Modal isOpen={this.state.ResultModal}
+            toggle={this.toggleResultModal}
+            onClosed={this.state.closeAll ? this.toggle : undefined}
+            centered
+            backdrop="static"
+            size="xl">
+            {/* <ModalHeader toggle={this.toggleNested}>{response}</ModalHeader> */}
+            <ModalBody>
+            <ModalHeader toggle={this.toggleResultModal}>Renseigner le resultat</ModalHeader>
+                  <br></br>
+            <h3 style={{ textAlign: "center" }}>Recapitulatif analyse {this.state.selectedAnalyse}</h3>
+                  <Col>
+                    <small >
+                      <p style={{ textAlign: "center" }}>Renseigner les resultats du traitement, ajouter une ou plusieurs pièces jointes si nécessaire</p>
+                    </small>
+                  </Col>
+                  <br></br>
+                  {/**CAUSE  */}
+                  <MediaAsset libelle="Cause" content={this.state.cause} />
+                  {/**CORRECTION  */}
+                  <MediaAsset libelle="Correction" content={this.state.correction} />
+                  {/**ACTION CORRECTIVE */}
+                  <MediaAsset libelle="Action corrective" content={this.state.actionCorrective} />
+                  {/**SOURCE */}
+                  <MediaAsset libelle="Source" content={this.state.source} />
+                  {/**ECHEANCES */}
+                  <MediaAsset libelle="Echeances" content={DisplayDateFormat(this.state.echeance)} />
+                  {/**ECHEANCES ACTION CORRECTIVE */}
+
+                   <MediaAsset libelle="Echeances Action corrective" content={DisplayDateFormat(this.state.echeanceActionCorrective)} />
+                  {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
+                  <Form>
+                    <FormGroup>
+                      <Label for="exampleEmail" md={12}>Resultat du traitement</Label>
+                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                        <Input valid={this.state.textIsSet} invalid={!this.state.textIsSet}
+                          type="textarea"
+                          id="selectAgence"
+                          name="selectbasic"
+                          required
+                          max={3}
+                          value={this.state.text}
+                          onChange={e => {
+                            e.preventDefault();
+                            this.setState({ text: e.target.value })
+                            if (e.target.value !== null && e.target.value !== "") {
+                              this.setState({ textIsSet: true })
+                            }
+                            else { this.setState({ textIsSet: false }) }
+                          }}>
+                        </Input>
+                        <FormText hidden={this.state.textIsSet}>Renseigner le resultat</FormText>
+                      </Col>
+                      <Row>&nbsp;</Row>
+                      <Label>Ajouter une pièce jointe</Label>
+                      <br />
+                      <input type="file" accept="application/pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="file" multiple onChange={this.onChangeHandler} />
+                      <br></br>
+                      {items}
+                    </FormGroup>
+                  </Form >
+            </ModalBody>
+            <ModalFooter>
+                {/* <Button color="danger" onClick={this.handleSubmit} disabled={(reg.test(this.state.text)||this.state.text==='')}> */}
+              <Button color="danger" onClick={this.onClickHandler} disabled={(!(this.state.textIsSet))}>
+                Soumettre
+              </Button>{" "}
+            </ModalFooter>
+         </Modal>
+
         </div>
         {/*REACT  TABLE*/}
         <div style={{ cursor: 'pointer' }}>
@@ -867,11 +923,9 @@ export default class ConsultationActAff extends React.Component {
                       source: rowInfo.original.libelleSource,
                       libelleProcessus: rowInfo.original.libelleProcesus,
                       libelleFamille: rowInfo.original.libelleFamille
-
                     });
                     console.log(rowInfo.index);
                     this.retrieveAnaByFnc(rowInfo.original.idFnc);
-
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',

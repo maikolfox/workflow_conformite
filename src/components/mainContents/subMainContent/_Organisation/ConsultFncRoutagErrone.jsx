@@ -10,19 +10,14 @@ var pushLeft={
 
 
 }
-class ConsultFncRoutageErrone extends Component {
 
-  render() {
-    return (
+  const ConsultFncRoutageErrone =({ match})  => ( 
       <Card style={pushLeft}>
         <CardHeader>FNC routage erroné</CardHeader>
         <CardBody>
-                    <Tableau></Tableau>
-                    
+                  <Tableau match={match} ></Tableau>
         </CardBody>
       </Card>
+  )
 
-    )
-  }
-}
 export default ConsultFncRoutageErrone

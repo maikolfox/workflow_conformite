@@ -22,6 +22,8 @@ import '../tableau.css';
 import SelectComp from 'react-select';
 import ActeurListSelect from '../../../assets/ActeurDataSelectList';
 import Auth from "../../../assets/Auth"
+import DisplayNomPrenom from '../../../assets/displayNomPrenom' ;
+import DateFormatTransform from '../../../assets/dateFormatTransform' ;
 
 import {
   Button,
@@ -185,9 +187,7 @@ export default class TableauCritere extends React.Component {
         criterObject: update
       };
     });
-
     console.log(this.state.criterObject);
-
   }
 
 
@@ -398,6 +398,14 @@ export default class TableauCritere extends React.Component {
             });
           }
           else {
+            console.log("RESULT RESPONSE ",result.data.responses)
+            console.log("resp data")
+            result.data.responses.map(el=>{
+              el.idActeurFormat= DisplayNomPrenom(el.idActeur);
+              el.idActeurDelegataireFormat= DisplayNomPrenom(el.idActeurDelegataire);
+              el.echeancesFormat=DateFormatTransform(el.echeances);
+              el.dateCreationAnalyseFormat=DateFormatTransform(el.dateCreationAnalyse);
+            })
             this.setState({
               isLoadedAna: true,
               responseToAnalyseByID: result.data.responses
@@ -412,7 +420,6 @@ export default class TableauCritere extends React.Component {
               this.setState(prevState => ({ dsFncNbrAna: prevState.dsFncNbrAna.map(el => (el.id === obje.id ? obje : { ...el })) }));
             // console.log(this.state.responseToAnalyseByID)
             console.log(this.state.dsFncNbrAna)
-
           }
         },
         (error) => {
@@ -484,7 +491,6 @@ export default class TableauCritere extends React.Component {
           if (result.data.error === true || result.data.message === "Accès refuser !" || result.data.responses === null) {
             alert(result.data.message);
             window.close();
-
             this.setState({
               isLoaded: true,
               errorMessage: result.data.message,
@@ -493,6 +499,7 @@ export default class TableauCritere extends React.Component {
             });
           }
           else {
+            
             this.setState({
               isLoaded: true,
               responseToPost: result.data.responses
@@ -517,7 +524,6 @@ export default class TableauCritere extends React.Component {
             hasError: true
           });
         })
-        
   }
   async componentDidMount() {
     this.consultFncInitier()
@@ -704,23 +710,26 @@ export default class TableauCritere extends React.Component {
       {
         Header: 'N° Analyse',
         accessor: 'libelleAt',
+        width: 90
+
       },
       {
         Header: 'Email de l\'Acteur traitant',
-        accessor: 'idActeur',
+        accessor: 'idActeurFormat',
       },
 
       {
         Header: 'Email du Responsable de traitement',
-        accessor: 'idActeurDelegataire',
+        accessor: 'idActeurDelegataireFormat',
+
       },
       {
         Header: 'Date de création',
-        accessor: 'dateCreationAnalyse',
+        accessor: 'dateCreationAnalyseFormat',
       },
       {
         Header: 'Echeances',
-        accessor: 'echeances',
+        accessor: 'echeancesFormat',
       }
 
 
@@ -758,11 +767,12 @@ export default class TableauCritere extends React.Component {
                   <br></br>
                   <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s) pour la fiche {this.state.numeroId}</h1>
                   <Col>
-                    <small>
-                      Vous pouvez modifier une analyse , la supprimer ou creer une nouvelle avant de *soumettre*.<br />
-                      La soumission vous conduit à l'étape de création de critère
-                        </small>
+                      <small textAlign="center">
+                      Selectionner une analyse creer un critère et soummettez une fois que 
+                      la création est Terminée <br></br>Vous pouvez consulter les details de l'analyse
+                      </small>
                   </Col>
+                  <br></br>
                   <ReactTableActeur
                     filterable={true}
                     className="-striped -highlight"
@@ -843,7 +853,7 @@ export default class TableauCritere extends React.Component {
                           </Tab>
                         </Col>
                         {/**BUTTON SUPPRIMER  */}
-                        <Col md="3">
+                        {/* <Col md="3">
                           <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex === null) ? "nope" : "extends"}>
                             <Button disabled={(this.state.selectedAnaCreIndex === null)} outline color="danger">
                               <FontAwesomeIcon
@@ -853,7 +863,7 @@ export default class TableauCritere extends React.Component {
                               />{' Supprimer l\'analyse'}
                             </Button>
                           </Tab>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </Container>
                   </TabPanel>
@@ -1056,7 +1066,6 @@ export default class TableauCritere extends React.Component {
                     </Tab>
                   </TabPanel>
                   {/*FORMULAIRE BUTTON*/}
-
                   <TabPanel whenActive={2}>
                     <Tab id="2" maxStep={3} step="prev" >
                       <Button>{'<< Précédent'}</Button>
@@ -1103,7 +1112,6 @@ export default class TableauCritere extends React.Component {
               if (rowInfo && rowInfo.row) {
                 return {
                   onClick: (e) => {
-
                     e.preventDefault();
                     this.toggle();
                     this.setState({
@@ -1120,7 +1128,6 @@ export default class TableauCritere extends React.Component {
                     });
                     console.log(rowInfo.index);
                     this.getAnalyse(rowInfo.original.idFnc)
-
                   },
                   style: {
                     background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
@@ -1137,6 +1144,4 @@ export default class TableauCritere extends React.Component {
         </div>
       </React.Fragment>)
   }
-
-
 }

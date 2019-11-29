@@ -1,4 +1,5 @@
-function displayNomPrenom(text) {
+function displayNomPrenom(textVar) {
+    var text =textVar;
     var reversedText = text
       .split("@bridgebankgroup.com")
       .reverse()

@@ -14,7 +14,6 @@ var pushLeft={
 
   const CreationCritereEfficacite =({ match})  => ( 
     <Card style={pushLeft}>
-
         <CardHeader>Creation de critère d'efficacité</CardHeader>
         <CardBody>
                   <Tableau match={match}></Tableau>

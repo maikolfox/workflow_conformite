@@ -184,7 +184,9 @@ class Routing extends React.Component {
               <Deconnexion path="/workflow-gestion-fnc/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
-            {/* <Footer/> */}
+            <br></br>
+            <Footer/>
+            <Footer/>
       </Router>)
     
    }

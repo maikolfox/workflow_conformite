@@ -1,0 +1,36 @@
+@media (min-width: 992px){
+.footer .footer-inner {
+    position: absolute;
+    z-index: auto;
+    left: 200px;
+    right: 0;
+    bottom: 0;
+}
+}
+
+.footer .footer-inner {
+    position: absolute;
+    z-index: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+
+.footer {
+    padding-top: 64px;
+    height: 0;
+    width: 0;
+}
+
+
+.footer .footer-inner .footer-content {
+    position: absolute;
+    border-top: 1px solid #e2e1e1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 15px;
+    line-height: 36px;
+    background: #fff;
+}
