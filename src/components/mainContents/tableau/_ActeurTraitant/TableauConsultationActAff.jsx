@@ -76,6 +76,8 @@ export default class ConsultationActAff extends React.Component {
         idActeur: null,
         acteurTraitant: null,
         idActeurIsSet: false,
+        
+        echeanceActionCorrective:'',
 
         echeance: '',
         echeanceIsSet: false,
@@ -111,15 +113,18 @@ export default class ConsultationActAff extends React.Component {
     this.toggleNested = this.toggleNested.bind(this);
     //this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.currentDate = this.currentDate.bind(this);
-    this.handleModifyAnalyse = this.handleModifyAnalyse.bind(this);
-    this.handleValidModifyAnalyse = this.handleValidModifyAnalyse.bind(this);
+    // this.handleModifyAnalyse = this.handleModifyAnalyse.bind(this);
+    // this.handleValidModifyAnalyse = this.handleValidModifyAnalyse.bind(this);
+
     this.newAnalyse = this.newAnalyse.bind(this);
     ///
+
     this.onChangeHandler = this.onChangeHandler.bind(this);
     this.onClickHandler = this.onClickHandler.bind(this);
     this.retrieveAnaByFnc = this.retrieveAnaByFnc.bind(this);
+    
     // this.handleChange=this.handleChange.bind(this);
+    
     this.getUnique = this.getUnique.bind(this);
     this.loadActionAffecte = this.loadActionAffecte.bind(this);
     this.toggleResultModal = this.toggleResultModal.bind(this);
@@ -196,7 +201,10 @@ export default class ConsultationActAff extends React.Component {
           actionCorrective: el.actionCorrective,
           correction: el.correction,
           echeance: el.echeances,
+          echeanceActionCorrective:el.echeances2,
           echeanceFormat:DisplayDateFormat(el.echeances),
+          echeanceActionCorrectiveFormat:DisplayDateFormat(el.echeances2),
+
           id: el.id
         }
         objectToArray.push(object);
@@ -206,40 +214,33 @@ export default class ConsultationActAff extends React.Component {
 
   }
 
-  createAnalyse = event => {
-    event.preventDefault();
-    const newItem = {
-      idFnc: this.state.idFnc,
-      processus: this.state.idProcessus,
-      actionCorrective: this.state.actionCorrective,
-      correction: this.state.correction,
-      echeance: this.state.echeance,
-      cause: this.state.cause,
-      /// TODO A RECUPERER DANS LA SESSION
-      idActeurDelegataire: Auth.getUsername(),
-      idActeur: this.state.idActeur,
-      libelleAt: this.state.libelle
-    };
-    this.setState(prevState => ({
-      dataStruc: prevState.dataStruc.concat(newItem),
-      libelle: prevState.libelle + 1
-    }));
-    console.log(this.state.dataStruc);
-  };
+  //  to suppress 
+  //  createAnalyse = event => {
+  //  event.preventDefault();
+  //  const newItem = {
+  //  idFnc: this.state.idFnc,
+  //  processus: this.state.idProcessus,
+  //  actionCorrective: this.state.actionCorrective,
+  //  correction: this.state.correction,
+  //  echeance: this.state.echeance,
+  //  cause: this.state.cause,
+  //  /// TODO A RECUPERER DANS LA SESSION
+  //  idActeurDelegataire: Auth.getUsername(),
+  //  idActeur: this.state.idActeur,
+  //  libelleAt: this.state.libelle
+  //  };
+  //  this.setState(prevState => ({
+  //    dataStruc: prevState.dataStruc.concat(newItem),
+  //    libelle: prevState.libelle + 1
+  //  }));
+  //  console.log(this.state.dataStruc);
+  // };
 
 
-  currentDate() { //January is 0!
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0');
-    var yyyy = today.getFullYear();
-    today = yyyy + '-' + mm + '-' + dd;
-    return today;
-  }
+  
 
   handleSubmit = async e => {
     e.preventDefault();
-
 
     console.log("select file", this.state.selectedFile)
 
@@ -285,62 +286,67 @@ export default class ConsultationActAff extends React.Component {
         });
     this.toggle();
 
+
+
+
   }
-  handleModifyAnalyse = itemId => {
-    const updatedItems = this.state.dataStruc.map(item => {
-      if (itemId === item.libelleAnalyse) {
-        this.setState({
-          cause: item.cause,
-          correction: item.correction,
-          echeance: item.echeance,
-          acteurTraitant: null,
-          idActeur: null,
-          libelleAnalyse: item.libelleAt,
-          actionCorrective: item.actionCorrective
-        })
-        console.log(item.cause);
-      }
-      return item;
-    });
 
-    this.setState({
-      dataStruc: [].concat(updatedItems),
-      selectedAnalyseIndex: null,
-      selectedActeur: null
-    });
-  };
 
-  handleValidModifyAnalyse = itemId => {
-    const updatedItems = this.state.dataStruc.map(item => {
-      if (itemId === item.libelleAt) {
+  // handleModifyAnalyse = itemId => {
+  //   const updatedItems = this.state.dataStruc.map(item => {
+  //     if (itemId === item.libelleAnalyse) {
+  //       this.setState({
+  //         cause: item.cause,
+  //         correction: item.correction,
+  //         echeance: item.echeance,
+  //         acteurTraitant: null,
+  //         idActeur: null,
+  //         libelleAnalyse: item.libelleAt,
+  //         actionCorrective: item.actionCorrective
+  //       })
+  //       console.log(item.cause);
+  //     }
+  //     return item;
+  //   });
 
-        this.setState({
-          cause: item.cause,
-          correction: item.correction,
-          echeance: item.echeance,
-          acteurTraitant: null,
-          idActeur: null,
-          libelleAnalyse: item.libelleAt,
-          actionCorrective: item.actionCorrective
-        })
-        console.log(item.cause);
-        item.idFnc = this.state.idFnc;
-        item.processus = this.state.idProcessus;
-        item.actionCorrective = this.state.actionCorrective;
-        item.correction = this.state.correction;
-        item.echeance = this.state.echeance;
-        item.cause = this.state.cause;
-        //TODO RECUPERER LA VALEUR DANS LA SESSION
-        item.idActeurDelegataire = Auth.getUsername();
-        item.idActeur = this.state.idActeur;
-        item.libelleAnalyse = itemId;
-      };
-      return item;
-    });
-    this.setState(prevState => ({
-      dataStruc: prevState.dataStruc.map(el => (el.libelleAt !== updatedItems.libelleAt ? { ...el } : updatedItems))
-    }));
-  }
+  //   this.setState({
+  //     dataStruc: [].concat(updatedItems),
+  //     selectedAnalyseIndex: null,
+  //     selectedActeur: null
+  //   });
+  // };
+
+  // handleValidModifyAnalyse = itemId => {
+  //   const updatedItems = this.state.dataStruc.map(item => {
+  //     if (itemId === item.libelleAt) {
+
+  //       this.setState({
+  //         cause: item.cause,
+  //         correction: item.correction,
+  //         echeance: item.echeance,
+  //         acteurTraitant: null,
+  //         idActeur: null,
+  //         libelleAnalyse: item.libelleAt,
+  //         actionCorrective: item.actionCorrective
+  //       })
+  //       console.log(item.cause);
+  //       item.idFnc = this.state.idFnc;
+  //       item.processus = this.state.idProcessus;
+  //       item.actionCorrective = this.state.actionCorrective;
+  //       item.correction = this.state.correction;
+  //       item.echeance = this.state.echeance;
+  //       item.cause = this.state.cause;
+  //       //TODO RECUPERER LA VALEUR DANS LA SESSION
+  //       item.idActeurDelegataire = Auth.getUsername();
+  //       item.idActeur = this.state.idActeur;
+  //       item.libelleAnalyse = itemId;
+  //     };
+  //     return item;
+  //   });
+  //   this.setState(prevState => ({
+  //     dataStruc: prevState.dataStruc.map(el => (el.libelleAt !== updatedItems.libelleAt ? { ...el } : updatedItems))
+  //   }));
+  // }
 
   getUnique(arr, comp) {
     const unique = arr
@@ -531,6 +537,8 @@ export default class ConsultationActAff extends React.Component {
           this.loadActionAffecte();
         })
   }
+
+
   onChangeHandler = event => 
   {
     event.preventDefault()
@@ -592,40 +600,24 @@ export default class ConsultationActAff extends React.Component {
       },
 
       {
-        Header: 'echeance',
+        Header: 'Echeance',
         accessor: 'echeanceFormat',
         width:"auto"
       },
 
+      {
+        Header: 'Echeance action corrective',
+        accessor: 'echeanceActionCorrectiveFormat',
+        width:"auto"
+      }
+
+
+
     ]
-    //MISE EN FORM DU JSON POUR LES ACTEURS
-    // const dataActeur = [
-    //   {
-    //     nomPrenom: 'Ahoue romeo',
-    //     fonction: 'Developper web',
-    //     service: 'IT',
-    //     idActeur: 'ahoueromeo@gmail.com'
-    //   },
-    //   {
-    //     nomPrenom: 'Ahoue Maikol',
-    //     fonction: 'Analyste programmeur',
-    //     service: 'RH',
-    //     idActeur: 'maikol.ahoue@bridgebankgroup.com'
-    //   }
-
-    // ];
-
+    
 
 
     var response = (this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
-
-    //     if(this.state.unAutorize)
-    //     {
-    //       return(<Authorization/>) 
-    //     }
-    // else
-
-
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
@@ -687,6 +679,7 @@ export default class ConsultationActAff extends React.Component {
                               cause: rowInfo.original.cause,
                               correction: rowInfo.original.correction,
                               echeance: rowInfo.original.echeance,
+                              echeanceActionCorrective :rowInfo.original.echeanceActionCorrective,
                               actionCorrective: rowInfo.original.actionCorrective
                             });
                             console.log(rowInfo.original);
@@ -728,13 +721,12 @@ export default class ConsultationActAff extends React.Component {
                   {/**ECHEANCES */}
                   <MediaAsset libelle="Echeances" content={DisplayDateFormat(this.state.echeance)} />
                   {/**ECHEANCES ACTION CORRECTIVE */}
-
-                   <MediaAsset libelle="Echeances Action corrective" content={DisplayDateFormat(this.state.echeanceActionCorrective)} />
+                   <MediaAsset libelle="Echeances Actions correctives" content={DisplayDateFormat(this.state.echeanceActionCorrective)} />
                   {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
                   <Form>
-                    <FormGroup>
+                    <FormGroup row>
                       <Label for="exampleEmail" md={12}>Resultat du traitement</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
+                      <Col md={{ size: 12, order: 1 }}>
                         <Input valid={this.state.textIsSet} invalid={!this.state.textIsSet}
                           type="textarea"
                           id="selectAgence"
@@ -754,9 +746,11 @@ export default class ConsultationActAff extends React.Component {
                         <FormText hidden={this.state.textIsSet}>Renseigner le resultat</FormText>
                       </Col>
                       <Row>&nbsp;</Row>
-                      <Label>Ajouter une pièce jointe</Label>
+                      <Label md={12}>Ajouter une pièce jointe</Label>
+                      <Col md={{ size: 12, order: 1}}>
                       <br />
                       <input type="file" accept="application/pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="file" multiple onChange={this.onChangeHandler} />
+                      </Col>
                       <br></br>
                       {items}
                     </FormGroup>
@@ -801,7 +795,6 @@ export default class ConsultationActAff extends React.Component {
                     <Col md="8" ></Col>
                     <Tab id="3" maxStep={4} step="next">
                       <br />
-                      {/* <Button type="button" disabled={!(this.state.idActeurIsSet&&this.state.actionCorrective&&this.state.correctionIsSet&&this.state.causeIsSet&&this.state.echeanceIsSet)} onClick={this.createAnalyse}  color="danger">{'Ajouter une pièce jointe'}</Button> */}
                     </Tab>
                   </TabPanel>
                 </Row>

@@ -49,7 +49,7 @@ export default class TableauCritere extends React.Component {
   constructor(props) {
     super(props);
     this.state =
-      {
+    {
         idFnc: '',
         numeroId: '',
         modal: '',
@@ -91,6 +91,8 @@ export default class TableauCritere extends React.Component {
 
         nomPrenom: '',
         echeance: '',
+        echeanceActionCorrective: '',
+
         echeanceIsSet: false,
         isLoadedAna: false,
         hasError: '',
@@ -115,7 +117,7 @@ export default class TableauCritere extends React.Component {
         echeanceCritereIsSet: false,
         id: null,
         unAutorize: false
-      }
+    }
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -310,7 +312,7 @@ export default class TableauCritere extends React.Component {
         item.echeance = this.state.echeance;
         item.cause = this.state.cause;
         //TODO RECUPERER LA VALEUR DANS LA SESSION
-        item.idActeurDelegataire = 'ahoueromeo@gmail.com';
+        item.idActeurDelegataire = Auth.getUsername();
         item.idActeur = this.state.idActeur;
         item.libelleAnalyse = itemId;
       };
@@ -336,6 +338,7 @@ export default class TableauCritere extends React.Component {
             "correction": this.state.correction,
             "cause": this.state.cause,
             "echeances": this.state.echeance,
+            "echeances2":this.state.echeanceActionCorrective,
             //TODO REPLACE LATER
             "idActeurDelegataire": "maikol.ahoue@bridgebankgroup.com"
           }
@@ -405,6 +408,8 @@ export default class TableauCritere extends React.Component {
               el.idActeurDelegataireFormat= DisplayNomPrenom(el.idActeurDelegataire);
               el.echeancesFormat=DateFormatTransform(el.echeances);
               el.dateCreationAnalyseFormat=DateFormatTransform(el.dateCreationAnalyse);
+              el.echeanceActionCorrectivesFormat=DateFormatTransform(el.echeance2);
+
             })
             this.setState({
               isLoadedAna: true,
@@ -730,8 +735,14 @@ export default class TableauCritere extends React.Component {
       {
         Header: 'Echeances',
         accessor: 'echeancesFormat',
-      }
 
+      },
+
+      {
+        Header: 'Echeances Action Corrective',
+        accessor: 'echeanceActionCorrectivesFormat'
+
+      }
 
     ]
 
