@@ -185,8 +185,6 @@ class Routing extends React.Component {
               <Deconnexion path="/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
-            <Row></Row>
-            <Footer />
 
       </Router>)
     
