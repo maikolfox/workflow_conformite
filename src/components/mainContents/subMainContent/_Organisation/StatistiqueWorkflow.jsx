@@ -23,7 +23,8 @@ var boxingChart = {
   border: '1px solid gray', borderRightColor: 'black',
   boxShadow: "1px 3px 1px #9E9E9E",
   marginTop: "1%",
-  marginLeft: "1%"
+  marginLeft: "1%",
+  paddingBottom:"20px"
 };
 var boxingChart2 = {
   border: '1px solid gray', borderRightColor: 'black',
@@ -311,12 +312,15 @@ class Content extends Component {
 
             })
             const auxDatForm = dataLibelleFormat;
+            // eslint-disable-next-line
             auxDatForm.map((el, index) => {
               dataLibelleFormat[index] = displayNomPrenom(el);
               console.log(dataLibelleFormat[index]);
             })
           }
           if (this.state.axe === 'idSource') {
+                                     
+            // eslint-disable-next-line
             tab[auxInd].libelles.map((el, index) => {
               dataLibelleFormat[index] = Source.find(element => element.idSource === el).libelleSource;
 
@@ -324,6 +328,7 @@ class Content extends Component {
           }
           
           else {
+            // eslint-disable-next-line
             tab[auxInd].libelles.map((el, index) => {
               dataLibelleFormat[index] = Processus.find(element => element.idProcessus === el).libelleProcessus;
             })
@@ -353,7 +358,7 @@ class Content extends Component {
         <Row>
           <Col style={boxingChart} md={{ size: 11, order: 1, offset: 0 }}>
           {/* <h2>Non</h2> */}
-            <strong>Graphique en barres( FNC reçue , traité dans les delais ,traités) </strong>
+            <strong>Graphique en barres( FNC reçues , traité dans les delais ,traités) </strong>
             <Bar ref="chart" width={8} height={3} data={this.state.dataToSend} />
           </Col>
         </Row>

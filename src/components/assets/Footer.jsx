@@ -60,7 +60,7 @@ componentDidMount()
     var year = new Date();
     year= year.getFullYear();
     return (
-      <Navbar fixed={"bottom"} className='footerStyle' light expand="md" >
+      <Navbar fixed={"bottom"} className='footerStyle' light expand="xs" >
         Bridge Bank Group  ©  Tous droits réservés. {year}  
         {/* <h6 id="navBarText">Workflow FNC</h6> */}
         

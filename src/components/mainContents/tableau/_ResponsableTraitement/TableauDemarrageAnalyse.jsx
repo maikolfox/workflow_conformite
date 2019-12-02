@@ -253,11 +253,11 @@ handleValideAnalyse()
       if (!el.echeanceActionCorrectiveIsSet) {
 
         isCorrect = false;
-        var obj = {
+        var obj_ = {
           labelle: "Echeance action corrective",
           libelleAt: "Analyse N° " + el.libelleAt
         }
-        formFieldMissFill.push(obj)
+        formFieldMissFill.push(obj_)
 
       }
       //pour eviter un doublon lors de l'ajout de la correction 
@@ -268,11 +268,11 @@ handleValideAnalyse()
       //désactiver le caractère obligatoire des ‘‘Causes’’ et 
       if (!el.correctionIsSet && !el.causeIsSet) {
         isCorrect = false;
-        var obj = {
+        var obj3 = {
           labelle: "Correction",
           libelleAt: "Analyse N° " + el.libelleAt
         }
-        var obj = {
+         obj3 = {
           labelle: "Cause",
           libelleAt: "Analyse N° " + el.libelleAt
         }

@@ -65,12 +65,11 @@ export default class LoginPage extends React.Component {
     }
     render() {
         // marginTop: "20%",
-        var styled = {  height: "100%",/*backgroundColor:"gray"*/ backgroundImage:"/image/background.jpg" }
+        var styled = {  height: "100%", backgroundImage:"/image/background.jpg" }
         if (this.state.authenticate  || Auth.getAuth()) {
-            return <Redirect to='/workflow-gestion-fnc/home' />
+            return <Redirect to='/home' />
         }else
         return (
-/*{/* <img src="./image/background.jpg" alt="Accueil" style={{marginTop :'8px'}} height="100%" width="100%" /> style={{backgroundImage: `url("./image/background.jpg")`}}*/
                 <Row style={styled}>
                     <Col classeName="boxImage" style={{backgroundImage: `url("/image/background.jpg")` ,backgroundSize: "100% 100%"}} md={8} sm={12}>
                       <Row>&nbsp;</Row>

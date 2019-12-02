@@ -36,7 +36,7 @@ import {
 
  ///PRENDRE EN COMPTE LA REDIRECTION SELON LES AUTORISATIONS
 const PrivateRoute = ({ component: Component, ...rest }) => (
-   <Route
+   <Route basename={'/workflow-gestion-fnc'}
       {...rest}
       render={props =>
          Auth.getAuth() ? 
@@ -45,7 +45,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
          ) : (
                <Redirect
                   to={{
-                     pathname: "/workflow-gestion-fnc/login"
+                     pathname: "/login"
                   }}
                />
             )
@@ -54,7 +54,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 const RespRoute = ({ component: Component, ...rest }) => (
-   <Route
+   <Route basename={'/workflow-gestion-fnc'}
       {...rest}
       render={props =>
          Auth.getAuth() ? 
@@ -66,7 +66,7 @@ const RespRoute = ({ component: Component, ...rest }) => (
             ): (
                <Redirect
                   to={{
-                     pathname: "/workflow-gestion-fnc/login"
+                     pathname: "/login"
                   }}
                />
             )
@@ -76,7 +76,7 @@ const RespRoute = ({ component: Component, ...rest }) => (
 
 
 const OrgaRoute = ({ component: Component, ...rest }) => (
-   <Route
+   <Route basename={'/workflow-gestion-fnc'}
       {...rest}
       render={props =>
          Auth.getAuth() ? 
@@ -88,7 +88,7 @@ const OrgaRoute = ({ component: Component, ...rest }) => (
             ): (
                <Redirect
                   to={{
-                     pathname: "/workflow-gestion-fnc/login"
+                     pathname: "/login"
                   }}
                />
             )
@@ -97,7 +97,7 @@ const OrgaRoute = ({ component: Component, ...rest }) => (
 );
 
 const DGRCRoute = ({ component: Component, ...rest }) => (
-   <Route
+   <Route basename={'/workflow-gestion-fnc'}
       {...rest}
       render={props =>
          Auth.getAuth() ? 
@@ -109,7 +109,7 @@ const DGRCRoute = ({ component: Component, ...rest }) => (
             ): (
                <Redirect
                   to={{
-                     pathname: "/workflow-gestion-fnc/login"
+                     pathname: "/login"
                   }}
                />
             )
@@ -119,13 +119,13 @@ const DGRCRoute = ({ component: Component, ...rest }) => (
 
 
 const Deconnexion = ({ component: Component, ...rest }) => (
-   <Route
+   <Route basename={'/workflow-gestion-fnc'}
       {...rest}
       render={props =>
          Auth.remove() ? 
          (<Redirect
             to={{
-               pathname: "/workflow-gestion-fnc/login"
+               pathname: "/login"
             }}
          />
             
@@ -156,37 +156,38 @@ const NoMatchPage = () => { return (
 
 class Routing extends React.Component {
    render(){    
-       return( <Router>
+       return( 
+       <Router basename={'/workflow-gestion-fnc'}>
             <Switch>
               <Route exact path="/" render={() => 
               (
               Auth.getAuth() ? (
-                 <Redirect to="/workflow-gestion-fnc/home"/>
+                 <Redirect to="/home"/>
               ) : (
-                 <Redirect to="/workflow-gestion-fnc/login"/>
+                 <Redirect to="/login"/>
               )
               )}/>
                <Route exact path="/workflow-gestion-fnc" render={() => 
               (
               Auth.getAuth() ? (
-                 <Redirect to="/workflow-gestion-fnc/home"/>
+                 <Redirect to="/home"/>
               ) : (
-                 <Redirect to="/workflow-gestion-fnc/login"/>
+                 <Redirect to="/login"/>
               )
               )}
               />
-              <PrivateRoute exact path="/workflow-gestion-fnc/home" component={Home} />
-              <PrivateRoute path="/workflow-gestion-fnc/ActeurTraitant" component={ActeurTraitant} />
-              <RespRoute path="/workflow-gestion-fnc/ResponsableTraitement" component={ ResponsableTraitement} />
-              <OrgaRoute path="/workflow-gestion-fnc/Organisation" component={Organisation } />
-              <DGRCRoute path="/workflow-gestion-fnc/DGRC" component={DGRC} />
-              <Route path="/workflow-gestion-fnc/login"  component={LoginPage}/>
-              <Deconnexion path="/workflow-gestion-fnc/deconnexion"  component={LoginPage}/>
+              <PrivateRoute exact path="/home" component={Home} />
+              <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
+              <RespRoute path="/ResponsableTraitement" component={ ResponsableTraitement} />
+              <OrgaRoute path="/Organisation" component={Organisation } />
+              <DGRCRoute path="/DGRC" component={DGRC} />
+              <Route path="/login"  component={LoginPage}/>
+              <Deconnexion path="/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
-            <br></br>
-            <Footer/>
-            <Footer/>
+            <Row></Row>
+            <Footer />
+
       </Router>)
     
    }

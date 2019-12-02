@@ -2,6 +2,7 @@ import React from 'react';
 import NavBarMain from '../../assets/NavbarMain';
 import ConsultationActAff from '../../mainContents/subMainContent/_ActeurTraitant/ConsultationActAff';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
+
 // import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
 // import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
 // import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere';
@@ -27,6 +28,7 @@ const ActeurTraitant = ({ match }) =>
         <NavBarMain />
          <SideBar match={match} menuItem={menuObjet}></SideBar>
          <SwitchRoute basePath="ActeurTraitant" menuItem={menuObjet} ></SwitchRoute>
+
     </React.Fragment>
 );
 

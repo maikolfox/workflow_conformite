@@ -715,7 +715,7 @@ export default class ConsultationActAff extends React.Component {
                   {/**CORRECTION  */}
                   <MediaAsset libelle="Correction" content={this.state.correction} />
                   {/**ACTION CORRECTIVE */}
-                  <MediaAsset libelle="Action corrective" content={this.state.actionCorrective} />
+                  <MediaAsset libelle="Action corrective" cyontent={this.state.actionCorrective} />
                   {/**SOURCE */}
                   <MediaAsset libelle="Source" content={this.state.source} />
                   {/**ECHEANCES */}
