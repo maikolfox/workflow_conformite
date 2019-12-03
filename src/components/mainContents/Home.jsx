@@ -34,7 +34,7 @@ class Home extends Component {
                              des fiches de non-conformités  
                             </p>
                             </Col>
-                            <Col md="6"><img src="/image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /></Col>
+                            <Col md="6"><img src="./image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /></Col>
                         </Row>
                         <Row>&nbsp;</Row>
                         <Row >

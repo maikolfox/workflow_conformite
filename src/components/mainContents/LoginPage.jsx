@@ -3,12 +3,12 @@ import React from "react";
 import {
     Col,
     Row,
-    Container,
-    FormGroup, Label,
+    FormGroup, 
+    Label,
     Form,
     Input,
     Button,
-    Alert ,Media
+    Alert 
 } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 import Auth from '../assets/Auth';
@@ -65,13 +65,13 @@ export default class LoginPage extends React.Component {
     }
     render() {
         // marginTop: "20%",
-        var styled = {  height: "100%", backgroundImage:"/image/background.jpg" }
+        var styled = {  height: "100%", backgroundImage:"./image/background.jpg" }
         if (this.state.authenticate  || Auth.getAuth()) {
             return <Redirect to='/home' />
         }else
         return (
                 <Row style={styled}>
-                    <Col classeName="boxImage" style={{backgroundImage: `url("/image/background.jpg")` ,backgroundSize: "100% 100%"}} md={8} sm={12}>
+                    <Col className="boxImage" style={{backgroundImage: `url('./image/background.jpg')` ,backgroundSize: "100% 100%"}} md={8} sm={12}>
                       <Row>&nbsp;</Row>
                       <Row>&nbsp;</Row>
                       <Row>&nbsp;</Row>
