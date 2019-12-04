@@ -34,7 +34,6 @@
     "reactstrap": "6.5.0",
     "universal-cookie": "^4.0.2"
   },
-  "proxy": "http://localhost:3553/api",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

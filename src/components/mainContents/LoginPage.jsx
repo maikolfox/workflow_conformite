@@ -12,6 +12,7 @@ import {
 } from 'reactstrap';
 import {Redirect} from 'react-router-dom'
 import Auth from '../assets/Auth';
+import ConfigUrl from '../assets/ConfigUrl'
 export default class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +28,7 @@ export default class LoginPage extends React.Component {
     }
     handleLogin = e => {
         e.preventDefault();
-        fetch('/ssoNautif/fnc',
+        fetch(ConfigUrl.basePath+'/ssoNautif/fnc',
             {
                 method: 'post',
                 headers:
