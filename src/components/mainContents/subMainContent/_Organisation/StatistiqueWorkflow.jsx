@@ -252,7 +252,7 @@ class Content extends Component {
     else {
       this.setState({ isIdActeur: false });
     }
-    await fetch('/statistisquefncAllStats/fnc',
+    await fetch(ConfigUrl.basePath+'/statistisquefncAllStats/fnc',
       {
         method: 'POST',
         headers:
