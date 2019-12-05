@@ -24,6 +24,7 @@ import ActeurListSelect from '../../../assets/ActeurDataSelectList';
 import Auth from "../../../assets/Auth"
 import DisplayNomPrenom from '../../../assets/displayNomPrenom' ;
 import DateFormatTransform from '../../../assets/dateFormatTransform' ;
+import ConfigUrl from '../../../assets/ConfigUrl'
 
 import {
   Button,
@@ -215,7 +216,7 @@ export default class TableauCritere extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state.dataStruc);
-    await fetch('/createCriter/fnc',
+    await fetch(ConfigUrl.basePath+'/createCriter/fnc',
       {
         method: 'POST',
         headers:
@@ -322,7 +323,7 @@ export default class TableauCritere extends React.Component {
     this.setState(prevState => ({
       dataStruc: prevState.dataStruc.map(el => (el.libelleAt !== updatedItems.libelleAt ? { ...el } : updatedItems))
     }));
-    fetch('/updateTraitement/fnc',
+    fetch(ConfigUrl.basePath+'/updateTraitement/fnc',
       {
         method: 'POST',
         headers:
@@ -373,7 +374,7 @@ export default class TableauCritere extends React.Component {
   }
 
   getAnalyse = idFnc => {
-    fetch('/consultationAnalyseById/fnc',
+    fetch(ConfigUrl.basePath+'/consultationAnalyseById/fnc',
       {
         method: 'POST',
         headers:
@@ -489,7 +490,7 @@ export default class TableauCritere extends React.Component {
 
   async consultFncInitier()
   {
-    await fetch("/consultationFncInitier/fnc")
+    await fetch(ConfigUrl.basePath+"/consultationFncInitier/fnc")
       .then(res => res.json())
       .then(
         (result) => {

@@ -1,18 +1,11 @@
 import React from 'react';
-//import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-//import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import MediaAsset from '../../../assets/MediaAsset'
-//import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
-import TabSwitcher, { Tab, TabPanel } from "./TabSwitcher/TabSwitcher";
 import Auth from '../../../assets/Auth';
-
-
-
-
+import ConfigUrl from '../../../assets/ConfigUrl'
 import {
   Button,
   Modal,
@@ -23,8 +16,7 @@ import {
   FormGroup,
   Form,
   Label,
-  Row,Col
-  
+  Row
 } from "reactstrap";
 
 
@@ -75,7 +67,7 @@ export default class ValidationRoutage extends React.Component {
     console.log(this.state.valRoutage);
 
 
-    const response = await fetch('/validationRoutage/fnc',
+    const response = await fetch(ConfigUrl.basePath+'/validationRoutage/fnc',
       {
         method: 'POST',
         headers:
@@ -134,7 +126,7 @@ export default class ValidationRoutage extends React.Component {
   }
   async componentDidMount() 
   {
-       await fetch("/consult/fnc",
+       await fetch(ConfigUrl.basePath+"/consult/fnc",
       {
         method: 'POST',
         headers:

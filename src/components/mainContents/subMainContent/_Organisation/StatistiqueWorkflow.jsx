@@ -12,6 +12,7 @@ import Processus from '../../../assets/Processus';
 import Source from '../../../assets/Source';
 import { LoaderV2 } from '../../../assets/Loader';
 import displayNomPrenom from '../../../assets/displayNomPrenom';
+import ConfigUrl from "../../../assets/ConfigUrl";
 //import { TabPanel } from '../../tableau/_Organisation/TabSwitcher/TabSwitcher';
 //import BarChart from '../../../mainContents/chartAsset/BarChart';
 
@@ -195,7 +196,7 @@ class Content extends Component {
   };
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch('/statistisqueCompteDec/fnc',
+    const response = await fetch(ConfigUrl.basePath+'/statistisqueCompteDec/fnc',
       {
         method: 'POST',
         headers:

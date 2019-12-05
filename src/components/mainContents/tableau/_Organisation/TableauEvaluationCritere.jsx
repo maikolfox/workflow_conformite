@@ -1,31 +1,13 @@
 import React from 'react';
-// import { library } from '@fortawesome/fontawesome-svg-core';
-// import { faTrash, faPen, faPlusCircle, faBan, faEye } from '@fortawesome/free-solid-svg-icons';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { Table } from 'reactstrap';
+
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import ReactTableEvaluationFnc from 'react-table';
-//import ReactTableRecapAnalyseAndTraite from 'react-table';
-
 import "react-table/react-table.css";
 import Loader from "../../../assets/Loader";
-
-import TabSwitcher, { 
-    //Tab, 
-    TabPanel } from "./TabSwitcher/TabSwitcher";
-//import Authorization from '../../Authorization_401';
-/*import ActeurList from '../../../assets/ActeurData';
-import ActeurColumns from '../../../assets/ActeurColumns';
-import Columns from '../../../assets/ColumDetailsFnc';
-import CritereItem from './critereItem';*/
+import TabSwitcher, {TabPanel } from "./TabSwitcher/TabSwitcher";
 import '../tableau.css';
-//import SelectComp from 'react-select';
-//import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-import { evaluationColumn,
-    //data_column,
-    //data_details 
-} from '../../../assets/evaluationColumn';
+import { evaluationColumn} from '../../../assets/evaluationColumn';
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import TransFormLibstat from '../../../assets/transFormLibelleStatut';
 import dateFormat from '../../../assets/dateFormatTransform';
@@ -33,13 +15,9 @@ import Source from '../../../assets/Source';
 import Processus from '../../../assets/Processus';
 import Famille from '../../../assets/FamilleProcessus';
 import Auth from '../../../assets/Auth';
+import ConfigUrl from '../../../assets/ConfigUrl'
+import CritereItemEval from "./critereItemEval";
 
-//import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import CritereItemEval
-//{Details} 
-from "./critereItemEval";
-//import Processus from '../../../asset/Processus';
 
 import {
     Button,
@@ -49,14 +27,9 @@ import {
     ModalFooter,
     Input,
     FormGroup,
-    //Form,
-    //FormText,
     Label,
     Row,
-    //Col,
-    //Collapse
 } from "reactstrap";
-//import processus from '../../../assets/Processus';
 
 
 
@@ -104,7 +77,6 @@ export default class TableauEvaluationCritere extends React.Component {
 
                 dataStruc: [],
                 dsFncNbrAna: [],
-               // critere: null,
                 critereIsSet: false,
 
                 selectedAnaCreIndex: null,
@@ -158,7 +130,7 @@ export default class TableauEvaluationCritere extends React.Component {
 
     get_critere_traitement_byIdfnc = async e => {
         this.setState({ isLoaded: false })
-        await fetch('/criter_EvalTraitementByidFnc/fnc',
+        await fetch(ConfigUrl.basePath+'/criter_EvalTraitementByidFnc/fnc',
             {
                 method: 'POST',
                 headers:
@@ -203,7 +175,7 @@ export default class TableauEvaluationCritere extends React.Component {
 
         })
         this.setState({ isLoaded: false })
-        await fetch('/clotureFnc_evaluation/fnc',
+        await fetch(ConfigUrl.basePath+'/clotureFnc_evaluation/fnc',
             {
                 method: 'POST',
                 headers:
@@ -308,7 +280,7 @@ export default class TableauEvaluationCritere extends React.Component {
     }
 
     async getResultat_traitement() {
-        await fetch("/get_fnc_traiter/fnc")
+        await fetch(ConfigUrl.basePath+"/get_fnc_traiter/fnc")
             .then(res => res.json())
             .then(
                 (result) => {
@@ -460,7 +432,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                         filterable={true}
                         defaultFilterMethod={FilterCaseInsensitive}
                         minRows={5}
-                        noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun etat recupéré"}
+                        noDataText={(this.state.hasError) ? "Erreur lors de la récupération des données,contactez les administrateurs !" : "Aucun etat recupéré"}
                         data={this.state.responseToPost}
                         columns={evaluationColumn}
                         getTrProps={(state, rowInfo) => {
@@ -507,7 +479,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                         }}
                         className="-striped -highlight"
                         style={{
-                            height: "1000px" // This will force the table body to overflow and scroll, since there is not enough room
+                            height: "1000px" 
                           }}
                         previousText={"Précedent"}
                         nextText={"Suivant"}

@@ -167,21 +167,13 @@ class Routing extends React.Component {
                  <Redirect to="/login"/>
               )
               )}/>
-               <Route exact path="/workflow-gestion-fnc" render={() => 
-              (
-              Auth.getAuth() ? (
-                 <Redirect to="/home"/>
-              ) : (
-                 <Redirect to="/login"/>
-              )
-              )}
-              />
+             
               <PrivateRoute exact path="/home" component={Home} />
               <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
               <RespRoute path="/ResponsableTraitement" component={ ResponsableTraitement} />
               <OrgaRoute path="/Organisation" component={Organisation } />
               <DGRCRoute path="/DGRC" component={DGRC} />
-              <Route path="/login"  component={LoginPage}/>
+              <Route exact path="/login"  component={LoginPage}/>
               <Deconnexion path="/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>

@@ -15,7 +15,9 @@ import FamilleProcessus from "../../../assets/FamilleProcessus";
 import Loader from "../../../assets/Loader";
 import Auth from "../../../assets/Auth";
 import axios from 'axios';
-import DisplayDateFormat from "../../../assets/dateFormatTransform"
+import DisplayDateFormat from "../../../assets/dateFormatTransform";
+import ConfigUrl from '../../../assets/ConfigUrl'
+
 import {
   Button,
   Modal,
@@ -244,7 +246,7 @@ export default class ConsultationActAff extends React.Component {
 
     console.log("select file", this.state.selectedFile)
 
-    await fetch('/upload',
+    await fetch(ConfigUrl.basePath+'/upload',
       {
         method: 'POST',
         headers:
@@ -411,7 +413,7 @@ export default class ConsultationActAff extends React.Component {
 
 
   async loadActionAffecte() {
-    await fetch("/consultActionAff/fnc",
+    await fetch(ConfigUrl.basePath+"/consultActionAff/fnc",
       {
         method: 'POST',
         headers:
@@ -508,7 +510,7 @@ export default class ConsultationActAff extends React.Component {
     dataFile.append("resultat", this.state.text)
     dataFile.append("idActeur", Auth.getUsername())
 
-    await axios.post("/upload", dataFile,
+    await axios.post(ConfigUrl.basePath+"/upload", dataFile,
     {
         onUploadProgress: ProgressEvent => {
           this.setState({

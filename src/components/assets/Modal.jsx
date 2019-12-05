@@ -6,7 +6,7 @@ import Loader from "./Loader"
 import QualificationList from "./qualificationList";
 import App from '../../setupProxy';
 import Auth from "./Auth";
-
+import ConfigUrl from "./ConfigUrl"
 import {
   Button,
   Modal,
@@ -66,7 +66,7 @@ class ModalRensFNC extends React.Component {
     const libelleSource=Source.find(item=>{return item.idSource===this.state.idSource}).libelleSource;
     const libelleProcessus=Processus.find(item=>{return item.idProcessus===this.state.idProcessus}).libelleProcessus;
     e.preventDefault();
-       await fetch('/create/fnc',
+       await fetch(ConfigUrl.basePath+'/create/fnc',
         {
           method: 'POST',
           headers:

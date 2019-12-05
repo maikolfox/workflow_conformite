@@ -5,9 +5,8 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import Authorization from '../../Authorization_401';
+import ConfigUrl from '../../../assets/ConfigUrl'
 
-//import CorrectionRoutageModal from "../modals/CorrectionRoutageModal";
 import {
   Button,
   Modal,
@@ -66,7 +65,7 @@ export default class TableauCritere extends React.Component {
     e.preventDefault();
     console.log(this.state.descritpionProc);
     
-      const response = await fetch('/correctionRoutage/fnc',
+      const response = await fetch(ConfigUrl.basePath+'/correctionRoutage/fnc',
         {
           method: 'POST',
           headers:
@@ -109,7 +108,7 @@ export default class TableauCritere extends React.Component {
   }
 
 componentDidMount() {
-   fetch("/consultationFncInitier/fnc")
+   fetch(ConfigUrl.basePath+"/consultationFncInitier/fnc")
       .then(res => res.json())
       .then(
         (result) => {

@@ -44,15 +44,7 @@ code {
   opacity: 1;
 }
 
-/* .buttonClose_ {
-  background-color:  DodgerBlue; 
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  display: inline-block;
-  font-size: 16px;
-  size: 1em;
-} */
+
 
 .flex-container > div {
   cursor: pointer;

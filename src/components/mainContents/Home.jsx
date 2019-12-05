@@ -5,7 +5,7 @@ import NavBarMain from '../assets/NavbarMain'
 import ModalRensFNC from '../assets/Modal';
 //import PanelWorkFlow from './PanelWorkFlow';
 import Auth from '../../components/assets/Auth';
-
+import ConfigUrl from '../assets/ConfigUrl'
 var app =require('../../setupProxy')
 class Home extends Component {
 

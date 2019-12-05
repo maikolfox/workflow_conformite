@@ -35,7 +35,7 @@ export function SwitchRouteItem(props) {
     if (props.url === 'Accueil') {
         return (
             <Switch>
-                <Route exact path={`/${props.basePath}/`} component={props.children} />
+                <Route exact path={`/${props.basePath}`} component={props.children} />
                 <Route exact path={`/${props.basePath}/${props.url}`} component={props.children} />
             </Switch>
         )

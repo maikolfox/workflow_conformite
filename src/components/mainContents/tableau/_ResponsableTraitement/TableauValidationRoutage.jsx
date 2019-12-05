@@ -11,6 +11,7 @@ import Columns from '../../../assets/ColumDetailsFnc'
 import Authorization from '../../Authorization_401';
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import Auth from '../../../assets/Auth';
+import ConfigUrl from '../../../assets/ConfigUrl'
 
 import {
   Button,
@@ -88,7 +89,7 @@ export default class ValidationRoutage extends React.Component {
     console.log(this.state.descriptionFnc);
     console.log(this.state.idFnc);
     console.log(this.state.valRoutage);
-     await fetch('/validationRoutage/fnc',
+     await fetch(ConfigUrl.basePath+'/validationRoutage/fnc',
       {
         method: 'POST',
         headers:
@@ -146,7 +147,7 @@ export default class ValidationRoutage extends React.Component {
     }));
   }
   async componentDidMount() {
-       await fetch("/consult/fnc",
+       await fetch(ConfigUrl.basePath+"/consult/fnc",
       {
         method: 'POST',
         headers:

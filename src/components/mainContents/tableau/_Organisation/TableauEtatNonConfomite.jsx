@@ -25,6 +25,8 @@ import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import DateFormatTransform from '../../../assets/dateFormatTransform';
 import DisplayNomPrenom from '../../../assets/displayNomPrenom';
 import TransformLibelleStatut from "../../../assets/transFormLibelleStatut";
+import ConfigUrl from '../../../assets/ConfigUrl'
+
 import {
     Button,
     Input,
@@ -58,7 +60,7 @@ export default class TableauEtatsNonConformite extends React.Component {
 
 
     async consultEtatFnc() {
-        await fetch("/get_etatFnc/fnc",{
+        await fetch(ConfigUrl.basePath+"/get_etatFnc/fnc",{
         method: 'POST',
         headers:
         {

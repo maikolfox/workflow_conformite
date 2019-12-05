@@ -22,6 +22,7 @@ import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import SelectComp from 'react-select';
 import AnalyseColum from "../../../assets/AnalyseColumn"
 import Auth from '../../../assets/Auth';
+import ConfigUrl from '../../../assets/ConfigUrl'
 
 import {
   Button,
@@ -620,7 +621,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
     this.setState({ isLoaded: false });
 
     
-    await fetch('/validationRoutage/fnc',
+      await fetch(ConfigUrl.basePath+'/validationRoutage/fnc',
       {
         method: 'POST',
         headers:
@@ -656,7 +657,6 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
             nestedModal: true,
           });
           console.log(this.state.selected);
-
         },
         (error) => {
           console.log("124", error.message);
@@ -686,7 +686,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
     }else{
     e.preventDefault();
     console.log(this.state.dataStruc);
-    await fetch('/createTraitement/fnc',
+    await fetch(ConfigUrl.basePath+'/createTraitement/fnc',
       {
         method: 'POST',
         headers:
@@ -834,7 +834,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
     this.setState({ dataStruc: [] })
   }
   async componentDidMount() {
-    await fetch("/consult/fnc",
+    await fetch(ConfigUrl.basePath+"/consult/fnc",
       {
         method: 'POST',
         headers:
