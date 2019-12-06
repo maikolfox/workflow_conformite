@@ -26,7 +26,7 @@ const ActeurTraitant = ({ match }) =>
 (
     <React.Fragment>
         <NavBarMain />
-         <SideBar match={match} menuItem={menuObjet}></SideBar>
+         <SideBar match={match} menuItem={menuObjet} menuName="Menu Acteur traitant"></SideBar>
          <SwitchRoute basePath="ActeurTraitant" menuItem={menuObjet} ></SwitchRoute>
 
     </React.Fragment>

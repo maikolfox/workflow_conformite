@@ -22,7 +22,8 @@ export default function SideBar(props) {
         <SideBarItem match={props.match} menuItem={item} />
     ))
     return (
-        <div class="sidenav">
+        <div className="sidenav">
+            <div className="title">{props.menuName}</div>
             {Menu}
         </div>
 

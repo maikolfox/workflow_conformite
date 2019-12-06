@@ -83,7 +83,7 @@ const menuObjetSwitchRoute=
 const Organisation = ({ match }) => (
     <React.Fragment>
     <NavBarMain/>
-        <SideBar match={match} menuItem={menuObjet}></SideBar>
+        <SideBar match={match} menuItem={menuObjet} menuName="Menu Organisation"></SideBar>
         <SwitchRoute basePath="Organisation" menuItem={menuObjetSwitchRoute}></SwitchRoute>
     </React.Fragment>
 );

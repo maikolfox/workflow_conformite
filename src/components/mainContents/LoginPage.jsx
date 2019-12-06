@@ -74,7 +74,7 @@ export default class LoginPage extends React.Component {
                 <Row style={styled}>
                     <Col className="boxImage" style={{backgroundImage: `url('./image/background.jpg')` ,backgroundSize: "100% 100%"}} md={8} sm={12}>
                      
-                      <Row><Col md={12} sm={12} style={{color:"white", fontSize:"2.5em", marginLeft:"0%",marginTop:"290px"}}>
+                      <Row><Col md={12} sm={12} style={{color:"white", fontSize:"2.5em", marginLeft:"20%",marginTop:"290px"}}>
                         <strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong></Col></Row> 
                     {/* <img src="./image/background.jpg" alt="Accueil"  height="100%" width="100%" /> */}
                     </Col>

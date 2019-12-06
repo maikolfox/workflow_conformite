@@ -42,7 +42,7 @@ const menuObjetSwitch=
 const ResponsableTraitement = ({ match }) => (
     <React.Fragment>
         <NavBarMain/>
-        <SideBar match={match} menuItem={menuObjet}></SideBar>
+        <SideBar match={match} menuItem={menuObjet} menuName="Menu Responsable de traitement"></SideBar>
          <SwitchRoute basePath="ResponsableTraitement" menuItem={menuObjetSwitch} ></SwitchRoute>
     </React.Fragment>
 );
