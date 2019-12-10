@@ -202,7 +202,7 @@ var dateFin=date.getFullYear()+'-'+date.getMonth()+'-'+lastDay
 const current_date = new Date()
         return(
             <Card className='cardbodyStyle'>
-                <CardHeader >Accueil Organisation</CardHeader>
+                <CardHeader >Accueil DGRC</CardHeader>
                 <CardBody>
                     <Row style={{ paddingLeft: "2%", marginRight: "10%", overflow: "hidden" }}>
                         <Col lg={{ size: "3" }} style={{ backgroundColor: "#17a2b8", height: "auto" }}>

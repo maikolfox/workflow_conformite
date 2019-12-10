@@ -202,18 +202,20 @@ var dateFin=date.getFullYear()+'-'+date.getMonth()+'-'+lastDay
 const current_date = new Date()
         return(
             <Card className='cardbodyStyle'>
-                <CardHeader >Accueil Organisation</CardHeader>
+                <CardHeader >Accueil Responsable de traitment</CardHeader>
                 <CardBody>
                     <Row style={{ paddingLeft: "2%", marginRight: "10%", overflow: "hidden" }}>
                         <Col lg={{ size: "3" }} style={{ backgroundColor: "#17a2b8", height: "auto" }}>
-                            <h2>Nombre Fnc reçue {stars}</h2>
+                            <h2>Nombre Fnc reçue{stars}</h2>
+                            <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             <p style={style_}>{this.state.fncRecu}</p>
                         </Col>
                         <Col lg={{ size: "3", offset: "1" }} style={{ backgroundColor: "#28a745" }}>
-                            <h2>Nombre Fnc traitée{stars} </h2>
+                            <h2>Nombre Fnc traitée{stars} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h2>
                             <p style={style_}>{this.state.fncTraite}</p></Col>
                         <Col lg={{ size: "3", offset: "1" }} style={{ backgroundColor: "#FFB31B" }}>
-                            <h2>Nombre Fnc non traitée{stars}</h2>
+                            <h2>Nombre Fnc non traitée{stars} </h2>
+                            <p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
                             <p style={style_}>{this.state.fncNonTraite}</p>
                         </Col>
                     </Row>
