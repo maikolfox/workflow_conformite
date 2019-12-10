@@ -4,7 +4,7 @@ import DemarrerAnalyse from '../subMainContent/_ResponsableTraitement/DemarrerAn
 import NavBarMain from '../../assets/NavbarMain';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
 //import ReceptionAction from '../subMainContent/_ResponsableTraitement/ReceptionAction';
-const Accueil=()=>(<h1>hello</h1>)
+import Accueil from './Accueil';
 
 const menuObjet=
 [

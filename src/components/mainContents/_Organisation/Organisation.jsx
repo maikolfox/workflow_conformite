@@ -6,15 +6,14 @@ import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere
 import EtatsNonConformite from '../subMainContent/_Organisation/EtatNonConformite';
 import NavBarMain from '../../assets/NavbarMain';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
+import Accueil from './Accueil';
 
-
-const Acceuil=()=><h1>Acceuil</h1>
 const menuObjet=
 [
     {
         url:'Accueil',
         libelle:"Accueil",
-        component:Acceuil
+        component:Accueil
     },
     {
         url:'routage_incorrect',
@@ -47,7 +46,7 @@ const menuObjetSwitchRoute=
     {
         url:'Accueil',
         libelle:"Accueil",
-        component:Acceuil
+        component:Accueil
     },
     {
         url:'routage_incorrect',

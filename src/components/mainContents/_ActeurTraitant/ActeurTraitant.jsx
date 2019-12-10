@@ -2,12 +2,12 @@ import React from 'react';
 import NavBarMain from '../../assets/NavbarMain';
 import ConsultationActAff from '../../mainContents/subMainContent/_ActeurTraitant/ConsultationActAff';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
+import Accueil from './Accueil';
 
 // import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
 // import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
 // import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere';
 
-const Accueil=()=>(<div>hello</div>)
 
 const menuObjet=
 [

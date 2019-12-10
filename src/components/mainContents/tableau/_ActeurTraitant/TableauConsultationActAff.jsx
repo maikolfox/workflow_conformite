@@ -544,11 +544,11 @@ export default class ConsultationActAff extends React.Component {
   onChangeHandler = event => 
   {
     event.preventDefault()
-    console.log(event.target.files)
-    this.setState({
-      selectedFile: event.target.files,
-      loaded: 0,
-    })
+    // console.log(event.target.files)
+    // this.setState({
+    //   selectedFile: event.target.files,
+    //   loaded: 0,
+    // })
     var update=[];
     var fileObjRet =event.target.files
     for (var i = 0; i < fileObjRet.length; i++) 
