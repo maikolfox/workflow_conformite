@@ -31,14 +31,14 @@ var date = new Date();
 var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
 var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
 
-var dateDeb=date.getFullYear()+'-'+date.getMonth()+'-'+firstDay
-var dateFin=date.getFullYear()+'-'+date.getMonth()+'-'+lastDay
+
+var month=parseInt( date.getMonth() )+1;
+month=month.toString();
+console.log("----------->",month)
+var dateDeb=date.getFullYear()+'-'+month+'-'+firstDay
+var dateFin=date.getFullYear()+'-'+month+'-'+lastDay
 
    
-
-
-    
-
          const response = await fetch(ConfigUrl.basePath+'/statistisquefncRecueGlobale/fnc',
       {
         method: 'POST',
@@ -78,12 +78,16 @@ var dateFin=date.getFullYear()+'-'+date.getMonth()+'-'+lastDay
 async getStatsGlobale()
 {
 
-var date = new Date();
-var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
-var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-
-var dateDeb=date.getFullYear()+'-'+date.getMonth()+'-'+firstDay
-var dateFin=date.getFullYear()+'-'+date.getMonth()+'-'+lastDay
+  var date = new Date();
+  var firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
+  var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  
+  
+  var month=parseInt( date.getMonth() )+1;
+  month=month.toString();
+  console.log("----------->",month)
+  var dateDeb=date.getFullYear()+'-'+month+'-'+firstDay
+  var dateFin=date.getFullYear()+'-'+month+'-'+lastDay
 
    
 

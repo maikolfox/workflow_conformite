@@ -268,7 +268,7 @@ export default class ConsultationActAff extends React.Component {
           //   responseToPost: prevState.responseToPost.filter(item => {
           //     return item.idFnc !== this.state.idFnc && item.libelleAt !== this.state.libelle;
           //   })
-          // }))
+          ////}))
           this.loadActionAffecte()
           console.log(this.state.selected);
           this.setState({
@@ -401,8 +401,9 @@ export default class ConsultationActAff extends React.Component {
   toggleResultModal() {
     this.setState(prevState => ({
       ResultModal: !prevState.ResultModal,
-      selectedAnalyse: !prevState.selectedAnalyse
-
+      selectedAnalyse: !prevState.selectedAnalyse,
+      text: '',
+      textIsSet: false
     }));
     
   }
@@ -502,7 +503,7 @@ export default class ConsultationActAff extends React.Component {
           ||this.state.fileArray[x].fileObj.type=== "application/vnd.ms-excel"
           ||this.state.fileArray[x].fileObj.type===  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           )
-          {dataFile.append('file', this.state.fileArray.fileObj)}
+          {dataFile.append('file', this.state.fileArray[x].fileObj)}
         }
     }
     dataFile.append('idAt', this.state.id)
@@ -536,6 +537,7 @@ export default class ConsultationActAff extends React.Component {
         }).finally(()=>{
           this.toggleNested();
           this.toggle();
+          this.toggleResultModal()
           this.loadActionAffecte();
         })
   }
