@@ -4,6 +4,7 @@ import {  Row, Col ,Container,Card,CardBody,CardHeader
 import MonthFormat from '../../assets/MonthFormat';
 // import LineChart from '../../assets/'
 import ConfigUrl from '../../assets/ConfigUrl'
+import LineChart from '../../mainContents/chartAsset/LineChart.jsx';
 
 export default class Accueil extends React.Component 
 {
@@ -104,7 +105,7 @@ async getStatsGlobale()
         body: JSON.stringify(
           {
             data: {
-              "dateDeb": dateDeb,
+              "dateDeb": date.getFullYear()+'-01'+'-01',
               "dateFin": dateFin
             }
           }),
@@ -222,7 +223,11 @@ const current_date = new Date()
                         </Col>
                     </Row>
                     <Col>{stars}Statistique globale pour le mois de  {MonthFormat(current_date.getMonth())} </Col>
-
+                    <Row>
+                        <Col lg={{ size: "8", offset: "1" }}>
+                        <LineChart />
+                        </Col>
+                    </Row>
                 </CardBody>
             </Card>
         )

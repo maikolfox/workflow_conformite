@@ -4,10 +4,6 @@ import ConsultationActAff from '../../mainContents/subMainContent/_ActeurTraitan
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
 import Accueil from './Accueil';
 
-// import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
-// import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
-// import EvaluationCritere from '../subMainContent/_Organisation/EvaluationCritere';
-
 
 const menuObjet=
 [
@@ -28,7 +24,6 @@ const ActeurTraitant = ({ match }) =>
         <NavBarMain />
          <SideBar match={match} menuItem={menuObjet} menuName="Menu Acteur traitant"></SideBar>
          <SwitchRoute basePath="ActeurTraitant" menuItem={menuObjet} ></SwitchRoute>
-
     </React.Fragment>
 );
 
