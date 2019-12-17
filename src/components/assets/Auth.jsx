@@ -1,11 +1,6 @@
 import base64 from 'react-native-base64';
 import React from 'react'
-import {
-    Route,
-    BrowserRouter as Router,
-    Switch, 
-    Redirect,
-  } from 'react-router-dom';
+
 //   function canAccessToThisPage(profil,tabProfile){
 //     var correctProf=false;
 //     if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)

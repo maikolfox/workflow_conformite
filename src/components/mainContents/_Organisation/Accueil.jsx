@@ -4,23 +4,59 @@ import {  Row, Col ,Container,Card,CardBody,CardHeader
 import MonthFormat from '../../assets/MonthFormat';
 // import LineChart from '../../assets/'
 import ConfigUrl from '../../assets/ConfigUrl'
-import LineChart from '../../mainContents/chartAsset/LineChart.jsx';
+import PushLeft  from "../subMainContent/subMainStyle";
+import { Bar } from 'react-chartjs-2';
+
+
+const datasProps = {
+  labels: [],
+  datasets: [
+    {
+      data: []
+    }
+  ]
+};
+
+const date_ = new Date();
+const lib='FNC reçue par mois ('+ date_.getFullYear()+')'
+
+const chartDataUiParam = {
+
+  label: lib,
+  fill: false,
+  lineTension: 0.1,
+  backgroundColor: 'rgba(23, 162, 184, 0.75)',
+  borderColor: '#17a2b8',
+  borderCapStyle: 'butt',
+  borderDash: [],
+  borderDashOffset: 0.0,
+  borderJoinStyle: 'miter',
+  pointBorderColor: 'rgba(75,192,192,1)',
+  pointBackgroundColor: '#fff',
+  pointBorderWidth: 1,
+  pointHoverRadius: 5,
+  pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+  pointHoverBorderColor: 'rgba(220,220,220,1)',
+  pointHoverBorderWidth: 2,
+  pointRadius: 1,
+  pointHitRadius: 10,
+}
 
 export default class Accueil extends React.Component 
 {
 
+  
 constructor(props)
 {
     super(props);
     // this.getGlobaleRecu=this.getGlobaleRecu.bind(this)
     this.getStatsGlobale=this.getStatsGlobale.bind(this)
-
-    
     this.state={
-
         fncRecu:"Chargement en cours...",
         fncTraite:"Chargement en cours...",
-        fncNonTraite:"Chargement en cours..."
+        fncNonTraite:"Chargement en cours...",
+        dataToSend: []
+
     }
 
 }
@@ -60,6 +96,8 @@ var dateFin=date.getFullYear()+'-'+month+'-'+lastDay
            this.setState({
              fncRecu: result.data.response
            });
+           
+
         console.log(result)        
         },
         (error) => {
@@ -115,7 +153,18 @@ async getStatsGlobale()
            this.setState({
              fncRecu: result.data.response
            });
-        console.log(result)        
+        console.log(result) 
+        console.log("result data login--->",result.data.datas);
+           var dataPropsUpdate =
+           {
+             ...datasProps,
+             labels: result.data.libelle,
+             datasets: [{
+               ...chartDataUiParam,
+               data:result.data.datas
+             }]
+           };
+           this.setState({ dataToSend: dataPropsUpdate });       
         },
         (error) => {
           console.log("124", error.message);
@@ -206,7 +255,7 @@ async getStatsGlobale()
 
 const current_date = new Date()
         return(
-            <Card className='cardbodyStyle'>
+            <Card style={PushLeft}>
                 <CardHeader >Accueil Organisation</CardHeader>
                 <CardBody>
                     <Row style={{ paddingLeft: "2%", marginRight: "10%", overflow: "hidden" }}>
@@ -224,8 +273,9 @@ const current_date = new Date()
                     </Row>
                     <Col>{stars}Statistique globale pour le mois de  {MonthFormat(current_date.getMonth())} </Col>
                     <Row>
-                        <Col lg={{ size: "8", offset: "1" }}>
-                        <LineChart />
+                        <Col stlyle={{position:""}} lg={{ size: "10"}}>
+                        <Bar ef="chart" width={20}
+                         height={8} data={this.state.dataToSend} />
                         </Col>
                     </Row>
                 </CardBody>

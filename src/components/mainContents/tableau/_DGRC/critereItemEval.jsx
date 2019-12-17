@@ -4,7 +4,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MediaAsset  from '../../../assets/MediaAsset'
 import Loader from "../../../assets/Loader";
-
+import ConfigUrl from "../../../assets/ConfigUrl"
 import DateFormatTransform from "../../../assets/dateFormatTransform";
 import {
 
@@ -47,7 +47,7 @@ const evalCritere = [
   
     handleSubmit = async e=>{
       e.preventDefault();
-         await fetch('/update_resultatTraitement/fnc',
+         await fetch(ConfigUrl.basePath+'/update_resultatTraitement/fnc',
           {
             method: 'POST',
             headers:

@@ -1,20 +1,9 @@
-import React,{Suspense}  from 'react';
-import {
-    Col, Row, 
-    //Container, Jumbotron, 
-    ListGroup, ListGroupItem,
-    //NavLink //Button, Nav, Input, Form, Modal 
-} from 'reactstrap';
+import React  from 'react';
+
 import '../../css/main.css';
 //import PanelWorkFlow from './PanelWorkFlow';
-import {
-    Route,
-   // BrowserRouter as Router,
-    NavLink, 
-    Link,
-    Switch, 
-  //  Redirect
-} from 'react-router-dom';
+
+
 // import Statistique from '../../mainContents/subMainContent/_DGRC/StatistiqueWorkflow';
 import CreationCritereEvaluation from '../subMainContent/_DGRC/CreationCritereEfficacite';
 import EvaluationCritere from '../subMainContent/_DGRC/EvaluationCritere';
@@ -22,13 +11,15 @@ import EvaluationCritere from '../subMainContent/_DGRC/EvaluationCritere';
 import NavBarMain from '../../assets/NavbarMain';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
 
-const Acceuil=()=><h1>Acceuil</h1>
+import Accueil from './Accueil';
+
+
 const menuObjet=
 [
     {
         url:'Accueil',
         libelle:"Accueil",
-        component:Acceuil
+        component:Accueil
     },
     // {
     //     url:'routage_incorrect',
@@ -60,12 +51,9 @@ const menuObjet=
 const Dgrc = ({ match }) => (
     <React.Fragment>
     <NavBarMain/>
-        <SideBar match={match} menuItem={menuObjet}></SideBar>
+        <SideBar match={match} menuItem={menuObjet} menuName="Menu DGRC"></SideBar>
          <SwitchRoute basePath="DGRC" menuItem={menuObjet} ></SwitchRoute>
     </React.Fragment>
-
-
-
 );
 
 

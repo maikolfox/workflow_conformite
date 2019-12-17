@@ -3,17 +3,13 @@ import { CardBody, Card, CardHeader,
 //  Row, Col 
 } from "reactstrap";
 import Tableau from '../../tableau/_Organisation/TableauEvaluationCritere'
-
-var pushLeft={
-
-  marginLeft:'30px'
+import PushLeft ,{BoxingCart} from "../subMainStyle";
 
 
-}
 
 
     const EvaluationCritere =({ match})  => (      
-    <Card style={pushLeft}>
+    <Card style={PushLeft}>
         <CardHeader>Evaluation des critères d'efficacité</CardHeader>
         <CardBody>
                 <Tableau match={match} ></Tableau>

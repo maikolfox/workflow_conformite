@@ -4,6 +4,7 @@ import {  Row, Col ,Container,Card,CardBody,CardHeader
 import MonthFormat from '../../assets/MonthFormat';
 // import LineChart from '../../assets/'
 import ConfigUrl from '../../assets/ConfigUrl'
+import PushLeft  from "../subMainContent/subMainStyle";
 
 export default class Accueil extends React.Component 
 {
@@ -198,10 +199,9 @@ var dateFin=date.getFullYear()+'-'+date.getMonth()+'-'+lastDay
         const stars=<span style={{color:"#d9541e", display:"inline"}}>*</span>
         const style_={color:"white",fontSize:"2em" , textShadow: "1px 1px 1px #333" }
 
-
 const current_date = new Date()
         return(
-            <Card className='cardbodyStyle'>
+            <Card style={PushLeft}>
                 <CardHeader >Accueil DGRC</CardHeader>
                 <CardBody>
                     <Row style={{ paddingLeft: "2%", marginRight: "10%", overflow: "hidden" }}>

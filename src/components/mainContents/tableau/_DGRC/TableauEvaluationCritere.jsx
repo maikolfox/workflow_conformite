@@ -33,6 +33,7 @@ import Source from '../../../assets/Source';
 import Processus from '../../../assets/Processus';
 import Famille from '../../../assets/FamilleProcessus';
 import Auth from '../../../assets/Auth';
+import ConfigUrl from "../../../assets/ConfigUrl";
 
 //import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
 //import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -158,7 +159,7 @@ export default class TableauEvaluationCritere extends React.Component {
 
     get_critere_traitement_byIdfnc = async e => {
         this.setState({ isLoaded: false })
-        await fetch('/criter_EvalTraitementByidFnc/fnc',
+        await fetch(ConfigUrl.basePath+'/criter_EvalTraitementByidFnc/fnc',
             {
                 method: 'POST',
                 headers:
@@ -203,7 +204,7 @@ export default class TableauEvaluationCritere extends React.Component {
 
         })
         this.setState({ isLoaded: false })
-        await fetch('/clotureFnc_evaluation/fnc',
+        await fetch(ConfigUrl.basePath+'/clotureFnc_evaluation/fnc',
             {
                 method: 'POST',
                 headers:
@@ -308,7 +309,7 @@ export default class TableauEvaluationCritere extends React.Component {
     }
 
     async getResultat_traitement() {
-        await fetch("/get_fnc_traiter/fnc")
+        await fetch(ConfigUrl.basePath+"/get_fnc_traiter/fnc")
             .then(res => res.json())
             .then(
                 (result) => {

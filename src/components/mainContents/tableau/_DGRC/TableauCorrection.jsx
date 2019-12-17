@@ -13,6 +13,7 @@ import Loader from "../../../assets/Loader";
 import Columns from '../../../assets/ColumDetailsFnc';
 import QualificationList from "../../../assets/qualificationList";
 import Auth from "../../../assets/Auth"
+import ConfigUrl from "../../../assets/ConfigUrl"
 
 
 
@@ -91,7 +92,7 @@ export default class TableauCorrection extends React.Component {
     const libelleFamile =FamilleProcessus.find(el=>{return el.idFamille===this.state.famille}).libelleFamille;
     const libelleSource=Source.find(el=>{return el.idSource===this.state.idSource}).libelleSource;
     e.preventDefault();
-      await fetch('/correctionRoutage/fnc',
+      await fetch(ConfigUrl.basePath+'/correctionRoutage/fnc',
         {
           method: 'POST',
           headers:
@@ -172,7 +173,7 @@ export default class TableauCorrection extends React.Component {
   }
 
   async loadData(){
-    await fetch("/consultationMauvaisRoutage/fnc")
+    await fetch(ConfigUrl.basePath+"/consultationMauvaisRoutage/fnc")
     .then(res => res.json())
     .then(
       (result) => {

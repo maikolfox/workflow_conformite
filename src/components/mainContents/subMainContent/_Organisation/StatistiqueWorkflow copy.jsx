@@ -13,7 +13,8 @@ var boxingChart = {
 
 var pushLeft={
 
-  marginLeft:'30px'
+  marginLeft:'30px',
+  borderColor:"white"
 
 
 }

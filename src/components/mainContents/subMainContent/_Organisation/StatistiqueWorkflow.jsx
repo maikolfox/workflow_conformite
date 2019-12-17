@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PushLeft  from "../subMainStyle";
 
 import { FormGroup, Input, Form, Label, Col, FormText, Button, CardBody, Card, CardHeader, Row, 
   //Container 
@@ -42,7 +43,8 @@ var boxingChart3 = {
 
 var pushLeft = {
 
-  marginLeft: '30px'
+  marginLeft: '30px',
+  borderColor:"white"
 
 
 }
@@ -376,7 +378,7 @@ class Content extends Component {
       </React.Fragment>
     var response = (this.state.isLoaded) ? chartDisplay : <React.Fragment><Row><LoaderV2></LoaderV2><p style={{ textAlign: "center", marginBottom: "0px", marginTop: "40px" }}>Chargement en cours...</p></Row></React.Fragment>
     return (
-      <Card style={pushLeft}>
+      <Card style={PushLeft}>
         <CardHeader>Statistique Workflow</CardHeader>
         <CardBody>
           <Row>

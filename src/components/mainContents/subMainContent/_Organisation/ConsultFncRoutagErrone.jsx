@@ -2,17 +2,13 @@ import React, { Component } from 'react';
 import { CardBody, Card, CardHeader,// Row, Col 
 } from "reactstrap";
 import Tableau from '../../tableau/_Organisation/TableauCorrection'
+import PushLeft  from "../subMainStyle";
 
 
-var pushLeft={
 
-  marginLeft:'30px'
-
-
-}
 
   const ConsultFncRoutageErrone =({ match})  => ( 
-      <Card style={pushLeft}>
+      <Card style={PushLeft}>
         <CardHeader>FNC routage erroné</CardHeader>
         <CardBody>
                   <Tableau match={match} ></Tableau>

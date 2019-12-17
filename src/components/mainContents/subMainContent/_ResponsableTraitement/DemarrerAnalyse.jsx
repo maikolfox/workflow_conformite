@@ -3,6 +3,7 @@ import { CardBody, Card, CardHeader,
 //  Row, Col 
 } from "reactstrap";
 import Tableau from '../../tableau/_ResponsableTraitement/TableauDemarrageAnalyse';
+import PushLeft  from "../subMainStyle";
 
 
 var pushLeft={
@@ -12,7 +13,7 @@ var pushLeft={
 
 }
 const DemarrerAnalyse =({ match})  => (
-   <Card style={pushLeft}>
+   <Card style={PushLeft}>
         <CardHeader>Demarrer une analyse </CardHeader>
         <CardBody>
                     <Tableau match={match}></Tableau>

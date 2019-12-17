@@ -4,17 +4,13 @@ import { CardBody, Card, CardHeader,
 } from "reactstrap";
 import Tableau from '../../tableau/_DGRC/TableauEvaluationCritere'
 
-var pushLeft={
+import PushLeft  from "../subMainStyle";
 
-  marginLeft:'30px'
-
-
-}
 class EvaluationCritereDGRC extends Component {
 
   render() {
     return (
-      <Card style={pushLeft}>
+      <Card style={PushLeft}>
         <CardHeader>Evaluation des critères d'efficacité</CardHeader>
         <CardBody>
                 <Tableau></Tableau>
