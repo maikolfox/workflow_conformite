@@ -29,7 +29,7 @@ import {
  import {
   Col,
   Container,
-  Row
+  Row,Jumbotron
   // CardHeader, // CardBody, // Card
   }
     from "reactstrap";
@@ -157,7 +157,10 @@ const NoMatchPage = () => { return (
 class Routing extends React.Component {
    render(){    
        return( 
+         <Jumbotron>
+   
        <Router basename={'/workflow-gestion-fnc'}>
+
             <Switch>
               <Route exact path="/" render={() => 
               (
@@ -177,8 +180,10 @@ class Routing extends React.Component {
               <Deconnexion path="/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
-            
-      </Router>)
+
+      </Router>
+      </Jumbotron>
+)
     
    }
 

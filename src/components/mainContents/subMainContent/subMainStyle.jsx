@@ -3,7 +3,7 @@ const PushLeft={
     marginLeft:"30px",
     borderColor:"white",
     boxShadow: "2px 3px 3px #9E9E9E",
-    marginBottom:"2%"
+    paddingBottom:"2%"
 }
 
 export default PushLeft;
