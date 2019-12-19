@@ -157,8 +157,8 @@ const NoMatchPage = () => { return (
 class Routing extends React.Component {
    render(){    
        return( 
-         <Jumbotron>
-   
+      
+
        <Router basename={'/workflow-gestion-fnc'}>
 
             <Switch>
@@ -180,9 +180,7 @@ class Routing extends React.Component {
               <Deconnexion path="/deconnexion"  component={LoginPage}/>
               <Route component={NoMatchPage} />
             </Switch>
-
       </Router>
-      </Jumbotron>
 )
     
    }
