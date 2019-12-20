@@ -28,7 +28,7 @@ componentDidMount()
     return (
       <Navbar fixed={"top"} className='headerStyle' light expand="md" >
         <NavbarBrand href="/workflow-gestion-fnc/home">
-          <img src="./image/logoBridgeBank.png" alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
+          <img src={window.location.origin+"/workflow-gestion-fnc/image/logoBridgeBank.png"} alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>
         {/* <h6 id="navBarText">Workflow FNC</h6> */}
         <Nav className="ml-auto" navbar>
