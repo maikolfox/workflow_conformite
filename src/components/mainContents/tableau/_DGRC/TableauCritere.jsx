@@ -311,7 +311,7 @@ export default class TableauCritere extends React.Component {
         item.echeance = this.state.echeance;
         item.cause = this.state.cause;
         //TODO RECUPERER LA VALEUR DANS LA SESSION
-        item.idActeurDelegataire = 'ahoueromeo@gmail.com';
+        item.idActeurDelegataire =Auth.getUsername();
         item.idActeur = this.state.idActeur;
         item.libelleAnalyse = itemId;
       };
@@ -949,7 +949,7 @@ export default class TableauCritere extends React.Component {
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="1" maxStep={3} step={1}>
-                      <Button disabled={!(this.state.idActeurIsSet && this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)} color="danger" onClick={e => {
+                      <Button  color="danger" onClick={e => {
                         e.preventDefault();
                         this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
                       }}>Valider la modification</Button>

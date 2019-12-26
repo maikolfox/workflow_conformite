@@ -15,7 +15,7 @@ const menuObjet=
     },
     {
         url:'demarrer_analyse',
-        libelle:'Demarrer une analyse',
+        libelle:"Créer un plan d'action",
         component:DemarrerAnalyse
     },
   
@@ -30,12 +30,12 @@ const menuObjetSwitch=
     },
     {
         url:'demarrer_analyse',
-        libelle:'Demarrer une analyse',
+        libelle:"Créer un plan d'action",
         component:DemarrerAnalyse
     },
     {
         url:'demarrer_analyse/:idFnc',
-        libelle:'Demarrer une analyse',
+        libelle:"Créer un plan d'action",
         component:DemarrerAnalyse
     },
 ]

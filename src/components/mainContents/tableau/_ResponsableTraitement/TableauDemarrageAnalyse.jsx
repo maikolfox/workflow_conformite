@@ -958,7 +958,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
             backdrop="static"
           >             
           <TabSwitcher>
-            <ModalHeader toggle={this.toggle}>Demarrage de l'analyse</ModalHeader>
+            <ModalHeader toggle={this.toggle}>Créer le plan d'action</ModalHeader>
             <ModalBody>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE-VALIDATION ROUTAGE*/}
                 <TabPanel whenActive={1}>

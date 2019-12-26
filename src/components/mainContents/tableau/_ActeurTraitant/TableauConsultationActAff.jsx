@@ -216,31 +216,6 @@ export default class ConsultationActAff extends React.Component {
 
   }
 
-  //  to suppress 
-  //  createAnalyse = event => {
-  //  event.preventDefault();
-  //  const newItem = {
-  //  idFnc: this.state.idFnc,
-  //  processus: this.state.idProcessus,
-  //  actionCorrective: this.state.actionCorrective,
-  //  correction: this.state.correction,
-  //  echeance: this.state.echeance,
-  //  cause: this.state.cause,
-  //  /// TODO A RECUPERER DANS LA SESSION
-  //  idActeurDelegataire: Auth.getUsername(),
-  //  idActeur: this.state.idActeur,
-  //  libelleAt: this.state.libelle
-  //  };
-  //  this.setState(prevState => ({
-  //    dataStruc: prevState.dataStruc.concat(newItem),
-  //    libelle: prevState.libelle + 1
-  //  }));
-  //  console.log(this.state.dataStruc);
-  // };
-
-
-  
-
   handleSubmit = async e => {
     e.preventDefault();
 
@@ -257,18 +232,12 @@ export default class ConsultationActAff extends React.Component {
           "idAt": this.state.id,
           "idFnc": this.state.idFnc,
           "resultat": this.state.text,
-          //TODO RETRIEVE THIS  VALUE FROM SESSION
           "idActeur": Auth.getUsername()
         })
       }).then(res => res.json())
       .then(
         (result) => {
 
-          // this.setState(prevState => ({
-          //   responseToPost: prevState.responseToPost.filter(item => {
-          //     return item.idFnc !== this.state.idFnc && item.libelleAt !== this.state.libelle;
-          //   })
-          ////}))
           this.loadActionAffecte()
           console.log(this.state.selected);
           this.setState({
@@ -293,62 +262,6 @@ export default class ConsultationActAff extends React.Component {
 
   }
 
-
-  // handleModifyAnalyse = itemId => {
-  //   const updatedItems = this.state.dataStruc.map(item => {
-  //     if (itemId === item.libelleAnalyse) {
-  //       this.setState({
-  //         cause: item.cause,
-  //         correction: item.correction,
-  //         echeance: item.echeance,
-  //         acteurTraitant: null,
-  //         idActeur: null,
-  //         libelleAnalyse: item.libelleAt,
-  //         actionCorrective: item.actionCorrective
-  //       })
-  //       console.log(item.cause);
-  //     }
-  //     return item;
-  //   });
-
-  //   this.setState({
-  //     dataStruc: [].concat(updatedItems),
-  //     selectedAnalyseIndex: null,
-  //     selectedActeur: null
-  //   });
-  // };
-
-  // handleValidModifyAnalyse = itemId => {
-  //   const updatedItems = this.state.dataStruc.map(item => {
-  //     if (itemId === item.libelleAt) {
-
-  //       this.setState({
-  //         cause: item.cause,
-  //         correction: item.correction,
-  //         echeance: item.echeance,
-  //         acteurTraitant: null,
-  //         idActeur: null,
-  //         libelleAnalyse: item.libelleAt,
-  //         actionCorrective: item.actionCorrective
-  //       })
-  //       console.log(item.cause);
-  //       item.idFnc = this.state.idFnc;
-  //       item.processus = this.state.idProcessus;
-  //       item.actionCorrective = this.state.actionCorrective;
-  //       item.correction = this.state.correction;
-  //       item.echeance = this.state.echeance;
-  //       item.cause = this.state.cause;
-  //       //TODO RECUPERER LA VALEUR DANS LA SESSION
-  //       item.idActeurDelegataire = Auth.getUsername();
-  //       item.idActeur = this.state.idActeur;
-  //       item.libelleAnalyse = itemId;
-  //     };
-  //     return item;
-  //   });
-  //   this.setState(prevState => ({
-  //     dataStruc: prevState.dataStruc.map(el => (el.libelleAt !== updatedItems.libelleAt ? { ...el } : updatedItems))
-  //   }));
-  // }
 
   getUnique(arr, comp) {
     const unique = arr
@@ -424,7 +337,6 @@ export default class ConsultationActAff extends React.Component {
         body: JSON.stringify({
           "data":
           {
-            /*TODO A RECUPERER DANS LA SESSION*/
             "idResponsable": Auth.getUsername(),
             "idProfil": Auth.getProfileTab()
           }
@@ -575,7 +487,6 @@ export default class ConsultationActAff extends React.Component {
     })
     //I DONT KNOW WHY //
     console.log("file array------->",this.state.fileArray)
-  
   
   }
 
@@ -760,14 +671,6 @@ export default class ConsultationActAff extends React.Component {
                     </FormGroup>
                   </Form >
                 </TabPanel>
-
-
-
-                {/* Cette section permet de positionner 
-                    les bouttons "suivant" et "precedent" 
-                    et de les  masquer au besoin 
-                */}
-
                 {/*RECAPITULATIF FNC BUTTON*/}
                 <Row noGutters="true" >
                   <TabPanel whenActive={1}>

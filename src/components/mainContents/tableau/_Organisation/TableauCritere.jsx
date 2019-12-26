@@ -313,7 +313,7 @@ export default class TableauCritere extends React.Component {
         item.echeance = this.state.echeance;
         item.cause = this.state.cause;
         //TODO RECUPERER LA VALEUR DANS LA SESSION
-        item.idActeurDelegataire = Auth.getUsername();
+        //item.idActeurDelegataire = Auth.getUsername();
         item.idActeur = this.state.idActeur;
         item.libelleAnalyse = itemId;
       };
@@ -341,7 +341,7 @@ export default class TableauCritere extends React.Component {
             "echeances": this.state.echeance,
             "echeances2":this.state.echeanceActionCorrective,
             //TODO REPLACE LATER
-            "idActeurDelegataire": "maikol.ahoue@bridgebankgroup.com"
+            //"idActeurDelegataire": "maikol.ahoue@bridgebankgroup.com"
           }
         })
       }).then(res => res.json())
@@ -771,7 +771,7 @@ export default class TableauCritere extends React.Component {
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
           >
-            <ModalHeader toggle={this.toggle}>Consultation des analyses / Creation de critères </ModalHeader>
+            <ModalHeader toggle={this.toggle}>Consultation des analyses / Creation de critères 1</ModalHeader>
             <ModalBody>
               <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
@@ -889,7 +889,7 @@ export default class TableauCritere extends React.Component {
                       {/*Correction*/}
                       <Label for="exampleEmail" md={12}>Correction</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
+                        <Input valid={this.state.correctionIsSet} 
                           type="textarea"
                           id="selectAgence"
                           name="selectbasic"
@@ -908,7 +908,7 @@ export default class TableauCritere extends React.Component {
                       {/*Cause*/}
                       <Label for="exampleEmail" md={12}>Cause</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
+                        <Input valid={this.state.causeIsSet} 
                           type="textarea"
                           id="selectAgence"
                           name="selectbasic"
@@ -927,7 +927,7 @@ export default class TableauCritere extends React.Component {
                       {/*Actions correctives*/}
                       <Label for="exampleEmail" md={12}>Actions correctives</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
+                        <Input valid={this.state.actionCorrectiveIsSet} 
                           type="textarea"
                           id="selectAgence"
                           name="selectbasic"
@@ -946,7 +946,7 @@ export default class TableauCritere extends React.Component {
                       {/*Echéances*/}
                       <Label for="exampleEmail" md={12}>Echéances</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
+                        <Input valid={this.state.echeanceIsSet} 
                           type="date"
                           id="selectAgence"
                           min={this.currentDate()}
@@ -979,7 +979,10 @@ export default class TableauCritere extends React.Component {
                     </Tab>
                     <Col md="8" ></Col>
                     <Tab id="1" maxStep={3} step={1}>
-                      <Button disabled={!(this.state.idActeurIsSet && this.state.actionCorrective && this.state.correctionIsSet && this.state.causeIsSet && this.state.echeanceIsSet)} color="danger" onClick={e => {
+                      <Button  
+                        color="danger" 
+                        disabled={!(this.state.idActeurIsSet)}
+                        onClick={e => {
                         e.preventDefault();
                         this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
                       }}>Valider la modification</Button>

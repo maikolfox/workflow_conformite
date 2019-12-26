@@ -83,7 +83,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 selectedAnaCre: null,
                 collapse: false,
                 collapseDetail: false,
-
+                fileArray:[],
                 criterObject: [],
                 critere: "",
                 echeanceCritere: "",
@@ -390,17 +390,18 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                                         <option value="" default > </option>
                                         <option value="Efficace" >Efficace</option>
                                         <option value="Inefficace" >Inefficace</option>
+                                    </Input>                        
+                                    <Row>&nbsp;</Row>
+                                    <Label>Preuve</Label>
+                                    <Input type="input" onChange={e=>{  this.setState({preuve:e.target.value}) }}>
+                                       
                                     </Input>
                                     <Row>&nbsp;</Row>
-                                    <Label>Niveau de satisfaction</Label>
-                                    <Input type="select" onChange={e=>{  this.setState({niveauSatisfaction:e.target.value}) }}>
-                                        <option value="" default > </option>
-                                       {optionEvaluation}
-                                    </Input> <Row>&nbsp;</Row>
-                                    <Label>Preuve efficacité </Label>
-                                    <Input value={this.state.preuve} onChange={e=>{
-                                        this.setState({preuve:e.target.value})
-                                    }} type="textarea"></Input>
+                                    <Label>Pièce jointe</Label>
+                                    <Row>&nbsp;</Row>
+
+                                    <input type="file" accept="application/pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="file" multiple onChange={this.onChangeHandler} />
+
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>

@@ -105,7 +105,6 @@ export default class TableauCorrection extends React.Component {
                 "idFnc":this.state.idFnc ,
                 "idProcessus":this.state.idProcessus,
                 "idSource":this.state.idSource,
-                //TODO REMPLACE PAR LE SESSION ID
                 "idActeur": Auth.getUsername(),
                 "descriptionFNC":this.state.descriptionFnc,
                 "qualification":this.state.qualification,

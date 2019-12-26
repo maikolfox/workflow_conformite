@@ -35,8 +35,7 @@ import Famille from '../../../assets/FamilleProcessus';
 import Auth from '../../../assets/Auth';
 import ConfigUrl from "../../../assets/ConfigUrl";
 
-//import MediaAsset, { MediaAsset_subContent } from '../../../assets/MediaAsset'
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import CritereItemEval
 //{Details} 
 from "./critereItemEval";
@@ -121,7 +120,7 @@ export default class TableauEvaluationCritere extends React.Component {
                 unAutorize: false,
                 resultatTraitement: "",
                 libelleAnalyse: "",
-            
+                fileArray:[],
                 responseToEval:"",
                 idInitiateur:""
         }
@@ -136,6 +135,42 @@ export default class TableauEvaluationCritere extends React.Component {
         this.get_critere_traitement_byIdfnc = this.get_critere_traitement_byIdfnc.bind(this);
         this.handleSubmit_evaluation=this.handleSubmit_evaluation.bind(this);
     };
+
+    onChangeHandler = event => 
+    {
+      event.preventDefault()
+      // console.log(event.target.files)
+      // this.setState({
+      //   selectedFile: event.target.files,
+      //   loaded: 0,
+      // })
+      var update=[];
+      var fileObjRet =event.target.files
+      for (var i = 0; i < fileObjRet.length; i++) 
+      {
+        // on récupère le i-ème fichier
+        console.log(fileObjRet,i,fileObjRet[i].name)
+        var ObjetFile={
+          name:fileObjRet[i].name,
+          id:Date.now()+i,
+          fileObj : fileObjRet[i]
+        }
+        update.push(ObjetFile)
+      }
+  
+      this.setState(prevState => {
+        prevState.fileArray.map(elem => {
+            update.push(elem)
+        })
+        return {
+          fileArray: update
+        }
+      })
+      //I DONT KNOW WHY //
+      console.log("file array------->",this.state.fileArray)
+    
+    }
+
 
     handleEvaluation(id, value) {
         const update = this.state.criterObject.map(elem => {

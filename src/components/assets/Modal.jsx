@@ -317,10 +317,10 @@ class ModalRensFNC extends React.Component {
           toggle={this.toggleNested}
           onClosed={this.state.closeAll ? this.toggle : undefined}
           centered
-          size="sm"
-          backdrop="static"
-        >
-          <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
+          size="md"
+          backdrop={true}
+        >          
+        <ModalBody>{response}</ModalBody>
         </Modal>
       </div>
     );
