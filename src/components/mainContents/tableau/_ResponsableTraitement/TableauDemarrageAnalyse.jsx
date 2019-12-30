@@ -379,7 +379,7 @@ handleDependanceFieldCorrectionChange(todo,field)
     var aux = [];
     if (this.state.dataStruc.length !== 0) {
 
-var      updatedTodos = this.state.dataStruc.map((todo, index) => {
+    var updatedTodos = this.state.dataStruc.map((todo, index) => {
         
         console.log(id)
         if(todo.id===id){
@@ -928,7 +928,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
                   </Col>
                   </React.Fragment>
 
-    const invalidFill= this.state.dataStruc.length===0 ? "Veuillez creer une analyse avant de soummettre" : "Analyse incorrecte. Verifier tous les champs avant de soumettre"
+    const invalidFill= this.state.dataStruc.length===0 ? "Veuillez creer une analyse avant de soumettre" : "Analyse incorrecte. Verifier tous les champs avant de soumettre"
 
     ////LIBRARY//////////////////////////////////////////////
     library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle);
@@ -1002,7 +1002,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
                                   }} />{' '}Routage incorrect
                                 </span>
                                 <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="TooltipExample" toggle={this.toggleToolTips}>
-                                  <p> Cocher cette case ,appuyer ensuite sur le boutton  "Soummettre la fiche pour correction" pour envoyer la FNC à l'Organisation pour correction</p>
+                                  <p> Cocher cette case ,appuyer ensuite sur le boutton  "Soumettre la fiche pour correction" pour envoyer la FNC à l'Organisation pour correction</p>
                                 </Tooltip>
                               </Label>
                             </Col>
@@ -1056,7 +1056,7 @@ var      updatedTodos = this.state.dataStruc.map((todo, index) => {
             <ModalFooter>
               <TabPanel whenActive={2}>
               <Button color="danger" onClick={this.handleSubmit} >
-                {this.state.dataStruc.length > 1 ? "Soummettre les analyses" : "Soummettre l'analyse"}
+                {this.state.dataStruc.length > 1 ? "Soumettre les analyses" : "Soumettre l'analyse"}
               </Button>
               </TabPanel>
             

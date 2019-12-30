@@ -54,6 +54,11 @@ const menuObjetSwitchRoute=
         component:CorrectionRoutage
     },
     {
+        url:'routage_incorrect/:idFnc',
+        libelle:"Créer un plan d'action",
+        component:CorrectionRoutage
+    },
+    {
         url:'creation_critere',
         libelle:"Création des critères d'évaluation d'efficacité",
         component:CreationCritereEvaluation

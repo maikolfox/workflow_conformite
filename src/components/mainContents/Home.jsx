@@ -33,15 +33,16 @@ class Home extends Component {
                                 </ul>   
                              des fiches de non-conformités  
                             </p>
-                            </Col>
-                            <Col md="6"><img src="./image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /></Col>
-                        </Row>
-                        <Row>&nbsp;</Row>
-                        <Row >
+                            <Row>&nbsp;</Row>
+                            <Row >
                             <Col md="12">
                                 <ModalButton/>
                             </Col>
+                            </Row>
+                            </Col>
+                            <Col md="6"><img src="./image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /></Col>
                         </Row>
+                        
                     </Container>
 
                 </Jumbotron>

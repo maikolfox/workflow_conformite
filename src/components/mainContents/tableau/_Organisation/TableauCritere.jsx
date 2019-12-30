@@ -99,7 +99,7 @@ export default class TableauCritere extends React.Component {
         hasError: '',
         errorMessage: '',
         responseSubmit: '',
-
+        oneFieldChange:'',
         dataStruc: [],
         dsFncNbrAna: [],
         //selectedAnalyseIndex:null,
@@ -555,7 +555,7 @@ export default class TableauCritere extends React.Component {
 
 
     const contentConsult = <React.Fragment>
-      <h4 style={{ textAlign: "center" }}>CONSULTATION ANALYSE</h4>
+      <h4 style={{ textAlign: "center" }}>CONSULTATION DU PLAN D'ACTION</h4>
       {/*Correction*/}
       <Label for="exampleEmail" md={12}>Correction</Label>
       <Col md={{ size: 12, order: 1, offset: -1 }}>
@@ -771,7 +771,7 @@ export default class TableauCritere extends React.Component {
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
           >
-            <ModalHeader toggle={this.toggle}>Consultation des analyses / Creation de critères 1</ModalHeader>
+            <ModalHeader toggle={this.toggle}>Consultation des plans d'action / Creation de critères</ModalHeader>
             <ModalBody>
               <TabSwitcher>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
@@ -852,7 +852,14 @@ export default class TableauCritere extends React.Component {
                           <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex === null) ? "nope" : "extends"}>
                             <Button outline color="primary" disabled={(this.state.selectedAnaCreIndex === null)} onClick={e => {
                               e.preventDefault();
-                              this.setState({ idActeur: null, idActeurIsSet: null })
+
+                              this.setState({ idActeur: null, 
+                                idActeurIsSet: null,
+                                causeIsSet: true ,
+                                actionCorrectiveIsSet: true,
+                                echeanceIsSet: true,
+                                correctionIsSet:true
+                              })
                               this.handleModifyAnalyse(this.state.selectedAnaCreIndex.libelleAt);
                               console.log(this.state.selectedAnaCreIndex.libelleAt)
                             }}>
@@ -883,7 +890,7 @@ export default class TableauCritere extends React.Component {
                 {/* ETAPE MODIFICATION ANALYSE*/}
                 <TabPanel whenActive={10}>
                   {/* MODIFICATION ANALYSE */}
-                  <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
+                  <h1 style={{ textAlign: "center" }}>Modifier le plan d'action</h1>
                   <Form onSubmit={this.handleSubmit}>
                     <FormGroup>
                       {/*Correction*/}
@@ -949,7 +956,7 @@ export default class TableauCritere extends React.Component {
                         <Input valid={this.state.echeanceIsSet} 
                           type="date"
                           id="selectAgence"
-                          min={this.currentDate()}
+                          // min={this.currentDate()}
                           name="selectbasic"
                           value={this.state.echeance}
                           onChange={e => {
@@ -994,12 +1001,13 @@ export default class TableauCritere extends React.Component {
                   {contentConsult}
                   <br />
                   <br></br>
+                  <Container>
                   <Row>
-                    <Tab id="1" maxStep={3} step={1}>
+                    <Tab md={1} id="1" maxStep={3} step={1}>
                       <Button>Retour</Button>
                     </Tab>
-                    <Col md="8" ></Col>
                   </Row>
+                  </Container>
                 </TabPanel>
                 <TabPanel whenActive={2}>
                   {/* CREATION CRITERE D'ANALYSE ANALYSE */}

@@ -37,7 +37,8 @@ const menuObjetSwitch=
         url:'demarrer_analyse/:idFnc',
         libelle:"Créer un plan d'action",
         component:DemarrerAnalyse
-    },
+    }
+    
 ]
 const ResponsableTraitement = ({ match }) => (
     <React.Fragment>

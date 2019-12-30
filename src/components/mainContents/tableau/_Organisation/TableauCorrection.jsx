@@ -181,6 +181,38 @@ export default class TableauCorrection extends React.Component {
           isLoaded: true,
           responseToPost: result.data
         });
+        console.log(this.state.responseToPost);
+        if (this.props.match.params.idFnc !== undefined) {
+          console.log("-------> idfnc <------", this.props.match.params.idFnc)
+          const fiche = this.state.responseToPost.responses.find(el => el.numeroId === this.props.match.params.idFnc)
+          if (fiche !== undefined) {
+             console.log(fiche.idSource);
+            this.toggle();
+            this.setState({
+
+              idProcessus: fiche.idProcessus,
+              numeroId: fiche.numeroId,
+              descriptionFnc: fiche.descriptionFnc,
+              idFnc: fiche.idFnc,
+              qualification: fiche.qualification,
+
+              // libelleFamille: fiche.idFamille,
+              // libelleSource: fiche.idSource,
+              famille: fiche.idFamille,
+              idSource: fiche.idSource,
+              // famille: "S6",
+              // idSource: "S0",
+              libelleProcessus:fiche.libelleProcessus,
+
+              idProcessusIsSet: true,
+              qualificationIsSet:true,
+              familleIsSet:true,
+              idSourceIsSet:true,
+              descriptionFncIsSet:true,
+            });
+
+          }
+        } 
       },
       (error) => {
         console.log("124", error.message);
@@ -190,7 +222,8 @@ export default class TableauCorrection extends React.Component {
           responseSubmit:"Erreur lors de la communication avec le serveur : "+error.message,
           hasError: true
         });
-      });         
+      }); 
+             
   //const body = await response.text();
   // this.setState({ responseToPost: JSON.parse(body) });  
   console.log(this.state.responseToPost.responses);
@@ -418,8 +451,8 @@ let proceList =
                 descriptionFnc:rowInfo.original.descriptionFnc,         
                 famille:rowInfo.original.idFamille,
                 idSource:rowInfo.original.idSource,
-                idProcessusIsSet: true,
                 qualification:rowInfo.original.qualification,
+                idProcessusIsSet: true,
                 qualificationIsSet:true,
                 familleIsSet:true,
                 idSourceIsSet:true,

@@ -746,10 +746,10 @@ export default class ConsultationActAff extends React.Component {
                   {/**SOURCE */}
                   <MediaAsset libelle="Source" content={this.state.source} />
                   {/**ECHEANCES */}
-                  <MediaAsset libelle="Echeances" content={DisplayDateFormat(this.state.echeance)} />
+                  <MediaAsset libelle="Echéance" content={DisplayDateFormat(this.state.echeance)} />
                   {/**ECHEANCES ACTION CORRECTIVE */}
 
-                   <MediaAsset libelle="Echeances Action corrective" content={DisplayDateFormat(this.state.echeanceActionCorrective)} />
+                   <MediaAsset libelle="Echéance Action corrective" content={DisplayDateFormat(this.state.echeanceActionCorrective)} />
                   {/**FORMULAIRE RENSEIGNEMENT RESULTAT */}
                   <Form>
                     <FormGroup>
