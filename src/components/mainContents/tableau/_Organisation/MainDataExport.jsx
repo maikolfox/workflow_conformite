@@ -1,10 +1,11 @@
 import React from "react";
-import LibelleData from "./LibelleData";
+import LibelleData, {libelleColor} from "./LibelleData";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 var tabNumId = [];
 var doStriped = true;
+
 export default class TabEtat extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +51,8 @@ export default class TabEtat extends React.Component {
         statutFnc,
         statutEva,
         
-      } = etatFncs; //destructuring
+      } = etatFncs; //destructuring 
+      //permet d'acceder directement aux champs 
       tabNumId.push(numeroId);
       var td1;
       if (index > 1) {
@@ -69,7 +71,7 @@ export default class TabEtat extends React.Component {
         >
           {td1}
           {/**numero de fiche */}
-          <td style={{ width: "500px" }}>{libelleProcesus}</td>
+          <td style={{ width: "500px"}}>{libelleProcesus}</td>
           {/**Processus */}
           <td>{libelleSource}</td>
           {/**Source*/}
@@ -114,10 +116,11 @@ export default class TabEtat extends React.Component {
         <th
           key={index}
           style={{
-            backgroundColor: "#d9531e",
+            backgroundColor: (libelleColor[key[0]] === undefined ||  libelleColor[key[0]]===null) ? "#d9531e" : libelleColor[key[0]] ,
             border: "1px solid #0000",
-            padding: "10px",
-            width: "auto"
+            padding: "20px",
+            width: "auto",
+            fontSize:"1.3em"
           }}
         >
           {key[1]}
