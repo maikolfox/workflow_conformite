@@ -951,7 +951,7 @@ export default class TableauCritere extends React.Component {
                       </Col>
                       <Row>&nbsp;</Row>
                       {/*Echéances*/}
-                      <Label for="exampleEmail" md={12}>Echéances</Label>
+                      <Label for="exampleEmail" md={12}>Echéance évaluation</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
                         <Input valid={this.state.echeanceIsSet} 
                           type="date"

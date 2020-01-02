@@ -1,8 +1,7 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen, faPlusCircle, faBan, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPen, faPlusCircle, faBan, faExclamationTriangle,faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { Table } from 'reactstrap';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 //import Loader from 'react-loader-spinner'
@@ -48,20 +47,19 @@ import {
 
 function AnalyseItem(props) {
   return (
-    <Form className="formAnalyse">
+    <Form md={12}  className="formAnalyse">
       {/* <h2>Analyse N° {props.item.libelleAt}  </h2>  */}
-      <div className="analyseHeader"><h5 class="analyseTitle">Analyse N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
+      <div className="analyseHeader"><h5 class="analyseTitle">Plan d'action N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
               <FontAwesomeIcon
-                icon="trash"
-                color="red"
+                icon="window-close"
+                // color="black"
                 size="sm"
                 title="Supprimer"
               />
             </Button></span></button></div>
-      
       <Col className="analyseBody">
       <Row form >
-        <Col md={6} >
+        <Col md={12} >
           <FormGroup >
             {/**correction ***/}
             <Label for="correction">Correction</Label>
@@ -74,8 +72,54 @@ function AnalyseItem(props) {
             <FormText hidden={props.item.correctionIsSet}>Renseigner la correction</FormText>
           </FormGroup>
         </Col>
+      </Row>
+      <Row form>
+        <Col md={12}>
+          {/**echeance correction */}
+          <Label for="EcheanceCorrection">Echéance correction</Label>
+          <Input md={"auto"} valid={props.item.echeanceIsSet} invalid={!props.item.echeanceIsSet}
+            type="date"
+            min={props.currentDate()}
+            id="EcheanceCorrection"
+            name="EcheanceCorrection"
+            value={props.item.echeance}
+            onChange={(e) => props.handleChangeEcheanceCorrection(props.item.id, e.target.value)}
+          />
+          <FormText hidden={props.item.echeanceIsSet}>Renseigner l'écheance de la correction</FormText>
+        </Col>
+      </Row>
+      <Row inline>
+        <Col md={12}>
+          <Label for="Cause">Acteur</Label>
+          <SelectComp outline={false} onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
+          <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
+        </Col>
+      </Row>
+      </Col>
+    </Form>
+  )
+}
+
+
+/********/
+
+
+function ActionCorrectiveItem(props) {
+  return (
+    <Form className="formAnalyse">
+      {/* <h2>Analyse N° {props.item.libelleAt}  </h2>  */}
+      <div className="analyseHeader"><h5 class="analyseTitle">Plan d'action N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
+              <FontAwesomeIcon
+                icon="window-close"
+                color="red"
+                size="sm"
+                title="Supprimer"
+              />
+            </Button></span></button></div>
+      <Col className="analyseBody">
+      <Row form >
         {/**cause */}
-        <Col md={6}>
+        <Col md={12}>
           <FormGroup>
             <Label for="Cause">Cause</Label>
             <Input valid={props.item.causeIsSet} invalid={!props.item.causeIsSet}
@@ -89,20 +133,8 @@ function AnalyseItem(props) {
         </Col>
       </Row>
       <Row form>
-        <Col md={6}>
-          {/**echeance correction */}
-          <Label for="EcheanceCorrection">Echéance correction</Label>
-          <Input md={"auto"} valid={props.item.echeanceIsSet} invalid={!props.item.echeanceIsSet}
-            type="date"
-            min={props.currentDate()}
-            id="EcheanceCorrection"
-            name="EcheanceCorrection"
-            value={props.item.echeance}
-            onChange={(e) => props.handleChangeEcheanceCorrection(props.item.id, e.target.value)}
-          />
-          <FormText hidden={props.item.echeanceIsSet}>Renseigner l'écheance de la correction</FormText>
-        </Col>
-        <Col md={6}>
+        <Col md={12}>
+          {/**Action corrective**/}
           <FormGroup>
             <Label for="ActionCorrective">Action corrective</Label>
             <Input valid={props.item.actionCorrectiveIsSet} invalid={!props.item.actionCorrectiveIsSet}
@@ -116,7 +148,7 @@ function AnalyseItem(props) {
           </FormGroup>
         </Col>
         {/**Echéance action corrective**/}
-        <Col md={{ size: '6', offset: 6 }}>
+        <Col md={12}>
           <Label for="EcheanceCorrection">Echéance action(s) corrective(s)</Label>
           <Input md={"auto"} valid={props.item.echeanceActionCorrectiveIsSet} invalid={!props.item.echeanceActionCorrectiveIsSet}
             type="date"
@@ -131,7 +163,7 @@ function AnalyseItem(props) {
       </Row>
       <Row inline>
         <Col md={12}>
-          <Label for="Cause">Acteur</Label>
+          <Label for="Acteur">Acteur</Label>
           <SelectComp outline onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
           <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
         </Col>
@@ -140,6 +172,8 @@ function AnalyseItem(props) {
     </Form>
   )
 }
+
+
 
 export default class DemarrageAnalyse extends React.Component {
 
@@ -218,6 +252,7 @@ export default class DemarrageAnalyse extends React.Component {
     this.handleChangeCorrection = this.handleChangeCorrection.bind(this);
     this.handleAddAction = this.handleAddAction.bind(this);
     this.handleDependanceField = this.handleDependanceField.bind(this);
+    this.handleAddActionCorrective=this.handleAddActionCorrective.bind(this);
     this.handleDependanceFieldCorrectionChange=this.handleDependanceFieldCorrectionChange.bind(this);
     this.handleValideAnalyse=this.handleValideAnalyse.bind(this);
 
@@ -524,21 +559,58 @@ handleDependanceFieldCorrectionChange(todo,field)
       }
     })
   }
+  handleAddActionCorrective(){
+
+    var aux = this.state.dataStruc;
+      //action corrective zone : cause ,action corrective 
+      //echeance action corrective , acteur 
+      var data={
+      type:"actionCorrective",
+      id: Math.round(Math.random() * 1000),
+      cause:"",
+      correction: "R.A.S",
+      actionCorrective:"",
+      //echeance2 ====> echeance action corrective dans la bd
+      echeanceActionCorrective:"",
+      idActeurDelegataire: Auth.getUsername(),
+      //field checker---
+      idActeur:  null,
+      libelleAt: this.state.dataStruc.length + 1,
+      echeanceIsSet:true,
+      correctionIsSet: true,
+      causeIsSet: false,
+      actionCorrectiveIsSet: false,
+      echeanceActionIsSet: false,
+      idActeurIsSet:false,
+      //fnc id and processus id 
+      idFnc:this.state.idFnc,
+      idProcessus:this.state.idProcessus,
+    }
+  
+  
+    aux.push(data);
+    this.setState({
+      dataStruc: aux
+    })
+
+  }
 
   handleAddAction() 
   {
     var aux = this.state.dataStruc;
+    //correction zone : correction echeance , acteur
     var data = {
-      id: Date.now(),
-      cause: null,
+      type:"correction",
+      id: Math.round(Math.random() * 1000),
+      cause: "R.A.S",
       //echeance ===> echeance correction
       echeance: null,
       //echeance2 ====> echeance action corrective dans la bd
-      echeanceActionCorrective: false,
-      correction: null,
+      echeanceActionCorrective: "-",
+      correction: "",
       actionCorrective: null,
       idActeurDelegataire: Auth.getUsername(),
-      idActeur: null,
+      idActeur: Auth.getUsername(),
       libelleAt: this.state.dataStruc.length + 1,
       echeanceIsSet:false,
       correctionIsSet: false,
@@ -899,16 +971,16 @@ handleDependanceFieldCorrectionChange(todo,field)
 
   render() {
     //ZONE POUR LES AFFICHAGES CONDITIONNELS
-    const buttonDemarrerAna = <Button size="lg" style={{backgroundColor:'#d9541e' ,color :"white" }} color="#d9541e"  block>{'Demarrer l\'analyse'}</Button>
+    const buttonDemarrerAna = <Button size="lg" style={{backgroundColor:'#d9541e' ,color :"white" }} color="#d9541e"  block>{'Créer un plan d\'action'}</Button>
     const buttonSoumettre = <Button color="danger" size="lg" onClick={this.handleSubmitValidation} block>
       Soumettre la fiche pour correction
   </Button>
-    const textSuppression=this.state.dataStruc.length===0 ? " . Vous avez supprimer toutes les analyses ! " : ". Mise à jour de la numérotation des analyses "
+    const textSuppression=this.state.dataStruc.length===0 ? " . Vous avez supprimer tous les plans d'action ! " : ". Mise à jour de la numérotation des analyses "
     const conditionnalBoutton = (this.state.valRoutage) ? buttonSoumettre : buttonDemarrerAna
     var response = (this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
     const AnalyseItem_ = this.state.dataStruc.length!==0 
                   ? 
-                    this.state.dataStruc.map(item => <AnalyseItem key={item.id} item={item} 
+                    this.state.dataStruc.filter(item=>{return item.type==="correction"}).map(item => <AnalyseItem key={item.id} item={item} 
                     handleChangeCorrection={this.handleChangeCorrection}
                     handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection} 
                     handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
@@ -916,8 +988,8 @@ handleDependanceFieldCorrectionChange(todo,field)
                     handleChangeDelete={this.handleChangeDelete} 
                     handleChangeCause={this.handleChangeCause}
                     handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
-                  : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée  {' '}
-                    <Button outline color="none" onClick={this.handleAddAction}>
+                  : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucun plan d\'action créer  {' '}
+                    <Button outline color="none" onClick={this.handleAddAction()}>
                             <FontAwesomeIcon
                               icon="plus-circle"
                               color="green"
@@ -927,12 +999,35 @@ handleDependanceFieldCorrectionChange(todo,field)
                           </Button></h2>
                   </Col>
                   </React.Fragment>
+    const actionCorrectiveItem = this.state.dataStruc.length!==0 
+    ? 
+      this.state.dataStruc.filter(item=>{return item.type==="actionCorrective"}).map(item => <ActionCorrectiveItem key={item.id} item={item} 
+      handleChangeCorrection={this.handleChangeCorrection}
+      handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection} 
+      handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
+      handleSelectComp={this.handleSelectComp} currentDate={this.currentDate} 
+      handleChangeDelete={this.handleChangeDelete} 
+      handleChangeCause={this.handleChangeCause}
+      handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
+    : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée  {' '}
+      <Button outline color="none" onClick={this.handleAddActionCorrective}>
+              <FontAwesomeIcon
+                icon="plus-circle"
+                color="green"
+                size="5x"
+                title="Ajouter un plan d'action "
+              />
+            </Button></h2>
+    </Col>
+    </React.Fragment>
+
+
 
     const invalidFill= this.state.dataStruc.length===0 ? "Veuillez creer une analyse avant de soumettre" : "Analyse incorrecte. Verifier tous les champs avant de soumettre"
 
-    ////LIBRARY//////////////////////////////////////////////
-    library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle);
-    ////////////////////////////////////////////////////////
+    ////LIBRARY//////////////////////////////////////////////////////////////////////////////////////////  //////////
+    library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle,faWindowClose);//////////////  //////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////  //////////
 
 
 
@@ -1028,6 +1123,18 @@ handleDependanceFieldCorrectionChange(todo,field)
                           {"   "} Nombre d'analyse : {this.state.dataStruc.length}
                         </small>
                       </Col>
+                      <Col>
+                        <small style={{ textAlign: "center" }}>
+                          <Button outline color="success" onClick={this.handleAddActionCorrective}>
+                            <FontAwesomeIcon
+                              icon="plus-circle"
+                              color="green"
+                              size="md"
+                            />{" Ajouter une action corrective"}  
+                          </Button>
+                          {"   "} Nombre d'analyse : {this.state.dataStruc.length}
+                        </small>
+                      </Col>
                       {/* <Col>
                         <small style={{ textAlign: "center" }}>
                           <Button outline color="danger" onClick={this.handleAddAction}>
@@ -1041,13 +1148,15 @@ handleDependanceFieldCorrectionChange(todo,field)
                       </Col> */}
                     </Row>
                     <br></br>
-                    <Col style={{ borderStyle: "inset", overflowY: "scroll", overflowX:"hidden", height: "600px" ,backgroundColor:"#E8E8E8"}}> {AnalyseItem_}</Col>
-                   
+                  <Col style={{ borderStyle: "inset", overflowY: "scroll", overflowX:"hidden", height: "600px" ,backgroundColor:"#E8E8E8"}}>
+                    <Row>
+                    <Col md={6}> {AnalyseItem_}</Col>
+                    <Col md={6}>{actionCorrectiveItem}</Col> 
+                    </Row>
+                  </Col>
                   </Form >
                   <Row>&nbsp;</Row>
-
                   <br></br>
-
                   <Tab id="1" md={1} padding="0px" maxStep={3} step="prev">
                     <Button>Retour</Button>
                   </Tab>

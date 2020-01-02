@@ -145,7 +145,7 @@ function CritereItemContent(props)
   return (
       <ul>
       <li>{props.critere}&nbsp;<br />
-      <strong>Echéance :</strong>&nbsp; {DateFormatTransform(props.echeanceCritere)}
+      <strong>Echéance évaluation :</strong>&nbsp; {DateFormatTransform(props.echeanceCritere)}
       <p><strong>Date de fin :</strong>&nbsp; {DateFormatTransform(props.dateFinAnalyse)}</p></li>
       </ul>
   )

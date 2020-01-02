@@ -2,19 +2,19 @@ function transFormLibelleStatut(statutFnc) {
     var statut = "";
     switch (statutFnc) {
       case "initier":
-        statut = "Initier";
+        statut = "Initiée";
         break;
       case "initierBis":
           statut = "Efficacité insatisfaisante";
           break;
       case "cloturer":
-        statut = "Cloturer";
+        statut = "Cloturée";
         break;
       case "declarer":
-        statut = "Déclarer";
+        statut = "Déclarée";
         break;
       case "clotureProv":
-        statut = "Cloturer provisoirement";
+        statut = "Cloturée provisoirement";
         break;
       case "routageCorrect":
         statut =
@@ -24,7 +24,7 @@ function transFormLibelleStatut(statutFnc) {
         statut = "En attente d'une correction du routage";
         break;
       case "traiter":
-        statut = "Traiter";
+        statut = "Traitée";
         break;
       case "criterCre":
         statut = "Critère créé";
