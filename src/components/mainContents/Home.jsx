@@ -11,18 +11,17 @@ class Home extends Component {
 
    
     render() {
-        const simpleStyle={textAlign:"justify",fontSize:'120%', color:"#00142C", }
+        const simpleStyle={textAlign:"justify",fontSize:'120%', color:"#00142C"}
         const styleHeight={height:"100%", marginTop:"2%"}
         const ModalButton=()=>Auth.getAuthOrga(Auth.getProfileTab()) ?  <ModalRensFNC buttonLabel="Déclarer une non-conformité"></ModalRensFNC>  :<span/>
         
         return (
             <div style={{ overflowY:"hidden"}} >
                 <NavBarMain />
-                <Jumbotron  fluid style={styleHeight} >
-                    <Container >
+                {/* <Jumbotron  fluid style={styleHeight} > */}
+                    <Container>
                         <h1>WORKFLOW FNC ? </h1>
-                        <Row>
-                            <Col md="6"><p style={simpleStyle}>
+                            <img src="/image/background.jpg" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /><p style={simpleStyle}>
                             </p>
                             <p style={simpleStyle}>
                                 l'application <strong>"WORKFLOW FNC"</strong> a pour principaux objectifs :
@@ -39,13 +38,13 @@ class Home extends Component {
                                 <ModalButton/>
                             </Col>
                             </Row>
-                            </Col>
-                            <Col md="6"><img src="./image/VISUELS-VALEURS-PROFESSSIONNALISME.png" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /></Col>
-                        </Row>
+                            
+                            
+                                
                         
                     </Container>
 
-                </Jumbotron>
+                {/* </Jumbotron> */}
                
             </div>
         )

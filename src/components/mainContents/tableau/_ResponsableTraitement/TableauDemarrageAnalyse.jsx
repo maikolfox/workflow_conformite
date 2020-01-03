@@ -1,6 +1,6 @@
 import React from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrash, faPen, faPlusCircle, faBan, faExclamationTriangle,faWindowClose } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faPen, faPlusCircle, faBan, faExclamationTriangle, faWindowClose } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import "bootstrap/dist/css/bootstrap.min.css";
 //import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -14,7 +14,6 @@ import Authorization from '../../Authorization_401';
 import Columns from '../../../assets/ColumDetailsFnc';
 //import ActeurList from '../../../assets/ActeurData';
 import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-
 //import ActeurColumns from '../../../assets/ActeurColumns'
 import Loader from "../../../assets/Loader";
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
@@ -39,7 +38,7 @@ import {
   //Container,
   //Progress,
   // Container,
-  Tooltip  
+  Tooltip
   //Fade
 
 } from "reactstrap";
@@ -47,55 +46,61 @@ import {
 
 function AnalyseItem(props) {
   return (
-    <Form md={12}  className="formAnalyse">
-      {/* <h2>Analyse N° {props.item.libelleAt}  </h2>  */}
-      <div className="analyseHeader"><h5 class="analyseTitle">Plan d'action N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
-              <FontAwesomeIcon
-                icon="window-close"
-                // color="black"
-                size="sm"
-                title="Supprimer"
-              />
-            </Button></span></button></div>
+    <Form md={12} className="formAnalyse">
+      <div className="analyseHeader"><h5 class="analyseTitle">Plan d'action N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger" onClick={() => props.handleChangeDelete(props.item.id)}>
+        <FontAwesomeIcon
+          icon="window-close"
+          size="sm"
+          title="Supprimer"
+        />
+      </Button></span></button>
+      </div>
       <Col className="analyseBody">
-      <Row form >
-        <Col md={12} >
-          <FormGroup >
-            {/**correction ***/}
-            <Label for="correction">Correction</Label>
-            <Input valid={props.item.correctionIsSet} invalid={!props.item.correctionIsSet}
-              type="textarea"
-              id="correction"
-              name="correction"
-              value={props.item.correction}
-              onChange={(e) => props.handleChangeCorrection(props.item.id, e.target.value)} />
-            <FormText hidden={props.item.correctionIsSet}>Renseigner la correction</FormText>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row form>
-        <Col md={12}>
-          {/**echeance correction */}
-          <Label for="EcheanceCorrection">Echéance correction</Label>
-          <Input md={"auto"} valid={props.item.echeanceIsSet} invalid={!props.item.echeanceIsSet}
-            type="date"
-            min={props.currentDate()}
-            id="EcheanceCorrection"
-            name="EcheanceCorrection"
-            value={props.item.echeance}
-            onChange={(e) => props.handleChangeEcheanceCorrection(props.item.id, e.target.value)}
-          />
-          <FormText hidden={props.item.echeanceIsSet}>Renseigner l'écheance de la correction</FormText>
-        </Col>
-      </Row>
-      <Row inline>
-        <Col md={12}>
-          <Label for="Cause">Acteur</Label>
-          <SelectComp outline={false} onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
-          <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
-        </Col>
-      </Row>
+        <Row form >
+          <Col md={12} >
+            <FormGroup >
+              {/**correction ***/}
+              <Label for="correction">Correction</Label>
+              <Input valid={props.item.correctionIsSet} invalid={!props.item.correctionIsSet}
+                type="textarea"
+                id="correction"
+                name="correction"
+                value={props.item.correction}
+                onChange={(e) => props.handleChangeCorrection(props.item.id, e.target.value)} />
+              <FormText hidden={props.item.correctionIsSet}>Renseigner la correction</FormText>
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row form>
+          <Col md={12}>
+            {/**echeance correction */}
+            <Label for="EcheanceCorrection">Echéance correction</Label>
+            <Input md={"auto"} valid={props.item.echeanceIsSet} invalid={!props.item.echeanceIsSet}
+              type="date"
+              min={props.currentDate()}
+              id="EcheanceCorrection"
+              name="EcheanceCorrection"
+              value={props.item.echeance}
+              onChange={(e) => props.handleChangeEcheanceCorrection(props.item.id, e.target.value)}
+            />
+            <FormText hidden={props.item.echeanceIsSet}>Renseigner l'écheance de la correction</FormText>
+          </Col>
+        </Row>
+        <Row inline>
+          <Col md={12}>
+            <Label for="Cause">Acteur</Label>
+            <SelectComp outline={false} onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
+            <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
+          </Col>
+        </Row>
       </Col>
+      {/* THIS BLOCK IS USE  TO ADJUST THE HEIGHT OF FORM BOX*/}
+      <Row>&nbsp;</Row>
+      <Row>&nbsp;</Row>
+      <Row>&nbsp;</Row>
+      <Row>&nbsp;</Row>
+      <Row>&nbsp;</Row>
+      <Row>&nbsp;</Row>
     </Form>
   )
 }
@@ -104,70 +109,84 @@ function AnalyseItem(props) {
 /********/
 
 
+function MissFormFillDisplay(props) {
+  return (<Col md={12}>
+    <br />
+    <div>Plan d'action N° {props.item.planDaction} </div>
+    <ul>
+      {props.item.field.map(items => <li>{items}</li>)}
+    </ul>
+    <div></div>
+  </Col>
+  )
+}
+
+
+
 function ActionCorrectiveItem(props) {
   return (
     <Form className="formAnalyse">
       {/* <h2>Analyse N° {props.item.libelleAt}  </h2>  */}
-      <div className="analyseHeader"><h5 class="analyseTitle">Plan d'action N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger"  onClick={() => props.handleChangeDelete(props.item.id)}>
-              <FontAwesomeIcon
-                icon="window-close"
-                color="red"
-                size="sm"
-                title="Supprimer"
-              />
-            </Button></span></button></div>
+      <div className="analyseHeader"><h5 class="analyseTitle">Plan d'action N° {props.item.libelleAt}</h5><button onClick={() => props.handleChangeDelete(props.item.id)} type="button" className="close" aria-label="Close"><span aria-hidden="true"><Button outline color="danger" onClick={() => props.handleChangeDelete(props.item.id)}>
+        <FontAwesomeIcon
+          icon="window-close"
+          color="red"
+          size="sm"
+          title="Supprimer"
+        />
+      </Button></span></button></div>
       <Col className="analyseBody">
-      <Row form >
-        {/**cause */}
-        <Col md={12}>
-          <FormGroup>
-            <Label for="Cause">Cause</Label>
-            <Input valid={props.item.causeIsSet} invalid={!props.item.causeIsSet}
-              type="textarea"
-              id="cause"
-              name="cause"
-              value={props.item.cause}
-              onChange={(e) => props.handleChangeCause(props.item.id, e.target.value)} />
-            <FormText hidden={props.item.causeIsSet}>Renseigner la cause</FormText>
-          </FormGroup>
-        </Col>
-      </Row>
-      <Row form>
-        <Col md={12}>
-          {/**Action corrective**/}
-          <FormGroup>
-            <Label for="ActionCorrective">Action corrective</Label>
-            <Input valid={props.item.actionCorrectiveIsSet} invalid={!props.item.actionCorrectiveIsSet}
-              type="textarea"
-              id="actionCorrective"
-              name="actionCorrective"
-              value={props.item.actionCorrective}
-              onChange={(e) => props.handleChangeActionCorrective(props.item.id, e.target.value)}
-            />
-            <FormText hidden={props.item.actionCorrectiveIsSet}>Renseigner l'action corrective</FormText>
-          </FormGroup>
-        </Col>
-        {/**Echéance action corrective**/}
-        <Col md={12}>
-          <Label for="EcheanceCorrection">Echéance action(s) corrective(s)</Label>
-          <Input md={"auto"} valid={props.item.echeanceActionCorrectiveIsSet} invalid={!props.item.echeanceActionCorrectiveIsSet}
-            type="date"
-            placeholder="champ non-obligatoire"
-            min={props.currentDate()}
-            id="EcheanceCorrection"
-            name="EcheanceCorrection"
-            value={props.item.echeanceActionCorrective}
-            onChange={(e) => props.handleChangeEcheanceActionCorrective(props.item.id, e.target.value)} />
-          <FormText hidden={props.item.echeanceActionCorrectiveIsSet}>Renseigner l'échéance de l'action corrective</FormText>
-        </Col>
-      </Row>
-      <Row inline>
-        <Col md={12}>
-          <Label for="Acteur">Acteur</Label>
-          <SelectComp outline onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
-          <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
-        </Col>
-      </Row>
+        <Row form >
+          {/**cause */}
+          <Col md={12}>
+            <FormGroup>
+              <Label for="Cause">Cause</Label>
+              <Input valid={props.item.causeIsSet} invalid={!props.item.causeIsSet}
+                type="textarea"
+                id="cause"
+                name="cause"
+                value={props.item.cause}
+                onChange={(e) => props.handleChangeCause(props.item.id, e.target.value)} />
+              <FormText hidden={props.item.causeIsSet}>Renseigner la cause</FormText>
+            </FormGroup>
+          </Col>
+        </Row>
+        <Row form>
+          <Col md={12}>
+            {/**Action corrective**/}
+            <FormGroup>
+              <Label for="ActionCorrective">Action corrective</Label>
+              <Input valid={props.item.actionCorrectiveIsSet} invalid={!props.item.actionCorrectiveIsSet}
+                type="textarea"
+                id="actionCorrective"
+                name="actionCorrective"
+                value={props.item.actionCorrective}
+                onChange={(e) => props.handleChangeActionCorrective(props.item.id, e.target.value)}
+              />
+              <FormText hidden={props.item.actionCorrectiveIsSet}>Renseigner l'action corrective</FormText>
+            </FormGroup>
+          </Col>
+          {/**Echéance action corrective**/}
+          <Col md={12}>
+            <Label for="EcheanceCorrection">Echéance action(s) corrective(s)</Label>
+            <Input md={"auto"} valid={props.item.echeanceActionCorrectiveIsSet} invalid={!props.item.echeanceActionCorrectiveIsSet}
+              type="date"
+              placeholder="champ non-obligatoire"
+              min={props.currentDate()}
+              id="EcheanceCorrection"
+              name="EcheanceCorrection"
+              value={props.item.echeanceActionCorrective}
+              onChange={(e) => props.handleChangeEcheanceActionCorrective(props.item.id, e.target.value)} />
+            <FormText hidden={props.item.echeanceActionCorrectiveIsSet}>Renseigner l'échéance de l'action corrective</FormText>
+          </Col>
+        </Row>
+        <Row inline>
+          <Col md={12}>
+            <Label for="Acteur">Acteur</Label>
+            <SelectComp outline onChange={(e) => props.handleSelectComp(e, props.item.id)} options={ActeurListSelect} />
+            <FormText hidden={props.item.idActeurIsSet}>Choisissez un acteur</FormText>
+          </Col>
+        </Row>
       </Col>
     </Form>
   )
@@ -180,53 +199,53 @@ export default class DemarrageAnalyse extends React.Component {
   constructor(props) {
     super(props);
     this.state =
-      {
-        idFnc: '',
-        numeroId: '',
-        modal: '',
-        selected: null,
-        selectedActeur: null,
-        responseToPost: [],
-        isLoaded: '',
-        getRow: '',
-        idSource: '',
-        idFamile: '',
-        idProcessus: '',
-        descriptionFnc: '',
-        qualification: '',
-        correction: '',
-        correctionIsSet: '',
-        actionCorrective: '',
-        actionCorrectiveIsSet: '',
-        cause: '',
-        causeIsSet: '',
+    {
+      idFnc: '',
+      numeroId: '',
+      modal: '',
+      selected: null,
+      selectedActeur: null,
+      responseToPost: [],
+      isLoaded: '',
+      getRow: '',
+      idSource: '',
+      idFamile: '',
+      idProcessus: '',
+      descriptionFnc: '',
+      qualification: '',
+      correction: '',
+      correctionIsSet: '',
+      actionCorrective: '',
+      actionCorrectiveIsSet: '',
+      cause: '',
+      causeIsSet: '',
+      formFieldMissFill: [],
+      libelle: 1,
+      isLoadForSpin: false,
+      idActeur: null,
+      acteurTraitant: null,
+      idActeurIsSet: false,
+      echeance: '',
+      echeanceIsSet: false,
 
-        libelle: 1,
+      hasError: '',
+      errorMessage: '',
+      responseSubmit: '',
 
-        idActeur: null,
-        acteurTraitant: null,
-        idActeurIsSet: false,
-        echeance: '',
-        echeanceIsSet: false,
+      dataStruc: [],
+      nestedModal2: '',
+      selectedAnalyseIndex: null,
+      selectedAnalyse: null,
 
-        hasError: '',
-        errorMessage: '',
-        responseSubmit: '',
+      unAutorize: false,
+      libelleProcessus: '',
+      libelleFamille: '',
+      libelleSource: '',
+      libelSupp: null,
 
-        dataStruc: [],
-        nestedModal2:'',
-        selectedAnalyseIndex: null,
-        selectedAnalyse: null,
-
-        unAutorize: false,
-        libelleProcessus: '',
-        libelleFamille: '',
-        libelleSource: '',
-        libelSupp:null,
-         
-        // use to validate form
-        isValide:null,
-        incorrectField:[]
+      // use to validate form
+      isValide: null,
+      incorrectField: []
     }
 
     this.toggle = this.toggle.bind(this);
@@ -251,160 +270,141 @@ export default class DemarrageAnalyse extends React.Component {
     this.handleChangeCause = this.handleChangeCause.bind(this);
     this.handleChangeCorrection = this.handleChangeCorrection.bind(this);
     this.handleAddAction = this.handleAddAction.bind(this);
+    this.handleAddActionCorrective = this.handleAddActionCorrective.bind(this);
     this.handleDependanceField = this.handleDependanceField.bind(this);
-    this.handleAddActionCorrective=this.handleAddActionCorrective.bind(this);
-    this.handleDependanceFieldCorrectionChange=this.handleDependanceFieldCorrectionChange.bind(this);
-    this.handleValideAnalyse=this.handleValideAnalyse.bind(this);
+    this.handleDependanceFieldCorrectionChange = this.handleDependanceFieldCorrectionChange.bind(this);
+    this.handleValideAnalyse = this.handleValideAnalyse.bind(this);
 
 
   };
 
-handleValideAnalyse()
-{
-  // Parcours dataStruc et permet de recuperer 
-  // les champs qui ne sont pas 
-  // correctement renseigner
-  // un fois que ces champs sont recuperer
-  // retourne un objet
+  handleValideAnalyse() {
+    // Parcours dataStruc et permet de recuperer 
+    // les champs qui ne sont pas 
+    // correctement renseigner
+    // un fois que ces champs sont recuperer
+    // retourne un objet
 
-  var allIsCorrect = [];
-  var isCorrect = true;
-  var formFieldMissFill = [];
+    var allIsCorrect = [true];
+    var formFieldMissFill = [];
+    console.log("I am here")
+    if (this.state.dataStruc.length === 0) {
+      var obje = { isValide: false, incorrectField: formFieldMissFill }
+      return obje
+    }
+    else {
+      console.log("I am here inside else")
 
-  if (this.state.dataStruc.length === 0) {
-    var obje = { isValide: false, incorrectField: formFieldMissFill }
-    return obje
-  }
-  else {
-    this.state.dataStruc.map(el => {
-      if (!el.echeanceIsSet) {
-
-        isCorrect = false;
-        var obj = {
-          labelle: "Echeance",
-          libelleAt: "Analyse N° " + el.libelleAt
-        }
-        formFieldMissFill.push(obj)
-      }
-      if (!el.echeanceActionCorrectiveIsSet) {
-
-        isCorrect = false;
-        var obj_ = {
-          labelle: "Echeance action corrective",
-          libelleAt: "Analyse N° " + el.libelleAt
-        }
-        formFieldMissFill.push(obj_)
-
-      }
-      //pour eviter un doublon lors de l'ajout de la correction 
-      // pour la correction
-      var correctionIsAdd = false
-
-      //Si correction renseignée, 
-      //désactiver le caractère obligatoire des ‘‘Causes’’ et 
-      if (!el.correctionIsSet && !el.causeIsSet) {
-        isCorrect = false;
-        var obj3 = {
-          labelle: "Correction",
-          libelleAt: "Analyse N° " + el.libelleAt
-        }
-         obj3 = {
-          labelle: "Cause",
-          libelleAt: "Analyse N° " + el.libelleAt
-        }
-        formFieldMissFill.push(obj)
-        correctionIsAdd = true
-      }
-      //Si correction renseignée, 
-      //‘‘Actions correctives’’. 
-      // Ne pas le faire dans le cas contraire. 
-      if (!el.correctionIsSet && !el.actionCorrectiveIsSet) {
-        isCorrect = false;
-        if (!correctionIsAdd) {
-          var obj = {
-            labelle: "Correction",
-            libelleAt: "Analyse N° " + el.libelleAt
+      this.state.dataStruc.map(el => {
+        if (el.type === "correction") {
+          var fieldTab = { planDaction: "", field: [] };
+          // verifier le champ correction
+          if (!el.correctionIsSet) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt
+            fieldTab.field.push("Correction")
           }
+          // verifier le champ echeance correction
+          if (!el.echeance) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt
+            fieldTab.field.push("Echeance correction")
+          }
+          // verifier le champ acteur
+          if (!el.idActeurIsSet) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt
+            fieldTab.field.push("Acteur")
+          }
+          formFieldMissFill.push(fieldTab)
         }
-        var obj = {
-          labelle: "Cause",
-          libelleAt: "Analyse N° " + el.libelleAt
-        }
-        formFieldMissFill.push(obj)
-      }
-      //I WANT FIND WHY I LEAVE THIS BLANK 
-      if ((el.correctionIsSet === false) && (el.causeIset === false) && (el.echeanceIsSet === false)) {
 
-      }
-      //FIN VALIDATION ACTION CORRECTIVE ET CORRECTION
-      if (el.idActeurIsSet === false) {
-        isCorrect = false;
-        var obj = {
-          labelle: "Acteur",
-          libelleAt: "Analyse N° " + el.libelleAt
-        }
-        formFieldMissFill.push(obj)
-      }
-      allIsCorrect.push(isCorrect);
+        if (el.type === "actionCorrective") {
+          var fieldTab = { planDaction: "", field: [] };
+          // verifier le champ action corrective
+          if (!el.actionCorrectiveIsSet) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt;
+            fieldTab.field.push("Action corrective");
+          }
+          // verifier le champ cause
+          if (!el.causeIsSet) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt;
+            fieldTab.field.push("Cause");
+          }
 
-    })
-    var boolfinal = true;
-    if (allIsCorrect.length === 0) {
-      var obje = { isValide: true, incorrectField: [] };
-      return obje;
-    } else
+          // VERIFIER LE CHAMP ECHEANCE ACTION CORRECTIVE
+          if (!el.echeanceActionCorrectiveIsSet) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt;
+            fieldTab.field.push("Echeance action corrective");
+          }
+
+          // VERIFIER LE CHAMP ACTEUR TRAITANT
+          if (!el.idActeurIsSet) {
+            allIsCorrect.push(false);
+            fieldTab.planDaction = el.libelleAt;
+            fieldTab.field.push("Acteur");
+          }
+          formFieldMissFill.push(fieldTab)
+        }
+
+      })
+
+
+      var boolfinal = true;
       allIsCorrect.map(el => {
         boolfinal = boolfinal && el;
       })
-    var obje = { isValide: boolfinal, incorrectField: formFieldMissFill };
-    return obje
-  }
 
+      var obje = { isValide: boolfinal, incorrectField: formFieldMissFill };
+      this.setState({ formFieldMissFill: formFieldMissFill });
+      console.log(obje);
 
-}
-
-handleDependanceField(todo,field)
-{
-
-  if (todo[field].trim() === "" ||  todo[field] === null) {
-    todo[field+"IsSet"] = false
-  } 
-
-  if(!todo.correctionIsSet && todo[field+"IsSet"]===false)
-  {
-    todo[field+"IsSet"] = false
-  }
-  if( (todo[field].trim() === "" ||  todo[field] === null ) && todo.correctionIsSet) 
-  {
-    todo[field+"IsSet"] = true
-  } 
-  if (todo[field].trim() !== ""  &&  todo[field] !== null )  {
-    todo[field+"IsSet"] = true
-  }  
-  if (todo[field].trim() !== ""  &&  todo[field] !== null )  {
-    todo[field+"IsSet"] = true
-  } 
-
-}
-
-
-handleDependanceFieldCorrectionChange(todo,field)
-{
-  if( todo[field] === null)
-  {
-    todo[field+"IsSet"] = false
-  }else{    
-      
-      if(( todo[field].trim() === "" ) && !todo.correctionIsSet) {
-        todo[field+"IsSet"] = false
-      } 
-      else
-      if( (todo[field].trim() !== "" &&  todo[field] !== null ) && todo.correctionIsSet===false) {
-        todo[field+"IsSet"] = true
-      }
+      return obje
     }
 
-}
+
+  }
+
+  handleDependanceField(todo, field) {
+
+    if (todo[field].trim() === "" || todo[field] === null) {
+      todo[field + "IsSet"] = false
+    }
+
+    if (!todo.correctionIsSet && todo[field + "IsSet"] === false) {
+      todo[field + "IsSet"] = false
+    }
+    if ((todo[field].trim() === "" || todo[field] === null) && todo.correctionIsSet) {
+      todo[field + "IsSet"] = true
+    }
+    if (todo[field].trim() !== "" && todo[field] !== null) {
+      todo[field + "IsSet"] = true
+    }
+    if (todo[field].trim() !== "" && todo[field] !== null) {
+      todo[field + "IsSet"] = true
+    }
+
+  }
+
+
+  handleDependanceFieldCorrectionChange(todo, field) {
+    if (todo[field] === null) {
+      todo[field + "IsSet"] = false
+    } else {
+
+      if ((todo[field].trim() === "") && !todo.correctionIsSet) {
+        todo[field + "IsSet"] = false
+      }
+      else
+        if ((todo[field].trim() !== "" && todo[field] !== null) && todo.correctionIsSet === false) {
+          todo[field + "IsSet"] = true
+        }
+    }
+
+  }
 
   //*to do inspire dynamic  **/
   //DELETE ACTION  and change 
@@ -414,11 +414,11 @@ handleDependanceFieldCorrectionChange(todo,field)
     var aux = [];
     if (this.state.dataStruc.length !== 0) {
 
-    var updatedTodos = this.state.dataStruc.map((todo, index) => {
-        
+      var updatedTodos = this.state.dataStruc.map((todo, index) => {
+
         console.log(id)
-        if(todo.id===id){
-        this.setState({libelSupp:todo.libelleAt})
+        if (todo.id === id) {
+          this.setState({ libelSupp: todo.libelleAt })
         }
         if (todo.id !== id) {
           console.log("differentId====>" + id)
@@ -448,8 +448,8 @@ handleDependanceFieldCorrectionChange(todo,field)
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
-          todo.actionCorrective = textValue
-          this.handleDependanceField(todo,"actionCorrective")
+          todo.actionCorrective = textValue;
+          this.handleDependanceField(todo, "actionCorrective");
         }
         return todo
       })
@@ -465,7 +465,7 @@ handleDependanceFieldCorrectionChange(todo,field)
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.cause = textValue
-          this.handleDependanceField(todo,"cause")
+          this.handleDependanceField(todo, "cause")
         }
         return todo
       })
@@ -477,33 +477,21 @@ handleDependanceFieldCorrectionChange(todo,field)
 
 
   //Correction
-  handleChangeCorrection(id, textValue) 
-  {
+  handleChangeCorrection(id, textValue) {
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
           todo.correction = textValue
-          if(todo.correction===null  )
-          {
-            todo.correctionIsSet=false;
-            this.handleDependanceFieldCorrectionChange(todo,"cause")
-            this.handleDependanceFieldCorrectionChange(todo,"actionCorrective")
+          if (todo.correction === null) {
+            todo.correctionIsSet = false;
           } else
-          if (todo.correction.trim() === "") 
-          {
-            todo.correctionIsSet=false;
-            this.handleDependanceFieldCorrectionChange(todo,"cause")
-            this.handleDependanceFieldCorrectionChange(todo,"actionCorrective")
+            if (todo.correction.trim() === "") {
+              todo.correctionIsSet = false;
 
-          } 
-          else{ 
-            todo.correctionIsSet = true;
-            todo.causeIsSet=true;
-            todo.actionCorrectiveIsSet=true;
-            //met l'echeance action au vert 
-            //si la correction est renseignée
-            todo.echeanceActionIsSet=true;
-          }
+            }
+            else {
+              todo.correctionIsSet = true;
+            }
         }
         return todo;
       })
@@ -519,18 +507,15 @@ handleDependanceFieldCorrectionChange(todo,field)
   handleChangeEcheanceCorrection(id, textValue) {
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
-        if (todo.id === id) 
-        {
+        if (todo.id === id) {
           todo.echeance = textValue;
-          if (todo.echeance.trim() !== "" &&  todo.echeance !== null) {
+          if (todo.echeance.trim() !== "" && todo.echeance !== null) {
             todo.echeanceIsSet = true
-            
-          } 
-          if(todo.correctionIsSet){
-             todo.echeanceIsSet = true;
+
           }
+
           else todo.echeanceIsSet = false;
-          
+
         }
         return todo
       })
@@ -546,8 +531,8 @@ handleDependanceFieldCorrectionChange(todo,field)
     this.setState(prevState => {
       const updatedTodos = prevState.dataStruc.map(todo => {
         if (todo.id === id) {
-          todo.echeanceActionCorrective = textValue ;
-          if (todo.echeanceActionCorrective.trim() !== "" &&  todo.echeanceActionCorrective !== null) {
+          todo.echeanceActionCorrective = textValue;
+          if (todo.echeanceActionCorrective.trim() !== "" && todo.echeanceActionCorrective !== null) {
             todo.echeanceActionCorrectiveIsSet = true
 
           } else todo.echeanceActionCorrectiveIsSet = false;
@@ -559,35 +544,41 @@ handleDependanceFieldCorrectionChange(todo,field)
       }
     })
   }
-  handleAddActionCorrective(){
 
+
+  //it use to add a form to handle 
+  //creation of "Action corrective"
+  handleAddActionCorrective() {
     var aux = this.state.dataStruc;
-      //action corrective zone : cause ,action corrective 
-      //echeance action corrective , acteur 
-      var data={
-      type:"actionCorrective",
+    //action corrective zone : cause ,action corrective 
+    //echeance action corrective , acteur 
+    var data = {
+      type: "actionCorrective",
       id: Math.round(Math.random() * 1000),
-      cause:"",
-      correction: "R.A.S",
-      actionCorrective:"",
+      cause: "",
+      actionCorrective: "",
       //echeance2 ====> echeance action corrective dans la bd
-      echeanceActionCorrective:"",
+      echeanceActionCorrective: "",
       idActeurDelegataire: Auth.getUsername(),
-      //field checker---
-      idActeur:  null,
-      libelleAt: this.state.dataStruc.length + 1,
-      echeanceIsSet:true,
-      correctionIsSet: true,
-      causeIsSet: false,
+      idActeur: null,
+
+      //formm field checker
       actionCorrectiveIsSet: false,
-      echeanceActionIsSet: false,
-      idActeurIsSet:false,
+      idActeurIsSet: false,
+      causeIsSet: false,
+
+      //field to auto fill
+      libelleAt: this.state.dataStruc.length + 1,
+      correction: "R.A.S",
+      echeance: "-",
+      echeanceIsSet: true,
+      correctionIsSet: true,
+
+
       //fnc id and processus id 
-      idFnc:this.state.idFnc,
-      idProcessus:this.state.idProcessus,
+      idFnc: this.state.idFnc,
+      idProcessus: this.state.idProcessus,
     }
-  
-  
     aux.push(data);
     this.setState({
       dataStruc: aux
@@ -595,12 +586,11 @@ handleDependanceFieldCorrectionChange(todo,field)
 
   }
 
-  handleAddAction() 
-  {
+  handleAddAction() {
     var aux = this.state.dataStruc;
     //correction zone : correction echeance , acteur
     var data = {
-      type:"correction",
+      type: "correction",
       id: Math.round(Math.random() * 1000),
       cause: "R.A.S",
       //echeance ===> echeance correction
@@ -610,16 +600,16 @@ handleDependanceFieldCorrectionChange(todo,field)
       correction: "",
       actionCorrective: null,
       idActeurDelegataire: Auth.getUsername(),
-      idActeur: Auth.getUsername(),
+      idActeur: "",
       libelleAt: this.state.dataStruc.length + 1,
-      echeanceIsSet:false,
+      echeanceIsSet: false,
       correctionIsSet: false,
-      causeIsSet: false,
-      actionCorrectiveIsSet: false,
-      echeanceActionIsSet: false,
-      idActeurIsSet:false,
-      idFnc:this.state.idFnc,
-      idProcessus:this.state.idProcessus
+      causeIsSet: true,
+      actionCorrectiveIsSet: true,
+      actionCorrective: "R.A.S",
+      idActeurIsSet: false,
+      idFnc: this.state.idFnc,
+      idProcessus: this.state.idProcessus
     }
     aux.push(data);
     this.setState({
@@ -662,7 +652,6 @@ handleDependanceFieldCorrectionChange(todo,field)
       correction: this.state.correction,
       echeance: this.state.echeance,
       cause: this.state.cause,
-      /// TODO A RECUPERER DANS LA SESSION
       idActeurDelegataire: Auth.getUsername(),
       idActeur: this.state.idActeur,
       libelleAt: this.state.libelle
@@ -691,9 +680,7 @@ handleDependanceFieldCorrectionChange(todo,field)
     console.log(this.state.idFnc);
     console.log(this.state.valRoutage);
     this.setState({ isLoaded: false });
-
-    
-      await fetch(ConfigUrl.basePath+'/validationRoutage/fnc',
+    await fetch(ConfigUrl.basePath + '/validationRoutage/fnc',
       {
         method: 'POST',
         headers:
@@ -746,57 +733,58 @@ handleDependanceFieldCorrectionChange(todo,field)
 
 
   handleSubmit = async e => {
-    
-    
-   var obje= this.handleValideAnalyse()
-
-    if(!obje.isValide){
-
-     
+    this.setState({
+      isLoadForSpin:false,
+      nestedModal: true
+    });    
+    var obje = this.handleValideAnalyse()
+    if (!obje.isValide) {
       this.toggleNested3()
-
-    }else{
-    e.preventDefault();
-    console.log(this.state.dataStruc);
-    await fetch(ConfigUrl.basePath+'/createTraitement/fnc',
-      {
-        method: 'POST',
-        headers:
+    } else {
+      e.preventDefault();
+      console.log(this.state.dataStruc);
+      await fetch(ConfigUrl.basePath + '/createTraitement/fnc',
         {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          "data": this.state.dataStruc,
-          "numeroId": this.state.numeroId,
+          method: 'POST',
+          headers:
+          {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            "data": this.state.dataStruc,
+            "numeroId": this.state.numeroId,
 
-        })
-      }).then(res => res.json())
-      .then(
-        (result) => {
-          this.setState(prevState => ({
-            responseToPost: prevState.responseToPost.filter(item => {
-              return item.idFnc !== this.state.idFnc;
-            })
-          }))
-          console.log(this.state.selected);
-          this.setState({
-            isLoaded: true,
-            responseSubmit: result.data.message,
-            nestedModal: true,
+          })
+        }).then(res => res.json())
+        .then(
+          (result) => {
+            this.setState(prevState => ({
+              responseToPost: prevState.responseToPost.filter(item => {
+                return item.idFnc !== this.state.idFnc;
+              })
+            }))
+            console.log(this.state.selected);
+            this.setState({
+              isLoaded: true,
+              isLoadForSpin:true,
+              responseSubmit: result.data.message,
+              nestedModal: true,
+            });
+            this.forceUpdate();
+          },
+          (error) => {
+            console.log("124", error.message);
+            alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
+            this.setState({
+              isLoaded: true,
+              errorMessage: error.message,
+              hasError: true,
+              isLoadForSpin:false,
+              nestedModal: false
+            });
           });
-          this.forceUpdate();
-        },
-        (error) => {
-          console.log("124", error.message);
-          alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
-          this.setState({
-            isLoaded: true,
-            errorMessage: error.message,
-            hasError: true
-          });
-        });
-    this.toggle();
-      }
+      this.toggle();
+    }
   }
 
   handleModifyAnalyse = itemId => {
@@ -861,13 +849,12 @@ handleDependanceFieldCorrectionChange(todo,field)
     });
   }
 
-  toggleNested3() 
-  {
+  toggleNested3() {
     this.setState({
       nestedModal3: !this.state.nestedModal3
     });
   }
- 
+
 
   toggleNested() {
     this.setState({
@@ -906,7 +893,7 @@ handleDependanceFieldCorrectionChange(todo,field)
     this.setState({ dataStruc: [] })
   }
   async componentDidMount() {
-    await fetch(ConfigUrl.basePath+"/consult/fnc",
+    await fetch(ConfigUrl.basePath + "/consult/fnc",
       {
         method: 'POST',
         headers:
@@ -971,62 +958,70 @@ handleDependanceFieldCorrectionChange(todo,field)
 
   render() {
     //ZONE POUR LES AFFICHAGES CONDITIONNELS
-    const buttonDemarrerAna = <Button size="lg" style={{backgroundColor:'#d9541e' ,color :"white" }} color="#d9541e"  block>{'Créer un plan d\'action'}</Button>
+    const buttonDemarrerAna = <Button size="lg" style={{ backgroundColor: '#d9541e', color: "white" }} color="#d9541e" block>{'Créer un plan d\'action'}</Button>
     const buttonSoumettre = <Button color="danger" size="lg" onClick={this.handleSubmitValidation} block>
       Soumettre la fiche pour correction
   </Button>
-    const textSuppression=this.state.dataStruc.length===0 ? " . Vous avez supprimer tous les plans d'action ! " : ". Mise à jour de la numérotation des analyses "
+    const textSuppression = this.state.dataStruc.length === 0 ? " . Vous avez supprimer tous les plans d'action ! " : ". Mise à jour de la numérotation des analyses "
     const conditionnalBoutton = (this.state.valRoutage) ? buttonSoumettre : buttonDemarrerAna
-    var response = (this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
-    const AnalyseItem_ = this.state.dataStruc.length!==0 
-                  ? 
-                    this.state.dataStruc.filter(item=>{return item.type==="correction"}).map(item => <AnalyseItem key={item.id} item={item} 
-                    handleChangeCorrection={this.handleChangeCorrection}
-                    handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection} 
-                    handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
-                    handleSelectComp={this.handleSelectComp} currentDate={this.currentDate} 
-                    handleChangeDelete={this.handleChangeDelete} 
-                    handleChangeCause={this.handleChangeCause}
-                    handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
-                  : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucun plan d\'action créer  {' '}
-                    <Button outline color="none" onClick={this.handleAddAction()}>
-                            <FontAwesomeIcon
-                              icon="plus-circle"
-                              color="green"
-                              size="5x"
-                              title="Ajouter une analyse "
-                            />
-                          </Button></h2>
-                  </Col>
-                  </React.Fragment>
-    const actionCorrectiveItem = this.state.dataStruc.length!==0 
-    ? 
-      this.state.dataStruc.filter(item=>{return item.type==="actionCorrective"}).map(item => <ActionCorrectiveItem key={item.id} item={item} 
-      handleChangeCorrection={this.handleChangeCorrection}
-      handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection} 
-      handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
-      handleSelectComp={this.handleSelectComp} currentDate={this.currentDate} 
-      handleChangeDelete={this.handleChangeDelete} 
-      handleChangeCause={this.handleChangeCause}
-      handleChangeActionCorrective={this.handleChangeActionCorrective}/>)
-    : <React.Fragment><Col style={{marginTop:"18%"}} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée  {' '}
-      <Button outline color="none" onClick={this.handleAddActionCorrective}>
-              <FontAwesomeIcon
-                icon="plus-circle"
-                color="green"
-                size="5x"
-                title="Ajouter un plan d'action "
-              />
-            </Button></h2>
-    </Col>
-    </React.Fragment>
+    var response = (this.state.isLoadForSpin) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
+    //CORRECTION
+    const AnalyseItem_ = this.state.dataStruc.length !== 0
+      ?
+      this.state.dataStruc.filter(item => { return item.type === "correction" }).map(item => <AnalyseItem key={item.id} item={item}
+        handleChangeCorrection={this.handleChangeCorrection}
+        handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection}
+        handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
+        handleSelectComp={this.handleSelectComp} currentDate={this.currentDate}
+        handleChangeDelete={this.handleChangeDelete}
+        handleChangeCause={this.handleChangeCause}
+        handleChangeActionCorrective={this.handleChangeActionCorrective} />)
+      : <React.Fragment><Col style={{ marginTop: "18%" }} md={12}><h2 style={{ textAlign: "center" }} >Aucun plan d'action créer  {" "}
+        <Button outline color="none" onClick={this.handleAddAction}>
+          <FontAwesomeIcon
+            icon="plus-circle"
+            color="green"
+            size="5x"
+            title="Ajouter une analyse "
+          />
+        </Button></h2>
+      </Col>
+      </React.Fragment>
+    //ACTION CORRECTIVE 
+    const actionCorrectiveItem_ = this.state.dataStruc.length !== 0
+      ?
+      this.state.dataStruc.filter(item => { return item.type === "actionCorrective" }).map(item => <ActionCorrectiveItem key={item.id} item={item}
+        handleChangeCorrection={this.handleChangeCorrection}
+        handleChangeEcheanceCorrection={this.handleChangeEcheanceCorrection}
+        handleChangeEcheanceActionCorrective={this.handleChangeEcheanceActionCorrective}
+        handleSelectComp={this.handleSelectComp} currentDate={this.currentDate}
+        handleChangeDelete={this.handleChangeDelete}
+        handleChangeCause={this.handleChangeCause}
+        handleChangeActionCorrective={this.handleChangeActionCorrective} />)
+      : <React.Fragment>
+        <Col style={{ marginTop: "18%" }} md={12}><h2 style={{ textAlign: "center" }} >Aucune analyse créée  {' '}
+          <Button outline color="none" onClick={this.handleAddActionCorrective}>
+            <FontAwesomeIcon
+              icon="plus-circle"
+              color="green"
+              size="5x"
+              title="Ajouter un plan d'action "
+            />
+          </Button></h2>
+        </Col>
+      </React.Fragment>
 
 
 
-    const invalidFill= this.state.dataStruc.length===0 ? "Veuillez creer une analyse avant de soumettre" : "Analyse incorrecte. Verifier tous les champs avant de soumettre"
+    const invalidFill = this.state.dataStruc.length === 0 ?
+      "Veuillez creer un plan d'action avant de soumettre" : <> <h4>Remplissez correctement les champs suivants</h4>
+        {this.state.formFieldMissFill.map(item => <MissFormFillDisplay key={item.id} item={item}>
+
+        </MissFormFillDisplay>)}</>
+
 
     ////LIBRARY//////////////////////////////////////////////////////////////////////////////////////////  //////////
-    library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle,faWindowClose);//////////////  //////////
+    library.add(faPen, faBan, faTrash, faPlusCircle, faExclamationTriangle, faWindowClose);//////////////  //////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////  //////////
 
 
@@ -1051,10 +1046,10 @@ handleDependanceFieldCorrectionChange(todo,field)
             centered
             aria-labelledby="example-modal-sizes-title-lg"
             backdrop="static"
-          >             
-          <TabSwitcher>
-            <ModalHeader toggle={this.toggle}>Créer le plan d'action</ModalHeader>
-            <ModalBody>
+          >
+            <TabSwitcher>
+              <ModalHeader toggle={this.toggle}>Créer le plan d'action</ModalHeader>
+              <ModalBody>
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE-VALIDATION ROUTAGE*/}
                 <TabPanel whenActive={1}>
                   <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
@@ -1108,7 +1103,7 @@ handleDependanceFieldCorrectionChange(todo,field)
                   </Form>
                 </TabPanel>
                 <TabPanel whenActive={2}>
-                  <h1 style={{ textAlign: "center" }}>CREER L'ANALYSE</h1>
+                  <h1 style={{ textAlign: "center" }}>CREER UN PLAN D'ACTION </h1>
                   <Form onSubmit={this.handleSubmit}>
                     <Row>
                       <Col>
@@ -1118,22 +1113,22 @@ handleDependanceFieldCorrectionChange(todo,field)
                               icon="plus-circle"
                               color="green"
                               size="md"
-                            />{" Ajouter"}  
+                            />{" Ajouter"}
                           </Button>
-                          {"   "} Nombre d'analyse : {this.state.dataStruc.length}
+                          {/* {"   "} Nombre d'analyse : {this.state.dataStruc.length} */}
                         </small>
                       </Col>
                       <Col>
-                        <small style={{ textAlign: "center" }}>
+                        <div style={{ justifyContent: "flex-end" }}>
                           <Button outline color="success" onClick={this.handleAddActionCorrective}>
                             <FontAwesomeIcon
                               icon="plus-circle"
                               color="green"
                               size="md"
-                            />{" Ajouter une action corrective"}  
+                            />{" Ajouter une action corrective"}
                           </Button>
-                          {"   "} Nombre d'analyse : {this.state.dataStruc.length}
-                        </small>
+                          {/* {"   "} Nombre d'analyse : {this.state.dataStruc.length} */}
+                        </div>
                       </Col>
                       {/* <Col>
                         <small style={{ textAlign: "center" }}>
@@ -1148,12 +1143,13 @@ handleDependanceFieldCorrectionChange(todo,field)
                       </Col> */}
                     </Row>
                     <br></br>
-                  <Col style={{ borderStyle: "inset", overflowY: "scroll", overflowX:"hidden", height: "600px" ,backgroundColor:"#E8E8E8"}}>
-                    <Row>
-                    <Col md={6}> {AnalyseItem_}</Col>
-                    <Col md={6}>{actionCorrectiveItem}</Col> 
-                    </Row>
-                  </Col>
+                    {/*BLOCK DES PLAN D'ACTIONS */}
+                    <Col style={{ borderStyle: "inset", overflowY: "scroll", overflowX: "hidden", height: "600px", backgroundColor: "#E8E8E8" }}>
+                      <Row>
+                        <Col md={6}> {AnalyseItem_}</Col>
+                        <Col md={6}>{actionCorrectiveItem_}</Col>
+                      </Row>
+                    </Col>
                   </Form >
                   <Row>&nbsp;</Row>
                   <br></br>
@@ -1161,18 +1157,18 @@ handleDependanceFieldCorrectionChange(todo,field)
                     <Button>Retour</Button>
                   </Tab>
                 </TabPanel>
-            </ModalBody>
-            <ModalFooter>
-              <TabPanel whenActive={2}>
-              <Button color="danger" onClick={this.handleSubmit} >
-                {this.state.dataStruc.length > 1 ? "Soumettre les analyses" : "Soumettre l'analyse"}
-              </Button>
-              </TabPanel>
-            
-              <Button color="secondary" onClick={this.toggle}>
-                Annuler
+              </ModalBody>
+              <ModalFooter>
+                <TabPanel whenActive={2}>
+                  <Button color="danger" onClick={this.handleSubmit} >
+                    {this.state.dataStruc.length > 1 ? "Soumettre les plans d'action " : "Soumettre le plan d'action"}
+                  </Button>
+                </TabPanel>
+
+                <Button color="secondary" onClick={this.toggle}>
+                  Annuler
             </Button>
-            </ModalFooter>
+              </ModalFooter>
             </TabSwitcher>
           </Modal>
           <Modal isOpen={this.state.nestedModal}
@@ -1180,7 +1176,7 @@ handleDependanceFieldCorrectionChange(todo,field)
             onClosed={this.state.closeAll ? this.toggle : undefined}
             centered
             size="sm">
-            <ModalBody toggle={this.toggleNested} >{response  } </ModalBody>
+            <ModalBody toggle={this.toggleNested} >{response} </ModalBody>
           </Modal>
           <Modal isOpen={this.state.nestedModal2}
             toggle={this.toggleNested2}
