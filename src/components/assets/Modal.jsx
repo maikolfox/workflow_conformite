@@ -174,7 +174,7 @@ class ModalRensFNC extends React.Component {
 
     return (
       <div>
-        <Button color="danger" onClick={this.toggle}>
+        <Button  style={{ backgroundColor: '#d9541e', color: "white" }} color="#d9541e" /*style={{backgroundColor:"#e44200" }}*/ onClick={this.toggle}>
           {this.props.buttonLabel}
         </Button>
         <Modal
