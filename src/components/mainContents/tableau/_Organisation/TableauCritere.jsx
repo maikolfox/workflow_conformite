@@ -834,7 +834,6 @@ export default class TableauCritere extends React.Component {
               }
               else { this.setState({ echeance2IsSet: false }) }
             }}>
-            >
                         </Input>
           <FormText hidden={this.state.echeance2IsSet}>Renseigner l'écheance de l'action corrective</FormText>
         </Col>
@@ -1064,7 +1063,8 @@ export default class TableauCritere extends React.Component {
                       <Button style={{
                         position: "relative",
                          left: "18%",
-                         top  :"0px"
+                         top  :"0px",
+
                       }}>Annuler</Button>
                     </Tab>
                     <Tab id="1" maxStep={3} step={1}>
@@ -1072,7 +1072,7 @@ export default class TableauCritere extends React.Component {
                          style={{
                           position: "relative",
                           left: "28%",                          
-                          top  :"0px",
+                          top  :"0px"
                         }}
                         color="danger" 
                         disabled={!(
