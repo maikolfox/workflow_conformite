@@ -133,7 +133,7 @@ async getStatsGlobale()
 
     
 
-         const response1 = await fetch(ConfigUrl.basePath+'/statistisquefncRecueGlobale/fnc',
+    const response1 = await fetch(ConfigUrl.basePath+'/statistisquefncRecueGlobale/fnc',
       {
         method: 'POST',
         headers:
@@ -260,14 +260,14 @@ const current_date = new Date()
                 <CardBody>
                     <Row style={{ paddingLeft: "2%", marginRight: "10%", overflow: "hidden" }}>
                         <Col lg={{ size: "3" }} style={{ backgroundColor: "#17a2b8", height: "auto" }}>
-                            <h2>Nombre Fnc reçue {stars}</h2>
+                            <h2>Nombre FNC reçue {stars}</h2>
                             <p style={style_}>{this.state.fncRecu}</p>
                         </Col>
                         <Col lg={{ size: "3", offset: "1" }} style={{ backgroundColor: "#28a745" }}>
-                            <h2>Nombre Fnc traitée{stars} </h2>
+                            <h2>Nombre FNC traitée{stars} </h2>
                             <p style={style_}>{this.state.fncTraite}</p></Col>
                         <Col lg={{ size: "3", offset: "1" }} style={{ backgroundColor: "#FFB31B" }}>
-                            <h2>Nombre Fnc non traitée{stars}</h2>
+                            <h2>Nombre FNC non traitée{stars}</h2>
                             <p style={style_}>{this.state.fncNonTraite}</p>
                         </Col>
                     </Row>

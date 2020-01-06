@@ -69,7 +69,7 @@ export default class ConsultationActAff extends React.Component {
 
         actionCorrective: '',
         actionCorrectiveIsSet: '',
-
+        isLoadedForSpin:false,
         cause: '',
         causeIsSet: '',
 
@@ -238,7 +238,6 @@ export default class ConsultationActAff extends React.Component {
       .then(
         (result) => {
 
-          this.loadActionAffecte()
           console.log(this.state.selected);
           this.setState({
             isLoaded: true,
@@ -255,11 +254,8 @@ export default class ConsultationActAff extends React.Component {
             hasError: true
           });
         });
+    // this.loadActionAffecte();
     this.toggle();
-
-
-
-
   }
 
 
@@ -405,6 +401,13 @@ export default class ConsultationActAff extends React.Component {
 
   async onClickHandler() 
   {
+    this.setState(
+      {
+      ResultModal:true, 
+      isLoadedForSpin:false
+      }
+      )
+  
     var dataFile = new FormData();
     if(this.state.fileArray.length!==0)
     {  
@@ -433,6 +436,7 @@ export default class ConsultationActAff extends React.Component {
     }).then(response=> {
         console.log(response);
            this.setState({
+            isLoadedForSpin:true,
              isLoaded: true,
              responseSubmit: response.data.data.message,
              hasError: false
@@ -442,14 +446,16 @@ export default class ConsultationActAff extends React.Component {
           console.log("124", error);
           alert("Erreur lors de la communication avec le serveur , contacter les administrateurs si le problème persiste");
           this.setState({
+            isLoadedForSpin:true,
             isLoaded: true,
             responseSubmit: error,
             hasError: true
           })
         }).finally(()=>{
+          this.setState({isLoadedForSpin:true})
           this.toggleNested();
           this.toggle();
-          this.toggleResultModal()
+          this.toggleResultModal();
           this.loadActionAffecte();
         })
   }
@@ -532,7 +538,7 @@ export default class ConsultationActAff extends React.Component {
     
 
 
-    var response = (this.state.isLoaded) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
+    var response = (this.state.isLoadedForSpin) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}

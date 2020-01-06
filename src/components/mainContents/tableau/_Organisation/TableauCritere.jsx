@@ -98,7 +98,7 @@ export default class TableauCritere extends React.Component {
         echeanceIsSet: false,
         isLoadedAna: false,
         isLoadForSpin: false,
-
+        typePlan:"",
         hasError: '',
         errorMessage: '',
         responseSubmit: '',
@@ -109,7 +109,8 @@ export default class TableauCritere extends React.Component {
         //selectedAnalyse: null,
 
         critereIsSet: false,
-echeance2:"",
+        echeance2:"",
+        echeance2IsSet:false,
         selectedAnaCreIndex: null,
         selectedAnaCre: null,
         collapse: false,
@@ -275,7 +276,9 @@ echeance2:"",
             responseSubmit:error.message,
           });
 
-        });
+        }).finally(
+          this.setState({isLoadForSpin:false})
+        );
 
   }
 
@@ -371,7 +374,8 @@ echeance2:"",
             errorMessage: error.message,
             hasError: true
           });
-        });
+        })
+
     //this.toggle();
   }
 
@@ -603,7 +607,7 @@ echeance2:"",
       </Col>
       <Row>&nbsp;</Row>
       {/*echeance action correctives*/}
-      <Label for="exampleEmail" md={12}>Echéance action correctives</Label>
+      <Label for="exampleEmail" md={12}>Echéance action corrective</Label>
       <Col md={{ size: 12, order: 1, offset: -1 }}>
         <Input
           type="date"
@@ -736,19 +740,20 @@ echeance2:"",
     const analyseRetrieveColum = [
 
       {
-        Header: 'N° Analyse',
+        Header: "N° plan d'action",
         accessor: 'libelleAt',
-        width: 90
+        width: 180
 
       },
       {
-        Header: 'Email de l\'Acteur traitant',
+        Header: 'Acteur traitant',
         accessor: 'idActeurFormat',
       },
 
       {
-        Header: 'Email du Responsable de traitement',
+        Header: 'Responsable de traitement',
         accessor: 'idActeurDelegataireFormat',
+        width: 220
 
       },
       {
@@ -756,29 +761,132 @@ echeance2:"",
         accessor: 'dateCreationAnalyseFormat',
       },
       {
-        Header: 'Echéances correction',
+        Header: 'Echéance correction',
         accessor: 'echeancesFormat',
 
       },
 
       {
-        Header: 'Echeances Action Corrective',
-        accessor: 'echeanceActionCorrectivesFormat'
+        Header: 'Echéance action Corrective',
+        accessor: 'echeanceActionCorrectivesFormat',
 
       }
 
     ]
 
 
+    const typePlanAction=  this.state.typePlan==="Action corrective"  
+      ?
+      <React.Fragment>
+        {/*Cause*/}
+        <Label for="exampleEmail" md={12}>Cause</Label>
+        <Col md={{ size: 12, order: 1, offset: -1 }}>
+          <Input valid={this.state.causeIsSet}
+            type="textarea"
+            id="selectAgence"
+            name="selectbasic"
+            value={this.state.cause}
+            onChange={e => {
+              this.setState({ cause: e.target.value })
+              if (e.target.value !== null && e.target.value !== "") {
+                this.setState({ causeIsSet: true })
+              }
+              else { this.setState({ causeIsSet: false }) }
+            }}>
+          </Input>
+          <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
+        </Col>
+        <Row>&nbsp;</Row>
+        {/*Actions correctives*/}
+        <Label for="exampleEmail" md={12}>Actions correctives</Label>
+        <Col md={{ size: 12, order: 1, offset: -1 }}>
+          <Input valid={this.state.actionCorrectiveIsSet}
+            type="textarea"
+            id="selectAgence"
+            name="selectbasic"
+            value={this.state.actionCorrective}
+            onChange={e => {
+              this.setState({ actionCorrective: e.target.value })
+              if (e.target.value !== null && e.target.value !== "") {
+                this.setState({ actionCorrectiveIsSet: true })
+              }
+              else { this.setState({ actionCorrectiveIsSet: false }) }
+            }}>
+          </Input>
+          <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
+        </Col>
+        <Row>&nbsp;</Row>
+
+        {/*Echéance action corrective*/}
+        <Label for="exampleEmail" md={12}>Echéance action corrective</Label>
+        <Col md={{ size: 12, order: 1, offset: -1 }}>
+          <Input
+            valid={this.state.echeance2IsSet}
+            type="date"
+            id="selectAgence"
+            name="selectbasic"
+            value={this.state.echeance2}
+            onChange={e => {
+              e.preventDefault();
+              this.setState({ echeance2: e.target.value })
+              if (e.target.value !== null && e.target.value !== "") {
+                this.setState({ echeance2IsSet: true })
+              }
+              else { this.setState({ echeance2IsSet: false }) }
+            }}>
+            >
+                        </Input>
+          <FormText hidden={this.state.echeance2IsSet}>Renseigner l'écheance de l'action corrective</FormText>
+        </Col>
+        <Row>&nbsp;</Row>
+      </React.Fragment>
+    :
+      <React.Fragment>
+        {/*Correction*/}
+        <Label for="exampleEmail" md={12}>Correction</Label>
+        <Col md={{ size: 12, order: 1, offset: -1 }}>
+          <Input valid={this.state.correctionIsSet}
+            type="textarea"
+            id="selectAgence"
+            name="selectbasic"
+            value={this.state.correction}
+            onChange={e => {
+              this.setState({ correction: e.target.value })
+              if (e.target.value !== null && e.target.value !== "") {
+                this.setState({ correctionIsSet: true })
+              }
+              else { this.setState({ correctionIsSet: false }) }
+            }}>
+          </Input>
+          <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
+        </Col>
+        <Row>&nbsp;</Row>
+        {/* Echéances */}
+        <Label for="exampleEmail" md={12}>Echéance correction</Label>
+        <Col md={{ size: 12, order: 1, offset: -1 }}>
+          <Input valid={this.state.echeanceIsSet}
+            type="date"
+            id="selectAgence"
+            // min={this.currentDate()}
+            name="selectbasic"
+            value={this.state.echeance}
+            onChange={e => {
+              e.preventDefault();
+              this.setState({ echeance: e.target.value })
+              if (e.target.value !== null && e.target.value !== "") {
+                this.setState({ echeanceIsSet: true })
+              }
+              else { this.setState({ echeanceIsSet: false }) }
+            }}>
+          </Input>
+          <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
+        </Col>
+        <Row>&nbsp;</Row>
+      </React.Fragment>
 
 
 
-
-    // if(this.state.unAutorize)
-    // {
-    //     return(<Authorization/>) 
-    // }
-    //else
+   
     return (
       <React.Fragment>
         {/*REACT  MODAL FORM*/}
@@ -799,7 +907,7 @@ echeance2:"",
                 {/* ETAPE 1 RECAPITULATIF DES INFOS DE LA FICHE  */}
                 <TabPanel whenActive={1}>
                   <br></br>
-                  <h1 style={{ textAlign: "center" }}>Analyse(s) crée(s) pour la fiche {this.state.numeroId}</h1>
+                  <h3 style={{ textAlign: "center" }}>Plan d'action(s) crée(s) pour la fiche {this.state.numeroId}</h3>
                   <Col>
                       <small textAlign="center">
                       Selectionner une analyse creer un critère et soummettez une fois que 
@@ -827,7 +935,15 @@ echeance2:"",
                           onClick: (e) => {
                             e.preventDefault();
                             // var idFnc;
-                            // var  nbrAna;
+                           var  nbrAna;
+                           if(rowInfo.original.correction==="R.A.S"){
+
+                            nbrAna="Action corrective"
+                           }
+                           else{
+
+                            nbrAna="Correction"
+                           }
                             this.setState({
                               //PAY ATTENTION 
                               selectedAnaCreIndex: rowInfo.index,
@@ -840,7 +956,8 @@ echeance2:"",
                               echeance: rowInfo.original.echeances,
                               echeance2:rowInfo.original.echeances2,
                               cause: rowInfo.original.cause,
-                              nomPrenom: rowInfo.original.idActeur
+                              nomPrenom: rowInfo.original.idActeur,
+                              typePlan:nbrAna
                             });
                             console.log(rowInfo.original);
                           },
@@ -915,85 +1032,24 @@ echeance2:"",
                   {/* MODIFICATION ANALYSE */}
                   <h1 style={{ textAlign: "center" }}>Modifier le plan d'action</h1>
                   <Form onSubmit={this.handleSubmit}>
+
                     <FormGroup>
-                      {/*Correction*/}
-                      <Label for="exampleEmail" md={12}>Correction</Label>
+                    {/*TYPE PLAN D'ACTION*/}
+                    <Label for="exampleEmail" md={12}>Type de plan d'action</Label>
                       <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.correctionIsSet} 
-                          type="textarea"
+                        <Input valid={true} 
+                          type="select"
                           id="selectAgence"
                           name="selectbasic"
-                          value={this.state.correction}
-                          onChange={e => {
-                            this.setState({ correction: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ correctionIsSet: true })
-                            }
-                            else { this.setState({ correctionIsSet: false }) }
-                          }}>
+                          value={this.state.typePlan} 
+                          onChange={e => 
+                           {this.setState({ typePlan: e.target.value })}}>
+                            <option>Action corrective</option>
+                            <option>Correction</option>
                         </Input>
-                        <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
                       </Col>
                       <Row>&nbsp;</Row>
-                      {/*Cause*/}
-                      <Label for="exampleEmail" md={12}>Cause</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.causeIsSet} 
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.cause}
-                          onChange={e => {
-                            this.setState({ cause: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ causeIsSet: true })
-                            }
-                            else { this.setState({ causeIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Actions correctives*/}
-                      <Label for="exampleEmail" md={12}>Actions correctives</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.actionCorrectiveIsSet} 
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.actionCorrective}
-                          onChange={e => {
-                            this.setState({ actionCorrective: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ actionCorrectiveIsSet: true })
-                            }
-                            else { this.setState({ actionCorrectiveIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Echéances*/}
-                      <Label for="exampleEmail" md={12}>Echéance évaluation</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.echeanceIsSet} 
-                          type="date"
-                          id="selectAgence"
-                          // min={this.currentDate()}
-                          name="selectbasic"
-                          value={this.state.echeance}
-                          onChange={e => {
-                            e.preventDefault();
-                            this.setState({ echeance: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ echeanceIsSet: true })
-                            }
-                            else { this.setState({ echeanceIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
+                      {typePlanAction}
                       {/* CHOIX DE L'ACTEUR TRAITANT*/}
                       <Label for="acteurName" md={12}>Choix de l'acteur traitant</Label>
                       <Col md={12}>
@@ -1005,16 +1061,34 @@ echeance2:"",
                   <br />
                   <Row>
                     <Tab id="1" maxStep={3} step={1}>
-                      <Button>Annuler</Button>
+                      <Button style={{
+                        position: "relative",
+                         left: "18%",
+                         top  :"0px"
+                      }}>Annuler</Button>
                     </Tab>
-                    <Col md="8" ></Col>
                     <Tab id="1" maxStep={3} step={1}>
-                      <Button  
+                      <Button 
+                         style={{
+                          position: "relative",
+                          left: "28%",                          
+                          top  :"0px",
+                        }}
                         color="danger" 
-                        disabled={!(this.state.idActeurIsSet)}
+                        disabled={!(
+                           (this.state.typePlan==="Action corrective" 
+                           && this.state.causeIsSet 
+                           && this.state.actionCorrectiveIsSet
+                           && this.state.echeance2IsSet
+                           && this.state.idActeurIsSet) ||
+                           (this.state.typePlan==="Correction" 
+                           && this.state.correctionIsSet 
+                           && this.state.echeance2IsSet
+                           && this.state.idActeurIsSet)
+                          )}
                         onClick={e => {
-                        e.preventDefault();
-                        this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
+                         e.preventDefault();
+                         this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
                       }}>Valider la modification</Button>
                     </Tab>
                   </Row>

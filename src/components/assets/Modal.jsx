@@ -4,9 +4,9 @@ import FamilleProcessus from "./FamilleProcessus";
 import Source from "./Source";
 import Loader from "./Loader"
 import QualificationList from "./qualificationList";
-import App from '../../setupProxy';
 import Auth from "./Auth";
 import ConfigUrl from "./ConfigUrl"
+
 import {
   Button,
   Modal,
@@ -43,7 +43,8 @@ class ModalRensFNC extends React.Component {
       listeProcessus:Processus,
       isLoaded:false,
       responseSubmit: "",
-      hasError: false
+      hasError: false,
+      isLoadForSpin:false 
     };
     this.toggle = this.toggle.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -62,9 +63,14 @@ class ModalRensFNC extends React.Component {
       this.setState({famille:filtFam[0].idFamille,familleIsSet :(filtFam[0].idFamille==="")?false:true})
   };
   handleSubmit = async e=>{
+    this.setState({
+      nestedModal: true}) ;
+      this.toggle();
+
     const libelleFam=FamilleProcessus.find(item=>{return item.idFamille===this.state.famille}).libelleFamille;
     const libelleSource=Source.find(item=>{return item.idSource===this.state.idSource}).libelleSource;
     const libelleProcessus=Processus.find(item=>{return item.idProcessus===this.state.idProcessus}).libelleProcessus;
+      
     e.preventDefault();
        await fetch(ConfigUrl.basePath+'/create/fnc',
         {
@@ -96,7 +102,6 @@ class ModalRensFNC extends React.Component {
             this.setState({
               isLoaded: true,
               responseSubmit: result.data.message,
-              nestedModal: true,
             });
           },
           (error) => {
@@ -112,7 +117,6 @@ class ModalRensFNC extends React.Component {
       // this.setState({ responseToPost: JSON.parse(body) });  
       console.log(this.state.responseToPost);
       
-      this.toggle();
 
   }
 

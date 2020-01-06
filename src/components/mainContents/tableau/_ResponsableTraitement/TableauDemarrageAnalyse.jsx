@@ -316,7 +316,6 @@ export default class DemarrageAnalyse extends React.Component {
             fieldTab.planDaction = el.libelleAt
             fieldTab.field.push("Acteur")
           }
-          formFieldMissFill.push(fieldTab)
         }
 
         if (el.type === "actionCorrective") {
@@ -347,9 +346,12 @@ export default class DemarrageAnalyse extends React.Component {
             fieldTab.planDaction = el.libelleAt;
             fieldTab.field.push("Acteur");
           }
+         
+        }
+        if(fieldTab.field.length!==0)
+        { 
           formFieldMissFill.push(fieldTab)
         }
-
       })
 
 
@@ -733,15 +735,16 @@ export default class DemarrageAnalyse extends React.Component {
 
 
   handleSubmit = async e => {
-    this.setState({
-      isLoadForSpin:false,
-      nestedModal: true
-    });    
+       
     var obje = this.handleValideAnalyse()
     if (!obje.isValide) {
       this.toggleNested3()
     } else {
       e.preventDefault();
+      this.setState({
+        isLoadForSpin:false,
+        nestedModal: true
+      }); 
       console.log(this.state.dataStruc);
       await fetch(ConfigUrl.basePath + '/createTraitement/fnc',
         {
@@ -1015,9 +1018,7 @@ export default class DemarrageAnalyse extends React.Component {
 
     const invalidFill = this.state.dataStruc.length === 0 ?
       "Veuillez creer un plan d'action avant de soumettre" : <> <h4>Remplissez correctement les champs suivants</h4>
-        {this.state.formFieldMissFill.map(item => <MissFormFillDisplay key={item.id} item={item}>
-
-        </MissFormFillDisplay>)}</>
+        {this.state.formFieldMissFill.map(item => <MissFormFillDisplay key={item.id} item={item}></MissFormFillDisplay>)}</>
 
 
     ////LIBRARY//////////////////////////////////////////////////////////////////////////////////////////  //////////

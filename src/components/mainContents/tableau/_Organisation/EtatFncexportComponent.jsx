@@ -25,6 +25,5 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
         );
     }
 } 
-{/* <ExcelColumn label="Marital Status"
-value={(col) => col.is_married ? "Married" :  1 ?  2:    "Single" }/> */}
+
 

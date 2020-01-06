@@ -11,7 +11,7 @@ class Home extends Component {
         const simpleStyle=
         {
                 position: "absolute",
-        left: "35%",
+        left: "30%",
         top: "22%",
         borderRadius:"10px",
         width: "40%",
@@ -36,19 +36,19 @@ class Home extends Component {
         return (
             <div style={homeStyle}>
                 <NavBarMain />
-                {/* <Jumbotron  fluid style={styleHeight} > */}
-                    {/* <Container style={homeStyle}> */}
-                        <h1>WORKFLOW FNC ? </h1>
-                             {/* <img src="/image/background.jpg" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /> */}
                             <span style={simpleStyle}>
+                            <h1 style={{textAlign:"center"}} ><strong>WORKFLOW GESTION *FNC ? </strong></h1>
+                            <br/>
                             <p >
-                                L'application <strong>"WORKFLOW FNC"</strong> a pour principaux objectifs :
+                                L'application <strong>"WORKFLOW GESTION FNC"</strong> a pour principaux objectifs :
                                 <ul>
                                     <li>La facilitation de l’enregistrement</li>
                                     <li>Le traitement</li>
                                     <li>Le suivi</li>    
                                 </ul>   
                              des fiches de non-conformités  
+                             <br/>
+                             <small style={{color:"#fff"}}>* Fiche de Non-Conformité</small>
                             </p>
                             <Row>&nbsp;</Row>
                             <Row >
@@ -57,8 +57,6 @@ class Home extends Component {
                             </Col>
                             </Row>
                             </span>         
-                    {/* </Container> */}
-                {/* </Jumbotron> */}
             </div>
         )
     }
