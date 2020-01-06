@@ -410,7 +410,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                         </ModalBody>
                         <ModalFooter>
                             <Button color="danger" onClick={this.handleSubmit_evaluation} disabled={
-                                (this.state.preuve.trim()==="") || (this.state.evaluationEff === "") || (this.state.niveauSatisfaction==="")
+                                (this.state.preuve.trim()==="") || (this.state.evaluationEff === "")
                                 
                                 }>
                                 {"Soumettre l'évaluation"}

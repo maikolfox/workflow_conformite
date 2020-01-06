@@ -42,7 +42,7 @@ class Home extends Component {
                              {/* <img src="/image/background.jpg" alt="Proffesionnalisme" style={{marginTop :'8px'}} height="100%" width="100%" /> */}
                             <span style={simpleStyle}>
                             <p >
-                                l'application <strong>"WORKFLOW FNC"</strong> a pour principaux objectifs :
+                                L'application <strong>"WORKFLOW FNC"</strong> a pour principaux objectifs :
                                 <ul>
                                     <li>La facilitation de l’enregistrement</li>
                                     <li>Le traitement</li>

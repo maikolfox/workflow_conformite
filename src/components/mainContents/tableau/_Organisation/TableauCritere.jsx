@@ -25,6 +25,7 @@ import Auth from "../../../assets/Auth"
 import DisplayNomPrenom from '../../../assets/displayNomPrenom' ;
 import DateFormatTransform from '../../../assets/dateFormatTransform' ;
 import ConfigUrl from '../../../assets/ConfigUrl'
+import Loader from "../../../assets/Loader";
 
 import {
   Button,
@@ -96,6 +97,8 @@ export default class TableauCritere extends React.Component {
 
         echeanceIsSet: false,
         isLoadedAna: false,
+        isLoadForSpin: false,
+
         hasError: '',
         errorMessage: '',
         responseSubmit: '',
@@ -106,7 +109,7 @@ export default class TableauCritere extends React.Component {
         //selectedAnalyse: null,
 
         critereIsSet: false,
-
+echeance2:"",
         selectedAnaCreIndex: null,
         selectedAnaCre: null,
         collapse: false,
@@ -216,6 +219,9 @@ export default class TableauCritere extends React.Component {
   handleSubmit = async e => {
     e.preventDefault();
     console.log(this.state.dataStruc);
+    this.setState({
+      nestedModal: true
+    })
     await fetch(ConfigUrl.basePath+'/createCriter/fnc',
       {
         method: 'POST',
@@ -231,8 +237,8 @@ export default class TableauCritere extends React.Component {
               "critereObjet": this.state.criterObject
             },
             "notifData": {
-              "idActeur": this.state.idActeur,
-              "idResponsableTraitement": this.state.nomPrenom,
+              "idActeur": this.state.selectedAnaCre.idActeur,
+              "idResponsableTraitement": this.state.selectedAnaCre.idActeurDelegataire,
               "numeroId": this.state.numeroId
             }
           }
@@ -248,6 +254,8 @@ export default class TableauCritere extends React.Component {
           }))
           this.setState({
             isLoaded: true,
+            isLoadForSpin:true,
+
             responseSubmit: result.data.message,
             nestedModal: true,
             criterObject: []
@@ -262,8 +270,9 @@ export default class TableauCritere extends React.Component {
             isLoaded: true,
             errorMessage: error.message,
             hasError: true,
-            criterObject: []
-
+            criterObject: [],
+            isLoadForSpin:false,
+            responseSubmit:error.message,
           });
 
         });
@@ -409,7 +418,7 @@ export default class TableauCritere extends React.Component {
               el.idActeurDelegataireFormat= DisplayNomPrenom(el.idActeurDelegataire);
               el.echeancesFormat=DateFormatTransform(el.echeances);
               el.dateCreationAnalyseFormat=DateFormatTransform(el.dateCreationAnalyse);
-              el.echeanceActionCorrectivesFormat=DateFormatTransform(el.echeance2);
+              el.echeanceActionCorrectivesFormat=DateFormatTransform(el.echeances2);
 
             })
             this.setState({
@@ -542,6 +551,7 @@ export default class TableauCritere extends React.Component {
     ///LIBRARY//////////////////////////////////////////////
     library.add(faPen, faBan, faTrash, faPlusCircle, faEye);
     ////////////////////////////////////////////////////////
+    var response = (this.state.isLoadForSpin) ? this.state.responseSubmit : <React.Fragment><Loader></Loader><p style={{ textAlign: 'center' }}>Chargement en cours...</p></React.Fragment>
 
     const criterObjDisplay = this.state.criterObject.map(item => (
       <CritereItem
@@ -592,8 +602,20 @@ export default class TableauCritere extends React.Component {
         </Input>
       </Col>
       <Row>&nbsp;</Row>
+      {/*echeance action correctives*/}
+      <Label for="exampleEmail" md={12}>Echéance action correctives</Label>
+      <Col md={{ size: 12, order: 1, offset: -1 }}>
+        <Input
+          type="date"
+          id="selectAgence"
+          disabled={true}
+          name="selectbasic"
+          value={this.state.echeance2}>
+        </Input>
+      </Col>
+      <Row>&nbsp;</Row>
       {/*Echéances*/}
-      <Label for="exampleEmail" md={12}>Echéances</Label>
+      <Label for="exampleEmail" md={12}>Echéance correction</Label>
       <Col md={{ size: 12, order: 1, offset: -1 }}>
         <Input
           type="date"
@@ -734,7 +756,7 @@ export default class TableauCritere extends React.Component {
         accessor: 'dateCreationAnalyseFormat',
       },
       {
-        Header: 'Echeances',
+        Header: 'Echéances correction',
         accessor: 'echeancesFormat',
 
       },
@@ -816,6 +838,7 @@ export default class TableauCritere extends React.Component {
                               correction: rowInfo.original.correction,
                               actionCorrective: rowInfo.original.actionCorrective,
                               echeance: rowInfo.original.echeances,
+                              echeance2:rowInfo.original.echeances2,
                               cause: rowInfo.original.cause,
                               nomPrenom: rowInfo.original.idActeur
                             });
@@ -1115,7 +1138,7 @@ export default class TableauCritere extends React.Component {
             onClosed={this.state.closeAll ? this.toggle : undefined}
             centered
             size="sm">
-            <ModalHeader toggle={this.toggleNested} >{this.state.responseSubmit}</ModalHeader>
+            <ModalHeader toggle={this.toggleNested} >{response}</ModalHeader>
           </Modal>
         </div>
         {/*REACT  TABLE*/}
