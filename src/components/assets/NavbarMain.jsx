@@ -46,7 +46,7 @@ componentDidMount()
               <DropdownItem divider />
               <DropdownItem>
                 <NavItem>
-                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} to="/DGRC">Espace DGRC</Link>
+                  <Link style={{ color: 'black', textDecoration: 'none' }}  to="/DGRC">Espace DGRC</Link>
                 </NavItem>
               </DropdownItem>
               <DropdownItem divider />
@@ -59,6 +59,12 @@ componentDidMount()
               <DropdownItem>
                 <NavItem>
                   <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/ActeurTraitant">Espace Acteur traitant </Link>
+                </NavItem>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem>
+              <NavItem>
+                  <Link style={{ color: 'black', textDecoration: 'none' }} activeStyle={{ color: '#cd511f', textDecoration: 'none' }} className="navItemColor" to="/Home">Accueil </Link>
                 </NavItem>
               </DropdownItem>
               <DropdownItem divider />

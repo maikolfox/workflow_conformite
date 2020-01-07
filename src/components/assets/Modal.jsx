@@ -186,6 +186,7 @@ class ModalRensFNC extends React.Component {
           toggle={this.toggle}
           className={this.props.className}
           size="lg"
+        
           centered
           aria-labelledby="example-modal-sizes-title-lg"
           backdrop="static"

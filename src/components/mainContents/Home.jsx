@@ -12,13 +12,13 @@ class Home extends Component {
         {
                 position: "absolute",
         left: "30%",
-        top: "22%",
+        top: "10%",
         borderRadius:"10px",
         width: "40%",
-        padding:'3%',
+        padding:'2%',
         textAlign: "justify",
         color: "#fff",
-        backgroundColor:"rgba(255,255,255,0.5)" 
+        backgroundColor:"rgba(255,240,245,0.5)" 
         }
         const homeStyle={   
             overflow:"hidden",

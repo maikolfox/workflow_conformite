@@ -1,17 +1,7 @@
 import base64 from 'react-native-base64';
 import React from 'react'
 
-//   function canAccessToThisPage(profil,tabProfile){
-//     var correctProf=false;
-//     if(tabProfile===undefined || tabProfile===null || tabProfile.length===0)
-//     return correctProf
-//     tabProfile.map(el=>{
-//        if(el.idProfil===profil){
-//         correctProf=true
-//        }
-//     })
-//     return correctProf
-// }
+
 const Auth = 
 {
     username:"dXNlcm5hbWU=",//username in base 64
