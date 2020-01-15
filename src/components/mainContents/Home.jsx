@@ -4,21 +4,23 @@ import { Col, Row, Container, Jumbotron, //Button, Nav, Input, Form, Modal
 import NavBarMain from '../assets/NavbarMain'
 import ModalRensFNC from '../assets/Modal';
 import Auth from '../../components/assets/Auth';
+import '../css/main.css';
 class Home extends Component {
 
    
     render() {
         const simpleStyle=
         {
-                position: "absolute",
+        position: "absolute",
         left: "30%",
         top: "10%",
         borderRadius:"10px",
         width: "40%",
         padding:'2%',
         textAlign: "justify",
-        color: "#fff",
-        backgroundColor:"rgba(255,240,245,0.5)" 
+        color: "#061c27",
+        backgroundColor:"white" ,
+        
         }
         const homeStyle={   
             overflow:"hidden",
@@ -26,7 +28,13 @@ class Home extends Component {
             backgroundImage:"url('/image/background.jpg')",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            backgroundSize: "cover"
+            backgroundSize: "cover",
+            fontSize:"1.95vh"
+        }
+        const titleStyle={
+         textAlign:"center",
+         fontWeight: 'bold',
+         fontSize:"1.99vh"
         }
         const ModalButton=()=>Auth.getAuthOrga(Auth.getProfileTab()) 
         ?  
@@ -37,7 +45,8 @@ class Home extends Component {
             <div style={homeStyle}>
                 <NavBarMain />
                             <span style={simpleStyle}>
-                            <h1 style={{textAlign:"center"}} ><strong>WORKFLOW GESTION *FNC ? </strong></h1>
+
+                            <h3 style={titleStyle} >WORKFLOW GESTION *FNC ?</h3>
                             <br/>
                             <p >
                                 L'application <strong>"WORKFLOW GESTION FNC"</strong> a pour principaux objectifs :
@@ -50,7 +59,6 @@ class Home extends Component {
                              <br/>
                              <small style={{color:"#fff"}}>* Fiche de Non-Conformité</small>
                             </p>
-                            <Row>&nbsp;</Row>
                             <Row >
                             <Col md="12">
                                 <ModalButton/>

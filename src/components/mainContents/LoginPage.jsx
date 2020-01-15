@@ -3,14 +3,14 @@ import React from "react";
 import {
     Col,
     Row,
-    FormGroup, 
+    FormGroup,
     Label,
     Form,
     Input,
     Button,
-    Alert 
+    Alert
 } from 'reactstrap';
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import Auth from '../assets/Auth';
 import ConfigUrl from '../assets/ConfigUrl'
 export default class LoginPage extends React.Component {
@@ -21,14 +21,14 @@ export default class LoginPage extends React.Component {
             password: "",
             responseMessage: "",
             showAlert: false,
-            authenticate:false
+            authenticate: false
         }
         this.handleLogin = this.handleLogin.bind(this);
         this.toggle = this.toggle.bind(this)
     }
     handleLogin = e => {
         e.preventDefault();
-        fetch(ConfigUrl.basePath+'/ssoNautif/fnc',
+        fetch(ConfigUrl.basePath + '/ssoNautif/fnc',
             {
                 method: 'post',
                 headers:
@@ -48,10 +48,10 @@ export default class LoginPage extends React.Component {
                 if (!result.data.authenticate) {
                     this.setState({ responseMessage: result.data.message, showAlert: true })
                 }
-                else{
-                    Auth.setLocalStorage(this.state.login,result.data.username);
+                else {
+                    Auth.setLocalStorage(this.state.login, result.data.username);
                     Auth.setProfile(result.data.userprofile);
-                    this.setState({ authenticate:true })
+                    this.setState({ authenticate: true })
                 }
             },
             (error) => {
@@ -66,43 +66,47 @@ export default class LoginPage extends React.Component {
     }
     render() {
         // marginTop: "20%",
-        var styled = {  height: "100%", backgroundImage:"./image/background.jpg" }
-        if (this.state.authenticate  || Auth.getAuth()) {
+        var styled = { height: "100%", backgroundImage: "./image/background.jpg", margin: "0px", width: "100%", overflow: "hidden" }
+        if (this.state.authenticate || Auth.getAuth()) {
             return <Redirect to='/home' />
-        }else
-        return (
+        } else
+            return (
                 <Row style={styled}>
-                    <Col className="boxImage" style={{backgroundImage: `url('./image/background.jpg')` ,backgroundSize: "100% 100%"}} md={8} sm={12}>
-                     
-                      <Row><Col md={12} sm={12} style={{color:"white", fontSize:"2.5em", marginLeft:"20%",marginTop:"290px"}}>
-                        <strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong></Col></Row> 
-                    {/* <img src="./image/background.jpg" alt="Accueil"  height="100%" width="100%" /> */}
+                    <Col className="boxImage" style={{ backgroundImage: `url('/image/background.jpg')`, backgroundSize: "100% 100%" }} md={8} sm={12}>
+                        {/* <Row><Col md={12} sm={12} style={{color:"#d9531e", fontSize:"2vw", marginLeft:"20%",marginTop:"30%"}}>
+                        <strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong></Col></Row>  */}
+                        {/* <img src="./image/background.jpg" alt="Accueil"  height="100%" width="100%" /> */}
                     </Col>
-                    <Col md={4} sm={12} style={{marginTop :'17%'}}>
+                    <Col md={4} sm={12} style={{ marginTop: '17%' }}>
+                        <Row><Col md={12} sm={12} style={{ color: "#d9531e", fontSize: "160%", marginLeft: "20%" }}>
+                            <strong> WORKFLOW DES FICHES <br/>DE NON-CONFORMITES</strong>                        
+                            {/* <img style={{float:"right"}} src="https://www.contentside.com/wp-content/uploads/2018/09/workflow-orange.svg" width="15%" height="15%"></img> */}
+                        </Col></Row>
                         <FormGroup>
-                                    <Form onSubmit={this.handleLogin}>
-                                        <Alert fade={true} isOpen={this.state.showAlert} toggle={this.toggle} color="danger">
-                                            <strong >{this.state.responseMessage}</strong>
-                                        </Alert>
-                                        <Label>Login </Label>
-                                        <Input type="text"
-                                            required
-                                            value={this.state.login} onChange={e => {
-                                                this.setState({ login: e.target.value })
-                                            }}>
-                                        </Input>
-                                        <Row>&nbsp;</Row>
-                                        <Label>Mot de passe</Label>
-                                        <Input type="password" required value={this.state.password}
-                                            onChange={e => {
-                                                this.setState({ password: e.target.value })
-                                            }}>
-                                        </Input> <Row>&nbsp;</Row>
-                                        <Button color="danger" type="submit">Connexion</Button>
-                                    </Form>
+
+                            <Form onSubmit={this.handleLogin}>
+                                <Alert fade={true} isOpen={this.state.showAlert} toggle={this.toggle} color="danger">
+                                    <strong >{this.state.responseMessage}</strong>
+                                </Alert>
+                                <Label>Login </Label>
+                                <Input type="text"
+                                    required
+                                    value={this.state.login} onChange={e => {
+                                        this.setState({ login: e.target.value })
+                                    }}>
+                                </Input>
+                                <Row>&nbsp;</Row>
+                                <Label>Mot de passe</Label>
+                                <Input type="password" required value={this.state.password}
+                                    onChange={e => {
+                                        this.setState({ password: e.target.value })
+                                    }}>
+                                </Input> <Row>&nbsp;</Row>
+                                <Button color="danger" type="submit">Connexion</Button>
+                            </Form>
                         </FormGroup>
                     </Col>
                 </Row>
-        )
+            )
     }
 }
