@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { CardBody, Card, CardHeader, 
 //  Row, Col 
 } from "reactstrap";
-import Tableau from '../../tableau/_ResponsableTraitement/TableauDemarrageAnalyse';
+import Tableau from '../../tableau/_ResponsableTraitement/TableauSuiviDesPlanDaction';
 import PushLeft  from "../subMainStyle";
 
 
@@ -12,12 +12,12 @@ var pushLeft={
  // boxShadow : "5px 1px 7px #00000059"
 
 }
-const DemarrerAnalyse =({ match})  => (
+const SuiviAction =({ match})  => (
    <Card style={PushLeft}>
-        <CardHeader>Créer un plan d'action</CardHeader>
+        <CardHeader>Suivi des plans actions </CardHeader>
         <CardBody>
                     <Tableau match={match}></Tableau>
         </CardBody>
       </Card>
 );
-export default DemarrerAnalyse
+export default SuiviAction

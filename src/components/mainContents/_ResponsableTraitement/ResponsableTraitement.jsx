@@ -1,9 +1,9 @@
 import React  from 'react';
-// import ValidationRoutage from '../subMainContent/_ResponsableTraitement/ValidationRoutage';
 import DemarrerAnalyse from '../subMainContent/_ResponsableTraitement/DemarrerAnalyse';
 import NavBarMain from '../../assets/NavbarMain';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
-//import ReceptionAction from '../subMainContent/_ResponsableTraitement/ReceptionAction';
+import SuiviDesAction  from '../subMainContent/_ResponsableTraitement/SuiviDesAction';
+
 import Accueil from './Accueil';
 
 const menuObjet=
@@ -18,6 +18,11 @@ const menuObjet=
         libelle:"Créer un plan d'action",
         component:DemarrerAnalyse
     },
+    {
+        url:'suivi_action',
+        libelle:"Suivi des plans d'action",
+        component:SuiviDesAction
+    }
   
 ]
 //BECAUSE WE WANT TAKE CARE OF PARAM URL DURING SWITCHING ROUTES
@@ -37,6 +42,11 @@ const menuObjetSwitch=
         url:'demarrer_analyse/:idFnc',
         libelle:"Créer un plan d'action",
         component:DemarrerAnalyse
+    },
+    {
+        url:'suivi_action',
+        libelle:"Suivit des actions",
+        component:SuiviDesAction
     }
     
 ]

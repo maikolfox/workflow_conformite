@@ -35,6 +35,7 @@ const Auth =
         console.log("click")      
         return true
     },
+    //PERMET DE RECUPERER L'EMAIL DE L'UTILISATEUR
     getUsername()
     {
         //this.createCookieInHour("cookieName", "cookieValue", 1)

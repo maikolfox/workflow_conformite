@@ -25,7 +25,7 @@ class Home extends Component {
         const homeStyle={   
             overflow:"hidden",
             height:"100%",
-            backgroundImage:"url('/image/background.jpg')",
+            backgroundImage:"url('./image/background.jpg')",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
