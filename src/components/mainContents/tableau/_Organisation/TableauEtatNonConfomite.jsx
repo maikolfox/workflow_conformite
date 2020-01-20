@@ -163,31 +163,46 @@ export default class TableauEtatsNonConformite extends React.Component {
 
         const mkcEtataFNC_COLUMN = [
             {
-                Header: 'Description',
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Description</div>
+                 ),
                 accessor: 'descriptionFNC',
-                width: 696,
-                style: { 'white-space': 'unset' }
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
+
             },
         
-            {
-                Header: 'Date déclaration',
+            {   
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Date déclaration</div>
+                 ),
                 accessor: 'dateDeclaration',
                 width: 180,
-                style: { 'white-space': 'unset' }
+
+                style: { 'white-space': 'unset' },
+                row: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
             },
 
 
             {
-                Header: 'Processus',
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Processus</div>
+                ),
                 accessor: 'libelleProcesus',
                 width: 180,
-                style: { 'white-space': 'unset' }
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
+
             },
             {
-                Header: 'Echeance',
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Echeance</div>
+                ),
                 accessor: 'echeanceFnc',
                 width: 180,
-                style: { 'white-space': 'unset' }
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
+
             },
             // {
             //     Header: 'Code source',
@@ -196,22 +211,31 @@ export default class TableauEtatsNonConformite extends React.Component {
             //     style: { 'white-space': 'unset' }
             // },
             {
-                Header: 'Source',
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Source</div>
+                ),
                 accessor: 'libelleSource',
                 width: 180,
-                style: { 'white-space': 'unset' }
-            },
-            {
-                Header: 'Numéro de fiche',
-                accessor: 'numeroId',
-                width: 250,
-                style: { 'white-space': 'unset' }
-            },
-            {
-                Header: 'Cause',
-                accessor: 'cause',
-                width: 380,
                 style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
+
+            },
+            {   
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Numéro de fiche</div>
+                ),
+                accessor: 'numeroId',
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
+
+            },
+            {
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Cause</div>
+                ),
+                accessor: 'cause',
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:20`${row.value}%`}}>{row.value}<div></div></div>)
 
             },
             {

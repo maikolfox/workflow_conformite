@@ -1,0 +1,4 @@
+.rt-tbody .rt-tr-gtoup:nth-child(even){
+
+    background-color:"red"
+}

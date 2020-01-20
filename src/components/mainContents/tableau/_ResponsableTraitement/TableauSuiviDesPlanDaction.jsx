@@ -16,10 +16,9 @@ import "react-table/react-table.css";
 //import ActeurList from '../../../assets/ActeurData';
 //import ActeurColumns from '../../../assets/ActeurColumns';
 //import Columns from '../../../assets/ColumDetailsFnc';
-//import '../tableau.css';
+import '../tableau.css';
 //import SelectComp from 'react-select';
 //import ActeurListSelect from '../../../assets/ActeurDataSelectList';
-
 import MainDataExport from "./MainDataExport_Suivi";
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import DateFormatTransform from '../../../assets/dateFormatTransform';
@@ -53,7 +52,8 @@ export default class TableauEtatsNonConformite extends React.Component {
             dateArr:null,
             dateArrIsSet:false,
             dateDeb:null ,
-            dateDebIsSet : false
+            dateDebIsSet : false,
+            selected:""
         }
         this.consultEtatFnc = this.consultEtatFnc.bind(this);
     }
@@ -99,8 +99,8 @@ export default class TableauEtatsNonConformite extends React.Component {
                         // eslint-disable-next-line
                         save_.map(el => {
                             el.echeances = DateFormatTransform(el.echeances);
-                           // el.idActeur = DisplayNomPrenom(el.idActeur);
-                            el.idActeurDelegataire = DisplayNomPrenom(el.idActeurDelegataire);
+                            //el.idActeur = DisplayNomPrenom(el.idActeur);
+                            //el.idActeurDelegataire = DisplayNomPrenom(el.idActeurDelegataire);
                             el.statutEva = TransformLibelleStatut(el.statutEva);
                             el.statut = TransformLibelleStatut(el.statut);
                             el.statutFnc = TransformLibelleStatut(el.statutFnc);
@@ -164,38 +164,65 @@ export default class TableauEtatsNonConformite extends React.Component {
 
         const mkcEtataFNC_COLUMN = [
             {
-                Header: 'Description',
+                
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Numéro de fiche</div>
+                ),
+                accessor: 'numeroId',
+                width: 150,
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
+            },
+            {
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Description</div>
+                ),
                 accessor: 'descriptionFNC',
-                width: 596,
-                style: { 'white-space': 'unset' }
+                width: 450,
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
+
             },
         
-            {
-                Header: 'Date de déclaration',
+            {     Header: () => (
+                <div style={{fontSize:"14px"}}>Date de déclaration</div>
+                ),
                 accessor: 'dateDeclaration',
-                width: 180,
-                style: { 'white-space': 'unset' }
+                width: 160,
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
+
             },
             {
-              Header: 'Heure de déclaration',
+            Header: () => (
+            <div style={{fontSize:"14px"}}>Heure de déclaration</div>
+            ), 
               accessor: 'dateTime',
-              width: 250,
-              style: { 'white-space': 'unset' }
+              width: 150,
+              style: { 'white-space': 'unset' },
+              Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
             },
 
             {
-                Header: 'Processus',
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Processus</div>
+                    ), 
                 accessor: 'libelleProcesus',
-                width: 180,
-                style: { 'white-space': 'unset' }
+                width: 150,
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
             },
-           
-            {
-                Header: 'Numéro de fiche',
-                accessor: 'numeroId',
-                width: 250,
-                style: { 'white-space': 'unset' }
-            },
+             {
+                 Header: () => (
+                    <div style={{fontSize:"14px"}}>Source</div>
+                    ), 
+                 accessor: 'libelleSource',
+                 width: 180,
+                 style: { 'white-space': 'unset' },
+                 Cell: row => (<React.Fragment className="rt-td" style={{fontSize:"13px",width:"100%",backgroundColor:`${row.index % 2 ? "red":"#ffff"}`}}>{row.value}</React.Fragment>)
+
+             },
+            
            
             
             
@@ -224,14 +251,13 @@ export default class TableauEtatsNonConformite extends React.Component {
             //     width: 180,
             //     style: { 'white-space': 'unset' }
             // },
-          //   {
-          //     Header: 'Cause',
-          //     accessor: 'cause',
-          //     width: 380,
-          //     style: { 'white-space': 'unset' },
-          // },
-
-           // {
+            //   {
+            //     Header: 'Cause',
+            //     accessor: 'cause',
+            //     width: 380,
+            //     style: { 'white-space': 'unset' },
+            // },
+            // {
             //     Header: 'Echeance',
             //     accessor: 'echeanceFnc',
             //     width: 180,
@@ -255,11 +281,21 @@ export default class TableauEtatsNonConformite extends React.Component {
             //     width: 200,
             //     style: { 'white-space': 'unset' }
             // },
+
+            
+
+
+
+
             {
-                Header: 'Statut fnc',
+                Header: () => (
+                    <div style={{fontSize:"14px"}}>Statut fnc</div>
+                    ), 
                 accessor: 'statutFnc',
-                width: 180,
-                style: { 'white-space': 'unset' }
+                width: 150,
+                style: { 'white-space': 'unset' },
+                Cell: row => (<div style={{fontSize:"13px",width:"100%"}}>{row.value}<div></div></div>)
+
             }
         ]
         return (<React.Fragment>
@@ -271,7 +307,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                         <Row >
                             {/**DEBUT */}
                             <Label for="exampleEmail" md={4}>Début</Label>
-                            <Col md={{ size: 3, order: 1, }}>
+                            <Col md={{ size: 4, order: 1, }}>
                                 <Input valid={this.state.dateDebIsSet} //invalid={!this.state.qualificationIsSet}
                                     type="date"
                                     id="selectAgence"
@@ -289,7 +325,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                             </Col>
                             {/**FIN */}
                             <Label for="exampleEmail" md={6}>Fin</Label>
-                            <Col md={{ size: 3, order: 2 }}>
+                            <Col md={{ size: 4, order: 2 }}>
                                 <Input valid={this.state.dateArr} //invalid={!this.state.idProcessusIsSet}
                                     type="date"
                                     id="selectAgence"
@@ -307,8 +343,8 @@ export default class TableauEtatsNonConformite extends React.Component {
                                 </Input>
                                 <FormText hidden={this.state.dateArrIsSet}>Date fin</FormText>
                             </Col>
-                            <Col md={{ size: 3, order: 3 }}><Button disabled={!(this.state.dateArrIsSet&&this.state.dateDebIsSet)} onClick={this.consultEtatFnc}>Valider</Button></Col>
-                            <Col md={{ size: 3, order: 4 }}><MainDataExport etatFnc={this.state.responseToPost} fileName={"Etat fnc du"+this.state.dateDeb+"_"+this.state.dateArr}/></Col>
+                            <Col md={{ size: 4, order: 3 }}><Button disabled={!(this.state.dateArrIsSet&&this.state.dateDebIsSet)} onClick={this.consultEtatFnc}>Valider</Button></Col>
+                            {/* <Col md={{ size: 3, order: 4 }}><MainDataExport etatFnc={this.state.responseToPost} fileName={"Etat fnc du"+this.state.dateDeb+"_"+this.state.dateArr}/></Col> */}
                         </Row>
                         
                     </FormGroup>
@@ -316,10 +352,47 @@ export default class TableauEtatsNonConformite extends React.Component {
             </Row>
             <Row>
             </Row>
+            <div style={{cursor:"pointer",width:"85%",height:"90%"}}>
                 <ReactTableEtatFnc
                     filterable={true}
-                    pivotBy={['numeroId']}
+                    // pivotBy={['numeroId']}
+                    // className="styleZ"
                     minRows={5}
+                    getTrProps={(state, rowInfo) => {
+                        if (rowInfo && rowInfo.row) {
+                          return {
+                            onClick: (e) => {
+                              {
+                                // e.preventDefault();
+                                // this.toggle();
+                                // this.setState({
+                                //   selected: rowInfo.index,
+                                //   getRow: rowInfo,
+                                //   idProcessus: rowInfo.original.idProcessus,
+                                //   numeroId: rowInfo.original.numeroId,
+                                //   descriptionFnc: rowInfo.original.descriptionFnc,
+                                //   idFnc:rowInfo.original.idFnc,
+                                // });
+                                this.setState({
+                                      selected: rowInfo.index,
+                                      getRow: rowInfo,
+                                      idProcessus: rowInfo.original.idProcessus,
+                                      numeroId: rowInfo.original.numeroId,
+                                      descriptionFnc: rowInfo.original.descriptionFnc,
+                                      idFnc:rowInfo.original.idFnc,
+                                    });
+                                console.log(rowInfo.original.idFnc);
+                              }
+                            },
+                            style: {
+                              background: rowInfo.index === this.state.selected ? '#cd511f' : 'white',
+                              color: rowInfo.index === this.state.selected ? 'white' : 'black'
+                            }
+                          }
+                        } else {
+                          return {}
+                        }
+                      }} 
                     defaultFilterMethod={FilterCaseInsensitive}
                     noDataText={(this.state.hasError) ? "Erreur lors de la recuperation des données,contactez les administrateur!" : "Aucun plan d'action recupéré"}
                     data={this.state.responseToPost}
@@ -334,6 +407,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                     //     this.selectTable = r;
                     //   }}
                 />
+            </div>
         </React.Fragment>
         )
     }

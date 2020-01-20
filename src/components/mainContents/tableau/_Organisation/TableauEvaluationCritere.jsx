@@ -6,7 +6,6 @@ import ReactTableEvaluationFnc from 'react-table';
 import "react-table/react-table.css";
 import Loader from "../../../assets/Loader";
 import TabSwitcher, {TabPanel } from "./TabSwitcher/TabSwitcher";
-import '../tableau.css';
 import { evaluationColumn} from '../../../assets/evaluationColumn';
 import FilterCaseInsensitive from '../../../assets/filterInsensitive';
 import TransFormLibstat from '../../../assets/transFormLibelleStatut';
@@ -428,7 +427,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                         <ModalBody toggle={this.toggleNested} >{response}</ModalBody>
                     </Modal>
                 </div>
-                <div style={{ cursor: 'pointer' }}>
+                <div style={{ cursor: 'pointer', width:"95%",height:"90%", overflowX:"hidden" }}>
                     <ReactTableEvaluationFnc
                         filterable={true}
                         defaultFilterMethod={FilterCaseInsensitive}

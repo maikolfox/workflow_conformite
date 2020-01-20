@@ -1,20 +1,28 @@
 
 
-
+import React from "react"
 const evaluationColumn = [
   
     {
-        Header: 'N° de fiche',
+        Header: () => (
+            <div style={{fontSize:"14px"}}> N° de fiche</div>
+         ),
         accessor: 'numeroId',
-        width: 170,
-        style: { 'white-space': 'unset' }
+        style: { 'white-space': 'unset' },
+        Cell: row => (<div style={{
+                        fontSize:"13px",width:`${row.value}%`,
+                    }}>{row.value}<div></div></div>)
     },
-    {
-        Header: 'Description',
+    {   
+        Header: () => (
+            <div style={{fontSize:"14px"}}>Description</div>
+         ),
         accessor: 'descriptionFNC',
-        width: 400,
-        style: { 'white-space': 'unset' }
+        style: { 'white-space': 'unset' },
+        Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
+
     },
+    
     // {
     //     Header: 'N° de l\'analyse',
     //     accessor: 'libelleAt',
@@ -51,23 +59,14 @@ const evaluationColumn = [
     //     width: 400,
     //     style: { 'white-space': 'unset' }
     // },
-    {
-        Header: 'Processus',
-        accessor: 'libelleProcessus',
-        width: 350,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header: 'Source',
-        accessor: 'libelleSource',
-        width: 350,
-        style: { 'white-space': 'unset' }
-    },
-    {
-        Header:'Famille',
+   
+    {   
+        Header: () => (
+            <span style={{fontSize:"14px"}}> Famille</span>
+         ),
         accessor :'libelleFamille',
-        width:350,
-        style:{'white-space':'unset'}
+        style:{'white-space':'unset'},
+        Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
     },
 
     // {
@@ -78,22 +77,28 @@ const evaluationColumn = [
     // },
 
     {
-        Header: 'Date de declaration',
+        Header: () => (
+            <div style={{fontSize:"14px"}}>Date de declaration</div>
+         ),
         accessor: 'dateDeclaration',
-        width: 150,
-        style: { 'white-space': 'unset' }
+        style: { 'white-space': 'unset' },
+        Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
     },
-    {
-        Header: 'Echeance FNC',
+    {   
+        Header: () => (
+            <div style={{fontSize:"14px"}}>Echeance FNC</div>
+         ),
         accessor: 'echeanceFnc',
-        width: 150,
-        style: { 'white-space': 'unset' }
+        style: { 'white-space': 'unset' },
+        Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
     },
-    {
-        Header: 'Statut FNC',
+    {   
+        Header: () => (
+            <div style={{fontSize:"14px"}}>Statut FNC</div>
+         ), 
         accessor: 'statutFnc',
-        width: 150,
-        style: { 'white-space': 'unset' }
+        style: { 'white-space': 'unset' },
+        Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
     },
    
 
