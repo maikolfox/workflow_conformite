@@ -235,7 +235,7 @@ export default class TableauEtatsNonConformite extends React.Component {
                 ),
                 accessor: 'cause',
                 style: { 'white-space': 'unset' },
-                Cell: row => (<div style={{fontSize:"13px",width:20`${row.value}%`}}>{row.value}<div></div></div>)
+                Cell: row => (<div style={{fontSize:"13px",width:`${row.value}%`}}>{row.value}<div></div></div>)
 
             },
             {
