@@ -8,13 +8,13 @@ function transFormLibelleStatut(statutFnc) {
           statut = "Efficacité insatisfaisante";
           break;
       case "cloturer":
-        statut = "Cloturée";
+        statut = "Clôturée";
         break;
       case "declarer":
         statut = "Déclarée";
         break;
       case "clotureProv":
-        statut = "Cloturée provisoirement";
+        statut = "Clôturée provisoirement";
         break;
       case "routageCorrect":
         statut =

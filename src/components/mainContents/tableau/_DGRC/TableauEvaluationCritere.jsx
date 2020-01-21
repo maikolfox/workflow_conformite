@@ -348,7 +348,7 @@ export default class TableauEvaluationCritere extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
-                    if (result.data.error === true || result.data.message === "Accès refuser !" || result.data.responses === null) {
+                    if (result.data.error === true) {
                         alert(result.data.message);
                         this.setState({
                             isLoaded: true,
@@ -415,8 +415,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                         isOpen={this.state.modal}
                         toggle={this.toggle}
                         className={this.props.className}
-                        size="lg"
-                        style={{ maxWidth: '1600px', width: '80%' }}
+                        style={{ maxWidth: '850px', width: '80%' }}
                         centered
                         aria-labelledby="example-modal-sizes-title-lg"
                         backdrop="static">
@@ -430,6 +429,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                          <FormGroup>
                             <FormGroup>
                                 <FormGroup>
+                                    <Row style={{backgroundColor: "rgb(6, 28, 39)", color: "white", marginBottom: "15px", height: "auto"}}>&nbsp;&nbsp;&nbsp;&nbsp;Evaluation</Row>
                                     <Label>Evaluation de l'efficacité </Label>
                                     <Input type="select" onChange={e=>{
                                         this.setState({evaluationEff:e.target.value})

@@ -6,6 +6,7 @@ import MediaAsset  from '../../../assets/MediaAsset'
 import Loader from "../../../assets/Loader";
 import ConfigUrl from "../../../assets/ConfigUrl"
 import DateFormatTransform from "../../../assets/dateFormatTransform";
+import DisplayName from "../../../assets/displayNomPrenom";
 import {
 
   Col,
@@ -174,21 +175,40 @@ class AnalyseContent extends React.Component {
 
   render() {
     library.add(faAngleDown);
+    var downloadFileList= (this.props.dataAna[0].listFile.length!==0) 
+    ? this.props.dataAna[0].listFile.map(el=>(
+    <ul><li> <a href="#" onClick={e=>{
+        fetch(ConfigUrl.basePath+"/download/"+el.nomFichier)
+        .then(response => {
+          response.blob().then(blob => {
+            let url = window.URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = el.nomFichier;
+            a.click();
+          })
+      })}
+    }>{el.nomFichier}</a><br/><br/></li></ul>)) 
+    : "Aucune pièce jointe"
+
 
     const listCri = this.props.dataAna.map(el => <CritereItemContent critere={el.critere} echeanceCritere={el.echeanceCritere} dateFinAnalyse={el.dateFinAnalyse} />);
     return (
     <React.Fragment>
-                <Row md={12} style={{backgroundColor:"#061c27",color: "white" ,marginBottom:"15px" ,height:"auto" , size:"1em"}} onClick={this.toggleCollapse} ><Col md={10}>Analyse numéro {this.props.item.libelletAt}</Col><Col  md="2"><span style={{marginLeft :"100%"}}> <FontAwesomeIcon
+                <Row md={12} style={{backgroundColor:"#061c27",color: "white" ,marginBottom:"15px" ,height:"auto" , size:"1em"}} onClick={this.toggleCollapse} ><Col md={10}>Plan d'action  {this.props.item.libelletAt}</Col><Col  md="2"><span style={{marginLeft :"100%"}}> <FontAwesomeIcon
                 icon="angle-down"
                 color="#d9541e"
                 size="1x"
             /></span></Col> </Row>
       <Collapse isOpen={this.state.collapse}>
       <Col md={12}>
+      <MediaAsset libelle="Acteur traitants" content={(this.props.item.acteursTraitant !== undefined) ? DisplayName(this.props.item.acteursTraitant) : ""}></MediaAsset>
       <MediaAsset libelle="Cause" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].cause : ""}></MediaAsset>
       <MediaAsset libelle="Correction" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].correction :""}></MediaAsset>
       <MediaAsset libelle="Action corrective" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].actionCorrective:""}></MediaAsset>
       <MediaAsset libelle="Resultat traitement" content={this.props.dataAna[0].resultatTraitement}   ></MediaAsset>
+      <MediaAsset libelle="Pièces jointes ( Cliquer sur le lien pour télécharger la pièce jointe )" content={downloadFileList}  ></MediaAsset>
+
         <div>
         <MediaAsset libelle="Critères" content= {listCri} ></MediaAsset>
         </div>
@@ -201,7 +221,7 @@ class AnalyseContent extends React.Component {
         idActeurTraitant={this.props.dataAna[0].idActeur} 
         id={this.props.dataAna[0].id} 
         resultat={this.props.dataAna[0].resultatTraitement} />
-        <hr></hr>
+        {/* <hr></hr> */}
       </Col>
       </Collapse>
       <br></br>
@@ -233,6 +253,7 @@ export default AnalyseContent;
             marginLeft: "100%"
           }}> <FontAwesomeIcon icon="angle-down" color="#d9541e" size="1x" /></span></Col> </Row>
            <Collapse isOpen={this.state.collapseDet}>
+             <MediaAsset libelle="Acteur traitants" content={this.props.data[0].acteursTraitant}   ></MediaAsset>
             <MediaAsset libelle="Cause" content={(this.props.data !== undefined) ? this.props.data[0].cause : ""}></MediaAsset>
             <MediaAsset libelle="Correction" content={(this.props.data !== undefined) ? this.props.data[0].correction :""}></MediaAsset>
             <MediaAsset libelle="Action corrective" content={(this.props.data !== undefined) ? this.props.data[0].actionCorrective:""}></MediaAsset>

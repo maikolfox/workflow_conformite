@@ -477,7 +477,7 @@ export default class TableauCritere extends React.Component {
   }
 
   async consultFncInitier() {
-    await fetch(ConfigUrl.basePath+"/consultationFncInitier/fnc")
+    await fetch(ConfigUrl.basePath+"/consultationFncInitierDgrc/fnc")
       .then(res => res.json())
       .then(
         (result) => {
@@ -818,7 +818,7 @@ export default class TableauCritere extends React.Component {
                           </Tab>
                         </Col>
                         {/**BUTTON MODIFIER */}
-                        <Col md="3">
+                        {/* <Col md="3">
                           <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex === null) ? "nope" : "extends"}>
                             <Button outline color="primary" disabled={(this.state.selectedAnaCreIndex === null)} onClick={e => {
                               e.preventDefault();
@@ -833,9 +833,9 @@ export default class TableauCritere extends React.Component {
                               />{' Modifier l\'analyse'}
                             </Button>
                           </Tab>
-                        </Col>
+                        </Col> */}
                         {/**BUTTON SUPPRIMER  */}
-                        <Col md="3">
+                        {/* <Col md="3">
                           <Tab id="10" maxStep={3} step={(this.state.selectedAnaCreIndex === null) ? "nope" : "extends"}>
                             <Button disabled={(this.state.selectedAnaCreIndex === null)} outline color="danger">
                               <FontAwesomeIcon
@@ -845,117 +845,13 @@ export default class TableauCritere extends React.Component {
                               />{' Supprimer l\'analyse'}
                             </Button>
                           </Tab>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </Container>
                   </TabPanel>
                 </TabPanel>
                 {/* ETAPE MODIFICATION ANALYSE*/}
-                <TabPanel whenActive={10}>
-                  {/* MODIFICATION ANALYSE */}
-                  <h1 style={{ textAlign: "center" }}>MODIFICATION ANALYSE</h1>
-                  <Form onSubmit={this.handleSubmit}>
-                    <FormGroup>
-                      {/*Correction*/}
-                      <Label for="exampleEmail" md={12}>Correction</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.correctionIsSet} invalid={!this.state.correctionIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.correction}
-                          onChange={e => {
-                            this.setState({ correction: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ correctionIsSet: true })
-                            }
-                            else { this.setState({ correctionIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.correctionIsSet}>Renseigner la correction</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Cause*/}
-                      <Label for="exampleEmail" md={12}>Cause</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.causeIsSet} invalid={!this.state.causeIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.cause}
-                          onChange={e => {
-                            this.setState({ cause: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ causeIsSet: true })
-                            }
-                            else { this.setState({ causeIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.causeIsSet}>Renseigner la cause</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Actions correctives*/}
-                      <Label for="exampleEmail" md={12}>Actions correctives</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.actionCorrectiveIsSet} invalid={!this.state.actionCorrectiveIsSet}
-                          type="textarea"
-                          id="selectAgence"
-                          name="selectbasic"
-                          value={this.state.actionCorrective}
-                          onChange={e => {
-                            this.setState({ actionCorrective: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ actionCorrectiveIsSet: true })
-                            }
-                            else { this.setState({ actionCorrectiveIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.actionCorrectiveIsSet}>Renseigner les actions correctives</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/*Echéances*/}
-                      <Label for="exampleEmail" md={12}>Echéances</Label>
-                      <Col md={{ size: 12, order: 1, offset: -1 }}>
-                        <Input valid={this.state.echeanceIsSet} invalid={!this.state.echeanceIsSet}
-                          type="date"
-                          id="selectAgence"
-                          min={this.currentDate()}
-                          name="selectbasic"
-                          value={this.state.echeance}
-                          onChange={e => {
-                            e.preventDefault();
-                            this.setState({ echeance: e.target.value })
-                            if (e.target.value !== null && e.target.value !== "") {
-                              this.setState({ echeanceIsSet: true })
-                            }
-                            else { this.setState({ echeanceIsSet: false }) }
-                          }}>
-                        </Input>
-                        <FormText hidden={this.state.echeanceIsSet}>Renseigner l'écheance</FormText>
-                      </Col>
-                      <Row>&nbsp;</Row>
-                      {/* CHOIX DE L'ACTEUR TRAITANT*/}
-                      <Label for="acteurName" md={12}>Choix de l'acteur traitant</Label>
-                      <Col md={12}>
-                        <SelectComp onChange={this.handleSelectComp} options={ActeurListSelect} />
-                        <FormText hidden={this.state.idActeurIsSet}>Choisissez un acteur</FormText>
-                      </Col>
-                    </FormGroup>
-                  </Form >
-                  <br />
-                  <Row>
-                    <Tab id="1" maxStep={3} step={1}>
-                      <Button>Annuler</Button>
-                    </Tab>
-                    <Col md="8" ></Col>
-                    <Tab id="1" maxStep={3} step={1}>
-                      <Button  color="danger" onClick={e => {
-                        e.preventDefault();
-                        this.handleValidModifyAnalyse(this.state.selectedAnalyse.libelleAt);
-                      }}>Valider la modification</Button>
-                    </Tab>
-                  </Row>
-                </TabPanel>
+                
                 <TabPanel whenActive={11}>
                   {/* CONSULTATION ANALYSE */}
                   {contentConsult}

@@ -21,11 +21,11 @@ import {
             borderTopRightRadius:".3rem" }
         }>{(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} </div>
         const value = (typeof this.props.content==="string" || this.props.content===null) ? 
-        <Input type="textarea" value={(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} disabled/> 
+        <Input type={this.props.content.length>550 ? "textarea":"text"} value={(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} disabled/> 
         : criterBlock
         return (
             <React.Fragment>
-                <Col md={{ size: 12, order: 1, offset: -1 }}>
+                <Col md={{ size: 12, order: 2, offset: 0 }}>
                     <Media>
                         <Media body style={{textAlign:"justify"}}>
                             <Label>{this.props.libelle}</Label>

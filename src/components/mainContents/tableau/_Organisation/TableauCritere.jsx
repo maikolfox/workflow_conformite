@@ -960,10 +960,10 @@ export default class TableauCritere extends React.Component {
                             });
                             console.log(rowInfo.original);
                           },
-                          style: {
-                            background: rowInfo.index === this.state.selectedAnaCreIndex ? '#cd511f' : 'white',
-                            color: rowInfo.index === this.state.selectedAnaCreIndex ? 'white' : 'black'
-                          }
+                           style: {
+                             background: rowInfo.index === this.state.selectedAnaCreIndex ? '#cd511f' : 'white',
+                             color: rowInfo.index === this.state.selectedAnaCreIndex ? 'white' : 'black'
+                           }
                         }
                       } else {
                         return {}

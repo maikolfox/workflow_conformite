@@ -30,15 +30,5 @@
     overflow-x: hidden;
     border-bottom: 2px;
     /* border-right: thick double  #555  */
-} */
+} 
 
- .rt-tr-group  rt-tr:nth-child(even){
-
-  background-color:"red"
-}
-
-
- .rt-tr-group  rt-tr:nth-child(odd){
-
-  background-color:"yellow"
-}

@@ -162,7 +162,6 @@ class Routing extends React.Component {
       
 
        <Router basename={'/workflow-gestion-fnc'}>
-
             <Switch>
               <Route exact path="/" render={() => 
               (
@@ -172,7 +171,6 @@ class Routing extends React.Component {
                  <Redirect to="/login"/>
               )
               )}/>
-             
               <PrivateRoute exact path="/home" component={Home} />
               <PrivateRoute path="/ActeurTraitant" component={ActeurTraitant} />
               <RespRoute path="/ResponsableTraitement" component={ ResponsableTraitement} />
