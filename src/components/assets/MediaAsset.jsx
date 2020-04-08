@@ -11,23 +11,25 @@ import {
 
  export default class MediaAsset extends React.Component {
     render() {
+        console.log(typeof  this.props.content);
         const criterBlock =<div style={
             {
-            height:"250px",
+            height:"auto",
             overflowY:"scroll",
             backgroundColor : '#e9ecef', 
             border:".1rem #ced4da", 
             borderRadius:".3rem",
             borderTopRightRadius:".3rem" }
-        }>{(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} </div>
-        const value = (typeof this.props.content==="string" || this.props.content===null) ? 
+        }>{(this.props.content === null || this.props.content === undefined ) ? ""  : this.props.content} </div>
+        const value = (typeof this.props.content==="string" && this.props.content!==null) 
+        ? 
         <Input type={this.props.content.length>550 ? "textarea":"text"} value={(this.props.content === null || this.props.content === undefined ) ? "" : this.props.content} disabled/> 
-        : criterBlock
+        : this.props.content==null ? <Input type={"text"} value= "R.A.S"  disabled/> : criterBlock
         return (
             <React.Fragment>
-                <Col md={{ size: 12, order: 2, offset: 0 }}>
+                <Col style={{height:"auto"}} md={{ size: 12, order: 2, offset: 0 }}>
                     <Media>
-                        <Media body style={{textAlign:"justify"}}>
+                        <Media body style={{textAlign:"justify",height:"20%"}}>
                             <Label>{this.props.libelle}</Label>
                             {value}
                         </Media>

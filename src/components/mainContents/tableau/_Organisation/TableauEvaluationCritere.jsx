@@ -52,7 +52,9 @@ export default class TableauEvaluationCritere extends React.Component {
                 libelleSource: '',
                 libelleFamile: '',
                 libelleProcessus: '',
-
+                //tableau qui contiendra les evaluations de chaque plan 
+                //d'action ainsi que l'acteur traitant
+                tabEvaluation:[],
                 evaluationEff:"",
                 niveauSatisfaction:"",
                 preuve:"",
@@ -105,17 +107,53 @@ export default class TableauEvaluationCritere extends React.Component {
         this.handleEvaluation = this.handleEvaluation.bind(this);
         this.get_critere_traitement_byIdfnc = this.get_critere_traitement_byIdfnc.bind(this);
         this.handleSubmit_evaluation=this.handleSubmit_evaluation.bind(this);
+        this.handlePieceJPointe=this.handlePieceJPointe.bind(this)
+
+
     };
 
-    handleEvaluation(id, value) {
-        const update = this.state.criterObject.map(elem => {
-            if (elem.id === id) {
-                elem.evaluation = value
+    handleEvaluation(id, value,idActeur,idActeurDelegataire) {
+        var auxTabEvaluation=this.state.tabEvaluation
+        console.log("i am id"+ id)
+        var elemToreturn={}
+        const update = this.state.criterObject.map((elem,index) => {
+            console.log("elmi==>"+elem.id)
+
+            if (elem.dataAna[0].idCritere === id) {
+                elemToreturn.evaluation = value
+                elemToreturn.idActeur=idActeur
+                elemToreturn.idActeurDelegataire=idActeurDelegataire
+                elemToreturn.index=index
             }
-            return elem
+            return elemToreturn
         })
+        auxTabEvaluation[update[0].index]=update[0]
         this.setState({
-            criterObject: update
+            tabEvaluation: auxTabEvaluation
+        })
+        console.log(id)
+    }
+   
+
+    handlePieceJPointe(id, value) {
+        var auxTabEvaluation=this.state.tabEvaluation
+        const update = this.state.criterObject.map((elem ,index)=> {
+            console.log("elmi==>"+elem.id)
+            var elemToreturn={}
+            if (elem.dataAna[0].idCritere === id) {
+                elemToreturn.PieceJPointe = value
+                elemToreturn.idActeur=elem.idActeur
+                elemToreturn.evaluation= elemToreturn.evaluation
+                elemToreturn.idActeurDelegataire=elem.idActeurDelegataire
+                elem.index=index
+            }
+            return elemToreturn
+        })
+        console.log("UPdate table ===>" )
+        console.log(update)
+        auxTabEvaluation[update[0].index]=update[0]
+        this.setState({
+            tabEvaluation: auxTabEvaluation
         })
         console.log(id)
     }
@@ -324,12 +362,15 @@ export default class TableauEvaluationCritere extends React.Component {
         this.getResultat_traitement()
     }
     render() {
-        const evalCritereItem = this.state.criterObject.map(item => (
+        var evalCritereItem = this.state.criterObject.map(item => (
             <CritereItemEval
                 key={item.id}
                 item={item}
                 dataAna={item.dataAna}
                 numeroId={this.state.numeroId}
+                handleEvaluation={this.handleEvaluation} 
+                handlePieceJPointe={this.handlePieceJPointe}
+                //evalComponent={}
             />
         ))
 

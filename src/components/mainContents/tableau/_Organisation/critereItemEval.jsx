@@ -1,5 +1,5 @@
 import React  from "react";
-import { faAngleDown} from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown,faAngleUp} from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MediaAsset  from '../../../assets/MediaAsset'
@@ -7,11 +7,12 @@ import Loader from "../../../assets/Loader";
 import ConfigUrl from '../../../assets/ConfigUrl'
 
 import DateFormatTransform from "../../../assets/dateFormatTransform";
+import displayNomPrenom from "../../../assets/displayNomPrenom";
 import {
 
   Col,
-  Row,
-  Modal,ModalBody,ModalFooter,ModalHeader,Button,Input,Collapse
+  Row,Form,FormGroup,
+  Modal,ModalBody,ModalFooter,ModalHeader,Button,Input,Collapse,Label
 } from "reactstrap";
 
 
@@ -115,7 +116,7 @@ import {
           centered
           size="lg"
           backdrop="static">
-            <ModalHeader toggle={this.toggle}>Modification du resultat de l'analyse N° {this.props.numeroAna}</ModalHeader>
+            <ModalHeader toggle={this.toggle}>Modification du resultat du plan d'action N° {this.props.numeroAna}</ModalHeader>
             <ModalBody>
                   <Input min={10} type="textarea" onChange={e=>{this.setState({resultat_: e.target.value})}} value={this.state.resultat_}></Input> 
             </ModalBody>
@@ -170,6 +171,7 @@ class AnalyseContent extends React.Component {
 
   render() {
     library.add(faAngleDown);
+    library.add(faAngleUp);
     var downloadFileList= (this.props.dataAna[0].listFile.length!==0) 
     ? this.props.dataAna[0].listFile.map(el=>(
      <Col> <a href="#" onClick={e=>{
@@ -195,37 +197,68 @@ class AnalyseContent extends React.Component {
                 height:"auto" , 
                 size:"1em"}} 
                 onClick={this.toggleCollapse} >
-                  <Col md={10}>Analyse numéro {this.props.item.libelletAt}</Col>
-                  <Col  md="2"><span style={{marginLeft :"100%"}}> <FontAwesomeIcon
-                icon="angle-down"
+                  <Col md={10}>Plan d'action N° {this.props.item.libelletAt}</Col>
+                  <Col  md="2"><span style={{marginLeft :"90%"}}> <FontAwesomeIcon
+                icon={this.state.collapse ? "angle-up" : "angle-down"}
                 color="#d9541e"
-                size="1x"
+                size="2x"
             /></span></Col> </Row>
       <Collapse isOpen={this.state.collapse}>
       <Col md={12}>
+      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeur) : ""}></MediaAsset>
       <MediaAsset libelle="Cause" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].cause : ""}></MediaAsset>
       <MediaAsset libelle="Correction" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].correction :""}></MediaAsset>
       <MediaAsset libelle="Action corrective" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].actionCorrective:""}></MediaAsset>
       <MediaAsset libelle="Resultat traitement" content={ (this.props.dataAna[0] !== undefined) ? this.props.dataAna[0].resultatTraitement :""}   ></MediaAsset>
       <MediaAsset libelle="Pièces jointes ( Cliquer sur le lien pour télécharger la pièce jointe )" content={downloadFileList}  ></MediaAsset>
-        <div>
+      <div>
         <MediaAsset libelle="Critères" content= {listCri} ></MediaAsset>
         </div>
+      <Row>&nbsp;</Row>
+    {/**Evaluation block */}
+         <Col md={12}> 
+         <Label>Evaluation de l'efficacité </Label>
+         <Input type="select" onChange={e => { console.log(e.target.value)
+            //this.setState({ evaluationEff: e.target.value })
+         this.props.handleEvaluation(this.props.dataAna[0].idCritere,e.target.value,this.props.dataAna[0].idActeurDelegataire)
+         }}>
+         {/* handleEvaluation={this.handleEvaluation} 
+                handlePieceJPointe={this.handlePieceJPointe} */}
+            <option value="" default > </option>
+            <option value="Efficace" >Efficace</option>
+            <option value="Inefficace" >Inefficace</option>
+          </Input>
+          
+          <Row>&nbsp;</Row>
+          <Label>Preuve</Label>
+          <Input type="input" onChange={e => { this.setState({ preuve: e.target.value }) }}>
+          </Input>
+          <Row>&nbsp;</Row>
+          <Label>Pièce jointe</Label>
+          <Input type="file" accept="application/pdf, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document" name="file" multiple onChange={this.onChangeHandler} />
+
+          <Row>&nbsp;</Row>
+          </Col>
+    {/**end evaluation bloc */}
+      
         <br />
+        {this.props.evalComponent}
         <ModalModificationResultat 
         numeroAna={this.props.item.libelletAt} 
         numeroId={this.props.numeroId} 
         responsableTraitement={this.props.dataAna[0].idActeur} 
-        idActeurTraitant={this.props.dataAna[0].idActeur} 
+        idActeurTraitant={this.props.dataAna[0].idActeurDelegataire} 
         id={this.props.dataAna[0].id} 
         resultat={this.props.dataAna[0].resultatTraitement} />
         <hr></hr>
+          
+        
       </Col>
       </Collapse>
       <br></br>
     </React.Fragment>);
   }
-
+//add a handler to modify the parent state
 }
 export default AnalyseContent;
 
