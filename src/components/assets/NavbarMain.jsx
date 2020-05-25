@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Navbar, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownItem, DropdownToggle, DropdownMenu ,
+import { Navbar, NavbarBrand, Nav, NavItem, UncontrolledDropdown, DropdownItem, DropdownToggle, DropdownMenu ,NavbarToggler, NavLink,Collapse,
   Col, Row
 } from 'reactstrap';
 import {
@@ -17,20 +17,30 @@ class NavbarMain extends React.Component {
   constructor(props){
     super(props)
     this.state={
-        displayName:localStorage.getItem('displayUsername')
-    }
-}
+        displayName:localStorage.getItem('displayUsername'),
+        collapsed:true
+      }
+
+  this.toggleNavbar=this.toggleNavbar.bind(this)
+  
+  }
+ toggleNavbar(){
+   this.setState(prevState=>({collapsed:!prevState.collapsed}));
+ }
 componentDidMount()
 {
  
 }
   render() {
     return (
+      <div>
       <Navbar fixed={"top"} className='headerStyle' light expand="md" >
         <NavbarBrand href="/workflow-gestion-fnc/home">
           <img src={window.location.origin+"/workflow-gestion-fnc/image/logoBridgeBank.png"} alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>
+        <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
         {/* <h6 id="navBarText">Workflow FNC</h6> */}
+        <Collapse isOpen={!this.state.collapsed} navbar>
         <Nav className="ml-auto" navbar>
           <Col md={"auto"}>
           <UncontrolledDropdown nav inNavbar> 
@@ -77,7 +87,9 @@ componentDidMount()
           </UncontrolledDropdown>
           </Col>
         </Nav>
+        </Collapse>
       </Navbar>
+      </div>
     )
   }
 }

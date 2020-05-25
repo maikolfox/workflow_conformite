@@ -11,16 +11,20 @@ class Home extends Component {
     render() {
         const simpleStyle=
         {
-        position: "absolute",
-        left: "30%",
-        top: "10%",
-        borderRadius:"10px",
-        width: "40%",
-        padding:'2%',
-        textAlign: "justify",
-        color: "#061c27",
-        backgroundColor:"white" ,
-        
+        // position: "absolute",
+        //  left: "30%",
+        //  top: "10%",
+        // borderRadius:"10px",
+        //  width: "40%",
+        // textAlign: "justify",
+        // color: "#061c27",
+        // backgroundColor:"white" ,
+           backgroundColor:"white",
+           margin:"auto", 
+           marginTop:'150px',
+           borderRadius:"10px",        
+           paddingBottom:'2%',
+           paddingTop:'5%'
         }
         const homeStyle={   
             overflow:"hidden",
@@ -41,11 +45,12 @@ class Home extends Component {
             <ModalRensFNC buttonLabel="Déclarer une non-conformité"></ModalRensFNC>  
         : <span/>
         
-        return (
-            <div style={homeStyle}>
+        return (<>
                 <NavBarMain />
-                            <span style={simpleStyle}>
-
+                <div style={homeStyle}>
+                            <div className="container">
+                                <div className="container-fluid" style={simpleStyle}>
+                            <Col md="12" lg="12" >
                             <h3 style={titleStyle} >WORKFLOW GESTION *FNC ?</h3>
                             <br/>
                             <p >
@@ -64,8 +69,11 @@ class Home extends Component {
                                 <ModalButton/>
                             </Col>
                             </Row>
-                            </span>         
-            </div>
+                            </Col>   
+                            </div> 
+                            </div>     
+                </div>
+            </>
         )
     }
 

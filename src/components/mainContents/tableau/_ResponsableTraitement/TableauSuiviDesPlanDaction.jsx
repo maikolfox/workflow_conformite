@@ -442,7 +442,6 @@ export default class TableauEtatsNonConformite extends React.Component {
             <div style={{ cursor: "pointer", width: "85%", height: "90%" }}>
                 <ReactTableEtatFnc
                     filterable={true}
-
                     className="-striped -highlight"
                     // pivotBy={['numeroId']}
                     // className="styleZ"
@@ -460,7 +459,6 @@ export default class TableauEtatsNonConformite extends React.Component {
                                         //   descriptionFnc: rowInfo.original.descriptionFnc,
                                         //   idFnc:rowInfo.original.idFnc,
                                         // });
-
                                         this.setState({
                                             selected: rowInfo.index,
                                             getRow: rowInfo,
@@ -472,7 +470,6 @@ export default class TableauEtatsNonConformite extends React.Component {
                                         console.log(rowInfo.original.idFnc);
                                         this.consultPlanDactionByANalyse(rowInfo.original.idFnc);
                                         this.toggle();
-
                                     }
                                 },
                                 // style: StripedAsset(rowInfo.index,this.state.selected)

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import 
 {
     Route,
     NavLink,
-    Switch, 
+    Switch 
 } from 'react-router-dom';
 import '../css/main.css';
 import "../css/sidebar.css";
- import {Container,Col ,Row} from "reactstrap"
+ import {Container,Col ,Row,NavbarToggler,Collapse} from "reactstrap"
 
 const NoMatchPage = () => { return (
     <React.Fragment>
@@ -30,18 +30,26 @@ export function SideBarItem(props) {
 }
 
 export default function SideBar(props) {
+  
+//   const [collapsed, setCollapsed] = useState(true);
+//   const toggleNavbar = () => setCollapsed(!collapsed);
+
     const Menu = props.menuItem.map(item => (
         <SideBarItem match={props.match} menuItem={item} />
     ))
+
     return (
+        <>
+        {/* <NavbarToggler onClick={toggleNavbar} className="mr-2" />
+        <Collapse isOpen={!collapsed} navbar> */}
         <div className="sidenav">
             <div className="title">{props.menuName}</div>
             {Menu}
         </div>
-
-    )
+        {/* </Collapse> */}
+        </>
+    );
 }
-
 //SWITCH ROUTE
 
 export function SwitchRouteItem(props) {
