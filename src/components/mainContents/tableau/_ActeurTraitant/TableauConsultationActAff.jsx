@@ -16,7 +16,9 @@ import Loader from "../../../assets/Loader";
 import Auth from "../../../assets/Auth";
 import axios from 'axios';
 import DisplayDateFormat from "../../../assets/dateFormatTransform";
-import ConfigUrl from '../../../assets/ConfigUrl'
+import ConfigUrl from '../../../assets/ConfigUrl';
+import AdvanceTabAsset from '../../../assets/AdvanceTabAsset';
+
 
 import {
   Button,
@@ -107,10 +109,6 @@ export default class ConsultationActAff extends React.Component {
       }
 
 
-
-
-
-
     this.toggle = this.toggle.bind(this);
     this.toggleNested = this.toggleNested.bind(this);
     //this.toggle = this.toggle.bind(this);
@@ -136,12 +134,44 @@ export default class ConsultationActAff extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
     this.handleAdd = this.handleAdd.bind(this)
     this.getFiles = this.getFiles.bind(this)
-
-  };
+    this.onclickFunction=this.onclickFunction.bind(this)
+   };
 
   ///FILE LISTE HANDLER
 
 
+  onclickFunction(e,rowInfo){
+    //e.preventDefault();
+    this.setState({
+      //PAY ATTENTION 
+      // selectedAnalyseIndex: rowInfo.index,
+      // selectedAnalyse: rowInfo.original.libelleAt,
+      // getRow: rowInfo,
+      // acteurTraitant: rowInfo.original.nomPrenom,
+      // idActeur: rowInfo.original.idActeur,
+      // cause: rowInfo.original.cause,
+      // correction: rowInfo.original.correction,
+      // echeance: rowInfo.original.echeance,
+      // echeanceActionCorrective :rowInfo.original.echeanceActionCorrective,
+      // actionCorrective: rowInfo.original.actionCorrective
+                      selected: rowInfo.index,
+                      getRow: rowInfo,
+                      idProcessus: rowInfo.original.idProcessus,
+                      numeroId: rowInfo.original.numeroId,
+                      descriptionFnc: rowInfo.original.descriptionFnc,
+                      idFnc: rowInfo.original.idFnc,
+                      id: rowInfo.original.id,
+                      qualification: rowInfo.original.qualification,
+                      source: rowInfo.original.libelleSource,
+                      libelleProcessus: rowInfo.original.libelleProcesus,
+                      libelleFamille: rowInfo.original.libelleFamille
+    
+    });
+    console.log(rowInfo.original);
+    this.toggleResultModal();
+
+
+}
 
 
   getUnique(arr, comp) {
@@ -573,7 +603,9 @@ export default class ConsultationActAff extends React.Component {
 
                 <TabPanel whenActive={2}>
                 <div style={{ cursor: 'pointer' }}>
-                  <ReactTable
+                  // can try this for simulation //
+                  
+                   <ReactTable
                     filterable={true}
                     loading={!this.state.isLoaded}
                     minRows={5}
@@ -616,9 +648,10 @@ export default class ConsultationActAff extends React.Component {
                       } else {
                         return {}
                       }
-                    }} />
+                    }} /> 
                   <br />
                   </div>
+                  // END TRY ZONE 
                 </TabPanel>
 
                 {/*RENSEIGNEMENT TRAITEMENT ET AJOUT PIECES JOINTES 
@@ -799,6 +832,17 @@ export default class ConsultationActAff extends React.Component {
         </div>
         {/*REACT  TABLE*/}
         <div style={{ cursor: 'pointer' }}>
+
+
+        {/* <AdvanceTabAsset 
+        dataArray={this.state.responseSansDoublon}
+        dataColumn={Columns}
+        isLoaded={!this.state.isLoaded}
+        errorMessage="Erreur lors de la recupératoin des données"
+        noDataMessage="Aucune donnée"
+        onclickFunction={onclickFunction}
+          ></AdvanceTabAsset> */}
+
           <ReactTable
             filterable={true}
             loading={!this.state.isLoaded}
