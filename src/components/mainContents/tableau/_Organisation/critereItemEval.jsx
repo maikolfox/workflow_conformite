@@ -8,6 +8,8 @@ import ConfigUrl from '../../../assets/ConfigUrl'
 
 import DateFormatTransform from "../../../assets/dateFormatTransform";
 import displayNomPrenom from "../../../assets/displayNomPrenom";
+import HandleProfileActeur  from "../../../assets/HandleProfileActeur";
+
 import {
 
   Col,
@@ -40,6 +42,7 @@ import {
       this.handleSubmit=this.handleSubmit.bind(this);
     }
   
+
     handleSubmit = async e=>{
       e.preventDefault();
          await fetch(ConfigUrl.basePath+'/update_resultatTraitement/fnc',
@@ -166,13 +169,24 @@ class AnalyseContent extends React.Component {
   }
     toggleCollapse() {
       this.setState(state => ({ collapse: !state.collapse }));
-    }
-   
-
+    } 
   render() {
+    
+
+    var profileActeur=[];
+    // pour un acteur traitant le profils doit etre vide donc par precaution on ajoute des 1
+    this.props.dataAna.map(el=>{
+      
+      if(el.profileIdUse===undefined || el.profileIdUse===null || el.profileIdUse.trim===''){
+        el.profileIdUse=1
+      }
+        profileActeur.push( el.profileIdUse)
+      
+    })
+
     library.add(faAngleDown);
     library.add(faAngleUp);
-    var downloadFileList= (this.props.dataAna[0].listFile.length!==0) 
+    var downloadFileList= (this.props.dataAna[0].listFile.length!==0 && this.props.dataAna[0].listFile!==undefined) 
     ? this.props.dataAna[0].listFile.map(el=>(
      <Col> <a href="#" onClick={e=>{
         fetch(ConfigUrl.basePath+"/download/"+el.nomFichier)
@@ -187,7 +201,14 @@ class AnalyseContent extends React.Component {
       })}
     }>{el.nomFichier}</a><br/><br/></Col>)) 
     : "Aucune pièce jointe"
-    const listCri = this.props.dataAna.map(el => <CritereItemContent critere={el.critere} echeanceCritere={el.echeanceCritere} dateFinAnalyse={el.dateFinAnalyse} />);
+    const dataCrit=this.props.dataAna;
+
+    //REMOVE DUPLICATE CRITERE
+    const uniqueDataCriter = [...new Map(dataCrit.map(item => [item["idCritere"], item])).values()]
+    const listCri = uniqueDataCriter.map(el => 
+          <CritereItemContent key={ el.idCritere} critere={el.critere} echeanceCritere={el.echeanceCritere} dateFinAnalyse={el.dateFinAnalyse} 
+    
+    />);
     return (
     <React.Fragment>
                 <Row md={12} style={{
@@ -205,17 +226,26 @@ class AnalyseContent extends React.Component {
             /></span></Col> </Row>
       <Collapse isOpen={this.state.collapse}>
       <Col md={12}>
-      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeur) : ""}></MediaAsset>
+      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeur)+"   *"+ (HandleProfileActeur(Math.max(...profileActeur)))  : ""}></MediaAsset>
+
+      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeur)+" "+ Math.max(...profileActeur) : ""}></MediaAsset>
       <MediaAsset libelle="Cause" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].cause : ""}></MediaAsset>
       <MediaAsset libelle="Correction" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].correction :""}></MediaAsset>
       <MediaAsset libelle="Action corrective" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].actionCorrective:""}></MediaAsset>
       <MediaAsset libelle="Resultat traitement" content={ (this.props.dataAna[0] !== undefined) ? this.props.dataAna[0].resultatTraitement :""}   ></MediaAsset>
-      <MediaAsset libelle="Pièces jointes ( Cliquer sur le lien pour télécharger la pièce jointe )" content={downloadFileList}  ></MediaAsset>
+      <MediaAsset libelle="Pièces jointes ( Cliquez sur le lien pour télécharger la pièce jointe )" content={downloadFileList}  ></MediaAsset>
       <div>
-        <MediaAsset libelle="Critères" content= {listCri} ></MediaAsset>
-        </div>
+            <MediaAsset libelle="Critères" content= {listCri} ></MediaAsset>
+      </div>
       <Row>&nbsp;</Row>
-    {/**Evaluation block */}
+    {/** 
+     * 
+     * 
+     * Evaluation block 
+     * 
+     * 
+     *  
+     **/}
          <Col md={12}> 
          <Label>Evaluation de l'efficacité </Label>
          <Input type="select" onChange={e => { console.log(e.target.value)

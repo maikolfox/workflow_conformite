@@ -186,7 +186,6 @@ export default class TableauEvaluationCritere extends React.Component {
                         isLoaded: true,
                         criterObject: result.data.responses,
                     });
-
                     console.log("critere object ------>", this.state.criterObject);
                 },
                 (error) => {
