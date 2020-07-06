@@ -417,13 +417,15 @@ export default class TableauCritere extends React.Component {
           else {
             console.log("RESULT RESPONSE ",result.data.responses)
             console.log("resp data")
-            result.data.responses.map(el=>{
+            
+            if( result.data.responses !== null &&  result.data.responses !== undefined &&  result.data.responses.length!==0 )
+            {
+              result.data.responses.map(el=>{
               el.idActeurFormat= DisplayNomPrenom(el.idActeur);
               el.idActeurDelegataireFormat= DisplayNomPrenom(el.idActeurDelegataire);
               el.echeancesFormat=DateFormatTransform(el.echeances);
               el.dateCreationAnalyseFormat=DateFormatTransform(el.dateCreationAnalyse);
               el.echeanceActionCorrectivesFormat=DateFormatTransform(el.echeances2);
-
             })
             this.setState({
               isLoadedAna: true,
@@ -439,6 +441,19 @@ export default class TableauCritere extends React.Component {
               this.setState(prevState => ({ dsFncNbrAna: prevState.dsFncNbrAna.map(el => (el.id === obje.id ? obje : { ...el })) }));
             // console.log(this.state.responseToAnalyseByID)
             console.log(this.state.dsFncNbrAna)
+          }
+          else{
+
+            this.setState({
+              isLoadedAna: true,
+              responseToAnalyseByID: []
+            });
+
+
+          }
+
+
+
           }
         },
         (error) => {

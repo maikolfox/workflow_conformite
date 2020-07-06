@@ -371,7 +371,7 @@ export default class TableauCritere extends React.Component {
   }
 
   getAnalyse = idFnc => {
-    fetch(ConfigUrl.basePath+'/consultationAnalyseById/fnc',
+    fetch(ConfigUrl.basePath+'/consultationAnalyseById_dgrc/fnc',
       {
         method: 'POST',
         headers:
@@ -403,9 +403,12 @@ export default class TableauCritere extends React.Component {
               isLoadedAna: true,
               responseToAnalyseByID: result.data.responses
             });
+            console.log("responseToAnalyseById",this.state.responseToAnalyseByID)
+            var longRespAna = this.state.responseToAnalyseByID ===undefined ? 0 : this.state.responseToAnalyseByID.length
             var obje = {
+
               id: idFnc,
-              value: this.state.responseToAnalyseByID.length,
+              value:  longRespAna
             }
             console.log(obje);
             if (this.state.dsFncNbrAna.length === 0) { this.setState(prevState => ({ dsFncNbrAna: prevState.dsFncNbrAna.concat(obje) })); }
@@ -418,7 +421,7 @@ export default class TableauCritere extends React.Component {
         },
         (error) => {
           console.log("124", error.message);
-          alert("Erreur lors de la communication avec le serveur , contacter les administrateur si le problème persiste");
+          alert(error.message);
           this.setState({
             isLoaded: true,
             errorMessage: error.message,

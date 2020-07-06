@@ -1,4 +1,4 @@
-import React  from 'react';
+import React,{useState}  from 'react';
 
 import '../../css/main.css';
 //import PanelWorkFlow from './PanelWorkFlow';
@@ -10,6 +10,7 @@ import EvaluationCritere from '../subMainContent/_DGRC/EvaluationCritere';
 // import EtatsNonConformite from '../subMainContent/_DGRC/EtatNonConformite';
 import NavBarMain from '../../assets/NavbarMain';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
+import {Col,Row, NavbarToggler} from 'reactstrap';
 
 import Accueil from './Accueil';
 
@@ -48,14 +49,37 @@ const menuObjet=
     // }
 ]
 
-const Dgrc = ({ match }) => (
-    <React.Fragment>
+const Dgrc = ({ match }) => {  const [collapsed, setCollapsed] = useState(true);
+    const Toogle = () => {
+        
+        setCollapsed(!collapsed)
+    
+    
+    };
+    const Tog=<NavbarToggler onClick={()=>setCollapsed(!collapsed)}   />
+    
+    if (!collapsed){
+    
+    return (
+    
+    <>
     <NavBarMain/>
-        <SideBar match={match} menuItem={menuObjet} menuName="Menu DGRC"></SideBar>
-         <SwitchRoute basePath="DGRC" menuItem={menuObjet} ></SwitchRoute>
-    </React.Fragment>
-);
-
+    <Col style={{marginLeft:"0",marginTop:"5%" ,color:"red"}}>
+        <Row>tog{Tog}</Row>
+    </Col>
+    <SwitchRoute classMain={collapsed} basePath="DGRC" menuItem={menuObjet} ></SwitchRoute>
+     </>
+    )
+    
+    }
+    else
+    return (
+    <React.Fragment>
+        <NavBarMain/>
+         <SideBar tg={Tog} collapsed={collapsed} match={match} menuItem={menuObjet} menuName="Menu DGRC"></SideBar>
+         <SwitchRoute classMain={collapsed} basePath="DGRC" menuItem={menuObjet} ></SwitchRoute>
+    </React.Fragment>)
+    }
 
 
 

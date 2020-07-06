@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import Statistique from '../../mainContents/subMainContent/_Organisation/StatistiqueWorkflow';
 import CorrectionRoutage from '../../mainContents/subMainContent/_Organisation/ConsultFncRoutagErrone';
 import CreationCritereEvaluation from '../subMainContent/_Organisation/CreationCritereEfficacite';
@@ -7,7 +7,7 @@ import EtatsNonConformite from '../subMainContent/_Organisation/EtatNonConformit
 import NavBarMain from '../../assets/NavbarMain';
 import SideBar,{SwitchRoute} from '../../assets/SideBar';
 import Accueil from './Accueil';
-
+import {Col,Row,NavbarToggler } from 'reactstrap';
 const menuObjet=
 [
     {
@@ -84,12 +84,36 @@ const menuObjetSwitchRoute=
         component:Statistique
     }
 ]
-const Organisation = ({ match }) => (
-    <React.Fragment>
+const Organisation = ({ match }) =>{  const [collapsed, setCollapsed] = useState(true);
+const Toogle = () => {
+    
+    setCollapsed(!collapsed)
+
+
+};
+const Tog=<NavbarToggler onClick={()=>setCollapsed(!collapsed)}   />
+
+if (!collapsed){
+
+return (
+
+<>
+<NavBarMain/>
+<Col style={{marginLeft:"0",marginTop:"5%" ,color:"red"}}>
+    <Row>tog{Tog}</Row>
+</Col>
+<SwitchRoute classMain={collapsed} basePath="organisation" menuItem={menuObjet} ></SwitchRoute>
+ </>
+)
+
+}
+else
+return (
+<React.Fragment>
     <NavBarMain/>
-        <SideBar match={match} menuItem={menuObjet} menuName="Menu Organisation"></SideBar>
-        <SwitchRoute basePath="Organisation" menuItem={menuObjetSwitchRoute}></SwitchRoute>
-    </React.Fragment>
-);
+     <SideBar tg={Tog} collapsed={collapsed} match={match} menuItem={menuObjet} menuName="Menu organisation"></SideBar>
+     <SwitchRoute classMain={collapsed} basePath="organisation" menuItem={menuObjet} ></SwitchRoute>
+</React.Fragment>)
+}
 
 export default Organisation;

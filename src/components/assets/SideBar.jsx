@@ -7,7 +7,7 @@ import
 } from 'react-router-dom';
 import '../css/main.css';
 import "../css/sidebar.css";
- import {Container,Col ,Row,NavbarToggler,Collapse} from "reactstrap"
+ import {Container,Col ,Row,NavbarToggler,Collapse ,Nav,Navbar,NavItem} from "reactstrap"
 
 const NoMatchPage = () => { return (
     <React.Fragment>
@@ -29,27 +29,36 @@ export function SideBarItem(props) {
     )
 }
 
-export default function SideBar(props) {
+ function  SideBar ( props ){
   
-//   const [collapsed, setCollapsed] = useState(true);
-//   const toggleNavbar = () => setCollapsed(!collapsed);
+    // const [collapsed, setCollapsed] = useState(true);
 
     const Menu = props.menuItem.map(item => (
         <SideBarItem match={props.match} menuItem={item} />
     ))
 
-    return (
-        <>
-        {/* <NavbarToggler onClick={toggleNavbar} className="mr-2" />
-        <Collapse isOpen={!collapsed} navbar> */}
-        <div className="sidenav">
+    return <>
+
+
+        {/* <NavbarToggler onClick={()=>props.setCollapsedprops}  className="mr-2" /> */}
+        <Collapse isOpen={props.collapsed} navbar className="toggling">
+
+          <Nav vertical navbar>
+
+          <div className="sidenav"> 
+          <div style={{backgroundColor:"red"}}>{props.tg}</div>
+
             <div className="title">{props.menuName}</div>
             {Menu}
-        </div>
-        {/* </Collapse> */}
+            </div>
+             </Nav>
+            </Collapse> 
+
+  
         </>
-    );
+    ;
 }
+export default  SideBar
 //SWITCH ROUTE
 
 export function SwitchRouteItem(props) {
@@ -77,8 +86,9 @@ export function SwitchRoute(props) {
    // the route handler for the url which leads to page that not exist
    //SwitchRoute.push(<Route component={NoMatchPage} />)
     return (
-        <div class="main" style={{ paddingTop: "100px", height: "auto" }}>
+        <div className={props.classMain ? "main toggling" :"toggling"} style={ props.classMain ? { paddingTop: "100px", height: "auto" } : { marginTop: "10px", height: "0" } }  >
             {SwitchRoutes}
         </div>
     )
 }
+

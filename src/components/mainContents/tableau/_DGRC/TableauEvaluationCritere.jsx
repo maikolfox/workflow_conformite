@@ -194,7 +194,7 @@ export default class TableauEvaluationCritere extends React.Component {
 
     get_critere_traitement_byIdfnc = async e => {
         this.setState({ isLoaded: false })
-        await fetch(ConfigUrl.basePath+'/criter_EvalTraitementByidFnc/fnc',
+        await fetch(ConfigUrl.basePath+'/consultationAnalyseById_dgrc/fnc',
             {
                 method: 'POST',
                 headers:

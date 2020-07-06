@@ -241,6 +241,9 @@ const acteurArray = [
   , { fonction: "Analyste Financier", label: "Stephane KONAN", value: "stephane.konan@bridgebankgroup.com" }
   , { fonction: "CHARGEE D'AFFAIRE PME-PMI", label: "Carole Muriel OYOU", value: "carole.oyou@bridgebankgroup.com" }
   , { fonction: "ANALYSTE CREDIT", label: "Jacques-Armel AHOUSSOU", value: "jacques.ahoussou@bridgebankgroup.com" }
-  , { fonction: "ANALYSTE CREDIT", label: "Cedric AHOUE", value: "ahoueromeo@gmail.com" }]
+  , { fonction: "ANALYSTE CREDIT", label: "Cedric AHOUE", value: "ahoueromeo@gmail.com" }
+  , { fonction: "DJRC", label: "DJRC USER", value: "djrc.user@bridgebankgroup.com" }
+
+]
 
   export default  acteurArray

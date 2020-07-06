@@ -267,7 +267,6 @@ export default class ConsultationActAff extends React.Component {
       }).then(res => res.json())
       .then(
         (result) => {
-
           console.log(this.state.selected);
           this.setState({
             isLoaded: true,
@@ -341,8 +340,8 @@ export default class ConsultationActAff extends React.Component {
     this.setState(prevState => ({
       ResultModal: !prevState.ResultModal,
       selectedAnalyse: !prevState.selectedAnalyse,
-      text: '',
-      textIsSet: false
+      // text: '',
+      // textIsSet: false
     }));
     
   }
@@ -429,7 +428,7 @@ export default class ConsultationActAff extends React.Component {
   }
 
 
-  async onClickHandler() 
+  async  onClickHandler() 
   {
     this.setState(
       {
@@ -439,8 +438,11 @@ export default class ConsultationActAff extends React.Component {
       )
   
     var dataFile = new FormData();
+
+    console.log("state =====>",this.state.fileArray)
     if(this.state.fileArray.length!==0)
     {  
+        
         for (var x = 0; x < this.state.fileArray.length; x++) 
         {
           console.log("x------>", x)
@@ -448,14 +450,25 @@ export default class ConsultationActAff extends React.Component {
           ||this.state.fileArray[x].fileObj.type=== "application/vnd.ms-excel"
           ||this.state.fileArray[x].fileObj.type===  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
           )
-          {dataFile.append('file', this.state.fileArray[x].fileObj)}
+          {
+            dataFile.append('file', this.state.fileArray[x].fileObj)
+          
+          }
         }
     }
+    console.log("dataFile",dataFile.getAll)
+    
+    
+    
     dataFile.append('idAt', this.state.id)
     dataFile.append("idFnc", this.state.idFnc)
     dataFile.append("resultat", this.state.text)
     dataFile.append("idActeur", Auth.getUsername())
 
+
+
+
+    console.log("dataFile",dataFile)
     await axios.post(ConfigUrl.basePath+"/upload", dataFile,
     {
         onUploadProgress: ProgressEvent => {
@@ -468,7 +481,7 @@ export default class ConsultationActAff extends React.Component {
            this.setState({
             isLoadedForSpin:true,
              isLoaded: true,
-             responseSubmit: response.data.data.message,
+             responseSubmit: response.data.message,
              hasError: false
            });
         })
