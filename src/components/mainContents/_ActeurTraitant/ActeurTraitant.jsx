@@ -18,6 +18,7 @@ const menuObjet=
         component:ConsultationActAff
     },
 ]
+
 const ActeurTraitant = ({ match }) => 
 {
     const [collapsed, setCollapsed] = useState(true);
