@@ -418,8 +418,9 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                                 <TabPanel whenActive={1}>
                                 <h1 style={{ textAlign: "center" }}>FICHE N° {this.state.numeroId} </h1>
                                 {/* <Details data={this.state.criterObject} ></Details> */}
+                                {/** liste des criteres d'evalutions */}
                                 {evalCritereItem}
-                         <FormGroup>
+                         {/* <FormGroup>
                             <FormGroup>
                                 <FormGroup>
                                     <Label>Evaluation de l'efficacité </Label>
@@ -443,7 +444,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
 
                                 </FormGroup>
                             </FormGroup>
-                        </FormGroup>
+                        </FormGroup> */}
                                 </TabPanel>
                             </TabSwitcher>
                         </ModalBody>

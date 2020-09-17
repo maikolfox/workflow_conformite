@@ -36,7 +36,7 @@ componentDidMount()
       <div>
       <Navbar fixed={"top"}  className='headerStyle' light expand="md" >
         <NavbarBrand href="/workflow-gestion-fnc/home">
-            <img src={window.location.origin+"/workflow-gestion-fnc/image/logoBridgeBank.png"} alt="BRIDGE BANK" style={{marginTop :'8px'}} height="50%" width="50%" />
+            <img src={window.location.origin+"/workflow-gestion-fnc/image/logoBridgeBank.png"} alt="Retour à l'accueil" style={{marginTop :'8px'}} height="50%" width="50%" />
         </NavbarBrand>
         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
         {/* <h6 id="navBarText">Workflow FNC</h6> */}
