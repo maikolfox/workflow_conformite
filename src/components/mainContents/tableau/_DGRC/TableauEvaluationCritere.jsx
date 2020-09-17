@@ -448,9 +448,9 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                                         <option value="Insatisfait" >Insatisfait</option>
                                     </Input> <Row>&nbsp;</Row>
                                     <Label>Preuve efficacité </Label>
-                                    <Input value={this.state.preuve} onChange={e=>{
+                                    <Input type="textarea" value={this.state.preuve} onChange={e=>{
                                         this.setState({preuve:e.target.value})
-                                    }} type="textarea"></Input>
+                                    }} ></Input>
                                 </FormGroup>
                             </FormGroup>
                         </FormGroup>

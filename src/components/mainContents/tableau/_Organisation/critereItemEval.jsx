@@ -186,7 +186,7 @@ class AnalyseContent extends React.Component {
 
     library.add(faAngleDown);
     library.add(faAngleUp);
-    var downloadFileList= (this.props.dataAna[0].listFile.length!==0 && this.props.dataAna[0].listFile!==undefined) 
+    var downloadFileList= (this.props.dataAna[0].listFile.length!==0 && this.props.dataAna[0].listFile!==null && this.props.dataAna[0].listFile!==undefined) 
     ? this.props.dataAna[0].listFile.map(el=>(
      <Col> <a href="#" onClick={e=>{
         fetch(ConfigUrl.basePath+"/download/"+el.nomFichier)
@@ -226,9 +226,8 @@ class AnalyseContent extends React.Component {
             /></span></Col> </Row>
       <Collapse isOpen={this.state.collapse}>
       <Col md={12}>
-      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeur)+"   *"+ (HandleProfileActeur(Math.max(...profileActeur)))  : ""}></MediaAsset>
-
-      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeur)+" "+ Math.max(...profileActeur) : ""}></MediaAsset>
+      <MediaAsset libelle="Responsable de traitement" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeurDelegataire):""}></MediaAsset>
+      <MediaAsset libelle="Acteur traitant" content={(this.props.dataAna !== undefined) ? displayNomPrenom(this.props.dataAna[0].idActeurDelegataire)+" "+(HandleProfileActeur(Math.max(...profileActeur)))  : ""}></MediaAsset>
       <MediaAsset libelle="Cause" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].cause : ""}></MediaAsset>
       <MediaAsset libelle="Correction" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].correction :""}></MediaAsset>
       <MediaAsset libelle="Action corrective" content={(this.props.dataAna !== undefined) ? this.props.dataAna[0].actionCorrective:""}></MediaAsset>

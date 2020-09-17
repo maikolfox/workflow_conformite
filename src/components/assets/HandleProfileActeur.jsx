@@ -1,9 +1,9 @@
 const HandleProfileActeur=(idProfile)=>{
     switch(idProfile) {
         case 5:
-            return 'Organisation'
+            return '- Organisation'
         case 4:
-            return 'DGRC'
+            return '- DGRC'
         default:
            return ''
     } 

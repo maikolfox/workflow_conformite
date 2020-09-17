@@ -432,7 +432,7 @@ var response=(this.state.isLoaded) ? this.state.responseToEval : <React.Fragment
                                     </Input>                        
                                     <Row>&nbsp;</Row>
                                     <Label>Preuve</Label>
-                                    <Input type="input" onChange={e=>{  this.setState({preuve:e.target.value}) }}>
+                                    <Input type="textarea" onChange={e=>{  this.setState({preuve:e.target.value}) }}>
                                        
                                     </Input>
                                     <Row>&nbsp;</Row>
